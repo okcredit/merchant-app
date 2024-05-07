@@ -1,0 +1,30 @@
+import kotlin.Boolean;
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS `FileUploadCommand` (
+    `commandId` TEXT NOT NULL,
+    `businessId` TEXT NOT NULL,
+    `filePath` TEXT NOT NULL,
+    `status` TEXT NOT NULL,
+    `remoteUrl` TEXT NOT NULL,
+    `type` TEXT NOT NULL,
+    `errorCode` INTEGER NOT NULL,
+    `createdTime` INTEGER NOT NULL DEFAULT 0,
+    `expiryTime` INTEGER NOT NULL DEFAULT 0,
+    `runAttemptCount` INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY(`commandId`)
+);
+
+insertCommand:
+INSERT OR REPLACE INTO FileUploadCommand VALUES (?,?,?,?,?,?,?,?,?,?);
+
+getPendingCommand:
+SELECT * FROM FileUploadCommand WHERE `status` = 'PENDING';
+
+getStatusForCommand:
+SELECT status FROM FileUploadCommand WHERE commandId = ?;
+
+updateStatusForCommand:
+UPDATE FileUploadCommand
+    SET status = ?
+    WHERE commandId = ?;

@@ -1,0 +1,101 @@
+import kotlin.Boolean;
+import kotlin.Int;
+
+CREATE TABLE IF NOT EXISTS `Business` (
+    `id` TEXT NOT NULL,
+    `name` TEXT NOT NULL,
+    `mobile` TEXT NOT NULL,
+    `profileImage` TEXT,
+    `address` TEXT,
+    `addressLatitude` REAL,
+    `addressLongitude` REAL,
+    `about` TEXT,
+    `email` TEXT,
+    `contactName` TEXT,
+    `createdAt` INTEGER NOT NULL,
+    `category` TEXT,
+    `business` TEXT,
+    `isFirst` INTEGER AS Boolean NOT NULL DEFAULT 0,
+    PRIMARY KEY(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `BusinessCategory` (
+    `id` TEXT NOT NULL,
+    `name` TEXT NOT NULL,
+    `type` INTEGER NOT NULL,
+    `imageUrl` TEXT,
+    `isPopular` INTEGER AS Boolean NOT NULL DEFAULT 0,
+    PRIMARY KEY(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `BusinessType` (
+    `id` TEXT NOT NULL,
+    `name` TEXT,
+    `image_url` TEXT,
+    `title` TEXT,
+    `sub_title` TEXT,
+    PRIMARY KEY(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `Individual` (
+    `id` TEXT NOT NULL,
+    `createTime` INTEGER,
+    `mobile` TEXT NOT NULL,
+    `email` TEXT,
+    `registerTime` INTEGER,
+    `lang` TEXT,
+    `displayName` TEXT,
+    `profileImage` TEXT,
+    `addressText` TEXT,
+    `longitude` REAL,
+    `latitude` REAL,
+    `about` TEXT,
+    `recoveryMobile` TEXT,
+    `businessIds` TEXT NOT NULL,
+     PRIMARY KEY(`id`)
+);
+
+deleteBusiness:
+DELETE FROM `Business`;
+
+deleteBusinessType:
+DELETE FROM `BusinessType`;
+
+deleteBusinessCategory:
+DELETE FROM `BusinessCategory`;
+
+getBusiness:
+SELECT * FROM Business WHERE id = ?;
+
+getBusinessList:
+SELECT * FROM Business;
+
+getBusinessIdList:
+SELECT id FROM Business;
+
+getBusinessTypes:
+SELECT * FROM BusinessType;
+
+getBusinessCount:
+SELECT count(*) FROM Business;
+
+getCategories:
+SELECT * FROM BusinessCategory;
+
+insertBusiness:
+INSERT OR REPLACE INTO `Business` VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+saveBusinessTypes:
+INSERT OR REPLACE INTO `BusinessType` VALUES (?,?,?,?,?);
+
+saveCategories:
+INSERT OR REPLACE INTO `BusinessCategory` VALUES (?,?,?,?,?);
+
+getIndividual:
+SELECT * FROM Individual LIMIT 1;
+
+setIndividual:
+INSERT OR REPLACE INTO `Individual` VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+deleteIndividual:
+DELETE FROM Individual;

@@ -1,0 +1,61 @@
+import kotlin.Boolean;
+import kotlin.Int;
+
+CREATE TABLE `Features`(
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` TEXT NOT NULL,
+   `enabled` INTEGER AS Boolean NOT NULL DEFAULT 0,
+   `businessId` TEXT NOT NULL
+);
+
+insertFeatures:
+INSERT OR REPLACE INTO Features VALUES (?, ?,?,?);
+
+isFeatureEnabled:
+SELECT `enabled` FROM Features WHERE `name` = ? AND `businessId` = ?;
+
+enabledFeatures:
+SELECT `name` FROM Features WHERE `enabled` = 1 AND businessId = ?;
+
+getAllFeatures:
+SELECT * FROM Features WHERE businessId = ?;
+
+deleteAllFeatures:
+DELETE FROM Features;
+
+CREATE TABLE `Experiments`(
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` TEXT NOT NULL,
+  `variant` TEXT NOT NULL,
+  `vars` TEXT NOT NULL,
+   `started` INTEGER AS Boolean NOT NULL DEFAULT 0,
+  `businessId` TEXT NOT NULL
+);
+
+insertExperiments:
+INSERT OR REPLACE INTO Experiments VALUES (?,?,?,?,?,?);
+
+
+isExperimentEnabled:
+SELECT EXISTS (SELECT `id` FROM Experiments WHERE `name` = ? AND `businessId` = ?);
+
+getExperimentVariant:
+SELECT `variant` FROM Experiments WHERE name = ? AND businessId = ?;
+
+
+getVariantConfigurations:
+SELECT `vars` FROM Experiments WHERE name = ? AND businessId = ?;
+
+startedExperiments:
+SELECT name FROM Experiments WHERE started = 1 AND businessId = ?;
+
+recordExperimentStarted:
+UPDATE Experiments SET
+    started = 1
+WHERE name = ? AND businessId = ?;
+
+getAllExperiments:
+SELECT * FROM Experiments WHERE businessId = ?;
+
+deleteAllExperiments:
+DELETE FROM Experiments;
