@@ -1,47 +1,35 @@
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
+    id("okcredit.ktorfit")
 
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.sqldelight)
-    id("okcredit.ktorfit")
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation("com.squareup.okio:okio:3.3.0")
+        commonMain.dependencies {
+            implementation(libs.okio)
 
-                api(libs.bundles.multiplatform.settings)
-                implementation(libs.bundles.sqldelight.common)
+            api(libs.bundles.multiplatform.settings)
+            implementation(libs.bundles.sqldelight.common)
 
-                implementation(project(":app-platform:analytics"))
-                implementation(project(":app-platform:base"))
-            }
+            implementation(project(":platform:analytics"))
+            implementation(project(":platform:base"))
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.workmanager)
-                implementation(libs.sqldelight.androidDriver)
-            }
+        androidMain.dependencies {
+            implementation(libs.androidx.workmanager)
+            implementation(libs.sqldelight.androidDriver)
         }
-
-        val iosMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.nativeDriver)
-            }
+        iosMain.dependencies {
+            implementation(libs.sqldelight.nativeDriver)
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.sqliteDriver)
-            }
+        jvmMain.dependencies {
+            implementation(libs.sqldelight.sqliteDriver)
         }
     }
 }
@@ -50,7 +38,6 @@ sqldelight {
     databases {
         create("OkDocDatabase") {
             packageName.set("tech.okcredit.okdoc.local")
-            generateAsync.set(false)
         }
     }
 }

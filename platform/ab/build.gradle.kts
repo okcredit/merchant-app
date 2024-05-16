@@ -1,41 +1,30 @@
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
     id("okcredit.ktorfit")
+
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.bundles.sqldelight.common)
-                api(project(":app-platform:base"))
-            }
+        commonMain.dependencies {
+            implementation(libs.bundles.sqldelight.common)
+            api(project(":platform:base"))
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.workmanager)
-                implementation(libs.sqldelight.androidDriver)
-            }
+        androidMain.dependencies {
+            implementation(libs.androidx.workmanager)
+            implementation(libs.sqldelight.androidDriver)
         }
-
-        val iosMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.nativeDriver)
-            }
+        iosMain.dependencies {
+            implementation(libs.sqldelight.nativeDriver)
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.sqldelight.sqliteDriver)
-            }
+        jvmMain.dependencies {
+            implementation(libs.sqldelight.sqliteDriver)
         }
     }
 }

@@ -7,6 +7,7 @@ kotlinx-serialization = "1.6.3"
 kotlinx-dateTime = "0.5.0"
 ksp = "2.0.0-RC2-1.0.20"
 ktlint = "1.0.1"
+okio = "3.9.0"
 spotless = "6.25.0"
 kover = "0.7.6"
 
@@ -49,6 +50,7 @@ kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-dateTime" }
 kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.24.0"
 
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
 sqldelight-coroutineExtensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-androidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }

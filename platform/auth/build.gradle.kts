@@ -2,25 +2,22 @@ plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
     id("okcredit.ktorfit")
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(libs.bundles.multiplatform.settings)
-                implementation(libs.kotlinx.atomicfu)
-                implementation(project(":app-platform:base"))
+        commonMain.dependencies {
+            api(libs.bundles.multiplatform.settings)
 
-                implementation(libs.ktor.clientAuth)
-            }
+            implementation(libs.kotlinx.atomicfu)
+
+            implementation(project(":platform:base"))
+
+            implementation(libs.ktor.clientAuth)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }

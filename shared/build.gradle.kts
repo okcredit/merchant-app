@@ -4,47 +4,40 @@ plugins {
     id("okcredit.compose")
 
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":shared:shared_contract"))
+        commonMain.dependencies {
+            implementation(project(":shared:shared_contract"))
 
-                implementation(project(":app-platform:ab"))
-                implementation(project(":app-platform:analytics"))
-                implementation(project(":app-platform:auth"))
-                implementation(project(":app-platform:base"))
-                implementation(project(":app-platform:device"))
-                implementation(project(":app-platform:identity"))
-                implementation(project(":app-platform:identity:contract"))
-                implementation(project(":app-platform:okdoc"))
-                implementation(project(":app-platform:design_system"))
+            implementation(project(":platform:ab"))
+            implementation(project(":platform:analytics"))
+            implementation(project(":platform:auth"))
+            implementation(project(":platform:base"))
+            implementation(project(":platform:device"))
+            implementation(project(":platform:identity"))
+            implementation(project(":platform:identity:contract"))
+            implementation(project(":platform:okdoc"))
+            implementation(project(":platform:design_system"))
 
-                implementation(compose.ui)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.components.resources)
 
-                implementation(libs.bundles.moko.resources)
-            }
+            implementation(libs.bundles.moko.resources)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.activityCompose)
+        androidMain.dependencies {
+            implementation(libs.androidx.activityCompose)
 
-                implementation(compose.uiTooling)
-            }
+            implementation(compose.uiTooling)
         }
     }
 }

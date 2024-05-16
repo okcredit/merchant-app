@@ -2,48 +2,40 @@ plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
     id("okcredit.compose")
-
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(kotlin("stdlib-common"))
-                api(libs.kotlinx.coroutinesCore)
-                api(libs.kotlinx.serializationCore)
-                api(libs.kotlinx.dateTime)
+        commonMain.dependencies {
+            api(kotlin("stdlib-common"))
+            api(libs.kotlinx.coroutinesCore)
+            api(libs.kotlinx.serializationCore)
+            api(libs.kotlinx.dateTime)
 
-                implementation(compose.ui)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.runtime)
 
-                api(libs.log.kermit)
+            api(libs.log.kermit)
 
-                api(libs.bundles.multiplatform.settings)
+            api(libs.bundles.multiplatform.settings)
 
-                api(libs.ktorfit)
-                api(libs.ktorfit.converter)
-                api(libs.ktor.contentNegotiation)
-                api(libs.ktor.json)
-                api(libs.ktor.clientLogging)
+            api(libs.ktorfit)
+            api(libs.ktorfit.converter)
+            api(libs.ktor.contentNegotiation)
+            api(libs.ktor.json)
+            api(libs.ktor.clientLogging)
 
-                api(libs.kotlininject.runtime)
+            api(libs.kotlininject.runtime)
 
-                api(libs.voyager.navigator)
-            }
+            api(libs.voyager.navigator)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
-        val androidMain by getting {
-            dependencies {
-                api(libs.androidx.workmanager)
-            }
+        androidMain.dependencies {
+            api(libs.androidx.workmanager)
         }
     }
 }

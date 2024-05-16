@@ -31,7 +31,7 @@ ios-app/.idea/*
 .externalNativeBuild
 
 # Do not commit plain-text release keys
-app-release.jks
+release.jks
 play-account.p12
 play-account.json
 

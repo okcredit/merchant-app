@@ -115,14 +115,14 @@ dependencies {
     implementation(libs.androidx.activityCompose)
     implementation(libs.androidx.workmanager)
 
-    implementation(project(":app-platform:base"))
-    implementation(project(":app-platform:ab"))
-    implementation(project(":app-platform:analytics"))
-    implementation(project(":app-platform:auth"))
-    implementation(project(":app-platform:device"))
-    implementation(project(":app-platform:identity"))
-    implementation(project(":app-platform:identity:contract"))
-    implementation(project(":app-platform:okdoc"))
+    implementation(project(":platform:base"))
+    implementation(project(":platform:ab"))
+    implementation(project(":platform:analytics"))
+    implementation(project(":platform:auth"))
+    implementation(project(":platform:device"))
+    implementation(project(":platform:identity"))
+    implementation(project(":platform:identity:contract"))
+    implementation(project(":platform:okdoc"))
 
     implementation(project(":shared"))
 

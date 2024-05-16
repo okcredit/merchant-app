@@ -6,10 +6,8 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(compose.material3)
-            }
+        commonMain.dependencies {
+            implementation(compose.material3)
         }
     }
 }

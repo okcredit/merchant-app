@@ -3,28 +3,21 @@ plugins {
     id("okcredit.kotlin.multiplatform")
 
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":app-platform:base"))
-            }
+        commonMain.dependencies {
+            implementation(project(":platform:base"))
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.mixpanel.android)
+        androidMain.dependencies {
+            implementation(libs.mixpanel.android)
 
-                implementation(libs.firebase.analytics)
-                implementation(libs.firebase.crashlytics)
-            }
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.crashlytics)
         }
     }
 }

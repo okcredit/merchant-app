@@ -1,24 +1,16 @@
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
+    id("okcredit.ktorfit")
 
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    id("okcredit.ktorfit")
 }
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(libs.bundles.multiplatform.settings)
-                implementation(project(":app-platform:base"))
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.workmanager)
-            }
+        commonMain.dependencies {
+            api(libs.bundles.multiplatform.settings)
+            implementation(project(":platform:base"))
         }
     }
 }

@@ -5,16 +5,12 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":app-platform:base"))
-                api(libs.voyager.navigator)
-            }
+        commonMain.dependencies {
+            implementation(project(":platform:base"))
+            api(libs.voyager.navigator)
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }
