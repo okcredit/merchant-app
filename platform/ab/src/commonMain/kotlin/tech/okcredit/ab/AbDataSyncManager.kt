@@ -9,9 +9,12 @@ typealias ExperimentSyncer = OneTimeDataSyncer
 
 @Inject
 class AbDataSyncManager(
-    private val profileSyncer: ProfileSyncer,
-    private val experimentSyncer: ExperimentSyncer,
+    private val profileSyncerLazy: Lazy<ProfileSyncer>,
+    private val experimentSyncerLazy: Lazy<ExperimentSyncer>,
 ) {
+
+    private val profileSyncer by lazy { profileSyncerLazy.value }
+    private val experimentSyncer by lazy { experimentSyncerLazy.value }
 
     companion object {
         const val BUSINESS_ID = "business_id"
@@ -46,6 +49,15 @@ class AbDataSyncManager(
                 EXPERIMENT_VARIANT to variant,
                 EXPERIMENT_TIME to time,
                 BUSINESS_ID to businessId,
+            ).toJsonObject(),
+        )
+    }
+
+    suspend fun executeProfileSync(businessId: String, source: String? = null) {
+        profileSyncer.execute(
+            mapOf(
+                BUSINESS_ID to businessId,
+                SOURCE to (source ?: "unknown"),
             ).toJsonObject(),
         )
     }

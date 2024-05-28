@@ -21,6 +21,9 @@ kotlin {
             implementation(project(":platform:okdoc"))
             implementation(project(":platform:design_system"))
 
+            implementation(project(":features:ledger:contract"))
+            implementation(project(":features:ledger:core"))
+
             implementation(compose.ui)
             implementation(compose.foundation)
             implementation(compose.material)

@@ -1,17 +1,16 @@
 package app.okcredit.merchant.usecase
 
+import app.okcredit.ledger.core.syncer.LedgerSyncManager
 import kotlinx.coroutines.flow.firstOrNull
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.syncer.toJsonObject
-import tech.okcredit.ab.AbRepository
-import tech.okcredit.ab.ProfileSyncer
+import tech.okcredit.ab.AbDataSyncManager
 import tech.okcredit.identity.contract.usecase.GetIndividual
 
 @Inject
 class LoginDataSyncer(
     private val getIndividual: GetIndividual,
-    private val abRepository: AbRepository,
-    private val profileSyncer: ProfileSyncer,
+    private val abDataSyncManager: AbDataSyncManager,
+    private val ledgerSyncManager: LedgerSyncManager,
 ) {
 
     suspend fun execute() {
@@ -22,6 +21,9 @@ class LoginDataSyncer(
     }
 
     private suspend fun syncDataForBusiness(businessId: String) {
-        profileSyncer.execute(mapOf("businessId" to businessId).toJsonObject())
+        abDataSyncManager.executeProfileSync(businessId, "LoginDataSyncer")
+        ledgerSyncManager.executeCustomerSync(businessId, "LoginDataSyncer")
+        ledgerSyncManager.executeSupplierSync(businessId, "LoginDataSyncer")
+        ledgerSyncManager.executeCustomerTransactionSync(businessId, "LoginDataSyncer")
     }
 }

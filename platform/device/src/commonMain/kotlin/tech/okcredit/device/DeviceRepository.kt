@@ -13,20 +13,26 @@ import tech.okcredit.device.remote.DeviceRemoteSource
 import tech.okcredit.device.usecase.GetOrCreateDeviceId
 
 @Inject
-class DeviceRepository constructor(
-    private val deviceLocalSource: DeviceLocalSource,
-    private val deviceRemoteSource: DeviceRemoteSource,
-    private val deviceSyncer: DeviceSyncer,
+class DeviceRepository(
     private val versionCode: AppVersionCode,
-    private val deviceIdProvider: GetOrCreateDeviceId,
+    private val deviceLocalSourceLazy: Lazy<DeviceLocalSource>,
+    private val deviceRemoteSourceLazy: Lazy<DeviceRemoteSource>,
+    private val deviceSyncerLazy: Lazy<DeviceSyncer>,
+    private val deviceIdProviderLazy: Lazy<GetOrCreateDeviceId>,
 ) {
+
+    private val deviceLocalSource by lazy { deviceLocalSourceLazy.value }
+    private val deviceRemoteSource by lazy { deviceRemoteSourceLazy.value }
+    private val deviceSyncer by lazy { deviceSyncerLazy.value }
+    private val deviceIdProvider by lazy { deviceIdProviderLazy.value }
+
 
     private val isReady = MutableStateFlow(false)
     private val mutex = Mutex()
 
     private var deviceInMemoryCache: Device? = null
 
-    val isDeviceReady by lazy { isReady.asStateFlow() }
+    private val isDeviceReady by lazy { isReady.asStateFlow() }
 
     suspend fun getIpRegion(): String {
         return runCatching {

@@ -15,9 +15,12 @@ import tech.okcredit.auth.remote.model.request.WhatsAppCodeRequest
 @Singleton
 @Inject
 class AuthServiceImpl(
-    private val authLocalSource: AuthLocalSource,
-    private val authRemoteSource: AuthRemoteSource,
+    private val authLocalSourceLazy: Lazy<AuthLocalSource>,
+    private val authRemoteSourceLazy: Lazy<AuthRemoteSource>,
 ) : AuthService {
+
+    private val authLocalSource by lazy { authLocalSourceLazy.value }
+    private val authRemoteSource by lazy { authRemoteSourceLazy.value }
 
     override suspend fun getCurrentMobileOtpToken(): String? {
         return authLocalSource.getCurrentMobileOtpToken()

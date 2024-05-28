@@ -21,7 +21,7 @@ spotless {
                     "ktlint_standard_trailing-comma-on-declaration-site" to "disabled",
                     "ktlint_standard_trailing-comma-on-call-site" to "disabled",
                     "ktlint_standard_filename" to "disabled",
-                    "ktlint_function_naming_ignore_when_annotated_with" to "Composable, Test"
+                    "ktlint_function_naming_ignore_when_annotated_with" to "Composable, Test",
                 )
             )
     }

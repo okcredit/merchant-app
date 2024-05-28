@@ -4,20 +4,21 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import me.tatarka.inject.annotations.Inject
-import tech.okcredit.ab.AbRepository
+import okcredit.base.syncer.toJsonObject
+import tech.okcredit.ab.AbDataSyncManager
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 @Inject
 class HomeDataSyncer(
     private val getActiveBusinessId: GetActiveBusinessId,
-    private val abRepository: AbRepository,
+    private val abDataSyncManager: AbDataSyncManager,
 ) {
 
     suspend fun execute() {
         coroutineScope {
             val businessId = getActiveBusinessId.execute()
             listOf(
-                async { abRepository.scheduleSync(businessId, "home") },
+                async { abDataSyncManager.scheduleProfileSync(businessId, "HomeDataSyncer") },
             ).awaitAll()
         }
     }

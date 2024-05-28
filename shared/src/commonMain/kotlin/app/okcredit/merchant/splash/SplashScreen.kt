@@ -43,7 +43,7 @@ class SplashScreen : Screen {
             }
 
             SplashContract.ViewEvent.MoveToLogin -> {
-                //navigator.replaceAll(ScreenRegistry.get(OnboardingScreenRegistry.Login))
+                // navigator.replaceAll(ScreenRegistry.get(OnboardingScreenRegistry.Login))
             }
         }
     }

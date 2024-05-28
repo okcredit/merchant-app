@@ -2,6 +2,8 @@ plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
     id("okcredit.compose")
+
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -30,6 +32,8 @@ kotlin {
             api(libs.kotlininject.runtime)
 
             api(libs.voyager.navigator)
+
+            implementation(libs.bundles.sqldelight.common)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

@@ -7,7 +7,9 @@ import tech.okcredit.device.IpAddressData
 import tech.okcredit.device.remote.request.CreateOrUpdateDeviceRequest
 
 @Inject
-class DeviceRemoteSource constructor(private val deviceApiClient: DeviceApiClient) {
+class DeviceRemoteSource(private val deviceApiClientLazy: Lazy<DeviceApiClient>) {
+
+    private val deviceApiClient: DeviceApiClient by lazy { deviceApiClientLazy.value }
 
     suspend fun createOrUpdateDevice(device: Device) {
         val response = deviceApiClient

@@ -1,0 +1,247 @@
+import app.okcredit.ledger.contract.model.CustomerStatus;
+import app.okcredit.ledger.contract.model.AccountType;
+import kotlin.Boolean;
+import okcredit.base.units.Paisa;
+import okcredit.base.units.Timestamp;
+
+CREATE TABLE Account (
+    id TEXT NOT NULL UNIQUE PRIMARY KEY ,
+    businessId TEXT NOT NULL,
+    type TEXT AS AccountType NOT NULL,
+    status TEXT AS CustomerStatus NOT NULL,
+    name TEXT NOT NULL,
+    mobile TEXT,
+    profileImage TEXT,
+    gstNumber TEXT,
+    accountUrl TEXT,
+    registered INTEGER AS Boolean NOT NULL DEFAULT 0,
+    createdAt INTEGER AS Timestamp NOT NULL,
+    updatedAt INTEGER AS Timestamp NOT NULL
+);
+
+CREATE TABLE CustomerSettings (
+    customerId TEXT NOT NULL UNIQUE PRIMARY KEY ,
+    txnAlertEnabled INTEGER AS Boolean NOT NULL DEFAULT 0,
+    restrictContactSync INTEGER AS Boolean NOT NULL DEFAULT 0,
+    blockedByCustomer INTEGER AS Boolean NOT NULL DEFAULT 0,
+    addTransactionRestricted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    reminderMode TEXT,
+    language TEXT
+);
+
+
+CREATE TABLE CustomerSummary (
+    customerId TEXT NOT NULL UNIQUE PRIMARY KEY,
+    balance INTEGER AS Paisa NOT NULL,
+    lastActivity INTEGER AS Timestamp NOT NULL,
+    lastPayment INTEGER AS Timestamp,
+    lastActivityMetaInfo INTEGER NOT NULL DEFAULT 4,
+    lastAmount INTEGER AS Paisa,
+    lastReminderSendTime INTEGER AS Timestamp,
+    transactionCount INTEGER NOT NULL,
+    updatedAt INTEGER AS Timestamp
+);
+
+CREATE TABLE SupplierSettings (
+    supplierId TEXT NOT NULL UNIQUE PRIMARY KEY ,
+    txnAlertEnabled INTEGER AS Boolean NOT NULL DEFAULT 0,
+    blockedBySupplier INTEGER AS Boolean NOT NULL DEFAULT 0,
+    addTransactionRestricted INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+
+CREATE TABLE SupplierSummary (
+    supplierId TEXT NOT NULL UNIQUE PRIMARY KEY,
+    balance INTEGER AS Paisa NOT NULL,
+    lastActivity INTEGER AS Timestamp NOT NULL,
+    lastActivityMetaInfo INTEGER NOT NULL DEFAULT 4,
+    lastAmount INTEGER AS Paisa,
+    transactionCount INTEGER NOT NULL,
+    updatedAt INTEGER AS Timestamp
+);
+
+allAccountsByName:
+SELECT *
+FROM Account AS a
+INNER JOIN CustomerSettings AS s ON a.id = s.customerId
+INNER JOIN CustomerSummary AS c ON a.id = c.customerId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY a.name ASC LIMIT :limit OFFSET :offset;
+
+allAccountsByBalanceDue:
+SELECT *
+FROM Account AS a
+INNER JOIN CustomerSettings AS s ON a.id = s.customerId
+INNER JOIN CustomerSummary AS c ON a.id = c.customerId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY c.balance ASC LIMIT :limit OFFSET :offset;
+
+allAccountsByLastActivity:
+SELECT *
+FROM Account AS a
+INNER JOIN CustomerSettings AS s ON a.id = s.customerId
+INNER JOIN CustomerSummary AS c ON a.id = c.customerId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY c.lastActivity DESC LIMIT :limit OFFSET :offset;
+
+allAccountsByLastPayment:
+SELECT *
+FROM Account AS a
+INNER JOIN CustomerSettings AS s ON a.id = s.customerId
+INNER JOIN CustomerSummary AS c ON a.id = c.customerId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY c.lastPayment DESC LIMIT :limit OFFSET :offset;
+
+allSuppliersByName:
+SELECT *
+FROM Account AS a
+INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
+INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY a.name ASC LIMIT :limit OFFSET :offset;
+
+allSuppliersByBalanceDue:
+SELECT *
+FROM Account AS a
+INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
+INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY c.balance ASC LIMIT :limit OFFSET :offset;
+
+allSuppliersByLastActivity:
+SELECT *
+FROM Account AS a
+INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
+INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
+WHERE a.type = :accountType AND a.businessId = :businessId
+ORDER BY c.lastActivity DESC LIMIT :limit OFFSET :offset;
+
+insertOrReplaceAccount:
+INSERT OR REPLACE
+INTO Account(id, businessId, type, status, name, mobile, profileImage, gstNumber, accountUrl, registered, createdAt, updatedAt)
+VALUES ?;
+
+insertOrReplaceCustomerSettings:
+INSERT OR REPLACE
+INTO CustomerSettings(customerId, txnAlertEnabled, restrictContactSync, blockedByCustomer, addTransactionRestricted, reminderMode, language)
+VALUES ?;
+
+insertOrIgnoreCustomerSummary:
+INSERT OR IGNORE
+INTO CustomerSummary(customerId, balance, lastActivity, lastPayment, lastActivityMetaInfo, lastAmount, lastReminderSendTime, transactionCount, updatedAt)
+VALUES ?;
+
+insertOrReplaceSupplierSettings:
+INSERT OR REPLACE
+INTO SupplierSettings(supplierId, txnAlertEnabled, blockedBySupplier, addTransactionRestricted)
+VALUES ?;
+
+insertOrReplaceSupplierSummary:
+INSERT OR REPLACE
+INTO SupplierSummary(supplierId, balance, lastActivity, lastActivityMetaInfo, lastAmount, transactionCount, updatedAt)
+VALUES ?;
+
+accountById:
+SELECT *
+FROM Account AS a
+WHERE a.id = :accountId;
+
+customerSummaryById:
+SELECT *
+FROM CustomerSummary
+WHERE customerId = :customerId;
+
+customerSettingsById:
+SELECT *
+FROM CustomerSettings
+WHERE customerId = :customerId;
+
+accountIdByMobile:
+SELECT id
+FROM Account
+WHERE mobile = :mobile AND businessId = :businessId AND type = :accountType;
+
+updateAccountStatus:
+UPDATE Account
+SET status = :status
+WHERE id = :accountId;
+
+supplierSummaryById:
+SELECT *
+FROM SupplierSummary
+WHERE supplierId = :supplierId;
+
+supplierSettingsById:
+SELECT *
+FROM SupplierSettings
+WHERE supplierId = :supplierId;
+
+updateCustomerSummaryForTxnCreated:
+UPDATE CustomerSummary
+SET balance = CASE WHEN :type == 1 THEN balance - :amount ELSE balance + :amount END,
+    lastActivity = :createdAt,
+    lastAmount = :amount,
+    lastActivityMetaInfo = CASE WHEN :type == 1 THEN 2 WHEN :state == 0 THEN 5 WHEN :category==1 THEN 7 ELSE 3 END,
+    transactionCount = transactionCount + 1,
+    lastPayment = CASE WHEN :type == 1 THEN lastPayment ELSE :createdAt END,
+    updatedAt = :createdAt
+WHERE customerId = :customerId;
+
+updateSupplierSummaryForTxnCreated:
+UPDATE SupplierSummary
+SET balance = CASE WHEN :type == 1 THEN balance + :amount ELSE balance - :amount END,
+    lastActivity = :createdAt,
+    lastAmount = :amount,
+    lastActivityMetaInfo = CASE WHEN :type == 1 THEN 2 WHEN :state == 0 THEN 5 WHEN :category==1 THEN 7 ELSE 3 END,
+    transactionCount = transactionCount + 1,
+    updatedAt = :createdAt
+WHERE supplierId = :supplierId;
+
+updateCustomerSummaryForTxnDeleted:
+UPDATE CustomerSummary SET
+    balance = CASE WHEN :type == 1 THEN (balance + :amount) ELSE (balance - :amount) END,
+    lastActivity = :deleteTime,
+    lastActivityMetaInfo = CASE WHEN :category == 1 THEN 6 ELSE (CASE WHEN :type == 1 THEN 0 ELSE 1 END) END,
+    lastAmount = :amount,
+    transactionCount = transactionCount - 1
+WHERE customerId = :customerId;
+
+updateSupplierSummaryForTxnDeleted:
+UPDATE SupplierSummary SET
+    balance = CASE WHEN :type == 1 THEN (balance - :amount) ELSE (balance + :amount) END,
+    lastActivity = :deleteTime,
+    lastActivityMetaInfo = CASE WHEN :category == 1 THEN 6 ELSE (CASE WHEN :type == 1 THEN 0 ELSE 1 END) END,
+    lastAmount = :amount,
+    transactionCount = transactionCount - 1
+WHERE supplierId = :supplierId;
+
+updateCustomerSummaryForTxnAmountUpdated:
+UPDATE CustomerSummary SET
+    balance = CASE WHEN :type == 1 THEN (balance - :existingAmount) + :newAmount   ELSE (balance + :existingAmount) - :newAmount END,
+    lastActivity = :amountUpdatedAt,
+    lastActivityMetaInfo = CASE WHEN :type == 1 THEN 8 ELSE 9 END,
+    lastAmount = :newAmount
+WHERE customerId = :customerId;
+
+updateSupplierSummaryForTxnAmountUpdated:
+UPDATE SupplierSummary SET
+    balance = CASE WHEN :type == 1 THEN (balance - :existingAmount) + :newAmount   ELSE (balance + :existingAmount) - :newAmount END,
+    lastActivity = :amountUpdatedAt,
+    lastActivityMetaInfo = CASE WHEN :type == 1 THEN 8 ELSE 9 END,
+    lastAmount = :newAmount
+WHERE supplierId = :supplierId;
+
+deleteAllCustomers:
+DELETE
+FROM Account
+WHERE type = :accountType AND businessId = :businessId;
+
+updateCustomerSummary:
+UPDATE CustomerSummary
+SET balance = :balance,
+    lastActivity = :lastActivity,
+    lastPayment = :lastPayment,
+    lastActivityMetaInfo = :lastActivityMetaInfo,
+    lastAmount = :lastAmount,
+    transactionCount = :transactionCount
+WHERE customerId = :customerId;

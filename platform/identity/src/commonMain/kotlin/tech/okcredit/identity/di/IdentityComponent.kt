@@ -15,7 +15,7 @@ import tech.okcredit.identity.usecase.*
 interface IdentityComponent {
 
     @Provides
-    fun identityApiClient(ktorfit: Ktorfit): IdentityApiClient = ktorfit.create()
+    fun identityApiClient(ktorfit: Lazy<Ktorfit>): IdentityApiClient = ktorfit.value.create()
 
     @Provides
     fun identityDatabase(driverFactory: IdentityDriverFactory): IdentityDatabaseQueries {

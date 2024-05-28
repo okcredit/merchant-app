@@ -20,19 +20,22 @@ import tech.okcredit.auth.remote.CookieProvider
 @Inject
 @Singleton
 class AuthClientConfig(
-    private val cookieProvider: () -> CookieProvider,
-    private val localSource: () -> AuthLocalSource,
+    cookieProviderLazy: Lazy<CookieProvider>,
+    localSourceLazy: Lazy<AuthLocalSource>,
 ) : ClientConfig {
+
+    private val localSource by lazy { localSourceLazy.value }
+    private val cookieProvider by lazy { cookieProviderLazy.value }
 
     override val config: HttpClientConfig<*>.() -> Unit
         get() = {
             install(Auth) {
                 cookie {
                     loadTokens {
-                        localSource.invoke().getGrant().takeIf { it.isValid() }?.accessToken
+                        localSource.getGrant().takeIf { it.isValid() }?.accessToken
                     }
                     refreshTokens {
-                        cookieProvider.invoke().current(true)
+                        cookieProvider.current(true)
                     }
                 }
             }

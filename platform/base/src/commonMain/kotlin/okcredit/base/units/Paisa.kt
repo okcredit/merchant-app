@@ -1,7 +1,9 @@
 package okcredit.base.units
 
+import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
+@Serializable
 @JvmInline
 value class Paisa(val value: Long) {
     operator fun plus(other: Paisa) = Paisa(value + other.value)

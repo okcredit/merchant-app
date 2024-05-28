@@ -19,12 +19,11 @@ class SyncScreenModel(private val loginDataSyncer: LoginDataSyncer) :
 
     private fun loadAuthState() = wrap {
         loginDataSyncer.execute()
-    }
-        .onEach {
-            if (it is Result.Success) {
-                emitViewEvent(ViewEvent.GoToHome)
-            }
-        }.dropAll()
+    }.onEach {
+        if (it is Result.Success) {
+            emitViewEvent(ViewEvent.GoToHome)
+        }
+    }.dropAll()
 
     override fun reduce(currentState: State, partialState: PartialState): State {
         return currentState

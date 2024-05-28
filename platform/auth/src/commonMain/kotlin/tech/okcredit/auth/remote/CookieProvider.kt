@@ -13,9 +13,12 @@ import tech.okcredit.auth.usecases.CookieHelper
 @Inject
 class CookieProvider(
     private val authLocalSource: AuthLocalSource,
-    private val authApiClient: () -> AuthApiClient,
-    private val cookieHelper: CookieHelper,
+    private val authApiClientLazy: Lazy<AuthApiClient>,
+    private val cookieHelperLazy: Lazy<CookieHelper>,
 ) {
+
+    private val authApiClient by lazy { authApiClientLazy.value }
+    private val cookieHelper by lazy { cookieHelperLazy.value }
 
     companion object {
         const val RESPONSE_CODE_INVALID_GRANT = 400
@@ -34,7 +37,7 @@ class CookieProvider(
         val flowId = randomUUID()
 
         // if not valid, refresh token
-        val res = authApiClient.invoke().authenticate(
+        val res = authApiClient.authenticate(
             req = AuthenticateRequest(
                 grant_type = GRANT_TYPE_REFRESH_TOKEN,
                 refresh_token = grant.refreshToken,

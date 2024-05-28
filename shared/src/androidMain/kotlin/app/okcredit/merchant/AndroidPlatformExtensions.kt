@@ -3,8 +3,6 @@ package app.okcredit.merchant
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import app.okcredit.merchant.DEFAULT_WHITELISTED_DOMAINS
-import app.okcredit.merchant.PlatformExtensions
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.desc.Resource
 import dev.icerock.moko.resources.desc.StringDesc

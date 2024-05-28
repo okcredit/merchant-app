@@ -12,10 +12,14 @@ import tech.okcredit.auth.usecases.CookieHelper
 
 @Inject
 class AuthRemoteSource(
-    private val authApiClient: AuthApiClient,
-    private val protectedAuthApiClient: Protected,
-    private val cookieHelper: CookieHelper,
+    private val authApiClientLazy: Lazy<AuthApiClient>,
+    private val protectedAuthApiClientLazy: Lazy<Protected>,
+    private val cookieHelperLazy: Lazy<CookieHelper>,
 ) {
+
+    private val authApiClient by lazy { authApiClientLazy.value }
+    private val protectedAuthApiClient by lazy { protectedAuthApiClientLazy.value }
+    private val cookieHelper by lazy { cookieHelperLazy.value }
 
     companion object {
         internal const val LATEST_SERVER_AUTH_VERSION = 3

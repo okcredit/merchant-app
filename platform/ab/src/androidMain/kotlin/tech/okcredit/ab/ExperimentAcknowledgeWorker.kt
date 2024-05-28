@@ -13,7 +13,7 @@ import tech.okcredit.ab.AbDataSyncManager.Companion.EXPERIMENT_STATUS
 import tech.okcredit.ab.AbDataSyncManager.Companion.EXPERIMENT_TIME
 import tech.okcredit.ab.AbDataSyncManager.Companion.EXPERIMENT_VARIANT
 
-class ExperimentAcknowledgeWorker constructor(
+class ExperimentAcknowledgeWorker(
     context: Context,
     params: WorkerParameters,
     private val ab: AbRepositoryImpl,
@@ -36,7 +36,7 @@ class ExperimentAcknowledgeWorker constructor(
     }
 
     @Inject
-    class Factory constructor(
+    class Factory(
         private val ab: AbRepositoryImpl,
     ) : ChildWorkerFactory {
         override fun create(context: Context, params: WorkerParameters): ListenableWorker {

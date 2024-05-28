@@ -12,13 +12,7 @@ interface AbRepository {
 
     suspend fun clearLocalData()
 
-    suspend fun getProfile(businessId: String): Profile
-
     fun getVariantConfigurations(name: String, businessId: String): Flow<Map<String, String>>
-
-    suspend fun sync(businessId: String, sourceType: String)
-
-    fun scheduleSync(businessId: String, sourceType: String)
 
     suspend fun disableFeature(vararg feature: String, businessId: String)
 

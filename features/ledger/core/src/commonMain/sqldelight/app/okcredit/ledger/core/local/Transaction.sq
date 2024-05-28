@@ -1,0 +1,160 @@
+import app.okcredit.ledger.contract.model.AccountType;
+import app.okcredit.ledger.contract.model.Transaction;
+import app.okcredit.ledger.contract.model.Transaction.Type;
+import app.okcredit.ledger.core.local.CommandType;
+import kotlin.Boolean;
+import kotlin.Int;
+import okcredit.base.units.Paisa;
+import okcredit.base.units.Timestamp;
+
+CREATE TABLE `Transaction` (
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    accountId TEXT NOT NULL,
+    accountType TEXT AS AccountType NOT NULL,
+    businessId TEXT NOT NULL,
+    amount INTEGER AS Paisa NOT NULL,
+    note TEXT,
+    type TEXT AS Transaction.Type NOT NULL,
+    billDate INTEGER AS Timestamp NOT NULL,
+    state INTEGER AS Transaction.State NOT NULL,
+    category INTEGER AS Transaction.Category NOT NULL,
+    deleted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    deleteTime INTEGER AS Timestamp,
+    amountUpdated INTEGER AS Boolean NOT NULL DEFAULT 0,
+    amountUpdatedTime INTEGER AS Timestamp,
+
+    createdByCustomer INTEGER AS Boolean NOT NULL DEFAULT 0,
+    deletedByCustomer INTEGER AS Boolean NOT NULL DEFAULT 0,
+    dirty INTEGER AS Boolean NOT NULL DEFAULT 0,
+
+    referenceId TEXT,
+    referenceSource INTEGER AS Int,
+
+    createdAt INTEGER AS Timestamp NOT NULL,
+    updatedAt INTEGER AS Timestamp NOT NULL
+);
+
+CREATE TABLE TransactionCommand (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    commandId TEXT UNIQUE NOT NULL,
+    data TEXT NOT NULL,
+    transactionId TEXT NOT NULL,
+    businessId TEXT NOT NULL,
+    accountType TEXT AS AccountType NOT NULL,
+    commandType TEXT AS CommandType NOT NULL
+);
+
+summaryForCustomer:
+SELECT
+    `Transaction`.accountId AS accountId,
+    agg.balance AS balance,
+    agg.transactionCount AS transactionCount,
+    agg.lastActivity AS lastActivity,
+    agg.lastPayment AS lastPayment,
+    `Transaction`.amount AS lastAmount,
+    CASE WHEN `Transaction`.deleted == 1 THEN (CASE WHEN type == 1 THEN 0 WHEN category == 1 THEN 6 ELSE 1 END) WHEN amountUpdated == 1 THEN (CASE WHEN type == 1 THEN 8 ELSE 9 END) WHEN type == 1 THEN 2 WHEN category == 1 THEN 7 ELSE 3 END lastActivityMetaInfo
+FROM `Transaction`
+    LEFT JOIN (
+    SELECT
+        accountId,
+        SUM(CASE WHEN deleted == 1 THEN 0 WHEN state == 0 THEN 0 WHEN type == 1 THEN -1 * amount ELSE amount END) AS balance,
+        SUM(CASE WHEN deleted == 1 THEN 0 ELSE 1 END) AS transactionCount,
+        MAX(CASE WHEN deleted == 1 THEN deleteTime WHEN amountUpdated >= createdAt THEN amountUpdated ELSE createdAt END) AS lastActivity,
+        MAX(CASE WHEN deleted == 1 THEN 0 WHEN type == 1 THEN 0 ELSE createdAt END) AS lastPayment
+    FROM `Transaction`
+    WHERE accountId = :accountId
+    GROUP BY accountId
+) AS agg ON `Transaction`.accountId = agg.accountId
+WHERE `Transaction`.accountId = :accountId AND ((`Transaction`.deleteTime == agg.lastActivity) OR (`Transaction`.createdAt == agg.lastActivity) OR (`Transaction`.amountUpdatedTime == agg.lastActivity));
+
+insertTransaction:
+INSERT INTO `Transaction` (
+    id,
+    accountId,
+    accountType,
+    businessId,
+    amount,
+    note,
+    type,
+    billDate,
+    state,
+    category,
+    deleted,
+    deleteTime,
+    amountUpdated,
+    amountUpdatedTime,
+    createdByCustomer,
+    deletedByCustomer,
+    dirty,
+    referenceId,
+    referenceSource,
+    createdAt,
+    updatedAt
+) VALUES ?;
+
+updateTransactionAmount:
+UPDATE `Transaction`
+SET amount = ?, amountUpdated = 1, amountUpdatedTime = ?, dirty = 1
+WHERE id = ?;
+
+updateTransactionNote:
+UPDATE `Transaction`
+SET note = ?, dirty = 1
+WHERE id = ?;
+
+insertTransactionCommand:
+INSERT INTO TransactionCommand (
+    commandId,
+    transactionId,
+    data,
+    businessId,
+    accountType,
+    commandType
+) VALUES (?,?,?,?,?,?);
+
+markTransactionDeleted:
+UPDATE `Transaction`
+SET deleted = 1, deleteTime = ?, dirty = 1
+WHERE id = ?;
+
+transactionById:
+SELECT *
+FROM `Transaction`
+WHERE id = ?;
+
+transactionsForAccount:
+SELECT *
+FROM `Transaction`
+WHERE accountId = ?;
+
+transactionCommands:
+SELECT *
+FROM TransactionCommand
+WHERE businessId = ?
+LIMIT ?;
+
+deleteTransactionCommand:
+DELETE FROM TransactionCommand
+WHERE commandId = ?;
+
+markTransactionSynced:
+UPDATE `Transaction`
+SET dirty = 0
+WHERE id = ?;
+
+markTransactionDirty:
+UPDATE `Transaction`
+SET dirty = 1
+WHERE id = ?;
+
+commandExistForTransaction:
+SELECT EXISTS(
+    SELECT 1
+    FROM TransactionCommand
+    WHERE transactionId = ?
+);
+
+maxUpdatedAt:
+SELECT MAX(updatedAt)
+FROM `Transaction`
+WHERE businessId = ?;

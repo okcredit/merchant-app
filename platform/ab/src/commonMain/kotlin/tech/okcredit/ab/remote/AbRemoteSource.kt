@@ -6,15 +6,17 @@ import tech.okcredit.ab.Profile
 
 @Inject
 class AbRemoteSource(
-    private val abApiClient: Lazy<AbApiClient>,
+    private val abApiClientLazy: Lazy<AbApiClient>,
 ) {
+
+    private val abApiClient by lazy { abApiClientLazy.value }
 
     suspend fun getProfile(
         deviceId: String,
         sourceType: String,
         businessId: String,
     ): Profile {
-        val response = abApiClient.value.getProfile(
+        val response = abApiClient.getProfile(
             deviceId = deviceId,
             source = "sync",
             sourceType = sourceType,
@@ -35,9 +37,9 @@ class AbRemoteSource(
         acknowledgeTime: Long,
         businessId: String,
     ) {
-        abApiClient.value.acknowledge(
+        abApiClient.acknowledge(
             req = AcknowledgementRequest(
-                device_id = deviceId,
+                deviceId = deviceId,
                 type = experimentStatus,
                 time = acknowledgeTime,
                 experiments = listOf(Experiment(experimentName, 0, experimentVariant, mapOf())),
@@ -52,7 +54,7 @@ class AbRemoteSource(
         feature: String,
         businessId: String,
     ) {
-        abApiClient.value.disableFeature(
+        abApiClient.disableFeature(
             req = DisableFeatureRequest(
                 feature = feature,
                 merchantIds = listOf(businessId),
@@ -64,7 +66,7 @@ class AbRemoteSource(
     }
 
     suspend fun enableFeature(feature: String, businessId: String) {
-        abApiClient.value.enableFeature(
+        abApiClient.enableFeature(
             req = EnableFeatureRequest(
                 feature = feature,
                 merchantIds = listOf(businessId),

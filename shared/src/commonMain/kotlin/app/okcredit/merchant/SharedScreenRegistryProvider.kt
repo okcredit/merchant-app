@@ -26,6 +26,5 @@ class SharedScreenRegistryProvider(
         register<SharedScreenRegistry.SyncData> {
             syncScreen.invoke()
         }
-
     }
 }

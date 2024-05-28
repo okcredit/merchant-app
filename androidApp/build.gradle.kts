@@ -124,7 +124,10 @@ dependencies {
     implementation(project(":platform:identity:contract"))
     implementation(project(":platform:okdoc"))
 
+
     implementation(project(":shared"))
+    implementation(project(":features:ledger:contract"))
+    implementation(project(":features:ledger:core"))
 
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)

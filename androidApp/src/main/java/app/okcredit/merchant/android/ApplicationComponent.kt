@@ -1,6 +1,8 @@
 package app.okcredit.merchant.android
 
 import android.content.Context
+import app.okcredit.ledger.contract.Ledger
+import app.okcredit.ledger.core.di.AndroidLedgerComponent
 import app.okcredit.merchant.AndroidSharedModule
 import app.okcredit.merchant.SharedScreenRegistryProvider
 import com.mixpanel.android.mpmetrics.MixpanelAPI
@@ -39,7 +41,8 @@ abstract class ApplicationComponent(
     AndroidDeviceComponent,
     AndroidIdentityComponent,
     AndroidOkDocComponent,
-    AndroidSharedModule {
+    AndroidSharedModule,
+    AndroidLedgerComponent {
 
     abstract val appWorkerFactory: () -> AppWorkerFactory
 
@@ -48,6 +51,8 @@ abstract class ApplicationComponent(
     abstract val appScreenModelFactory: AppScreenModelFactory
 
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
+
+    abstract val ledger: Ledger
 
     @Singleton
     @Provides

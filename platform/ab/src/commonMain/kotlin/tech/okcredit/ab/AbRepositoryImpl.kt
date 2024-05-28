@@ -10,12 +10,17 @@ import tech.okcredit.ab.remote.AbRemoteSource
 
 @Inject
 @Singleton
-class AbRepositoryImpl constructor(
-    private val localSource: AbLocalSource,
-    private val remoteSource: AbRemoteSource,
-    private val deviceIdProvider: DeviceIdProvider,
-    private val abDataSyncManager: AbDataSyncManager,
+class AbRepositoryImpl(
+    private val localSourceLazy: Lazy<AbLocalSource>,
+    private val remoteSourceLazy: Lazy<AbRemoteSource>,
+    private val deviceIdProviderLazy: Lazy<DeviceIdProvider>,
+    private val abDataSyncManagerLazy: Lazy<AbDataSyncManager>,
 ) : AbRepository {
+
+    private val localSource by lazy { localSourceLazy.value }
+    private val remoteSource by lazy { remoteSourceLazy.value }
+    private val deviceIdProvider by lazy { deviceIdProviderLazy.value }
+    private val abDataSyncManager by lazy { abDataSyncManagerLazy.value }
 
     override suspend fun clearLocalData() = localSource.clearAll()
 
@@ -31,10 +36,6 @@ class AbRepositoryImpl constructor(
 
     override fun isExperimentEnabled(experiment: String, businessId: String): Flow<Boolean> {
         return localSource.isExperimentEnabled(experiment = experiment, businessId = businessId)
-    }
-
-    override suspend fun getProfile(businessId: String): Profile {
-        return localSource.getProfile(businessId).first()
     }
 
     override fun getExperimentVariant(name: String, businessId: String): Flow<String> =
@@ -65,7 +66,7 @@ class AbRepositoryImpl constructor(
         }
     }
 
-    override suspend fun sync(businessId: String, sourceType: String) {
+    suspend fun sync(businessId: String, sourceType: String) {
         val profile = remoteSource.getProfile(
             deviceId = deviceIdProvider.current(),
             sourceType = sourceType,
@@ -88,10 +89,6 @@ class AbRepositoryImpl constructor(
             time = time,
             businessId = businessId,
         )
-    }
-
-    override fun scheduleSync(businessId: String, sourceType: String) {
-        abDataSyncManager.scheduleProfileSync(businessId, sourceType)
     }
 
     override suspend fun disableFeature(vararg feature: String, businessId: String) {

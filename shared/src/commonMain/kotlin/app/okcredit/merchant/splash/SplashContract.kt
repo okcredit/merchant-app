@@ -15,7 +15,7 @@ interface SplashContract {
     sealed class Intent : UserIntent
 
     sealed class ViewEvent : BaseViewEvent {
-        object MoveToHome : ViewEvent()
-        object MoveToLogin : ViewEvent()
+        data object MoveToHome : ViewEvent()
+        data object MoveToLogin : ViewEvent()
     }
 }
