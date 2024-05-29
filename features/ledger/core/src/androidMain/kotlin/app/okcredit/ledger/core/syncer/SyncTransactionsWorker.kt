@@ -15,10 +15,12 @@ class SyncTransactionsWorker(
     context: Context,
     params: WorkerParameters,
     private val syncTransactions: SyncTransactions,
-) : BaseCoroutineWorker(context, params, WorkerConfig(label = "SyncTransactionCommand")) {
+) : BaseCoroutineWorker(context, params, WorkerConfig(label = "SyncTransactions")) {
 
     override suspend fun doActualWork() {
-        syncTransactions.execute(businessId = inputData.getString("businessId"))
+        syncTransactions.execute(
+            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID)
+        )
     }
 
     @Inject

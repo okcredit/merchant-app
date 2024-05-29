@@ -16,7 +16,9 @@ class SyncCustomersWorker(
 ) : BaseCoroutineWorker(context, params, WorkerConfig(label = "SyncTransactionCommand")) {
 
     override suspend fun doActualWork() {
-        syncCustomers.execute(businessId = inputData.getString("businessId"))
+        syncCustomers.execute(
+            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID)
+        )
     }
 
     @Inject

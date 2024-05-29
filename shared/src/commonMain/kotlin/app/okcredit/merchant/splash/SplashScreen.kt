@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import app.okcredit.onboarding.OnboardingScreenRegistry
 import app.okcredit.shared.contract.SharedScreenRegistry
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
@@ -43,7 +44,7 @@ class SplashScreen : Screen {
             }
 
             SplashContract.ViewEvent.MoveToLogin -> {
-                // navigator.replaceAll(ScreenRegistry.get(OnboardingScreenRegistry.Login))
+                navigator.replaceAll(ScreenRegistry.get(OnboardingScreenRegistry.Login))
             }
         }
     }

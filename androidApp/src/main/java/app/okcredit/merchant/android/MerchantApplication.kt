@@ -42,6 +42,7 @@ class MerchantApplication : Application(), Configuration.Provider {
         super.onCreate()
         ScreenRegistry {
             component.sharedScreenRegistryProvider.screenRegistry().invoke(this)
+            component.onboardingScreenRegistryProvider.screenRegistry().invoke(this)
         }
 
         component.appInitializers.forEach { it.init() }

@@ -15,7 +15,6 @@ import okcredit.base.di.Singleton
 import tech.okcredit.ab.IosAbComponent
 import tech.okcredit.analytics.di.AnalyticsComponent
 import tech.okcredit.auth.IosAuthComponent
-import tech.okcredit.collection.IosCollectionsComponent
 import tech.okcredit.device.IosDeviceComponent
 import tech.okcredit.identity.IosIdentityComponent
 import tech.okcredit.okdoc.IosOkDocComponent
@@ -35,7 +34,6 @@ abstract class ApplicationComponent(
     IosDeviceComponent,
     IosIdentityComponent,
     IosOkDocComponent,
-    IosCollectionsComponent,
     IosSharedModule,
     OnboardingModule {
 

@@ -44,3 +44,4 @@ include(":platform:design_system")
 
 include(":features:ledger:core")
 include(":features:ledger:contract")
+include(":features:auth_ui")

@@ -10,7 +10,7 @@ import okcredit.base.syncer.WorkerConfig
 import tech.okcredit.ab.AbDataSyncManager.Companion.BUSINESS_ID
 import tech.okcredit.ab.AbDataSyncManager.Companion.SOURCE
 
-class AbSyncWorker constructor(
+class AbSyncWorker(
     context: Context,
     params: WorkerParameters,
     private val ab: AbRepositoryImpl,

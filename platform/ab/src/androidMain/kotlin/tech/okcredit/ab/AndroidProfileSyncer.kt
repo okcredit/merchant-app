@@ -21,11 +21,11 @@ class AndroidProfileSyncer(
     }
 
     override suspend fun execute(input: JsonObject) {
-        val businessId = input["businessId"]?.toStringOrNull() ?: return
+        val businessId = input[AbDataSyncManager.BUSINESS_ID]?.toStringOrNull() ?: return
 
         abRepository.invoke().sync(
             businessId = businessId,
-            sourceType = (input["source"]?.toStringOrNull()) ?: "unknown",
+            sourceType = (input[AbDataSyncManager.SOURCE]?.toStringOrNull()) ?: "unknown",
         )
     }
 

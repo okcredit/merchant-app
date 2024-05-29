@@ -11,7 +11,7 @@ class AndroidCustomerSyncer(
 ) : CustomerSyncer {
 
     override suspend fun execute(input: JsonObject) {
-        val businessId = input["businessId"]?.toStringOrNull()
+        val businessId = input[LedgerSyncManager.BUSINESS_ID]?.toStringOrNull()
         syncCustomers.execute(businessId = businessId)
     }
 
