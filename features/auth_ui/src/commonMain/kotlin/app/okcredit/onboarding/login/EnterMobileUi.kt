@@ -33,7 +33,6 @@ import merchant_app.features.auth_ui.generated.resources.Res
 import merchant_app.features.auth_ui.generated.resources.ic_applogo_name
 import merchant_app.features.auth_ui.generated.resources.ic_mobile_fill
 import merchant_app.features.auth_ui.generated.resources.icon_phone
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

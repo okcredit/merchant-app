@@ -28,11 +28,11 @@ interface Ledger {
     ): Account
 
     suspend fun updateTransaction(
-        request: UpdateTransactionRequest
+        request: UpdateTransactionRequest,
     )
 
     suspend fun deleteTransaction(
-        transactionId: String
+        transactionId: String,
     )
 
     suspend fun deleteAccount(

@@ -257,6 +257,4 @@ class SupplierProjection(
             else -> listAllSuppliersByLastActivity(businessId, limit, offset)
         }
     }
-
-
 }

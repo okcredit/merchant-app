@@ -72,14 +72,14 @@ class GetCustomerTransactionsTest {
                 transactionSyncer = mock(MockMode.autoUnit),
                 customerSyncer = mock(MockMode.autoUnit),
                 supplierSyncer = mock(MockMode.autoUnit),
-            )
-        )
+            ),
+        ),
     )
 
     @BeforeTest
     fun setup() {
         getTransactionsForAccount = GetCustomerTransactionsImpl(
-            repository = customerRepository
+            repository = customerRepository,
         )
     }
 
@@ -139,7 +139,7 @@ class GetCustomerTransactionsTest {
             body = someCustomer("customer", "1234567890", null),
             rawResponse = mock<HttpResponse> {
                 every { status } returns HttpStatusCode.OK
-            }
+            },
         )
         return customerRepository.addCustomer(
             businessId = businessId,

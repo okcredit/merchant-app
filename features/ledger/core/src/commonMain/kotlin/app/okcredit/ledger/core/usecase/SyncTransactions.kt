@@ -53,7 +53,7 @@ class SyncTransactions(
 
     private suspend fun saveTransactionsIntoDatabase(
         transactions: List<ApiTransaction>,
-        businessId: String
+        businessId: String,
     ) {
         if (transactions.isEmpty()) return
 

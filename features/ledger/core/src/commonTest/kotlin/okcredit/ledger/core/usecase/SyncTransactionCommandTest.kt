@@ -6,7 +6,6 @@ import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.local.LedgerLocalSource
-import app.okcredit.ledger.core.models.CreateTransaction
 import app.okcredit.ledger.core.remote.LedgerApiClient
 import app.okcredit.ledger.core.remote.LedgerRemoteSource
 import app.okcredit.ledger.core.remote.models.OperationResponseForTransactions
@@ -34,7 +33,6 @@ import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class SyncTransactionCommandTest {
 
@@ -75,8 +73,8 @@ class SyncTransactionCommandTest {
                 transactionSyncer = mock(MockMode.autoUnit),
                 customerSyncer = mock(MockMode.autoUnit),
                 supplierSyncer = mock(MockMode.autoUnit),
-            )
-        )
+            ),
+        ),
     )
 
     @BeforeTest
@@ -97,7 +95,7 @@ class SyncTransactionCommandTest {
 
         val commands = ledgerLocalSource.getTransactionCommands(
             businessId = "business-id",
-            limit = SyncTransactionCommand.MAX_COMMANDS_TO_SYNC
+            limit = SyncTransactionCommand.MAX_COMMANDS_TO_SYNC,
         )
 
         everySuspend {
@@ -113,11 +111,11 @@ class SyncTransactionCommandTest {
                         id = command.id,
                         status = 1,
                     )
-                }
+                },
             ),
             rawResponse = mock<HttpResponse> {
                 every { status } returns HttpStatusCode.OK
-            }
+            },
         )
 
         syncTransactionCommand.execute()
@@ -141,7 +139,7 @@ class SyncTransactionCommandTest {
 
         val commands = ledgerLocalSource.getTransactionCommands(
             businessId = "business-id",
-            limit = SyncTransactionCommand.MAX_COMMANDS_TO_SYNC
+            limit = SyncTransactionCommand.MAX_COMMANDS_TO_SYNC,
         )
 
         everySuspend {
@@ -156,8 +154,8 @@ class SyncTransactionCommandTest {
                     body = Any(),
                     rawResponse = mock<HttpResponse> {
                         every { status } returns HttpStatusCode.InternalServerError
-                    }
-                )
+                    },
+                ),
             )
             returns(
                 Response.success(
@@ -167,12 +165,12 @@ class SyncTransactionCommandTest {
                                 id = command.id,
                                 status = 1,
                             )
-                        }
+                        },
                     ),
                     rawResponse = mock<HttpResponse> {
                         every { status } returns HttpStatusCode.OK
-                    }
-                )
+                    },
+                ),
             )
         }
 
@@ -211,7 +209,7 @@ class SyncTransactionCommandTest {
             body = someCustomer("customer", "1234567890", null),
             rawResponse = mock<HttpResponse> {
                 every { status } returns HttpStatusCode.OK
-            }
+            },
         )
         return customerRepository.addCustomer(
             businessId = businessId,

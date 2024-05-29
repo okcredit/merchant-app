@@ -27,7 +27,7 @@ class AddAccount(
     suspend fun execute(
         name: String,
         mobile: String?,
-        accountType: AccountType
+        accountType: AccountType,
     ): Account {
         if (name.isEmpty()) {
             throw InvalidNameError()

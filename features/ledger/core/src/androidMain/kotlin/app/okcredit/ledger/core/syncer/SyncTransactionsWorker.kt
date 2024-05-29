@@ -3,8 +3,6 @@ package app.okcredit.ledger.core.syncer
 import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
-import app.okcredit.ledger.core.CustomerRepository
-import app.okcredit.ledger.core.SupplierRepository
 import app.okcredit.ledger.core.usecase.SyncTransactions
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.syncer.BaseCoroutineWorker
@@ -19,7 +17,7 @@ class SyncTransactionsWorker(
 
     override suspend fun doActualWork() {
         syncTransactions.execute(
-            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID)
+            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID),
         )
     }
 

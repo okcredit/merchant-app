@@ -31,7 +31,7 @@ class LedgerImpl(
         billDate: Timestamp,
         transactionId: String,
         note: String?,
-        bills: List<String>
+        bills: List<String>,
     ): Transaction {
         return recordTransaction.execute(
             accountId = accountId,
@@ -41,34 +41,31 @@ class LedgerImpl(
             billDate = billDate,
             transactionId = transactionId,
             note = note,
-            bills = bills
+            bills = bills,
         )
     }
 
     override suspend fun updateTransaction(request: UpdateTransactionRequest) {
-
     }
 
     override suspend fun deleteTransaction(transactionId: String) {
-
     }
 
     override suspend fun deleteAccount(accountId: String, accountType: AccountType) {
         if (accountType == AccountType.CUSTOMER) {
             deleteCustomer.execute(accountId)
         }
-
     }
 
     override suspend fun addAccount(
         name: String,
         mobile: String?,
-        accountType: AccountType
+        accountType: AccountType,
     ): Account {
         return addAccount.execute(
             name = name,
             mobile = mobile,
-            accountType = accountType
+            accountType = accountType,
         )
     }
 }

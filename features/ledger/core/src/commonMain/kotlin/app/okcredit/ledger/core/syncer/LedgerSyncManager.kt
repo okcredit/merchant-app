@@ -19,7 +19,6 @@ class LedgerSyncManager(
         const val SOURCE = "source"
     }
 
-
     fun scheduleTransactionSync(businessId: String, source: String? = null) {
         transactionSyncer.schedule(
             mapOf(
@@ -73,5 +72,4 @@ class LedgerSyncManager(
             ).toJsonObject(),
         )
     }
-
 }

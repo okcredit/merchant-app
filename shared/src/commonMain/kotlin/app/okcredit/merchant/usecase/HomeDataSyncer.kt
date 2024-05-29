@@ -4,7 +4,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.syncer.toJsonObject
 import tech.okcredit.ab.AbDataSyncManager
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 

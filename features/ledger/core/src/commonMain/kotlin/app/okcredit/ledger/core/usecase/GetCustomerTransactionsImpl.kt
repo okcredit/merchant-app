@@ -15,8 +15,10 @@ class GetCustomerTransactionsImpl(
 
 ) : GetTransactionsForAccount {
     override fun execute(accountId: String, accountType: AccountType): Flow<List<Transaction>> {
-        return if (accountType.isCustomer()) repository.getTransactionsForCustomer(accountId)
-        else flowOf()
+        return if (accountType.isCustomer()) {
+            repository.getTransactionsForCustomer(accountId)
+        } else {
+            flowOf()
+        }
     }
-
 }

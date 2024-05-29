@@ -42,7 +42,6 @@ android {
     namespace = "app.okcredit.onboarding"
 }
 
-
 dependencies {
     add("kspCommonMainMetadata", libs.kotlininject.compiler)
     add("kspAndroid", libs.kotlininject.compiler)
@@ -50,4 +49,3 @@ dependencies {
     add("kspIosSimulatorArm64", libs.kotlininject.compiler)
     add("kspJvm", libs.kotlininject.compiler)
 }
-

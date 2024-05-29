@@ -76,8 +76,8 @@ class AddCustomerTransactionTest {
                     transactionSyncer = mock(MockMode.autoUnit),
                     customerSyncer = mock(MockMode.autoUnit),
                     supplierSyncer = mock(MockMode.autoUnit),
-                )
-            )
+                ),
+            ),
         )
     }
 
@@ -178,7 +178,6 @@ class AddCustomerTransactionTest {
         assertEquals(payment.createdAt, account2?.summary?.lastPayment)
         assertEquals(2000.paisa, account2?.summary?.lastAmount)
         assertEquals(2, account2?.summary?.lastActivityMetaInfo)
-
 
         val secondPayment = addCustomerTransaction.execute(
             transactionId = randomUUID(),

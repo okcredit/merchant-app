@@ -49,7 +49,7 @@ class SyncTransactionCommand(
 
     private suspend fun pushCommandsToServer(
         commands: List<TransactionCommand>,
-        businessId: String
+        businessId: String,
     ) {
         withRetry(
             times = 3,
@@ -57,7 +57,7 @@ class SyncTransactionCommand(
         ) {
             val response = remoteSource.syncTransactions(
                 request = SyncTransactionRequest(
-                    operations = commands.map { it.toApiTransactionCommand() }
+                    operations = commands.map { it.toApiTransactionCommand() },
                 ),
                 businessId = businessId,
                 flowId = randomUUID(),
@@ -88,7 +88,7 @@ fun TransactionCommand.toApiTransactionCommand(): ApiTransactionCommand {
                 path = apiCommandType.path,
                 transaction = getTransactionValue(this),
                 timestamp = this.createTime.epochMillis,
-                mask = apiCommandType.mask
+                mask = apiCommandType.mask,
             )
         }
 
@@ -100,7 +100,7 @@ fun TransactionCommand.toApiTransactionCommand(): ApiTransactionCommand {
                 path = apiCommandType.path,
                 transaction = getTransactionValue(this),
                 timestamp = this.createTime.epochMillis,
-                mask = apiCommandType.mask
+                mask = apiCommandType.mask,
             )
         }
 
@@ -112,7 +112,7 @@ fun TransactionCommand.toApiTransactionCommand(): ApiTransactionCommand {
                 path = apiCommandType.path,
                 transaction = getTransactionValue(this),
                 timestamp = this.createTime.epochMillis,
-                mask = apiCommandType.mask
+                mask = apiCommandType.mask,
             )
         }
 
@@ -124,7 +124,7 @@ fun TransactionCommand.toApiTransactionCommand(): ApiTransactionCommand {
                 path = apiCommandType.path,
                 transaction = getTransactionValue(this),
                 timestamp = this.createTime.epochMillis,
-                mask = apiCommandType.mask
+                mask = apiCommandType.mask,
             )
         }
     }
@@ -154,20 +154,20 @@ private fun getTransactionValue(command: TransactionCommand): ApiTransaction {
             transactionState = Transaction.State.CREATED.code,
             createTime = command.createTime.epochMillis,
             deleted = false,
-            txCategory = Transaction.Category.DEFAULT.code
+            txCategory = Transaction.Category.DEFAULT.code,
         )
 
         is UpdateTransactionNote -> ApiTransaction(
-            note = command.note
+            note = command.note,
         )
 
         is DeleteTransaction -> ApiTransaction(
             transactionState = Transaction.State.DELETED.code,
-            deleterRole = 1
+            deleterRole = 1,
         )
 
         is UpdateTransactionAmount -> ApiTransaction(
-            amount = command.amount.value
+            amount = command.amount.value,
         )
     }
 }

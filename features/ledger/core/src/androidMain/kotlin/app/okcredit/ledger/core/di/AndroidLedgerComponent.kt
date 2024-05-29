@@ -5,16 +5,16 @@ import app.okcredit.ledger.core.syncer.AndroidCustomerSyncer
 import app.okcredit.ledger.core.syncer.AndroidSupplierSyncer
 import app.okcredit.ledger.core.syncer.AndroidTransactionSyncer
 import app.okcredit.ledger.core.syncer.CustomerSyncer
-import app.okcredit.ledger.core.syncer.TransactionSyncer
 import app.okcredit.ledger.core.syncer.SupplierSyncer
 import app.okcredit.ledger.core.syncer.SyncCustomersWorker
 import app.okcredit.ledger.core.syncer.SyncTransactionsWorker
+import app.okcredit.ledger.core.syncer.TransactionSyncer
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.syncer.ChildWorkerFactory
 import kotlin.reflect.KClass
 
-interface AndroidLedgerComponent: LedgerComponent {
+interface AndroidLedgerComponent : LedgerComponent {
 
     @Provides
     fun AndroidLedgerDriverFactory.bind(): LedgerDriverFactory = this

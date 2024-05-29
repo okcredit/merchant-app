@@ -37,13 +37,18 @@ enum class ApiCommandType(val type: Type, val path: String, val mask: List<Strin
     UPDATE_TRANSACTION_AMOUNT(Type.UPDATE, Path.TRANSACTION.value, listOf("amount")),
     DELETE_TRANSACTION(Type.UPDATE, Path.TRANSACTION.value, listOf("transaction_state", "deleter_role")),
     CREATE_TRANSACTION_IMAGE(Type.ADD, Path.IMAGES.value, null),
-    DELETE_TRANSACTION_IMAGE(Type.DELETE, Path.IMAGES.value, null);
+    DELETE_TRANSACTION_IMAGE(Type.DELETE, Path.IMAGES.value, null),
+    ;
 
     enum class Type(val value: Int) {
-        UNKNOWN(0), ADD(1), UPDATE(2), DELETE(3)
+        UNKNOWN(0),
+        ADD(1),
+        UPDATE(2),
+        DELETE(3),
     }
 
     enum class Path(val value: String) {
-        TRANSACTION("/transactions"), IMAGES("/images")
+        TRANSACTION("/transactions"),
+        IMAGES("/images"),
     }
 }

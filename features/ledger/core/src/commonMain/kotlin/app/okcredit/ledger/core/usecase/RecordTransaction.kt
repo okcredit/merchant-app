@@ -34,7 +34,7 @@ class RecordTransaction(
         billDate: Timestamp,
         transactionId: String,
         note: String? = null,
-        bills: List<String> = emptyList()
+        bills: List<String> = emptyList(),
     ): Transaction {
         requireValidAmount(amount)
 
@@ -51,7 +51,7 @@ class RecordTransaction(
             billDate = billDate,
             bills = bills,
             accountType = accountType,
-            createTime = createTime
+            createTime = createTime,
         )
 
         val transaction = Transaction(
@@ -69,12 +69,12 @@ class RecordTransaction(
         ledgerLocalSource.addTransaction(
             businessId = businessId,
             command = command,
-            transaction = transaction
+            transaction = transaction,
         )
 
         ledgerSyncManager.scheduleTransactionSync(
             businessId = businessId,
-            source = "record_transaction"
+            source = "record_transaction",
         )
 
         return transaction

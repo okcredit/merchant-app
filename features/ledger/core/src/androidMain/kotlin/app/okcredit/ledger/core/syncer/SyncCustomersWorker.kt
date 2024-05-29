@@ -17,7 +17,7 @@ class SyncCustomersWorker(
 
     override suspend fun doActualWork() {
         syncCustomers.execute(
-            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID)
+            businessId = inputData.getString(LedgerSyncManager.BUSINESS_ID),
         )
     }
 

@@ -79,8 +79,8 @@ class DeleteCustomerTest {
                 transactionSyncer = mock(MockMode.autoUnit),
                 customerSyncer = mock(MockMode.autoUnit),
                 supplierSyncer = mock(MockMode.autoUnit),
-            )
-        )
+            ),
+        ),
     )
 
     @BeforeTest
@@ -142,7 +142,6 @@ class DeleteCustomerTest {
         }
     }
 
-
     private suspend fun addSomeTransaction(relationId: String): Transaction {
         return recordTransaction.execute(
             transactionId = randomUUID(),
@@ -166,7 +165,7 @@ class DeleteCustomerTest {
             body = someApiCustomer("customer", "1234567890", null),
             rawResponse = mock<HttpResponse> {
                 every { status } returns HttpStatusCode.OK
-            }
+            },
         )
         return customerRepository.addCustomer(
             businessId = businessId,

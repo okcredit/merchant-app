@@ -34,7 +34,7 @@ class CustomerRepository(
         businessId: String,
         sortBy: SortBy,
         limit: Int,
-        offset: Int
+        offset: Int,
     ): Flow<List<Customer>> {
         return localSource.listAllCustomers(
             businessId = businessId,
@@ -97,7 +97,7 @@ class CustomerRepository(
                     id = randomUUID(),
                     transactionId = transactionId,
                     accountType = AccountType.CUSTOMER,
-                    createTime = Clock.System.now().timestamp
+                    createTime = Clock.System.now().timestamp,
                 ),
                 transaction = it,
                 businessId = businessId,

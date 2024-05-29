@@ -2,15 +2,14 @@ package okcredit.base.utils
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
-import kotlin.reflect.KClass
 
 suspend fun <T> withRetry(
     times: Int = Int.MAX_VALUE,
-    initialDelay: Long = 100, // 0.1 second
-    maxDelay: Long = 1000,    // 1 second
+    initialDelay: Long = 100,
+    maxDelay: Long = 1000,
     factor: Double = 2.0,
     shouldRetry: (Throwable) -> Boolean = { true },
-    block: suspend () -> T
+    block: suspend () -> T,
 ): T {
     var currentDelay = initialDelay
 

@@ -225,7 +225,6 @@ class TransactionProjection(
     }
 }
 
-
 fun Transaction.toDomainTransaction(): DomainTransaction {
     return DomainTransaction(
         businessId = this.businessId,

@@ -10,7 +10,6 @@ sealed class UpdateTransactionRequest {
         val amount: Paisa,
     ) : UpdateTransactionRequest()
 
-
     data class UpdateNote(
         val transactionId: String,
         val accountType: AccountType,

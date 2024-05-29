@@ -59,8 +59,8 @@ class LedgerTest {
                     transactionSyncer = mock(MockMode.autoUnit),
                     customerSyncer = mock(MockMode.autoUnit),
                     supplierSyncer = mock(MockMode.autoUnit),
-                )
-            )
+                ),
+            ),
         )
     }
 
@@ -91,13 +91,13 @@ class LedgerTest {
                     getActiveBusinessIdLazy = lazyOf(getActiveBusinessId),
                     customerRepositoryLazy = lazyOf(customerRepository),
                     supplierRepositoryLazy = lazyOf(supplierRepository),
-                )
+                ),
             ),
             deleteCustomerLazy = lazyOf(
                 DeleteCustomer(
                     repository = customerRepository,
-                )
-            )
+                ),
+            ),
         )
     }
 }

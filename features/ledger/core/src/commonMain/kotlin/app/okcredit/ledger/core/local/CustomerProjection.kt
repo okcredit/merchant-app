@@ -33,7 +33,7 @@ class CustomerProjection(
             SortBy.NAME -> listAllAccountsByName(
                 businessId = businessId,
                 limit = limit,
-                offset = offset
+                offset = offset,
             )
 
             SortBy.LAST_ACTIVITY -> listAllAccountsByLastActivity(
@@ -51,7 +51,7 @@ class CustomerProjection(
             SortBy.BALANCE_DUE -> listAllAccountsByBalance(
                 businessId = businessId,
                 limit = limit,
-                offset = offset
+                offset = offset,
             )
         }
     }
@@ -298,7 +298,7 @@ class CustomerProjection(
 
     private fun addOrUpdateCustomerSettings(
         customerId: String,
-        settings: Customer.CustomerSettings
+        settings: Customer.CustomerSettings,
     ) {
         accountQueries.insertOrReplaceCustomerSettings(
             CustomerSettings(
@@ -414,4 +414,3 @@ class CustomerProjection(
         }
     }
 }
-

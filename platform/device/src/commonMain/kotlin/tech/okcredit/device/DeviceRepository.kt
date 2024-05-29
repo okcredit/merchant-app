@@ -26,7 +26,6 @@ class DeviceRepository(
     private val deviceSyncer by lazy { deviceSyncerLazy.value }
     private val deviceIdProvider by lazy { deviceIdProviderLazy.value }
 
-
     private val isReady = MutableStateFlow(false)
     private val mutex = Mutex()
 

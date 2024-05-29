@@ -205,7 +205,7 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
 
     suspend fun getTransactionCommands(
         businessId: String,
-        limit: Int
+        limit: Int,
     ): List<app.okcredit.ledger.core.models.TransactionCommand> {
         return transactionProjection.getTransactionCommands(businessId, limit)
     }

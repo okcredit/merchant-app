@@ -8,7 +8,7 @@ import okcredit.base.di.Singleton
 
 @Inject
 @Singleton
-class JvmLedgerDriverFactory : LedgerDriverFactory  {
+class JvmLedgerDriverFactory : LedgerDriverFactory {
 
     override fun createDriver(): SqlDriver {
         return JdbcSqliteDriver(
