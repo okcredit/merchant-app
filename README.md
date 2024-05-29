@@ -11,7 +11,6 @@
 - [ktorfit](https://foso.github.io/Ktorfit/quick-start/) - HTTP client to make network calls similar to Retrofit.
 - [sqldelight](https://github.com/cashapp/sqldelight) - For local database based on Sqlite
 - [voyager](https://github.com/adrielcafe/voyager) - For navigation in Compose
-- [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) - A multiplatform Kotlin library for working with date and time.
 - [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) - For serialization and deserialization of JSON
 - [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) - A multiplatform Kotlin library for working with date and time.
 
