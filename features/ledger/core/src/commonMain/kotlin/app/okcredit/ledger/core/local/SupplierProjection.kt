@@ -51,7 +51,6 @@ class SupplierProjection(
                     lastAmount = supplier.lastAmount,
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
-                    updatedAt = supplier.updatedAt_,
                 ),
             )
         }
@@ -88,7 +87,6 @@ class SupplierProjection(
                     lastAmount = supplier.lastAmount,
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
-                    updatedAt = supplier.updatedAt_,
                 ),
             )
         }
@@ -125,7 +123,6 @@ class SupplierProjection(
                     lastAmount = supplier.lastAmount,
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
-                    updatedAt = supplier.updatedAt_,
                 ),
             )
         }
@@ -165,7 +162,6 @@ class SupplierProjection(
                             lastAmount = summary.lastAmount,
                             lastActivityMetaInfo = summary.lastActivityMetaInfo.toInt(),
                             transactionCount = summary.transactionCount,
-                            updatedAt = summary.updatedAt,
                         )
                     } else {
                         Supplier.SupplierSummary()
@@ -224,7 +220,6 @@ class SupplierProjection(
                 lastAmount = summary.lastAmount,
                 lastActivityMetaInfo = summary.lastActivityMetaInfo.toLong(),
                 transactionCount = summary.transactionCount,
-                updatedAt = summary.updatedAt,
             ),
         )
     }

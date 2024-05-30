@@ -54,7 +54,6 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
             ),
             CustomerSummaryAdapter = CustomerSummary.Adapter(
                 balanceAdapter = PaisaAdapter,
-                updatedAtAdapter = TimestampAdapter,
                 lastActivityAdapter = TimestampAdapter,
                 lastAmountAdapter = PaisaAdapter,
                 lastPaymentAdapter = TimestampAdapter,
@@ -62,7 +61,6 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
             ),
             SupplierSummaryAdapter = SupplierSummary.Adapter(
                 balanceAdapter = PaisaAdapter,
-                updatedAtAdapter = TimestampAdapter,
                 lastActivityAdapter = TimestampAdapter,
                 lastAmountAdapter = PaisaAdapter,
             ),
@@ -156,26 +154,26 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
     suspend fun deleteTransaction(
         command: DeleteTransaction,
         transaction: DomainTransaction,
-        businessId: String,
     ) {
         transactionProjection.deleteTransaction(
             command = command,
             transaction = transaction,
-            businessId = businessId,
         )
     }
 
     suspend fun updateTransactionAmount(
         command: UpdateTransactionAmount,
         existingAmount: Paisa,
-        transaction: DomainTransaction,
         businessId: String,
+        accountId: String,
+        transactionType: DomainTransaction.Type,
     ) {
         transactionProjection.updateTransactionAmount(
+            accountId = accountId,
             command = command,
             existingAmount = existingAmount,
-            transaction = transaction,
             businessId = businessId,
+            transactionType = transactionType
         )
     }
 
@@ -195,8 +193,10 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
 
     fun getTransactionsForAccount(
         accountId: String,
+        startTime: Timestamp,
+        endTime: Timestamp?,
     ): Flow<List<DomainTransaction>> {
-        return transactionProjection.getTransactionsForAccount(accountId)
+        return transactionProjection.getTransactionsForAccount(accountId, startTime, endTime)
     }
 
     suspend fun resetCustomerList(customers: List<Customer>, businessId: String) {

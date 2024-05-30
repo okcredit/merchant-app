@@ -8,7 +8,7 @@ import me.tatarka.inject.annotations.Inject
 import kotlin.reflect.KClass
 
 @Inject
-class AppWorkerFactory constructor(
+class AppWorkerFactory(
     private val workerFactories: Map<KClass<out ListenableWorker>, ChildWorkerFactory>,
 ) : WorkerFactory() {
     override fun createWorker(

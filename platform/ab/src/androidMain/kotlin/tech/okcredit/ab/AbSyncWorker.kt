@@ -24,7 +24,7 @@ class AbSyncWorker(
     }
 
     @Inject
-    class Factory constructor(
+    class Factory(
         private val ab: AbRepositoryImpl,
     ) : ChildWorkerFactory {
         override fun create(context: Context, params: WorkerParameters): ListenableWorker {

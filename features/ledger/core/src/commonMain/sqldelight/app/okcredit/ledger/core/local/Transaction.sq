@@ -122,7 +122,12 @@ SELECT *
 FROM `Transaction`
 WHERE id = ?;
 
-transactionsForAccount:
+accountStatement:
+SELECT *
+FROM `Transaction`
+WHERE accountId = :accountId AND billDate >= :startTime AND billDate <= :endTime;
+
+allTransactionsForAccount:
 SELECT *
 FROM `Transaction`
 WHERE accountId = ?;

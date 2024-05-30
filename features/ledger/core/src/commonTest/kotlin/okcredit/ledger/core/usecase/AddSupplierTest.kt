@@ -1,28 +1,17 @@
 package okcredit.ledger.core.usecase
 
-import app.cash.sqldelight.logs.LogSqliteDriver
 import app.cash.turbine.test
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.usecase.CyclicAccountError
 import app.okcredit.ledger.contract.usecase.InvalidNameError
 import app.okcredit.ledger.contract.usecase.MobileConflictError
-import app.okcredit.ledger.core.CustomerRepository
-import app.okcredit.ledger.core.SupplierRepository
-import app.okcredit.ledger.core.local.LedgerLocalSource
-import app.okcredit.ledger.core.remote.LedgerApiClient
-import app.okcredit.ledger.core.remote.LedgerRemoteSource
 import app.okcredit.ledger.core.usecase.AddAccount
 import de.jensklingenberg.ktorfit.Response
 import dev.mokkery.answering.returns
-import dev.mokkery.every
 import dev.mokkery.everySuspend
 import dev.mokkery.matcher.any
-import dev.mokkery.mock
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
-import okcredit.ledger.core.di.provideDriver
-import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
+import okcredit.ledger.core.LedgerTestHelper
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -32,50 +21,15 @@ class AddSupplierTest {
 
     private lateinit var addSupplier: AddAccount
 
-    private val apiClient = mock<LedgerApiClient>()
+    private val ledgerTestHelper = LedgerTestHelper()
 
-    private val getActiveBusinessId: GetActiveBusinessId by lazy {
-        mock<GetActiveBusinessId> {
-            everySuspend { execute() } returns "business-id"
-        }
-    }
-
-    private val ledgerLocalSource: LedgerLocalSource by lazy {
-        LedgerLocalSource(
-            lazy {
-                LogSqliteDriver(sqlDriver = provideDriver()) {
-                    println(it)
-                }
-            },
-        )
-    }
-
-    private val remoteSource = LedgerRemoteSource(lazyOf(apiClient))
-
-    private val customerRepository: CustomerRepository by lazy {
-        CustomerRepository(
-            localSourceLazy = lazyOf(ledgerLocalSource),
-            remoteSourceLazy = lazyOf(remoteSource),
-        )
-    }
-
-    private val supplierRepository: SupplierRepository by lazy {
-        SupplierRepository(
-            localSourceLazy = lazyOf(ledgerLocalSource),
-            remoteSourceLazy = lazyOf(remoteSource),
-        )
-    }
-
-    private val dummyHttpResponse = mock<HttpResponse> {
-        every { status } returns HttpStatusCode.OK
-    }
 
     @BeforeTest
     fun setup() {
         addSupplier = AddAccount(
-            getActiveBusinessIdLazy = lazyOf(getActiveBusinessId),
-            customerRepositoryLazy = lazyOf(customerRepository),
-            supplierRepositoryLazy = lazyOf(supplierRepository),
+            getActiveBusinessIdLazy = lazyOf(ledgerTestHelper.getActiveBusinessId),
+            customerRepositoryLazy = lazyOf(ledgerTestHelper.customerRepository),
+            supplierRepositoryLazy = lazyOf(ledgerTestHelper.supplierRepository),
         )
     }
 
@@ -100,11 +54,11 @@ class AddSupplierTest {
         val name = "John Doe"
         val mobile = "9876543210"
         everySuspend {
-            apiClient.addSupplier(
+            ledgerTestHelper.apiClient.addSupplier(
                 request = any(),
                 businessId = any(),
             )
-        } returns Response.success(someSupplier(name, mobile), dummyHttpResponse)
+        } returns Response.success(ledgerTestHelper.someApiSupplier(name, mobile), ledgerTestHelper.successResponse)
 
         // When
         val supplier = addSupplier.execute(
@@ -114,7 +68,7 @@ class AddSupplierTest {
         )
 
         // Then
-        supplierRepository.getSupplierDetails(supplier.id).test {
+        ledgerTestHelper.supplierRepository.getSupplierDetails(supplier.id).test {
             val item = awaitItem()
             assertEquals(supplier.id, item?.id)
             assertEquals(supplier.name, item?.name)
@@ -127,14 +81,14 @@ class AddSupplierTest {
     fun `if supplier already exist with same mobile then throw Mobile conflict error`() = runTest {
         // Given
         val mock = everySuspend {
-            apiClient.addSupplier(
+            ledgerTestHelper.apiClient.addSupplier(
                 request = any(),
                 businessId = any(),
             )
         }
 
         // add first supplier
-        mock.returns(Response.success(someSupplier("John Doe", "9876543210"), dummyHttpResponse))
+        mock.returns(Response.success(ledgerTestHelper.someApiSupplier("John Doe", "9876543210"), ledgerTestHelper.successResponse))
         val firstCustomer = addSupplier.execute(
             name = "John Doe",
             mobile = "9876543210",
@@ -157,7 +111,7 @@ class AddSupplierTest {
     fun `if customer already exist with same mobile then throw cyclic account error`() = runTest {
         // Given
         val mock = everySuspend {
-            apiClient.addCustomer(
+            ledgerTestHelper.apiClient.addCustomer(
                 request = any(),
                 businessId = any(),
             )
@@ -166,14 +120,14 @@ class AddSupplierTest {
         // add first supplier
         mock.returns(
             value = Response.success(
-                body = someCustomer(
+                body = ledgerTestHelper.someApiCustomer(
                     name = "John Doe",
                     mobile = "9876543210",
                 ),
-                rawResponse = dummyHttpResponse,
+                rawResponse = ledgerTestHelper.successResponse,
             ),
         )
-        val supplier = customerRepository.addCustomer(
+        val supplier = ledgerTestHelper.customerRepository.addCustomer(
             businessId = "business-id",
             name = "John Doe",
             mobile = "9876543210",

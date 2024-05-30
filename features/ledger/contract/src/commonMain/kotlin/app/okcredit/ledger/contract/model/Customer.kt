@@ -40,7 +40,6 @@ data class Customer(
         val lastPayment: Timestamp? = null,
         val lastAmount: Paisa? = null,
         val lastReminderSendTime: Timestamp? = null,
-        val updatedAt: Timestamp? = null,
     )
 }
 

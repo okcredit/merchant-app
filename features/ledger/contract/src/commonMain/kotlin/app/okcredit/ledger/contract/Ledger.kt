@@ -33,6 +33,7 @@ interface Ledger {
 
     suspend fun deleteTransaction(
         transactionId: String,
+        accountType: AccountType,
     )
 
     suspend fun deleteAccount(

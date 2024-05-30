@@ -93,7 +93,6 @@ class CustomerProjection(
                 lastPayment = customer.lastPayment,
                 lastReminderSendTime = customer.lastReminderSendTime,
                 transactionCount = customer.transactionCount,
-                updatedAt = customer.updatedAt_,
             ),
         )
     }
@@ -136,7 +135,6 @@ class CustomerProjection(
                     lastPayment = customer.lastPayment,
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
-                    updatedAt = customer.updatedAt_,
                 ),
             )
         }
@@ -179,7 +177,6 @@ class CustomerProjection(
                     lastPayment = customer.lastPayment,
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
-                    updatedAt = customer.updatedAt_,
                 ),
             )
         }
@@ -222,7 +219,6 @@ class CustomerProjection(
                     lastPayment = customer.lastPayment,
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
-                    updatedAt = customer.updatedAt_,
                 ),
             )
         }
@@ -291,7 +287,6 @@ class CustomerProjection(
                 lastPayment = summary.lastPayment,
                 lastReminderSendTime = summary.lastReminderSendTime,
                 transactionCount = summary.transactionCount,
-                updatedAt = summary.updatedAt,
             ),
         )
     }
@@ -356,7 +351,6 @@ class CustomerProjection(
                             lastPayment = customerSummary.lastPayment,
                             lastReminderSendTime = customerSummary.lastReminderSendTime,
                             transactionCount = customerSummary.transactionCount,
-                            updatedAt = customerSummary.updatedAt,
                         )
                     } else {
                         Customer.CustomerSummary()

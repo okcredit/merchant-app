@@ -2,12 +2,12 @@ package app.okcredit.ledger.core.di
 
 import app.okcredit.ledger.contract.Ledger
 import app.okcredit.ledger.contract.usecase.GetAccounts
-import app.okcredit.ledger.contract.usecase.GetTransactionsForAccount
+import app.okcredit.ledger.contract.usecase.GetAccountStatement
 import app.okcredit.ledger.core.LedgerImpl
 import app.okcredit.ledger.core.local.LedgerSqlDriver
 import app.okcredit.ledger.core.remote.LedgerApiClient
 import app.okcredit.ledger.core.usecase.GetAccountsImpl
-import app.okcredit.ledger.core.usecase.GetCustomerTransactionsImpl
+import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.SqlDriverFactory
@@ -33,5 +33,5 @@ interface LedgerComponent {
     fun GetAccountsImpl.bind(): GetAccounts = this
 
     @Provides
-    fun GetCustomerTransactionsImpl.bind(): GetTransactionsForAccount = this
+    fun GetAccountStatementImpl.bind(): GetAccountStatement = this
 }

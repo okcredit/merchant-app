@@ -26,6 +26,9 @@ data class Transaction(
     val referenceSource: Int? = null,
 ) {
 
+    val createdByMerchant: Boolean
+        get() = !createdByCustomer && referenceId.isNullOrEmpty()
+
     enum class State(val code: Int) {
         PROCESSING(0),
         CREATED(1),

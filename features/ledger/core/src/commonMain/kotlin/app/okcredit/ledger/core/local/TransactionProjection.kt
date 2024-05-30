@@ -48,7 +48,7 @@ class TransactionProjection(
                     commandId = command.id,
                     commandType = CommandType.CREATE,
                 )
-                if (command.accountType == app.okcredit.ledger.contract.model.AccountType.CUSTOMER) {
+                if (command.accountType == AccountType.CUSTOMER) {
                     accountQueries.updateCustomerSummaryForTxnCreated(
                         amount = transaction.amount,
                         customerId = transaction.accountId,
@@ -74,38 +74,48 @@ class TransactionProjection(
     suspend fun deleteTransaction(
         command: DeleteTransaction,
         transaction: DomainTransaction,
-        businessId: String,
     ) {
         withContext(appDispatchers.io) {
             database.transaction {
                 transactionQueries.insertTransactionCommand(
                     commandId = command.id,
-                    businessId = businessId,
+                    businessId = transaction.businessId,
                     transactionId = command.transactionId,
                     data_ = json.encodeToString(command),
                     accountType = command.accountType,
                     commandType = CommandType.DELETE,
                 )
                 transactionQueries.markTransactionDeleted(
-                    deleteTime = transaction.deleteTime,
+                    deleteTime = command.createTime,
                     id = command.transactionId,
                 )
-                accountQueries.updateCustomerSummaryForTxnDeleted(
-                    deleteTime = transaction.deleteTime!!,
-                    amount = transaction.amount,
-                    category = transaction.category.code.toLong(),
-                    customerId = transaction.accountId,
-                    type = if (transaction.type == DomainTransaction.Type.CREDIT) 1 else 0,
-                )
+                if (command.accountType == AccountType.CUSTOMER) {
+                    accountQueries.updateCustomerSummaryForTxnDeleted(
+                        customerId = transaction.accountId,
+                        deleteTime = command.createTime,
+                        amount = transaction.amount,
+                        category = transaction.category.code.toLong(),
+                        type = if (transaction.type == DomainTransaction.Type.CREDIT) 1 else 0,
+                    )
+                } else {
+                    accountQueries.updateSupplierSummaryForTxnDeleted(
+                        supplierId = transaction.accountId,
+                        deleteTime = command.createTime,
+                        amount = transaction.amount,
+                        category = transaction.category.code.toLong(),
+                        type = if (transaction.type == DomainTransaction.Type.CREDIT) 1 else 0,
+                    )
+                }
             }
         }
     }
 
     suspend fun updateTransactionAmount(
+        businessId: String,
+        accountId: String,
         command: UpdateTransactionAmount,
         existingAmount: Paisa,
-        transaction: DomainTransaction,
-        businessId: String,
+        transactionType: DomainTransaction.Type,
     ) {
         withContext(appDispatchers.io) {
             database.transaction {
@@ -119,24 +129,24 @@ class TransactionProjection(
                 )
                 transactionQueries.updateTransactionAmount(
                     id = command.transactionId,
-                    amount = transaction.amount,
-                    amountUpdatedTime = transaction.amountUpdateTime,
+                    amount = command.amount,
+                    amountUpdatedTime = command.createTime,
                 )
-                if (command.accountType == app.okcredit.ledger.contract.model.AccountType.CUSTOMER) {
+                if (command.accountType == AccountType.CUSTOMER) {
                     accountQueries.updateCustomerSummaryForTxnAmountUpdated(
-                        customerId = transaction.accountId,
-                        amountUpdatedAt = transaction.deleteTime!!,
-                        newAmount = transaction.amount.value,
+                        customerId = accountId,
+                        amountUpdatedAt = command.createTime,
+                        newAmount = command.amount.value,
                         existingAmount = existingAmount,
-                        type = if (transaction.type == DomainTransaction.Type.CREDIT) 1 else 0,
+                        type = if (transactionType == DomainTransaction.Type.CREDIT) 1 else 0,
                     )
                 } else {
                     accountQueries.updateSupplierSummaryForTxnAmountUpdated(
-                        supplierId = transaction.accountId,
-                        amountUpdatedAt = transaction.deleteTime!!,
-                        newAmount = transaction.amount.value,
+                        supplierId = accountId,
+                        amountUpdatedAt = command.createTime,
+                        newAmount = command.amount.value,
                         existingAmount = existingAmount,
-                        type = if (transaction.type == DomainTransaction.Type.CREDIT) 1 else 0,
+                        type = if (transactionType == DomainTransaction.Type.CREDIT) 1 else 0,
                     )
                 }
             }
@@ -174,11 +184,24 @@ class TransactionProjection(
 
     fun getTransactionsForAccount(
         accountId: String,
+        startTime: Timestamp,
+        endTime: Timestamp?,
     ): Flow<List<DomainTransaction>> {
-        return transactionQueries.transactionsForAccount(accountId = accountId)
-            .mapToDomainList {
+        return if (endTime != null && endTime.epochMillis > 0) {
+            transactionQueries.accountStatement(
+                accountId = accountId,
+                startTime = startTime,
+                endTime = endTime
+            ).mapToDomainList {
                 it.toDomainTransaction()
             }
+        } else {
+            transactionQueries.allTransactionsForAccount(
+                accountId = accountId,
+            ).mapToDomainList {
+                it.toDomainTransaction()
+            }
+        }
     }
 
     suspend fun getTransactionCommands(businessId: String, limit: Int): List<TransactionCommand> {
@@ -189,7 +212,10 @@ class TransactionProjection(
                     when (it.commandType) {
                         CommandType.CREATE -> json.decodeFromString<CreateTransaction>(it.data_)
                         CommandType.DELETE -> json.decodeFromString<DeleteTransaction>(it.data_)
-                        CommandType.UPDATE_AMOUNT -> json.decodeFromString<UpdateTransactionAmount>(it.data_)
+                        CommandType.UPDATE_AMOUNT -> json.decodeFromString<UpdateTransactionAmount>(
+                            it.data_
+                        )
+
                         CommandType.UPDATE_NOTE -> json.decodeFromString<UpdateTransactionNote>(it.data_)
                     }
                 }
@@ -200,7 +226,8 @@ class TransactionProjection(
         withContext(appDispatchers.io) {
             commands.forEach {
                 transactionQueries.deleteTransactionCommand(commandId = it.id)
-                val commandExists = transactionQueries.commandExistForTransaction(it.transactionId).executeAsOne()
+                val commandExists =
+                    transactionQueries.commandExistForTransaction(it.transactionId).executeAsOne()
                 if (!commandExists) {
                     transactionQueries.markTransactionSynced(it.transactionId)
                 }

@@ -33,7 +33,5 @@ data class Supplier(
         val lastActivityMetaInfo: Int = 4,
         val lastPayment: Timestamp? = null,
         val lastAmount: Paisa? = null,
-        val lastReminderSendTime: Timestamp? = null,
-        val updatedAt: Timestamp? = null,
     )
 }

@@ -38,8 +38,7 @@ CREATE TABLE CustomerSummary (
     lastActivityMetaInfo INTEGER NOT NULL DEFAULT 4,
     lastAmount INTEGER AS Paisa,
     lastReminderSendTime INTEGER AS Timestamp,
-    transactionCount INTEGER NOT NULL,
-    updatedAt INTEGER AS Timestamp
+    transactionCount INTEGER NOT NULL
 );
 
 CREATE TABLE SupplierSettings (
@@ -56,8 +55,7 @@ CREATE TABLE SupplierSummary (
     lastActivity INTEGER AS Timestamp NOT NULL,
     lastActivityMetaInfo INTEGER NOT NULL DEFAULT 4,
     lastAmount INTEGER AS Paisa,
-    transactionCount INTEGER NOT NULL,
-    updatedAt INTEGER AS Timestamp
+    transactionCount INTEGER NOT NULL
 );
 
 allAccountsByName:
@@ -128,7 +126,7 @@ VALUES ?;
 
 insertOrIgnoreCustomerSummary:
 INSERT OR IGNORE
-INTO CustomerSummary(customerId, balance, lastActivity, lastPayment, lastActivityMetaInfo, lastAmount, lastReminderSendTime, transactionCount, updatedAt)
+INTO CustomerSummary(customerId, balance, lastActivity, lastPayment, lastActivityMetaInfo, lastAmount, lastReminderSendTime, transactionCount)
 VALUES ?;
 
 insertOrReplaceSupplierSettings:
@@ -138,7 +136,7 @@ VALUES ?;
 
 insertOrReplaceSupplierSummary:
 INSERT OR REPLACE
-INTO SupplierSummary(supplierId, balance, lastActivity, lastActivityMetaInfo, lastAmount, transactionCount, updatedAt)
+INTO SupplierSummary(supplierId, balance, lastActivity, lastActivityMetaInfo, lastAmount, transactionCount)
 VALUES ?;
 
 accountById:
@@ -183,8 +181,7 @@ SET balance = CASE WHEN :type == 1 THEN balance - :amount ELSE balance + :amount
     lastAmount = :amount,
     lastActivityMetaInfo = CASE WHEN :type == 1 THEN 2 WHEN :state == 0 THEN 5 WHEN :category==1 THEN 7 ELSE 3 END,
     transactionCount = transactionCount + 1,
-    lastPayment = CASE WHEN :type == 1 THEN lastPayment ELSE :createdAt END,
-    updatedAt = :createdAt
+    lastPayment = CASE WHEN :type == 1 THEN lastPayment ELSE :createdAt END
 WHERE customerId = :customerId;
 
 updateSupplierSummaryForTxnCreated:
@@ -193,8 +190,7 @@ SET balance = CASE WHEN :type == 1 THEN balance + :amount ELSE balance - :amount
     lastActivity = :createdAt,
     lastAmount = :amount,
     lastActivityMetaInfo = CASE WHEN :type == 1 THEN 2 WHEN :state == 0 THEN 5 WHEN :category==1 THEN 7 ELSE 3 END,
-    transactionCount = transactionCount + 1,
-    updatedAt = :createdAt
+    transactionCount = transactionCount + 1
 WHERE supplierId = :supplierId;
 
 updateCustomerSummaryForTxnDeleted:

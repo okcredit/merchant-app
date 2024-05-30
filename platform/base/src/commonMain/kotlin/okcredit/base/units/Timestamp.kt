@@ -18,3 +18,5 @@ inline val Int.timestamp: Timestamp
 
 inline val Instant.timestamp: Timestamp
     get() = Timestamp(toEpochMilliseconds())
+
+val ZERO_TIMESTAMP = Timestamp(0)

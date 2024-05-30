@@ -7,6 +7,7 @@ import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.contract.model.UpdateTransactionRequest
 import app.okcredit.ledger.core.usecase.AddAccount
 import app.okcredit.ledger.core.usecase.DeleteCustomer
+import app.okcredit.ledger.core.usecase.DeleteTransaction
 import app.okcredit.ledger.core.usecase.RecordTransaction
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Paisa
@@ -17,11 +18,13 @@ class LedgerImpl(
     recordTransactionLazy: Lazy<RecordTransaction>,
     addAccountLazy: Lazy<AddAccount>,
     deleteCustomerLazy: Lazy<DeleteCustomer>,
+    deleteTransactionLazy: Lazy<DeleteTransaction>
 ) : Ledger {
 
     private val recordTransaction by lazy { recordTransactionLazy.value }
     private val addAccount by lazy { addAccountLazy.value }
     private val deleteCustomer by lazy { deleteCustomerLazy.value }
+    private val deleteTransaction by lazy { deleteTransactionLazy.value }
 
     override suspend fun recordTransaction(
         accountId: String,
@@ -48,7 +51,8 @@ class LedgerImpl(
     override suspend fun updateTransaction(request: UpdateTransactionRequest) {
     }
 
-    override suspend fun deleteTransaction(transactionId: String) {
+    override suspend fun deleteTransaction(transactionId: String, accountType: AccountType) {
+        deleteTransaction.execute(transactionId, accountType)
     }
 
     override suspend fun deleteAccount(accountId: String, accountType: AccountType) {

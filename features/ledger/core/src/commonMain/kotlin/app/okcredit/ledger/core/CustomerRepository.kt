@@ -73,45 +73,4 @@ class CustomerRepository(
         remoteSource.deleteCustomer(customerId, businessId)
         localSource.markCustomerAsDeleted(customerId)
     }
-
-    suspend fun addTransaction(
-        businessId: String,
-        command: CreateTransaction,
-        transaction: Transaction,
-    ) {
-        localSource.addTransaction(businessId, command, transaction)
-    }
-
-    suspend fun updateTransactionNote(
-        businessId: String,
-        command: UpdateTransactionNote,
-    ) {
-        localSource.updateTransactionNote(businessId, command)
-    }
-
-    suspend fun deleteTransaction(transactionId: String, businessId: String) {
-        val transaction = localSource.getTransactionDetails(transactionId).firstOrNull() ?: return
-        transaction.let {
-            localSource.deleteTransaction(
-                command = DeleteTransaction(
-                    id = randomUUID(),
-                    transactionId = transactionId,
-                    accountType = AccountType.CUSTOMER,
-                    createTime = Clock.System.now().timestamp,
-                ),
-                transaction = it,
-                businessId = businessId,
-            )
-        }
-    }
-
-    fun getTransactionDetails(transactionId: String): Flow<Transaction?> {
-        return localSource.getTransactionDetails(transactionId)
-    }
-
-    fun getTransactionsForCustomer(
-        relationId: String,
-    ): Flow<List<Transaction>> {
-        return localSource.getTransactionsForAccount(relationId)
-    }
 }
