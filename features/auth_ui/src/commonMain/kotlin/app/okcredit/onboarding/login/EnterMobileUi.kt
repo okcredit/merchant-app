@@ -29,10 +29,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.icon_phone
 import merchant_app.features.auth_ui.generated.resources.Res
 import merchant_app.features.auth_ui.generated.resources.ic_applogo_name
-import merchant_app.features.auth_ui.generated.resources.ic_mobile_fill
-import merchant_app.features.auth_ui.generated.resources.icon_phone
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -45,7 +44,7 @@ fun EnterMobile(onSubmitClick: (String) -> Unit) {
         )
         Spacer(Modifier.weight(1.0f))
         Image(
-            painter = painterResource(Res.drawable.ic_mobile_fill),
+            painter = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -128,7 +127,7 @@ fun EnterMobileTextField(inputValue: MutableState<TextFieldValue>, onSubmitClick
             },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(Res.drawable.icon_phone),
+                    painter = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.primary,

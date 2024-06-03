@@ -20,7 +20,7 @@ import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.ic_okcredit_logo
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
-import org.jetbrains.compose.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 @Inject
 class SplashScreen : Screen {
@@ -51,7 +51,7 @@ class SplashScreen : Screen {
 
     @Composable
     private fun Render() {
-        Box(Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.primary)) {
+        Box(Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.onPrimary)) {
             Image(
                 painter = painterResource(Res.drawable.ic_okcredit_logo),
                 modifier = Modifier.align(Alignment.Center),

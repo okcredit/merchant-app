@@ -1,12 +1,10 @@
 package app.okcredit.merchant
 
-import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.desc.Resource
-import dev.icerock.moko.resources.desc.StringDesc
 import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.StringResource
 import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 
@@ -65,6 +63,6 @@ class IosPlatformExtensions : PlatformExtensions {
     }
 
     override fun localized(stringResource: StringResource): String {
-        return StringDesc.Resource(stringResource).localized()
+        return ""
     }
 }

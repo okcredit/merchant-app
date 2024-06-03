@@ -3,13 +3,11 @@ package app.okcredit.merchant
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.desc.Resource
-import dev.icerock.moko.resources.desc.StringDesc
 import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.StringResource
 
 @Inject
 class AndroidPlatformExtensions(private val context: Context) : PlatformExtensions {
@@ -73,7 +71,7 @@ class AndroidPlatformExtensions(private val context: Context) : PlatformExtensio
     }
 
     override fun localized(stringResource: StringResource): String {
-        return StringDesc.Resource(stringResource).toString(context)
+        return ""
     }
 
     private fun isThirdPartyUrl(url: String): Boolean {

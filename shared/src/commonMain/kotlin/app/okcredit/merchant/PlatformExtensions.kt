@@ -1,6 +1,6 @@
 package app.okcredit.merchant
 
-import dev.icerock.moko.resources.StringResource
+import org.jetbrains.compose.resources.StringResource
 
 interface PlatformExtensions {
     fun shareOnWhatsApp(text: String)

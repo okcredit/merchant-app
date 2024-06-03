@@ -34,10 +34,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.icon_phone
 import merchant_app.features.auth_ui.generated.resources.Res
 import merchant_app.features.auth_ui.generated.resources.ic_applogo_name
 import merchant_app.features.auth_ui.generated.resources.ic_business_name
-import merchant_app.features.auth_ui.generated.resources.icon_phone
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -132,7 +132,7 @@ private fun EnterBusinessNameTextField(
             },
             leadingIcon = {
                 Image(
-                    painter = painterResource(Res.drawable.icon_phone),
+                    painter = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                     colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),

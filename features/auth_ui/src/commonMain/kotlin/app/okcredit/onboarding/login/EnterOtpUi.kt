@@ -5,11 +5,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -25,11 +34,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.icon_recovery_mobile
+import app.okcredit.ui.icon_sms_outline
+import app.okcredit.ui.icon_whatsapp
 import kotlinx.coroutines.delay
-import merchant_app.features.auth_ui.generated.resources.Res
-import merchant_app.features.auth_ui.generated.resources.icon_recovery_mobile
-import merchant_app.features.auth_ui.generated.resources.icon_sms_outline
-import merchant_app.features.auth_ui.generated.resources.icon_whatsapp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import kotlin.time.Duration.Companion.seconds
@@ -117,18 +125,18 @@ fun EnterOtpUi(
         Spacer(modifier = Modifier.height(24.dp))
         if (state.showResendOptions && ticks == 10) {
             FallbackOptionView(
-                icon = Res.drawable.icon_sms_outline,
+                icon = app.okcredit.ui.Res.drawable.icon_sms_outline,
                 title = "Send OTP via SMS",
                 onClick = resendOtpOnSms,
             )
             FallbackOptionView(
-                icon = Res.drawable.icon_whatsapp,
+                icon = app.okcredit.ui.Res.drawable.icon_whatsapp,
                 title = "Send OTP via Whatsapp",
                 onClick = resendOtpOnWhatsApp,
             )
             if (state.showRecoveryNumber) {
                 FallbackOptionView(
-                    icon = Res.drawable.icon_recovery_mobile,
+                    icon = app.okcredit.ui.Res.drawable.icon_recovery_mobile,
                     title = "SMS on Recovery Mobile (${state.maskedRecoveryMobile})",
                     onClick = resendOtpOnRecoveryNumber,
                 )
