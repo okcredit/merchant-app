@@ -6,7 +6,6 @@ import okcredit.base.local.SqlDriverFactory
 import tech.okcredit.okdoc.local.OkDocDatabase
 import tech.okcredit.okdoc.local.OkDocDatabaseQueries
 import tech.okcredit.okdoc.remote.OkDocApiClient
-import tech.okcredit.okdoc.remote.createOkDocApiClient
 
 
 typealias OkDocDriverFactory = SqlDriverFactory
@@ -20,5 +19,5 @@ interface OkDocComponent {
     }
 
     @Provides
-    fun okDocApiClient(ktorfit: Ktorfit): OkDocApiClient = ktorfit.createOkDocApiClient()
+    fun okDocApiClient(ktorfit: Ktorfit): OkDocApiClient = ktorfit.create()
 }

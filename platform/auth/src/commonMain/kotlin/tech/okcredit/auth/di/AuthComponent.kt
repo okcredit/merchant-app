@@ -11,21 +11,19 @@ import tech.okcredit.auth.AuthServiceImpl
 import tech.okcredit.auth.AuthSignOutListener
 import tech.okcredit.auth.remote.AuthApiClient
 import tech.okcredit.auth.remote.Protected
-import tech.okcredit.auth.remote.createAuthApiClient
-import tech.okcredit.auth.remote.createProtected
 
 interface AuthComponent {
 
     @Singleton
     @Provides
     fun authApiClient(ktorfit: Ktorfit): AuthApiClient {
-        return ktorfit.createAuthApiClient()
+        return ktorfit.create()
     }
 
     @Singleton
     @Provides
     fun protectedApiClient(ktorfit: Ktorfit): Protected {
-        return ktorfit.createProtected()
+        return ktorfit.create()
     }
 
     @Singleton

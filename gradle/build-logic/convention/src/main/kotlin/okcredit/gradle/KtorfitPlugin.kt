@@ -11,6 +11,16 @@ class KtorfitPlugin: Plugin<Project> {
             with(pluginManager) {
                 apply("de.jensklingenberg.ktorfit")
             }
+
+            dependencies {
+                val ktorFitCompiler = libs.findLibrary("ktorfit-ksp").get()
+
+                add("kspCommonMainMetadata", ktorFitCompiler)
+                add("kspAndroid", ktorFitCompiler)
+                add("kspIosArm64", ktorFitCompiler)
+                add("kspIosSimulatorArm64", ktorFitCompiler)
+                add("kspJvm", ktorFitCompiler)
+            }
         }
     }
 

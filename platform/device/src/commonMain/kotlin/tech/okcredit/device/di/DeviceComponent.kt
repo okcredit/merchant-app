@@ -8,14 +8,13 @@ import okcredit.base.network.DeviceIdProvider
 import okcredit.base.syncer.AppInitializer
 import tech.okcredit.device.DeviceAppInitializer
 import tech.okcredit.device.remote.DeviceApiClient
-import tech.okcredit.device.remote.createDeviceApiClient
 import tech.okcredit.device.usecase.GetOrCreateDeviceId
 
 interface DeviceComponent {
 
     @Provides
     fun deviceApiClient(ktorfit: Ktorfit): DeviceApiClient {
-        return ktorfit.createDeviceApiClient()
+        return ktorfit.create()
     }
 
     @IntoSet

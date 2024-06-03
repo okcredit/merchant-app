@@ -2,7 +2,7 @@
 agp = "8.4.1"
 kotlin = "2.0.0"
 compose-multiplatform="1.6.10"
-kotlin-coroutines = "1.8.1"
+kotlin-coroutines = "1.9.0-RC"
 kotlinx-serialization = "1.7.0-RC"
 kotlinx-dateTime = "0.5.0"
 ksp = "2.0.0-1.0.21"
@@ -13,7 +13,7 @@ kover = "0.7.6"
 mokkery = "2.0.0-RC1"
 
 ktor = "2.3.11"
-ktorfit = "2.0.0"
+ktorfit = "2.0.0-rc01"
 sqldelight = "2.0.2"
 activity-compose = "1.9.0"
 kermit = "2.0.3"
@@ -76,6 +76,7 @@ log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-converter = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
+ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-clientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }

@@ -9,7 +9,6 @@ import tech.okcredit.customization.local.CustomizationSqlDriver
 import tech.okcredit.customization.models.Action
 import tech.okcredit.customization.models.ActionSerializer
 import tech.okcredit.customization.remote.CustomizationApiClient
-import tech.okcredit.customization.remote.createCustomizationApiClient
 
 typealias CustomizationDriverFactory = SqlDriverFactory
 
@@ -22,7 +21,7 @@ interface CustomizationComponent {
 
     @Provides
     fun customizationApiClient(ktorfit: Ktorfit): CustomizationApiClient {
-        return ktorfit.createCustomizationApiClient()
+        return ktorfit.create()
     }
 
     @Provides

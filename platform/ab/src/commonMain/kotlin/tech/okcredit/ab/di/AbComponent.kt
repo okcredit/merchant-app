@@ -13,13 +13,12 @@ import tech.okcredit.ab.AbSignOutListener
 import tech.okcredit.ab.local.AbDatabase
 import tech.okcredit.ab.local.AbDatabaseQueries
 import tech.okcredit.ab.remote.AbApiClient
-import tech.okcredit.ab.remote.createAbApiClient
 
 interface AbComponent {
 
     @Provides
     fun abApiClient(ktorfit: Ktorfit): AbApiClient {
-        return ktorfit.createAbApiClient()
+        return ktorfit.create()
     }
 
     @Provides
