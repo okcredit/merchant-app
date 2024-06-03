@@ -20,19 +20,10 @@ kotlin {
             implementation(compose.runtime)
 
             api(libs.log.kermit)
-
             api(libs.bundles.multiplatform.settings)
-
-            api(libs.ktorfit)
-            api(libs.ktorfit.converter)
-            api(libs.ktor.contentNegotiation)
-            api(libs.ktor.json)
-            api(libs.ktor.clientLogging)
-
+            api(libs.bundles.ktorfit.common)
             api(libs.kotlininject.runtime)
-
             api(libs.voyager.navigator)
-
             implementation(libs.bundles.sqldelight.common)
         }
         commonTest.dependencies {

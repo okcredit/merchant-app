@@ -13,7 +13,7 @@ kover = "0.7.6"
 mokkery = "2.0.0-RC1"
 
 ktor = "2.3.11"
-ktorfit = "2.0.0-beta1"
+ktorfit = "2.0.0"
 sqldelight = "2.0.2"
 activity-compose = "1.9.0"
 kermit = "2.0.3"
@@ -41,7 +41,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-gms-googleServices = "com.google.gms.google-services:4.4.1"
+gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.1"
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
@@ -62,9 +62,9 @@ sqldelight-nativeDriver = { module = "app.cash.sqldelight:native-driver", versio
 sqldelight-sqliteDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 sqldelight-primitiveAdapter = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
 
-firebase-bom = "com.google.firebase:firebase-bom:33.0.0"
-firebase-analytics = "com.google.firebase:firebase-analytics-ktx:22.0.0"
-firebase-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:19.0.0"
+firebase-bom = "com.google.firebase:firebase-bom:33.1.0"
+firebase-analytics = "com.google.firebase:firebase-analytics-ktx:22.0.1"
+firebase-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:19.0.1"
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx", version.ref = "firebase-messaging" }
 
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
@@ -76,7 +76,6 @@ log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-converter = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
-ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-clientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
@@ -110,3 +109,4 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 multiplatform-settings = ["multiplatform-settings", "multiplatform-settings-coroutines"]
 sqldelight-common = ["sqldelight-runtime", "sqldelight-coroutineExtensions", "sqldelight-primitiveAdapter"]
 moko-resources = ["moko-resources", "moko-resources-compose"]
+ktorfit-common = ["ktorfit", "ktorfit-converter", "ktor-json", "ktor-contentNegotiation", "ktor-clientLogging", "ktor-clientAuth"]

@@ -37,7 +37,6 @@ sqldelight {
     databases {
         create("IdentityDatabase") {
             packageName.set("tech.okcredit.identity.local")
-            generateAsync.set(false)
         }
     }
 }

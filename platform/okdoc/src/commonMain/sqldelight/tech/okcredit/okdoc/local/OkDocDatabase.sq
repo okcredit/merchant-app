@@ -1,6 +1,3 @@
-import kotlin.Boolean;
-import kotlin.Int;
-
 CREATE TABLE IF NOT EXISTS `FileUploadCommand` (
     `commandId` TEXT NOT NULL,
     `businessId` TEXT NOT NULL,

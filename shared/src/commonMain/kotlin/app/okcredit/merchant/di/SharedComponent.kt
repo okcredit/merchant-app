@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.ScreenModelPair
 
-interface SharedModule {
+interface SharedComponent {
 
     @Provides
     @IntoMap

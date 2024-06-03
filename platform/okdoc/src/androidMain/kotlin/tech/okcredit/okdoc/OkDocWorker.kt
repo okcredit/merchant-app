@@ -8,7 +8,7 @@ import okcredit.base.syncer.BaseCoroutineWorker
 import okcredit.base.syncer.ChildWorkerFactory
 import okcredit.base.syncer.WorkerConfig
 
-class OkDocWorker constructor(
+class OkDocWorker(
     context: Context,
     params: WorkerParameters,
     private val manager: OkDocUploadManager,
@@ -19,7 +19,7 @@ class OkDocWorker constructor(
     }
 
     @Inject
-    class Factory constructor(
+    class Factory(
         private val okDocUploadManager: OkDocUploadManager,
     ) : ChildWorkerFactory {
         override fun create(context: Context, params: WorkerParameters): ListenableWorker {

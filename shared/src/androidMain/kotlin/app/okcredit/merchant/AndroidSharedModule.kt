@@ -1,9 +1,9 @@
 package app.okcredit.merchant
 
-import app.okcredit.merchant.di.SharedModule
+import app.okcredit.merchant.di.SharedComponent
 import me.tatarka.inject.annotations.Provides
 
-interface AndroidSharedModule : SharedModule {
+interface AndroidSharedModule : SharedComponent {
 
     @Provides
     fun androidPlatformExtensions(platformExtensions: AndroidPlatformExtensions): PlatformExtensions {

@@ -12,6 +12,7 @@ import okcredit.base.di.BaseUrl
 import okcredit.base.di.Debug
 import okcredit.base.di.Flavor
 import okcredit.base.di.Singleton
+import okcredit.base.network.KtorfitFactory
 import tech.okcredit.ab.IosAbComponent
 import tech.okcredit.analytics.di.AnalyticsComponent
 import tech.okcredit.auth.IosAuthComponent
@@ -42,4 +43,6 @@ abstract class ApplicationComponent(
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
 
     abstract val appScreenModelFactory: AppScreenModelFactory
+
+    abstract val ktorfitUtils: KtorfitFactory
 }

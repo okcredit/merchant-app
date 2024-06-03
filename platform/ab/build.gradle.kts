@@ -17,7 +17,6 @@ kotlin {
             implementation(kotlin("test"))
         }
         androidMain.dependencies {
-            implementation(libs.androidx.workmanager)
             implementation(libs.sqldelight.androidDriver)
         }
         iosMain.dependencies {

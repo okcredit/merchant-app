@@ -2,10 +2,14 @@ package tech.okcredit.okdoc.di
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
-import tech.okcredit.okdoc.OkDocDriverFactory
+import okcredit.base.local.SqlDriverFactory
 import tech.okcredit.okdoc.local.OkDocDatabase
 import tech.okcredit.okdoc.local.OkDocDatabaseQueries
 import tech.okcredit.okdoc.remote.OkDocApiClient
+import tech.okcredit.okdoc.remote.createOkDocApiClient
+
+
+typealias OkDocDriverFactory = SqlDriverFactory
 
 interface OkDocComponent {
 
@@ -16,5 +20,5 @@ interface OkDocComponent {
     }
 
     @Provides
-    fun okDocApiClient(ktorfit: Ktorfit): OkDocApiClient = ktorfit.create()
+    fun okDocApiClient(ktorfit: Ktorfit): OkDocApiClient = ktorfit.createOkDocApiClient()
 }

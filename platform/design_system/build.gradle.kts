@@ -14,7 +14,4 @@ kotlin {
 
 android {
     namespace = "app.okcredit.ui"
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }

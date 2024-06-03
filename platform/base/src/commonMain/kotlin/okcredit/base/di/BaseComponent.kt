@@ -4,8 +4,7 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import kotlinx.coroutines.CoroutineDispatcher
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.appDispatchers
-import okcredit.base.network.ClientConfig
-import okcredit.base.network.createKtorFit
+import okcredit.base.network.KtorfitFactory
 
 typealias IoDispatcher = CoroutineDispatcher
 typealias MainDispatcher = CoroutineDispatcher
@@ -19,19 +18,10 @@ typealias Flavor = String
 @Singleton
 interface BaseComponent {
 
-    @Singleton
     @Provides
     fun provideKtorfit(
-        baseUrl: BaseUrl,
-        appVersion: AppVersion,
-        debug: Debug,
-        clientConfigs: Set<ClientConfig>,
-    ): Ktorfit = createKtorFit(
-        baseUrl = baseUrl,
-        appVersion = appVersion,
-        debug = debug,
-        clientConfigs = clientConfigs,
-    )
+        ktorfitUtils: KtorfitFactory
+    ): Ktorfit = ktorfitUtils.create()
 
     @Singleton
     @Provides

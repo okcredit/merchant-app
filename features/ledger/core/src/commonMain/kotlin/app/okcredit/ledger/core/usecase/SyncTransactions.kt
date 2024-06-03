@@ -26,7 +26,7 @@ class SyncTransactions(
         // Sync transaction commands
         syncTransactionCommand.execute()
 
-        // explicit 250ms (SLA on backend) delay added as sync transaction is async on backend and new command have not been processed yet.
+        // explicit 250ms (SLA on backend) delay added as sync transaction is async on backend and new command may have not been processed yet.
         delay(250)
 
         // Fetch transactions from server

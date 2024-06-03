@@ -6,6 +6,7 @@ import app.okcredit.ledger.contract.usecase.GetAccountStatement
 import app.okcredit.ledger.core.LedgerImpl
 import app.okcredit.ledger.core.local.LedgerSqlDriver
 import app.okcredit.ledger.core.remote.LedgerApiClient
+import app.okcredit.ledger.core.remote.createLedgerApiClient
 import app.okcredit.ledger.core.usecase.GetAccountsImpl
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import de.jensklingenberg.ktorfit.Ktorfit

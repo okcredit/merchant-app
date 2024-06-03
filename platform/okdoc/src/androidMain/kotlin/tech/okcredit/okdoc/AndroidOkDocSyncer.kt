@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 @Inject
 class AndroidOkDocSyncer(
     private val workManager: OkcWorkManager,
+    private val manager: OkDocUploadManager,
 ) : OneTimeDataSyncer {
 
     companion object {
@@ -19,6 +20,7 @@ class AndroidOkDocSyncer(
     }
 
     override suspend fun execute(input: JsonObject) {
+        manager.execute()
     }
 
     override fun schedule(input: JsonObject) {

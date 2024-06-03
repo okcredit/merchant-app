@@ -20,6 +20,7 @@ kotlin {
             implementation(project(":platform:identity:contract"))
             implementation(project(":platform:okdoc"))
             implementation(project(":platform:design_system"))
+            implementation(project(":platform:customization"))
 
             implementation(project(":features:auth_ui"))
             implementation(project(":features:ledger:contract"))

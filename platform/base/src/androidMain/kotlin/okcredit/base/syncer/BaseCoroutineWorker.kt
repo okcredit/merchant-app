@@ -6,6 +6,7 @@ import androidx.work.Data
 import androidx.work.WorkerParameters
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.json.JsonObject
 
 abstract class BaseCoroutineWorker(
     appContext: Context,
@@ -43,4 +44,13 @@ abstract class BaseCoroutineWorker(
     fun setOutputData(outputData: Data) {
         this.outputData = outputData
     }
+}
+
+fun JsonObject.toWorkerData(): Data {
+    val dataBuilder = Data.Builder()
+    for (pair in this.entries) {
+        dataBuilder.putAll(this.entries.associate { it.key to it.value.toAnyOrNull() })
+    }
+
+    return dataBuilder.build()
 }

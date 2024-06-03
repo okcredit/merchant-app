@@ -18,7 +18,6 @@ class SupplierProjection(
 ) {
 
     private val accountQueries by lazy { database.accountQueries }
-    private val transactionQueries by lazy { database.transactionQueries }
 
     private fun listAllSuppliersByBalance(
         businessId: String,

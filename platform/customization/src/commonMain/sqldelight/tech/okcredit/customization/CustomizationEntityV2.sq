@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS `CustomizationEntityV2` (
+    `target` TEXT NOT NULL,
+    `component` TEXT NOT NULL,
+    `businessId` TEXT NOT NULL,
+    PRIMARY KEY(`target`, `businessId`)
+ );
+
+
+ insert:
+ INSERT OR REPLACE INTO
+    `CustomizationEntityV2`(`target`, `component`, `businessId`)
+ VALUES (?, ?, ?);
+
+listComponentsForTarget:
+SELECT `component`
+FROM `CustomizationEntityV2`
+WHERE `target` = :target;

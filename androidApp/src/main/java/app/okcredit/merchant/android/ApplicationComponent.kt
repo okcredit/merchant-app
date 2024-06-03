@@ -23,6 +23,7 @@ import okcredit.base.syncer.AppWorkerFactory
 import tech.okcredit.ab.AndroidAbComponent
 import tech.okcredit.analytics.AndroidAnalyticsComponent
 import tech.okcredit.auth.AndroidAuthComponent
+import tech.okcredit.customization.di.AndroidCustomizationComponent
 import tech.okcredit.device.AndroidDeviceComponent
 import tech.okcredit.identity.AndroidIdentityComponent
 import tech.okcredit.okdoc.AndroidOkDocComponent
@@ -45,7 +46,8 @@ abstract class ApplicationComponent(
     AndroidOkDocComponent,
     AndroidSharedModule,
     AndroidLedgerComponent,
-    OnboardingModule {
+    OnboardingModule,
+    AndroidCustomizationComponent {
 
     abstract val appWorkerFactory: () -> AppWorkerFactory
 
@@ -56,8 +58,6 @@ abstract class ApplicationComponent(
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
 
     abstract val onboardingScreenRegistryProvider: OnboardingScreenRegistryProvider
-
-    abstract val ledger: Ledger
 
     @Singleton
     @Provides

@@ -41,6 +41,7 @@ include(":platform:identity")
 include(":platform:identity:contract")
 include(":platform:okdoc")
 include(":platform:design_system")
+include(":platform:customization")
 
 include(":features:ledger:core")
 include(":features:ledger:contract")

@@ -13,6 +13,7 @@ import okcredit.base.local.Scope
 import okcredit.base.syncer.OkcWorkManager
 import okcredit.base.syncer.toAnyOrNull
 import okcredit.base.syncer.toStringOrNull
+import okcredit.base.syncer.toWorkerData
 import java.util.concurrent.TimeUnit
 
 @Inject
@@ -46,17 +47,8 @@ class AndroidTransactionSyncer(
         workManager.schedule(
             uniqueWorkName = workName,
             scope = Scope.Individual,
-            existingWorkPolicy = ExistingWorkPolicy.REPLACE,
+            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE,
             workRequest = workRequest,
         )
     }
-}
-
-private fun JsonObject.toWorkerData(): Data {
-    val dataBuilder = Data.Builder()
-    for (pair in this.entries) {
-        dataBuilder.putAll(this.entries.associate { it.key to it.value.toAnyOrNull() })
-    }
-
-    return dataBuilder.build()
 }

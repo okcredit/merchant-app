@@ -10,12 +10,13 @@ import tech.okcredit.identity.contract.usecase.*
 import tech.okcredit.identity.local.IdentityDatabase
 import tech.okcredit.identity.local.IdentityDatabaseQueries
 import tech.okcredit.identity.remote.IdentityApiClient
+import tech.okcredit.identity.remote.createIdentityApiClient
 import tech.okcredit.identity.usecase.*
 
 interface IdentityComponent {
 
     @Provides
-    fun identityApiClient(ktorfit: Lazy<Ktorfit>): IdentityApiClient = ktorfit.value.create()
+    fun identityApiClient(ktorfit: Ktorfit): IdentityApiClient = ktorfit.createIdentityApiClient()
 
     @Provides
     fun identityDatabase(driverFactory: IdentityDriverFactory): IdentityDatabaseQueries {

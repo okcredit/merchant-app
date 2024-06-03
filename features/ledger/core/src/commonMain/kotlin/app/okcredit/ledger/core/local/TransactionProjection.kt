@@ -215,7 +215,6 @@ class TransactionProjection(
                         CommandType.UPDATE_AMOUNT -> json.decodeFromString<UpdateTransactionAmount>(
                             it.data_
                         )
-
                         CommandType.UPDATE_NOTE -> json.decodeFromString<UpdateTransactionNote>(it.data_)
                     }
                 }

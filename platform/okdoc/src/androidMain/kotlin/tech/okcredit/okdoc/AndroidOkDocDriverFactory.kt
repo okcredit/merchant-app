@@ -5,6 +5,7 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
+import tech.okcredit.okdoc.di.OkDocDriverFactory
 import tech.okcredit.okdoc.local.OkDocDatabase
 
 @Inject
