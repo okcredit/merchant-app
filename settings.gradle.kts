@@ -24,11 +24,15 @@ dependencyResolutionManagement {
         }
         mavenCentral()
         mavenLocal()
+
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://oss.sonatype.org/content/repositories/releases/")
     }
 }
 
 rootProject.name = "merchant-app"
 include(":androidApp")
+include(":webApp")
 include(":shared")
 include(":shared:shared_contract")
 

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
@@ -8,6 +10,12 @@ plugins {
 
 kotlin {
     sourceSets {
+        targets.withType<KotlinNativeTarget>().configureEach {
+            binaries.framework {
+                isStatic = true
+                baseName = "auth_ui"
+            }
+        }
         commonMain.dependencies {
             implementation(project(":platform:base"))
             implementation(project(":platform:auth"))

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
@@ -8,6 +10,14 @@ plugins {
 
 kotlin {
     sourceSets {
+        targets.withType<KotlinNativeTarget>().configureEach {
+            binaries.framework {
+                isStatic = true
+                baseName = "shared"
+                linkerOpts("-lsqlite3")
+            }
+        }
+
         commonMain.dependencies {
             implementation(project(":shared:shared_contract"))
 
@@ -40,8 +50,10 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.androidx.activityCompose)
-
             implementation(compose.uiTooling)
+        }
+        iosMain.invoke {
+
         }
     }
 }

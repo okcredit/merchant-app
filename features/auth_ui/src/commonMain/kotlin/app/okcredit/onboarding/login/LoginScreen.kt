@@ -17,11 +17,16 @@ import okcredit.base.di.rememberScreenModel
 @Inject
 class LoginScreen : Screen {
 
+
+
     @Composable
     override fun Content() {
         val screenModel = rememberScreenModel<LoginScreenModel>(LoginScreenModel::class)
+
         val state by screenModel.states.collectAsState()
+
         val navigator = LocalNavigator.currentOrThrow
+
         screenModel.observeViewEvents {
             handleViewEvent(it, navigator)
         }

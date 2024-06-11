@@ -16,8 +16,6 @@
 
 ### Getting Started
 
-
-
 ### Pending Work
 - Complete Design System
 - Web support using Kotlin/Wasm

@@ -23,7 +23,7 @@ kotlin {
             api(libs.bundles.multiplatform.settings)
             api(libs.bundles.ktorfit.common)
             api(libs.kotlininject.runtime)
-            api(libs.voyager.navigator)
+            api(libs.bundles.voyager.common)
             implementation(libs.bundles.sqldelight.common)
         }
         commonTest.dependencies {

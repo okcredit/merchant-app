@@ -45,7 +45,6 @@ sqldelight {
             packageName.set("app.okcredit.ledger.local")
         }
     }
-    linkSqlite = true
 }
 
 android {

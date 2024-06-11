@@ -6,7 +6,7 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.ScreenModelPair
 
-interface OnboardingModule {
+interface OnboardingComponent {
 
     @Provides
     @IntoMap

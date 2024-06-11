@@ -1,7 +1,7 @@
 package okcredit.base.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +45,7 @@ abstract class BaseCoroutineScreenModel<
     final override val states: StateFlow<S> = stateRelay.asStateFlow()
 
     private val intentRelay: MutableSharedFlow<I> = MutableSharedFlow()
-    final override fun pushIntent(intent: I) = coroutineScope.launch { intentRelay.emit(intent) }
+    final override fun pushIntent(intent: I) = screenModelScope.launch { intentRelay.emit(intent) }
     protected val intents: Flow<I> = intentRelay.asSharedFlow()
 
     private val viewEventsRelay: Channel<E> = Channel(Channel.BUFFERED)
@@ -72,6 +72,6 @@ abstract class BaseCoroutineScreenModel<
             .flowOn(appDispatchers.io)
             .onEach { withContext(Dispatchers.Main) { stateRelay.emit(it) } }
             .catch { it.printStackTrace() }
-            .launchIn(coroutineScope)
+            .launchIn(screenModelScope)
     }
 }

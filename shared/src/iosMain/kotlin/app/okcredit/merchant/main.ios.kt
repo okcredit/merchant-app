@@ -5,7 +5,7 @@ import cafe.adriel.voyager.core.registry.ScreenRegistry
 import platform.UIKit.UIViewController
 
 fun mainViewController(): UIViewController {
-    val applicationComponent = ApplicationComponent::class.create(
+    val applicationComponent = ApplicationComponent.createKmp(
         baseUrl = "https://okapis.io/",
         appVersion = "1.0.0",
         versionCode = 100,
