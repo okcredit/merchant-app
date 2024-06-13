@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS `CollectionListEntity` (
+    `id` TEXT NOT NULL,
+    `businessId` TEXT NOT NULL,
+    `name` TEXT NOT NULL,
+    `url` TEXT NOT NULL,
+    `usageType` INTEGER NOT NULL,
+    `type` INTEGER NOT NULL,
+    `config` INTEGER NOT NULL,
+    `totalCustomerCount` INTEGER NOT NULL,
+    `configStartTime` INTEGER,
+    `configEndTime` INTEGER,
+    PRIMARY KEY(`id`)
+    );
+
+
+insert:
+INSERT INTO `CollectionListEntity`(`id`, `businessId`, `name`, `url`, `usageType`, `type`, `config`, `totalCustomerCount`, `configStartTime`, `configEndTime`) VALUES ?;

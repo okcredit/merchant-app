@@ -9,6 +9,6 @@ import tech.okcredit.okdoc.local.OkDocDatabase
 class IosLedgerDriverFactory : LedgerDriverFactory {
 
     override fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(OkDocDatabase.Schema, "okcredit/okdoc.db")
+        return NativeSqliteDriver(OkDocDatabase.Schema, "okcredit_ledger.db")
     }
 }

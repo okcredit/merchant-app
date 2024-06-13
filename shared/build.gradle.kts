@@ -35,6 +35,7 @@ kotlin {
             implementation(project(":features:auth_ui"))
             implementation(project(":features:ledger:contract"))
             implementation(project(":features:ledger:core"))
+            implementation(project(":features:online_payments:staff_link"))
 
             implementation(compose.ui)
             implementation(compose.foundation)

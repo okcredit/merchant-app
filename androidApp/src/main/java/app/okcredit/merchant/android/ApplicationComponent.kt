@@ -6,6 +6,7 @@ import app.okcredit.merchant.AndroidSharedComponent
 import app.okcredit.merchant.SharedScreenRegistryProvider
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import app.okcredit.onboarding.di.OnboardingComponent
+import app.okcredit.staff_link.di.AndroidStaffLinkComponent
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -46,7 +47,8 @@ abstract class ApplicationComponent(
     AndroidSharedComponent,
     AndroidLedgerComponent,
     OnboardingComponent,
-    AndroidCustomizationComponent {
+    AndroidCustomizationComponent,
+    AndroidStaffLinkComponent {
 
     abstract val appWorkerFactory: () -> AppWorkerFactory
 

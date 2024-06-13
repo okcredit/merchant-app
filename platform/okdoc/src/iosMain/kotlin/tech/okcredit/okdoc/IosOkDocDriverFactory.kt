@@ -10,6 +10,6 @@ import tech.okcredit.okdoc.local.OkDocDatabase
 class IosOkDocDriverFactory : OkDocDriverFactory {
 
     override fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(OkDocDatabase.Schema, "okcredit/okdoc.db")
+        return NativeSqliteDriver(OkDocDatabase.Schema, "okcredit_okdoc.db")
     }
 }
