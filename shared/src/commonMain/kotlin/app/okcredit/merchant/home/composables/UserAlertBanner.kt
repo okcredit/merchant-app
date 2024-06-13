@@ -8,16 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.okcredit.merchant.home.HomeContract
 import app.okcredit.ui.icon_cloud_off
 import app.okcredit.ui.theme.OkCreditTheme
@@ -34,7 +34,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (HomeContract.UserAlert) -> Unit) {
     Card(
-        backgroundColor = orange_lite_1,
+        colors = CardDefaults.cardColors().copy(containerColor = orange_lite_1),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.padding(horizontal = 16.dp),
     ) {
@@ -54,7 +54,7 @@ fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (Home
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = userAlert.getMessage(),
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1.0f)
             )
             if (userAlert.getCta().isNotEmpty()) {
@@ -63,7 +63,7 @@ fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (Home
                 }) {
                     Text(
                         text = userAlert.getCta(),
-                        style = MaterialTheme.typography.subtitle2.copy(fontSize = 12.sp),
+                        style = MaterialTheme.typography.labelSmall,
                         color = orange_primary
                     )
                 }

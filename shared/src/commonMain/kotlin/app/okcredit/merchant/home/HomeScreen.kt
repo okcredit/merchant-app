@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import app.okcredit.merchant.home.HomeContract.State
 import app.okcredit.merchant.home.HomeContract.ViewEvent
 import app.okcredit.merchant.home.composables.HomeScreenUi
+import app.okcredit.ui.theme.OkCreditTheme
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -34,28 +35,30 @@ class HomeScreen : Screen {
 
     @Composable
     private fun Render(screenModel: HomeScreenModel, state: State) {
-        HomeScreenUi(
-            state = state,
-            onTabChanged = {
-                val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
-                screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
-            },
-            onAvatarClicked = ::onBusinessClicked,
-            onToolbarActionClicked = {},
-            onPrimaryVpaClicked = {},
-            onSearchClicked = {},
-            onSortAndFilterClicked = {},
-            onCustomerClicked = {},
-            onSupplierClicked = {},
-            onCustomerProfileClicked = {},
-            onSupplierProfileClicked = {},
-            onAddRelationshipClicked = {},
-            onDynamicItemClicked = {_, _ ->},
-            onSummaryCardClicked = {},
-            onPullToRefresh = {},
-            onClearFilterClicked = {},
-            onUserAlertClicked = {},
-        )
+        OkCreditTheme {
+            HomeScreenUi(
+                state = state,
+                onTabChanged = {
+                    val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
+                    screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
+                },
+                onAvatarClicked = ::onBusinessClicked,
+                onToolbarActionClicked = {},
+                onPrimaryVpaClicked = {},
+                onSearchClicked = {},
+                onSortAndFilterClicked = {},
+                onCustomerClicked = {},
+                onSupplierClicked = {},
+                onCustomerProfileClicked = {},
+                onSupplierProfileClicked = {},
+                onAddRelationshipClicked = {},
+                onDynamicItemClicked = { _, _ -> },
+                onSummaryCardClicked = {},
+                onPullToRefresh = {},
+                onClearFilterClicked = {},
+                onUserAlertClicked = {},
+            )
+        }
     }
 
     private fun onBusinessClicked() {

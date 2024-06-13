@@ -12,7 +12,6 @@ import kotlinx.serialization.modules.SerializersModule
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.appDispatchers
 import tech.okcredit.customization.models.Action
-import tech.okcredit.customization.models.ActionSerializer
 import tech.okcredit.customization.models.Component
 import tech.okcredit.customization.models.TargetComponent
 
@@ -36,9 +35,6 @@ class CustomizationLocalSource(
         isLenient = true
         ignoreUnknownKeys = true
         explicitNulls = false
-        serializersModule = SerializersModule {
-            polymorphicDefaultDeserializer(Action::class) { ActionSerializer }
-        }
     }
 
     suspend fun insertComponents(businessId: String, list: List<TargetComponent>) {

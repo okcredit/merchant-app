@@ -14,11 +14,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +45,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import tech.okcredit.identity.contract.model.Business
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeTabBar(
     toolbarAction: HomeContract.ToolbarAction?,
@@ -59,9 +57,11 @@ fun HomeTabBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.background)
             .heightIn(min = 48.dp)
             .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+
     ) {
         AvatarWithName(
             customerName = activeBusiness?.name?.takeIf { it.isNotEmpty() }
@@ -109,12 +109,12 @@ fun HomeTabBar(
                             painter = painterResource(resource = getIconForToolbar(toolbarAction = toolbarAction)),
                             contentDescription = getLabelForToolbar(toolbarAction = toolbarAction),
                             modifier = Modifier.size(20.dp),
-                            colorFilter = if (toolbarAction == HomeContract.ToolbarAction.ACTIVATE_UPI) null else ColorFilter.tint(MaterialTheme.colors.onBackground)
+                            colorFilter = if (toolbarAction == HomeContract.ToolbarAction.ACTIVATE_UPI) null else ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = getLabelForToolbar(toolbarAction = toolbarAction),
-                            style = MaterialTheme.typography.subtitle2.copy(fontSize = 12.sp),
+                            style = MaterialTheme.typography.labelSmall,
                         )
                     }
                 }
@@ -141,7 +141,6 @@ fun getLabelForToolbar(toolbarAction: HomeContract.ToolbarAction): String {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PrimaryVpa(primaryVpa: String, onPrimaryVpaClicked: () -> Unit) {
     Surface(
@@ -158,7 +157,7 @@ fun PrimaryVpa(primaryVpa: String, onPrimaryVpaClicked: () -> Unit) {
                 painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_qr_code),
                 contentDescription = "",
                 modifier = Modifier.size(20.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
@@ -171,7 +170,7 @@ fun PrimaryVpa(primaryVpa: String, onPrimaryVpaClicked: () -> Unit) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.widthIn(max = 150.dp),
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }

@@ -8,10 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +34,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SummaryCard(
     summaryItem: HomeContract.HomeItem.SummaryItem,
@@ -68,7 +66,7 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
         Column(modifier = Modifier.weight(1.0f)) {
             Text(
                 text = stringResource(Res.string.net_balance),
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.titleSmall,
             )
             Spacer(modifier = Modifier.size(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -80,10 +78,10 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                 )
                 Text(
                     text = "$totalAccounts Accounts",
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp),
                     fontSize = 10.sp,
-                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
         }
@@ -93,8 +91,8 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = netBalance.toString(),
-                    style = MaterialTheme.typography.subtitle1,
-                    color = if (netBalance >= 0.paisa) MaterialTheme.colors.primary else MaterialTheme.colors.error
+                    style = MaterialTheme.typography.titleMedium,
+                    color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
                 Image(
                     painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_chevron_right),
@@ -103,7 +101,7 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                         .padding(top = 2.dp)
                         .size(16.dp),
                     colorFilter = ColorFilter.tint(
-                        color = if (netBalance >= 0.paisa) MaterialTheme.colors.primary else MaterialTheme.colors.error
+                        color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                     )
                 )
             }
@@ -116,12 +114,12 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                         (if (netBalance <= 0.paisa) Res.string.you_pay else Res.string.you_get)
                     }
                 ),
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .align(Alignment.End),
                 fontSize = 10.sp,
-                color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
         }
     }

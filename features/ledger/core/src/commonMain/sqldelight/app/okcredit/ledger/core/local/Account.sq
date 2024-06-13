@@ -4,7 +4,7 @@ import kotlin.Boolean;
 import okcredit.base.units.Paisa;
 import okcredit.base.units.Timestamp;
 
-CREATE TABLE Account (
+CREATE TABLE IF NOT EXISTS Account (
     id TEXT NOT NULL UNIQUE PRIMARY KEY ,
     businessId TEXT NOT NULL,
     type TEXT AS AccountType NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE Account (
     updatedAt INTEGER AS Timestamp NOT NULL
 );
 
-CREATE TABLE CustomerSettings (
+CREATE TABLE IF NOT EXISTS CustomerSettings (
     customerId TEXT NOT NULL UNIQUE PRIMARY KEY ,
     txnAlertEnabled INTEGER AS Boolean NOT NULL DEFAULT 0,
     restrictContactSync INTEGER AS Boolean NOT NULL DEFAULT 0,
@@ -30,7 +30,7 @@ CREATE TABLE CustomerSettings (
 );
 
 
-CREATE TABLE CustomerSummary (
+CREATE TABLE IF NOT EXISTS CustomerSummary (
     customerId TEXT NOT NULL UNIQUE PRIMARY KEY,
     balance INTEGER AS Paisa NOT NULL,
     lastActivity INTEGER AS Timestamp NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE CustomerSummary (
     transactionCount INTEGER NOT NULL
 );
 
-CREATE TABLE SupplierSettings (
+CREATE TABLE IF NOT EXISTS SupplierSettings (
     supplierId TEXT NOT NULL UNIQUE PRIMARY KEY ,
     txnAlertEnabled INTEGER AS Boolean NOT NULL DEFAULT 0,
     blockedBySupplier INTEGER AS Boolean NOT NULL DEFAULT 0,
@@ -49,7 +49,7 @@ CREATE TABLE SupplierSettings (
 );
 
 
-CREATE TABLE SupplierSummary (
+CREATE TABLE IF NOT EXISTS SupplierSummary (
     supplierId TEXT NOT NULL UNIQUE PRIMARY KEY,
     balance INTEGER AS Paisa NOT NULL,
     lastActivity INTEGER AS Timestamp NOT NULL,
@@ -59,7 +59,31 @@ CREATE TABLE SupplierSummary (
 );
 
 allAccountsByName:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastPayment,
+    c.lastAmount,
+    c.lastReminderSendTime,
+    c.transactionCount,
+    s.reminderMode,
+    s.addTransactionRestricted,
+    s.blockedByCustomer,
+    s.language,
+    s.txnAlertEnabled,
+    s.restrictContactSync
 FROM Account AS a
 INNER JOIN CustomerSettings AS s ON a.id = s.customerId
 INNER JOIN CustomerSummary AS c ON a.id = c.customerId
@@ -67,7 +91,31 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY a.name ASC LIMIT :limit OFFSET :offset;
 
 allAccountsByBalanceDue:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastPayment,
+    c.lastAmount,
+    c.lastReminderSendTime,
+    c.transactionCount,
+    s.reminderMode,
+    s.addTransactionRestricted,
+    s.blockedByCustomer,
+    s.language,
+    s.txnAlertEnabled,
+    s.restrictContactSync
 FROM Account AS a
 INNER JOIN CustomerSettings AS s ON a.id = s.customerId
 INNER JOIN CustomerSummary AS c ON a.id = c.customerId
@@ -75,7 +123,31 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY c.balance ASC LIMIT :limit OFFSET :offset;
 
 allAccountsByLastActivity:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastPayment,
+    c.lastAmount,
+    c.lastReminderSendTime,
+    c.transactionCount,
+    s.reminderMode,
+    s.addTransactionRestricted,
+    s.blockedByCustomer,
+    s.language,
+    s.txnAlertEnabled,
+    s.restrictContactSync
 FROM Account AS a
 INNER JOIN CustomerSettings AS s ON a.id = s.customerId
 INNER JOIN CustomerSummary AS c ON a.id = c.customerId
@@ -83,7 +155,31 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY c.lastActivity DESC LIMIT :limit OFFSET :offset;
 
 allAccountsByLastPayment:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastPayment,
+    c.lastAmount,
+    c.lastReminderSendTime,
+    c.transactionCount,
+    s.reminderMode,
+    s.addTransactionRestricted,
+    s.blockedByCustomer,
+    s.language,
+    s.txnAlertEnabled,
+    s.restrictContactSync
 FROM Account AS a
 INNER JOIN CustomerSettings AS s ON a.id = s.customerId
 INNER JOIN CustomerSummary AS c ON a.id = c.customerId
@@ -91,7 +187,26 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY c.lastPayment DESC LIMIT :limit OFFSET :offset;
 
 allSuppliersByName:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastAmount,
+    c.transactionCount,
+    s.addTransactionRestricted,
+    s.blockedBySupplier,
+    s.txnAlertEnabled
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
@@ -99,7 +214,26 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY a.name ASC LIMIT :limit OFFSET :offset;
 
 allSuppliersByBalanceDue:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastAmount,
+    c.transactionCount,
+    s.addTransactionRestricted,
+    s.blockedBySupplier,
+    s.txnAlertEnabled
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
@@ -107,7 +241,26 @@ WHERE a.type = :accountType AND a.businessId = :businessId
 ORDER BY c.balance ASC LIMIT :limit OFFSET :offset;
 
 allSuppliersByLastActivity:
-SELECT *
+SELECT
+    a.id,
+    a.businessId,
+    a.name,
+    a.status,
+    a.mobile,
+    a.profileImage,
+    a.accountUrl,
+    a.registered,
+    a.gstNumber,
+    a.createdAt,
+    a.updatedAt,
+    c.balance,
+    c.lastActivity,
+    c.lastActivityMetaInfo,
+    c.lastAmount,
+    c.transactionCount,
+    s.addTransactionRestricted,
+    s.blockedBySupplier,
+    s.txnAlertEnabled
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId

@@ -1,5 +1,6 @@
 package app.okcredit.merchant.home.usecase
 
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.usecase.GetAccounts
 import app.okcredit.ledger.contract.usecase.SortBy
@@ -8,8 +9,6 @@ import app.okcredit.merchant.home.HomeTab
 import app.okcredit.merchant.home.SortOption
 import app.okcredit.merchant.home.SubtitleIconType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
@@ -20,24 +19,20 @@ import okcredit.base.units.paisa
 
 @Inject
 class GetSuppliersForHome(
-    private val supplierCreditRepository: Lazy<GetAccounts>,
+    private val getAccountsLazy: Lazy<GetAccounts>,
 ) {
 
     fun execute(sortOption: SortOption): Flow<SupplierForHomeResponse> {
-        return flow {
-            emitAll(
-                supplierCreditRepository.value.execute(sortBy = SortBy.LAST_ACTIVITY)
-                    .map { suppliers ->
-                        SupplierForHomeResponse(
-                            items = buildSupplierList(
-                                suppliers = suppliers as List<Supplier>,
-                                sortOption = sortOption,
-                            ),
-                            sortOption = sortOption
-                        )
-                    }
-            )
-        }
+        return getAccountsLazy.value.execute(sortBy = SortBy.LAST_ACTIVITY, accountType = AccountType.SUPPLIER)
+            .map { suppliers ->
+                SupplierForHomeResponse(
+                    items = buildSupplierList(
+                        suppliers = suppliers as List<Supplier>,
+                        sortOption = sortOption,
+                    ),
+                    sortOption = sortOption
+                )
+            }
     }
 
     private fun buildSupplierList(

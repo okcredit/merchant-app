@@ -8,6 +8,7 @@ import app.okcredit.ledger.contract.model.CustomerStatus
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -29,6 +30,7 @@ class CustomerProjection(
         limit: Int = 1000,
         offset: Int = 0,
     ): Flow<List<Customer>> {
+        println("listAllCustomers called with businessId: $businessId, sortBy: $sortBy, limit: $limit, offset: $offset")
         return when (sortBy) {
             SortBy.NAME -> listAllAccountsByName(
                 businessId = businessId,
@@ -67,7 +69,7 @@ class CustomerProjection(
         accountType = AccountType.CUSTOMER,
     ).mapToDomainList { customer ->
         Customer(
-            id = customer.customerId,
+            id = customer.id,
             businessId = customer.businessId,
             name = customer.name,
             profileImage = customer.profileImage,
@@ -109,7 +111,7 @@ class CustomerProjection(
     )
         .mapToDomainList { customer ->
             Customer(
-                id = customer.customerId,
+                id = customer.id,
                 businessId = customer.businessId,
                 status = customer.status,
                 name = customer.name,
@@ -151,7 +153,7 @@ class CustomerProjection(
     )
         .mapToDomainList { customer ->
             Customer(
-                id = customer.customerId,
+                id = customer.id,
                 businessId = customer.businessId,
                 status = customer.status,
                 name = customer.name,
@@ -193,7 +195,7 @@ class CustomerProjection(
     )
         .mapToDomainList { customer ->
             Customer(
-                id = customer.customerId,
+                id = customer.id,
                 businessId = customer.businessId,
                 status = customer.status,
                 name = customer.name,

@@ -38,7 +38,6 @@ kotlin {
 
             implementation(compose.ui)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.runtime)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)

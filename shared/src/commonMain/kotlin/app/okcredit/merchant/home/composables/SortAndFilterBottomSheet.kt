@@ -14,19 +14,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.okcredit.merchant.home.CategoryOption
 import app.okcredit.merchant.home.HomeTab
 import app.okcredit.merchant.home.ReminderFilterOption
@@ -79,7 +79,7 @@ fun SortAndFilterBottomSheet(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colors.surface,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
     ) {
@@ -87,7 +87,7 @@ fun SortAndFilterBottomSheet(
             tab = currentTab,
             onDismissClicked = onDismissClicked
         )
-        Divider(color = grey100)
+        HorizontalDivider()
 
         val currentSortBy = remember { mutableStateOf(selectedSortByOption) }
         val currentReminderFilters = remember { mutableStateOf(selectedReminderFilters) }
@@ -113,7 +113,7 @@ fun SortAndFilterBottomSheet(
         LaunchedEffect(selectedReminderFilters) {
             currentReminderFilters.value = selectedReminderFilters
         }
-        Divider(color = grey100)
+        HorizontalDivider()
         Footer(
             onApplyClicked = {
                 onApplyClicked(currentSortBy.value, currentReminderFilters.value)
@@ -228,7 +228,7 @@ fun FilterCategoryItemUi(
     onCategorySelected: (CategoryOption) -> Unit,
 ) {
     Column(modifier = modifier) {
-        val color = MaterialTheme.colors.primary
+        val color = MaterialTheme.colorScheme.primary
         categoryOptions.forEach { category ->
             val isSelected = selectedCategory == category
             Box(
@@ -253,11 +253,11 @@ fun FilterCategoryItemUi(
                             bottom = 14.dp
                         ),
                     text = findLabelForCategory(category),
-                    style = MaterialTheme.typography.subtitle2.copy(fontSize = 12.sp),
+                    style = MaterialTheme.typography.labelSmall,
                     color = if (isSelected) green_primary else grey900
                 )
             }
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .align(Alignment.End)
                     .width(104.dp),
@@ -299,7 +299,7 @@ fun FilterOptionsRadioButtonsUi(
                         bottom = 18.dp
                     ),
                     text = findLabelForSortOption(option),
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
                 RadioButton(
@@ -345,7 +345,7 @@ fun FilterOptionsCheckboxUi(
                             bottom = 18.dp
                         ),
                         text = findLabelForReminderOption(item),
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
 
                     Checkbox(
@@ -353,10 +353,10 @@ fun FilterOptionsCheckboxUi(
                         onCheckedChange = { _ -> onOptionSelected(item) },
                         colors = CheckboxDefaults.colors(
                             checkedColor = green_primary,
-                            uncheckedColor = MaterialTheme.colors.onSurface.copy(
+                            uncheckedColor = MaterialTheme.colorScheme.onSurface.copy(
                                 alpha = 0.6f
                             ),
-                            checkmarkColor = MaterialTheme.colors.surface
+                            checkmarkColor = MaterialTheme.colorScheme.surface
                         )
                     )
                 }
@@ -386,22 +386,22 @@ fun Footer(onApplyClicked: () -> Unit, onClearClicked: () -> Unit) {
                 .weight(1f)
                 .padding(end = 8.dp),
             border = BorderStroke(1.dp, green_lite_1),
-            colors = ButtonDefaults.buttonColors(backgroundColor = green_lite),
+            colors = ButtonDefaults.buttonColors(containerColor = green_lite),
             onClick = onClearClicked
         ) {
-            Text(text = stringResource(Res.string.clear), style = MaterialTheme.typography.subtitle2)
+            Text(text = stringResource(Res.string.clear), style = MaterialTheme.typography.labelLarge)
         }
 
         Button(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = green_primary),
+            colors = ButtonDefaults.buttonColors(containerColor = green_primary),
             onClick = onApplyClicked
         ) {
             Text(
                 text = stringResource(resource = Res.string.cta_apply),
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.labelLarge,
                 color = white
             )
         }
@@ -420,7 +420,7 @@ fun SortAndFilterHeader(tab: HomeTab, onDismissClicked: () -> Unit) {
             modifier = Modifier
                 .weight(1.0f)
                 .padding(16.dp),
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.titleLarge
         )
 
         IconButton(onClick = onDismissClicked) {

@@ -1,9 +1,6 @@
 package tech.okcredit.customization
 
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import tech.okcredit.customization.models.Action
-import tech.okcredit.customization.models.ActionSerializer
 import tech.okcredit.customization.models.TargetComponent
 import kotlin.test.Test
 
@@ -498,9 +495,6 @@ class CustomizationTest {
             isLenient = true
             ignoreUnknownKeys = true
             explicitNulls = false
-            serializersModule = SerializersModule {
-                polymorphicDefaultDeserializer(Action::class) { ActionSerializer }
-            }
         }
 
         val result = json.decodeFromString<List<TargetComponent>>(response)

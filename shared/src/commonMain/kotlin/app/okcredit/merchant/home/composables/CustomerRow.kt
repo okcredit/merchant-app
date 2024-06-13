@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import app.okcredit.merchant.home.HomeContract
 import app.okcredit.merchant.home.SubtitleType
 import app.okcredit.ui.advance
@@ -66,7 +65,7 @@ fun CustomerRow(
             ) {
                 Text(
                     text = customerItem.name,
-                    style = MaterialTheme.typography.subtitle2,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -84,12 +83,12 @@ fun CustomerRow(
             ) {
                 Text(
                     text = customerItem.balance.toString(),
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.align(Alignment.End),
                     color = if (customerItem.balance >= 0.paisa) {
-                        MaterialTheme.colors.primary
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colors.error
+                        MaterialTheme.colorScheme.error
                     }
                 )
                 Text(
@@ -98,13 +97,13 @@ fun CustomerRow(
                     } else {
                         stringResource(resource = app.okcredit.ui.Res.string.due)
                     },
-                    style = MaterialTheme.typography.subtitle2.copy(fontSize = 12.sp),
+                    style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.End),
-                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
         }
-        Divider(modifier = Modifier.padding(start = 72.dp, end = 16.dp))
+        HorizontalDivider(modifier = Modifier.padding(start = 72.dp, end = 16.dp))
     }
 }
 
@@ -125,7 +124,7 @@ fun SubtitleText(subtitle: AnnotatedString, type: SubtitleType?) {
         }
         Text(
             text = subtitle,
-            style = MaterialTheme.typography.caption,
+            style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
             modifier = Modifier.weight(1.0f),
             overflow = TextOverflow.Ellipsis,
@@ -137,9 +136,9 @@ fun SubtitleText(subtitle: AnnotatedString, type: SubtitleType?) {
 @Composable
 fun findSubtitleColorForType(subtitleType: SubtitleType): Color {
     return when (subtitleType) {
-        SubtitleType.DUE_TODAY -> MaterialTheme.colors.primary
-        SubtitleType.DUE_DATE_PASSED -> MaterialTheme.colors.error
-        else -> MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+        SubtitleType.DUE_TODAY -> MaterialTheme.colorScheme.primary
+        SubtitleType.DUE_DATE_PASSED -> MaterialTheme.colorScheme.error
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
     }
 }
 

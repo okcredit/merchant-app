@@ -1,10 +1,9 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialApi::class,
-    ExperimentalMaterialApi::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package app.okcredit.merchant.home.composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,24 +26,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropValue
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonElevation
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material.rememberBackdropScaffoldState
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -92,7 +90,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreenUi(
     state: HomeContract.State,
@@ -113,15 +110,13 @@ fun HomeScreenUi(
     onClearFilterClicked: () -> Unit,
     onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
 ) {
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = state.homeSyncLoading,
-        onRefresh = onPullToRefresh
-    )
+    val pullRefreshState = rememberPullToRefreshState {
+        state.homeSyncLoading
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .pullRefresh(pullRefreshState)
     ) {
         val customerListState = rememberLazyListState()
         val supplierListState = rememberLazyListState()
@@ -131,13 +126,18 @@ fun HomeScreenUi(
         val extendFabInSupplier by remember {
             derivedStateOf { supplierListState.firstVisibleItemIndex == 0 }
         }
-        BackdropScaffold(
-            scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed),
-            frontLayerShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-            frontLayerScrimColor = Color.Unspecified,
-            backLayerBackgroundColor = grey50,
+        val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+        LaunchedEffect(Unit) {
+            bottomSheetState.show()
+        }
+        BottomSheetScaffold(
+            scaffoldState = rememberBottomSheetScaffoldState(
+                bottomSheetState = bottomSheetState,
+
+            ),
             modifier = Modifier.fillMaxSize(),
-            appBar = {
+            topBar = {
                 HomeTabBar(
                     toolbarAction = state.toolbarAction,
                     activeBusiness = state.activeBusiness,
@@ -147,15 +147,18 @@ fun HomeScreenUi(
                     onPrimaryVpaClicked = onPrimaryVpaClicked,
                 )
             },
-            backLayerContent = {
-                DynamicComponent(
-                    dynamicItems = state.dynamicItems,
-                    userAlert = state.userAlert,
-                    onDynamicItemClicked = onDynamicItemClicked,
-                    onUserAlertClicked = onUserAlertClicked,
-                )
+            content = {
+                Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+                    DynamicComponent(
+                        dynamicItems = state.dynamicItems,
+                        userAlert = state.userAlert,
+                        onDynamicItemClicked = onDynamicItemClicked,
+                        onUserAlertClicked = onUserAlertClicked,
+                    )
+                }
             },
-            frontLayerContent = {
+            sheetContainerColor = MaterialTheme.colorScheme.surface,
+            sheetContent = {
                 HomeContent(
                     state = state,
                     customerListState = customerListState,
@@ -172,12 +175,6 @@ fun HomeScreenUi(
                     onClearFilterClicked = onClearFilterClicked
                 )
             }
-        )
-
-        PullRefreshIndicator(
-            refreshing = state.homeSyncLoading,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
         )
 
         BottomActions(
@@ -215,7 +212,7 @@ fun BottomActions(
                                 Res.string.add_customer
                             }
                         ),
-                        style = MaterialTheme.typography.subtitle2,
+                        style = MaterialTheme.typography.titleSmall,
                         color = grey900
                     )
                 },
@@ -229,7 +226,8 @@ fun BottomActions(
                 },
                 minSize = 56.dp,
                 onClick = onAddRelationshipClicked,
-                modifier = Modifier.semantics { contentDescription = "Add Relationship" }.testTag("Add Relationship")
+                modifier = Modifier.semantics { contentDescription = "Add Relationship" }
+                    .testTag("Add Relationship")
             )
         }
     }
@@ -249,7 +247,7 @@ fun AnimatedExtendedFloatingActionButton(
         modifier = modifier.sizeIn(minWidth = minSize, minHeight = minSize),
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        backgroundColor = background,
+        containerColor = background,
     ) {
         Row(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
@@ -283,7 +281,7 @@ fun HomeContent(
     onAddRelationshipClicked: () -> Unit,
     onClearFilterClicked: () -> Unit,
 ) {
-    Column(modifier = Modifier) {
+    Column {
         Spacer(modifier = Modifier.size(12.dp))
         val pagerState = rememberPagerState { 2 }
         val scope = rememberCoroutineScope()
@@ -335,8 +333,10 @@ fun HomeContent(
                                             drawableId = app.okcredit.ui.Res.drawable.icon_add_photo,
                                             color = green_lite_1,
                                             text = stringResource(resource = Res.string.add_customer),
-                                            drawableTint = MaterialTheme.colors.onSurface,
-                                            textStyle = MaterialTheme.typography.button.copy(color = MaterialTheme.colors.onSurface),
+                                            drawableTint = MaterialTheme.colorScheme.onSurface,
+                                            textStyle = MaterialTheme.typography.titleSmall.copy(
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            ),
                                         )
                                     }
                                 )
@@ -374,8 +374,10 @@ fun HomeContent(
                                             drawableId = app.okcredit.ui.Res.drawable.icon_add_photo,
                                             color = green_lite_1,
                                             text = stringResource(resource = Res.string.add_supplier),
-                                            drawableTint = MaterialTheme.colors.onSurface,
-                                            textStyle = MaterialTheme.typography.button.copy(color = MaterialTheme.colors.onSurface),
+                                            drawableTint = MaterialTheme.colorScheme.onSurface,
+                                            textStyle = MaterialTheme.typography.labelLarge.copy(
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            ),
                                         )
                                     }
                                 )
@@ -401,11 +403,11 @@ fun DarkSolidButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: Color = MaterialTheme.colors.primary,
-    elevation: ButtonElevation? = ButtonDefaults.elevation(),
+    color: Color = MaterialTheme.colorScheme.primary,
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     horizontalContentPadding: Dp = 16.dp,
     verticalContentPadding: Dp = 8.dp,
-    textStyle: TextStyle = MaterialTheme.typography.subtitle2,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     drawableId: DrawableResource? = null,
     drawableHeight: Dp = 32.dp,
     drawableWidth: Dp = 32.dp,
@@ -419,7 +421,10 @@ fun DarkSolidButton(
             vertical = verticalContentPadding
         ),
         shape = RoundedCornerShape(percent = 50),
-        colors = ButtonDefaults.buttonColors(backgroundColor = color),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = color,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
         elevation = elevation,
         enabled = enabled,
         modifier = modifier
@@ -529,8 +534,8 @@ fun EmptyFilterPlaceHolder(onClearFilterClicked: () -> Unit) {
             TextButton(onClick = onClearFilterClicked) {
                 Text(
                     text = stringResource(resource = Res.string.clear_filter),
-                    style = MaterialTheme.typography.subtitle2,
-                    color = MaterialTheme.colors.primary
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -576,9 +581,9 @@ fun HomeHeader(
                             contentDescription = "",
                             modifier = Modifier.size(24.dp),
                             tint = if (sortOrFilterAppliedCount > 0) {
-                                MaterialTheme.colors.primary
+                                MaterialTheme.colorScheme.primary
                             } else {
-                                MaterialTheme.colors.onSurface
+                                MaterialTheme.colorScheme.onSurface
                             }
                         )
                     }
@@ -586,12 +591,12 @@ fun HomeHeader(
                 if (sortOrFilterAppliedCount > 0) {
                     Text(
                         text = sortOrFilterAppliedCount.toString(),
-                        color = MaterialTheme.colors.onError,
-                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colorScheme.onError,
+                        style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .size(16.dp)
                             .align(Alignment.TopEnd)
-                            .background(MaterialTheme.colors.error, CircleShape),
+                            .background(MaterialTheme.colorScheme.error, CircleShape),
                         textAlign = TextAlign.Center,
                     )
                 }
@@ -611,7 +616,7 @@ fun HomeHeader(
                         painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_search),
                         contentDescription = "",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colors.onSurface
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }

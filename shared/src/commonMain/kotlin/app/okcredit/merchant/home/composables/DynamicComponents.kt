@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -155,7 +157,6 @@ fun SingleVerticalDynamicItem(
             .semantics {
                 contentDescription = item.title
             },
-        backgroundColor = grey100,
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
@@ -182,7 +183,7 @@ fun SingleVerticalDynamicItem(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.titleSmall,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 minLines = 2,
@@ -216,7 +217,9 @@ fun SingleDynamicItem(
             .semantics {
                 contentDescription = item.title
             },
-        backgroundColor = grey100,
+        colors = CardDefaults.cardColors().copy(
+            containerColor = grey100
+        ),
     ) {
         Row(
             modifier = Modifier
@@ -250,14 +253,14 @@ fun SingleDynamicItem(
             ) {
                 Text(
                     text = item.title,
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 if (!item.subtitle.isNullOrEmpty()) {
                     Text(
                         text = item.subtitle,
-                        style = MaterialTheme.typography.caption
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }

@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +62,7 @@ fun SupplierRow(
             ) {
                 Text(
                     text = supplierItem.name,
-                    style = MaterialTheme.typography.subtitle2,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -80,12 +80,12 @@ fun SupplierRow(
             ) {
                 Text(
                     text = supplierItem.balance.toString(),
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.align(Alignment.End),
                     color = if (supplierItem.balance >= 0L.paisa) {
-                        MaterialTheme.colors.primary
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colors.error
+                        MaterialTheme.colorScheme.error
                     }
                 )
                 Text(
@@ -94,9 +94,9 @@ fun SupplierRow(
                     } else {
                         stringResource(resource = app.okcredit.ui.Res.string.due)
                     },
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.End),
-                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
         }
@@ -121,9 +121,9 @@ fun SubtitleTextForSupplier(subtitle: String?, type: SubtitleIconType?) {
         if (!subtitle.isNullOrEmpty()) {
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
-                color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             )
         }
     }

@@ -12,7 +12,6 @@ import app.okcredit.merchant.home.SortOption
 import app.okcredit.merchant.home.SortOption.*
 import app.okcredit.merchant.home.SubtitleType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +21,6 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.minus
-import kotlinx.datetime.plus
 import me.tatarka.inject.annotations.Inject
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.today
@@ -35,7 +33,6 @@ import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 @Inject
 class GetCustomersForHome constructor(
-    private val getActiveBusinessId: GetActiveBusinessId,
     private val getAccounts: GetAccounts,
 ) {
 
@@ -43,25 +40,18 @@ class GetCustomersForHome constructor(
         reminderFilters: Set<ReminderFilterOption>,
         sortBy: SortOption? = null,
     ): Flow<CustomerForHomeResponse> {
-        return flow {
-            val finalSortOrder = runCatching {
-                checkCustomerSortOrder(sortBy)
-            }.getOrElse { SortBy.LAST_ACTIVITY }
-
-            emitAll(
-                getAccounts.execute(sortBy = SortBy.LAST_ACTIVITY, accountType = AccountType.CUSTOMER)
-                    .map {
-                        println("GetCustomersForHome: execute: it: $it")
-                        val list = buildCustomerList(
-                            legacyCustomers = it as List<Customer>,
-                            defaulters = emptySet(),
-                            sortBy = LAST_ACTIVITY,
-                            reminderFilters = reminderFilters,
-                        )
-                        CustomerForHomeResponse(list, LAST_ACTIVITY, reminderFilters)
-                    }
-            )
-        }
+        println("GetCustomersForHome: execute: reminderFilters: $reminderFilters, sortBy: $sortBy")
+        return getAccounts.execute(sortBy = SortBy.LAST_ACTIVITY, accountType = AccountType.CUSTOMER)
+            .map {
+                println("GetCustomersForHome: execute: it: $it")
+                val list = buildCustomerList(
+                    legacyCustomers = it as List<Customer>,
+                    defaulters = emptySet(),
+                    sortBy = LAST_ACTIVITY,
+                    reminderFilters = reminderFilters,
+                )
+                CustomerForHomeResponse(list, LAST_ACTIVITY, reminderFilters)
+            }
     }
 
     private fun checkCustomerSortOrder(sortBy: SortOption?): SortBy {

@@ -7,19 +7,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.defaulter_badge_red
 import merchant_app.shared.generated.resources.ic_ok_credit_tag
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
 @Composable
@@ -30,12 +32,30 @@ fun AvatarWithName(
     modifier: Modifier,
     defaulter: Boolean = false,
 ) {
-    DefaultAvatar(
-        modifier = modifier,
-        customerName = customerName,
-        defaulter = defaulter,
-        commonLedger = commonLedger,
-    )
+    if (profileImage.isNullOrEmpty()) {
+        DefaultAvatar(
+            modifier = modifier,
+            customerName = customerName,
+            defaulter = defaulter,
+            commonLedger = commonLedger,
+        )
+    } else {
+        Box(modifier = modifier) {
+            AsyncImage(
+                model = profileImage,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .align(Alignment.Center),
+            )
+            if (defaulter) {
+                DefaulterTag(modifier = Modifier.align(Alignment.BottomCenter))
+            } else if (commonLedger) {
+                CommonLedgerTag(modifier = Modifier.align(Alignment.BottomEnd))
+            }
+        }
+    }
 }
 
 @Composable
@@ -50,7 +70,7 @@ fun DefaultAvatar(
     ) {
         Text(
             text = customerName.first().toString().uppercase(),
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 9.dp),
@@ -72,7 +92,7 @@ fun CommonLedgerTag(modifier: Modifier) {
         contentDescription = "",
         modifier = modifier
             .size(20.dp)
-            .background(MaterialTheme.colors.primary, CircleShape)
+            .background(MaterialTheme.colorScheme.primary, CircleShape)
     )
 }
 
