@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.merchant.home.HomeContract.State
 import app.okcredit.merchant.home.HomeContract.ViewEvent
+import app.okcredit.merchant.home.composables.HomeScreenUi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -33,17 +34,39 @@ class HomeScreen : Screen {
 
     @Composable
     private fun Render(screenModel: HomeScreenModel, state: State) {
-        HomeUi(
+        HomeScreenUi(
             state = state,
+            onTabChanged = {
+                val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
+                screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
+            },
+            onAvatarClicked = ::onBusinessClicked,
+            onToolbarActionClicked = {},
+            onPrimaryVpaClicked = {},
+            onSearchClicked = {},
+            onSortAndFilterClicked = {},
+            onCustomerClicked = {},
+            onSupplierClicked = {},
+            onCustomerProfileClicked = {},
+            onSupplierProfileClicked = {},
+            onAddRelationshipClicked = {},
+            onDynamicItemClicked = {_, _ ->},
+            onSummaryCardClicked = {},
+            onPullToRefresh = {},
+            onClearFilterClicked = {},
+            onUserAlertClicked = {},
         )
+    }
+
+    private fun onBusinessClicked() {
+
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent, navigator: Navigator) {
         when (viewEvent) {
-            ViewEvent.GoToLogin -> {
-            }
-            is ViewEvent.ShowToast -> {
-            }
+            ViewEvent.LaunchAskSmsPermissionForAutoReminder -> {}
+            is ViewEvent.ShowAutoReminderSummarySnackBar -> {}
+            is ViewEvent.ShowError -> {}
         }
     }
 }

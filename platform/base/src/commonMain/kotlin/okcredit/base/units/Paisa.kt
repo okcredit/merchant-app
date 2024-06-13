@@ -35,6 +35,18 @@ value class Paisa(val value: Long) {
     }
 }
 
+operator fun Paisa.compareTo(other: Long) = value.compareTo(other)
+
+operator fun Long.compareTo(other: Paisa) = compareTo(other.value)
+
+operator fun Paisa.plus(other: Long) = Paisa(value + other)
+
+operator fun Long.plus(other: Paisa) = Paisa(this + other.value)
+
+operator fun Paisa.minus(other: Long) = Paisa(value - other)
+
+operator fun Long.minus(other: Paisa) = Paisa(this - other.value)
+
 fun formatPaisa(amount: Long, withRupeePrefix: Boolean = false): String {
     if (amount == 0L) {
         return buildString {

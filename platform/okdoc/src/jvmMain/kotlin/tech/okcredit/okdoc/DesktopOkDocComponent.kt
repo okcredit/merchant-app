@@ -1,6 +1,7 @@
 package tech.okcredit.okdoc
 
 import me.tatarka.inject.annotations.Provides
+import tech.okcredit.okdoc.di.OkDocDriverFactory
 
 interface DesktopOkDocComponent {
 

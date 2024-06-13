@@ -30,8 +30,8 @@ kotlin {
             implementation(project(":platform:identity:contract"))
             implementation(project(":platform:okdoc"))
             implementation(project(":platform:design_system"))
-            implementation(project(":platform:customization"))
 
+            implementation(project(":features:growth:customization"))
             implementation(project(":features:auth_ui"))
             implementation(project(":features:ledger:contract"))
             implementation(project(":features:ledger:core"))
@@ -44,6 +44,8 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.bundles.coil.common)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

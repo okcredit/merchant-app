@@ -27,6 +27,6 @@ class LoginDataSyncer(
         ledgerSyncManager.executeCustomerSync(businessId, "LoginDataSyncer")
         ledgerSyncManager.executeSupplierSync(businessId, "LoginDataSyncer")
         ledgerSyncManager.executeCustomerTransactionSync(businessId, "LoginDataSyncer")
-        customizationSyncManager.executeCustomizationSync(businessId)
+        // customizationSyncManager.executeCustomizationSync(businessId)
     }
 }
