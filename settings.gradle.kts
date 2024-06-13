@@ -47,6 +47,7 @@ include(":platform:okdoc")
 include(":platform:design_system")
 include(":platform:customization")
 
+include(":features:auth_ui")
 include(":features:ledger:core")
 include(":features:ledger:contract")
-include(":features:auth_ui")
+include(":features:online_payments:staff_link")
