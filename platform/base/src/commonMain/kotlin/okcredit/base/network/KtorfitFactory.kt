@@ -25,7 +25,6 @@ import okcredit.base.di.Debug
 import okcredit.base.di.Singleton
 import okcredit.base.randomUUID
 
-
 @OptIn(ExperimentalSerializationApi::class)
 @Inject
 @Singleton
@@ -34,7 +33,7 @@ class KtorfitFactory(
     private val appVersion: AppVersion,
     private val debug: Debug,
     private val clientConfigs: Set<ClientConfig>,
-    private val serializerModules: Set<SerializersModule>,
+    private val serializerModules: Set<SerializersModule> = emptySet(),
 ) {
 
     fun create(): Ktorfit {
@@ -54,7 +53,10 @@ class KtorfitFactory(
                         ignoreUnknownKeys = true
                         explicitNulls = false
                         prettyPrint = debug
-                        serializersModule = if (serializerModules.size == 1) serializerModules.first() else serializerModules.reduce { acc, serializersModule -> acc + serializersModule }
+                        if (serializerModules.isNotEmpty()) {
+                            serializersModule =
+                                serializerModules.reduce { acc, serializersModule -> acc + serializersModule }
+                        }
                     },
                 )
             }

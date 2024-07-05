@@ -8,6 +8,7 @@ import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -245,10 +246,13 @@ class SupplierProjection(
     ): Flow<List<Supplier>> {
         return when (sortBy) {
             SortBy.NAME -> listAllSuppliersByName(businessId, limit, offset)
+                .catch { emit(emptyList()) }
 
             SortBy.BALANCE_DUE -> listAllSuppliersByBalance(businessId, limit, offset)
+                .catch { emit(emptyList()) }
 
             else -> listAllSuppliersByLastActivity(businessId, limit, offset)
+                .catch { emit(emptyList()) }
         }
     }
 }

@@ -17,8 +17,6 @@ import okcredit.base.di.rememberScreenModel
 @Inject
 class LoginScreen : Screen {
 
-
-
     @Composable
     override fun Content() {
         val screenModel = rememberScreenModel<LoginScreenModel>(LoginScreenModel::class)

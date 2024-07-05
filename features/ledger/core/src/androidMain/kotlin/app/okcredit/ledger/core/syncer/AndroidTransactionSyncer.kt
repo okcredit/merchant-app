@@ -2,7 +2,6 @@ package app.okcredit.ledger.core.syncer
 
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
-import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -11,7 +10,6 @@ import kotlinx.serialization.json.JsonObject
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.local.Scope
 import okcredit.base.syncer.OkcWorkManager
-import okcredit.base.syncer.toAnyOrNull
 import okcredit.base.syncer.toStringOrNull
 import okcredit.base.syncer.toWorkerData
 import java.util.concurrent.TimeUnit

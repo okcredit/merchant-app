@@ -18,7 +18,7 @@ class LedgerImpl(
     recordTransactionLazy: Lazy<RecordTransaction>,
     addAccountLazy: Lazy<AddAccount>,
     deleteCustomerLazy: Lazy<DeleteCustomer>,
-    deleteTransactionLazy: Lazy<DeleteTransaction>
+    deleteTransactionLazy: Lazy<DeleteTransaction>,
 ) : Ledger {
 
     private val recordTransaction by lazy { recordTransactionLazy.value }

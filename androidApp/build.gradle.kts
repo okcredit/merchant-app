@@ -119,13 +119,13 @@ dependencies {
     implementation(project(":platform:analytics"))
     implementation(project(":platform:auth"))
     implementation(project(":platform:base"))
-    implementation(project(":platform:customization"))
     implementation(project(":platform:device"))
     implementation(project(":platform:identity"))
     implementation(project(":platform:identity:contract"))
     implementation(project(":platform:okdoc"))
 
     implementation(project(":features:auth_ui"))
+    implementation(project(":features:growth:customization"))
     implementation(project(":features:ledger:contract"))
     implementation(project(":features:ledger:core"))
 

@@ -18,6 +18,7 @@ data class Customer(
     val updatedAt: Timestamp,
     val settings: CustomerSettings,
     val summary: CustomerSummary,
+    val dueDate: Timestamp? = null,
 ) : Account(AccountType.CUSTOMER) {
 
     override val balance: Paisa

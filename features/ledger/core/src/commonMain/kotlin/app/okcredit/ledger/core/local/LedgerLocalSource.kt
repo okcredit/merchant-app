@@ -173,7 +173,7 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
             command = command,
             existingAmount = existingAmount,
             businessId = businessId,
-            transactionType = transactionType
+            transactionType = transactionType,
         )
     }
 

@@ -13,7 +13,6 @@ class LedgerTest {
 
     private val ledgerTestHelper = LedgerTestHelper()
 
-
     @BeforeTest
     fun setup() {
         ledger = LedgerImpl(

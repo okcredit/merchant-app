@@ -13,7 +13,7 @@ import me.tatarka.inject.annotations.Inject
 class GetAccountImpl(
     private val customerRepository: CustomerRepository,
     private val supplierRepository: SupplierRepository,
-): GetAccount {
+) : GetAccount {
 
     override fun execute(accountId: String, accountType: AccountType): Flow<Account?> {
         return if (accountType.isCustomer()) {

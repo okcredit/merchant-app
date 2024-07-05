@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
+import okcredit.base.network.ApiError
 import okcredit.base.network.DeviceIdProvider
 import tech.okcredit.ab.local.AbLocalSource
 import tech.okcredit.ab.remote.AbRemoteSource
@@ -67,12 +68,16 @@ class AbRepositoryImpl(
     }
 
     suspend fun sync(businessId: String, sourceType: String) {
-        val profile = remoteSource.getProfile(
-            deviceId = deviceIdProvider.current(),
-            sourceType = sourceType,
-            businessId = businessId,
-        )
-        localSource.setProfile(profile, businessId)
+        try {
+            val profile = remoteSource.getProfile(
+                deviceId = deviceIdProvider.current(),
+                sourceType = sourceType,
+                businessId = businessId,
+            )
+            localSource.setProfile(profile, businessId)
+        } catch (apiError: ApiError) {
+            apiError.printStackTrace()
+        }
     }
 
     private fun scheduleStartExperiment(

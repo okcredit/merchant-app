@@ -20,7 +20,7 @@ interface BaseComponent {
 
     @Provides
     fun provideKtorfit(
-        ktorfitUtils: KtorfitFactory
+        ktorfitUtils: KtorfitFactory,
     ): Ktorfit = ktorfitUtils.create()
 
     @Singleton

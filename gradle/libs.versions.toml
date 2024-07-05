@@ -11,7 +11,7 @@ okio = "3.9.0"
 spotless = "6.25.0"
 kover = "0.7.6"
 mokkery = "2.0.0-RC1"
-
+coil3 = "3.0.0-alpha06"
 ktor = "2.3.11"
 ktorfit = "2.0.0-rc01"
 sqldelight = "2.0.2"
@@ -73,7 +73,6 @@ multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-setti
 
 log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
-
 ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-converter = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
 ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
@@ -97,6 +96,11 @@ mixpanel-android = { module = "com.mixpanel.android:mixpanel-android", version.r
 
 tools-desugarjdklibs = "com.android.tools:desugar_jdk_libs:2.0.4"
 
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+
 # Build logic dependencies
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -109,3 +113,4 @@ multiplatform-settings = ["multiplatform-settings", "multiplatform-settings-coro
 sqldelight-common = ["sqldelight-runtime", "sqldelight-coroutineExtensions", "sqldelight-primitiveAdapter"]
 ktorfit-common = ["ktorfit", "ktorfit-converter", "ktor-json", "ktor-contentNegotiation", "ktor-clientLogging", "ktor-clientAuth"]
 voyager-common = ["voyager-navigator", "voyager-tabNavigator", "voyager-bottomsheet", "voyager-screenmodel"]
+coil-common = ["coil-mp", "coil-network-ktor", "coil-compose-core", "coil-compose"]

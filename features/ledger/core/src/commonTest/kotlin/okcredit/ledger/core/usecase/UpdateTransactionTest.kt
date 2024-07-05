@@ -24,7 +24,6 @@ class UpdateTransactionTest {
 
     private val ledgerTestHelper = LedgerTestHelper()
 
-
     @BeforeTest
     fun setup() {
         updateTransaction = UpdateTransaction(
@@ -45,7 +44,7 @@ class UpdateTransactionTest {
         val updateTransactionRequest = UpdateTransactionRequest.UpdateNote(
             transactionId = transaction.id,
             accountType = AccountType.CUSTOMER,
-            note = "new-note"
+            note = "new-note",
         )
 
         // When
@@ -144,7 +143,7 @@ class UpdateTransactionTest {
                     createdAt = Clock.System.now().timestamp,
                     createdByCustomer = true,
                 ),
-            )
+            ),
         )
 
         val updateTransactionRequest = UpdateTransactionRequest.UpdateAmount(
@@ -175,7 +174,7 @@ class UpdateTransactionTest {
                     createdAt = Clock.System.now().timestamp,
                     createdByCustomer = true,
                 ),
-            )
+            ),
         )
 
         val updateTransactionRequest = UpdateTransactionRequest.UpdateNote(
@@ -204,7 +203,7 @@ class UpdateTransactionTest {
                 transactionId = transaction.id,
                 accountType = AccountType.CUSTOMER,
                 createTime = Clock.System.now().timestamp,
-            )
+            ),
         )
 
         val updateTransactionRequest = UpdateTransactionRequest.UpdateAmount(
@@ -233,9 +232,8 @@ class UpdateTransactionTest {
                 transactionId = transaction.id,
                 accountType = AccountType.CUSTOMER,
                 createTime = Clock.System.now().timestamp,
-            )
+            ),
         )
-
 
         val updateTransactionRequest = UpdateTransactionRequest.UpdateNote(
             transactionId = transaction.id,

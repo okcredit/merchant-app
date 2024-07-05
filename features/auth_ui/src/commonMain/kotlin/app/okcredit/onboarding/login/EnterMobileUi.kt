@@ -29,22 +29,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.ic_okcredit_logo
 import app.okcredit.ui.icon_phone
 import merchant_app.features.auth_ui.generated.resources.Res
-import merchant_app.features.auth_ui.generated.resources.ic_applogo_name
+import merchant_app.features.auth_ui.generated.resources.ic_mobile_fill
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun EnterMobile(onSubmitClick: (String) -> Unit) {
     Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
         Image(
-            painter = painterResource(Res.drawable.ic_applogo_name),
+            painter = painterResource(app.okcredit.ui.Res.drawable.ic_okcredit_logo),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
         )
         Spacer(Modifier.weight(1.0f))
         Image(
-            painter = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
+            painter = painterResource(Res.drawable.ic_mobile_fill),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 16.dp),
         )

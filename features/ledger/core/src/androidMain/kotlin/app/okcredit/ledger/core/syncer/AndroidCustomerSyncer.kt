@@ -5,7 +5,6 @@ import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import app.okcredit.ledger.core.syncer.AndroidTransactionSyncer.Companion.WORKER_TRANSACTION_COMMAND
 import app.okcredit.ledger.core.usecase.SyncCustomers
 import kotlinx.serialization.json.JsonObject
 import me.tatarka.inject.annotations.Inject

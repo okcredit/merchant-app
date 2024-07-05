@@ -4,7 +4,6 @@ import app.okcredit.ledger.contract.model.Account
 import app.okcredit.ledger.contract.model.AccountType
 import kotlinx.coroutines.flow.Flow
 
-
 interface GetAccounts {
 
     /**

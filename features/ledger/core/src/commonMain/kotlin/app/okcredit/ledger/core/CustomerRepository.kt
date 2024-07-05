@@ -1,20 +1,11 @@
 package app.okcredit.ledger.core
 
-import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
-import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.core.local.LedgerLocalSource
-import app.okcredit.ledger.core.models.CreateTransaction
-import app.okcredit.ledger.core.models.DeleteTransaction
-import app.okcredit.ledger.core.models.UpdateTransactionNote
 import app.okcredit.ledger.core.remote.LedgerRemoteSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.randomUUID
-import okcredit.base.units.timestamp
 
 @Inject
 class CustomerRepository(

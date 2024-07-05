@@ -12,6 +12,10 @@ import okcredit.base.di.Singleton
 class AndroidLedgerDriverFactory(private val context: Context) : LedgerDriverFactory {
 
     override fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(LedgerDatabase.Schema, context, "okcredit_ledger.db")
+        return AndroidSqliteDriver(
+            schema = LedgerDatabase.Schema,
+            context = context,
+            name = "okcredit_ledger.db",
+        )
     }
 }

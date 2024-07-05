@@ -4,6 +4,7 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
+import tech.okcredit.okdoc.di.OkDocDriverFactory
 
 @Inject
 @Singleton

@@ -191,7 +191,7 @@ class TransactionProjection(
             transactionQueries.accountStatement(
                 accountId = accountId,
                 startTime = startTime,
-                endTime = endTime
+                endTime = endTime,
             ).mapToDomainList {
                 it.toDomainTransaction()
             }
@@ -213,7 +213,7 @@ class TransactionProjection(
                         CommandType.CREATE -> json.decodeFromString<CreateTransaction>(it.data_)
                         CommandType.DELETE -> json.decodeFromString<DeleteTransaction>(it.data_)
                         CommandType.UPDATE_AMOUNT -> json.decodeFromString<UpdateTransactionAmount>(
-                            it.data_
+                            it.data_,
                         )
                         CommandType.UPDATE_NOTE -> json.decodeFromString<UpdateTransactionNote>(it.data_)
                     }

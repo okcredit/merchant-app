@@ -93,8 +93,8 @@ class AddCustomerTest {
         mock.returns(
             Response.success(
                 ledgerTestHelper.someApiCustomer("John Doe", "9876543210"),
-                ledgerTestHelper.successResponse
-            )
+                ledgerTestHelper.successResponse,
+            ),
         )
         val firstCustomer = addCustomer.execute(
             name = "John Doe",

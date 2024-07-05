@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class IosSupplierSyncer(
     private val supplierRepository: SupplierRepository,
-): SupplierSyncer {
+) : SupplierSyncer {
 
     override suspend fun execute(input: JsonObject) {
     }
