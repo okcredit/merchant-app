@@ -1,7 +1,10 @@
 package tech.okcredit.identity
 
 import me.tatarka.inject.annotations.Provides
+import okcredit.base.local.IosSqlDriverFactory
 import tech.okcredit.identity.di.IdentityComponent
+import tech.okcredit.identity.di.IdentityDriverFactory
+import tech.okcredit.identity.local.IdentityDatabase
 import tech.okcredit.identity.local.IdentitySettingsFactory
 
 interface IosIdentityComponent : IdentityComponent {
@@ -12,5 +15,10 @@ interface IosIdentityComponent : IdentityComponent {
     }
 
     @Provides
-    fun IosIdentityDriverFactory.bind(): IdentityDriverFactory = this
+    fun provideIdentityDriverFactory(): IdentityDriverFactory {
+        return IosSqlDriverFactory(
+            schema = IdentityDatabase.Schema,
+            name = "okcredit_identity.db",
+        )
+    }
 }

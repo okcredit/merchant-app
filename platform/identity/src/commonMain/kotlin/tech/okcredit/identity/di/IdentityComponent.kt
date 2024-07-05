@@ -3,8 +3,8 @@ package tech.okcredit.identity.di
 import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
+import okcredit.base.local.SqlDriverFactory
 import okcredit.base.syncer.SignOutListener
-import tech.okcredit.identity.IdentityDriverFactory
 import tech.okcredit.identity.IdentitySignOutListener
 import tech.okcredit.identity.contract.usecase.GetActiveBusiness
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
@@ -29,6 +29,8 @@ import tech.okcredit.identity.usecase.SyncIndividualImpl
 import tech.okcredit.identity.usecase.UpdateBusinessImpl
 import tech.okcredit.identity.usecase.UpdateIndividualMobileImpl
 import tech.okcredit.identity.usecase.UpdateRecoveryNumberImpl
+
+typealias IdentityDriverFactory = SqlDriverFactory
 
 interface IdentityComponent {
 
