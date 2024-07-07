@@ -8,26 +8,26 @@ typealias CustomizationSyncer = OneTimeDataSyncer
 
 @Inject
 class CustomizationSyncManager(
-    private val customizationSyncer: CustomizationSyncer
+    private val customizationSyncer: CustomizationSyncer,
 ) {
 
     companion object {
         const val BUSINESS_ID = "business_id"
     }
 
-    suspend fun executeCustomizationSync(businessId: String) {
+    suspend fun syncCustomization(businessId: String) {
         customizationSyncer.execute(
             mapOf(
-                BUSINESS_ID to businessId
-            ).toJsonObject()
+                BUSINESS_ID to businessId,
+            ).toJsonObject(),
         )
     }
 
     fun scheduleCustomizationSync(businessId: String) {
         customizationSyncer.schedule(
             mapOf(
-                BUSINESS_ID to businessId
-            ).toJsonObject()
+                BUSINESS_ID to businessId,
+            ).toJsonObject(),
         )
     }
 }

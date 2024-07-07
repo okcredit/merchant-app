@@ -16,7 +16,7 @@ class DeleteTransaction(
     private val ledgerSyncManager: LedgerSyncManager,
 ) {
 
-    suspend fun execute(transactionId: String, accountType: AccountType){
+    suspend fun execute(transactionId: String, accountType: AccountType) {
         val transaction = ledgerLocalSource.getTransactionDetails(transactionId).firstOrNull()
             ?: throw IllegalArgumentException("Transaction not found")
 
@@ -32,8 +32,7 @@ class DeleteTransaction(
 
         ledgerSyncManager.scheduleTransactionSync(
             businessId = transaction.businessId,
-            source = "DELETE_TRANSACTION"
+            source = "DELETE_TRANSACTION",
         )
     }
-
 }

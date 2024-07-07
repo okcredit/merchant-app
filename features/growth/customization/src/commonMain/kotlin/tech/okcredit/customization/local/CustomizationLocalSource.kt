@@ -8,19 +8,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.appDispatchers
-import tech.okcredit.customization.models.Action
 import tech.okcredit.customization.models.Component
 import tech.okcredit.customization.models.TargetComponent
-
 
 typealias CustomizationSqlDriver = SqlDriver
 
 @Inject
 class CustomizationLocalSource(
-    sqlDriver: CustomizationSqlDriver
+    sqlDriver: CustomizationSqlDriver,
 ) {
 
     private val database by lazy {
@@ -44,14 +41,14 @@ class CustomizationLocalSource(
                     queries.insert(
                         businessId = businessId,
                         component = json.encodeToString(it.component),
-                        target = it.target
+                        target = it.target,
                     )
                 }
             }
         }
     }
 
-    fun listComponentsForTarget(target: String) : Flow<List<Component>> {
+    fun listComponentsForTarget(target: String): Flow<List<Component>> {
         return queries.listComponentsForTarget(target = target)
             .asFlow()
             .mapToList(appDispatchers.io)

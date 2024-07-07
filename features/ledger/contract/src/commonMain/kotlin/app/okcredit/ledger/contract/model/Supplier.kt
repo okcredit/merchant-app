@@ -21,6 +21,7 @@ data class Supplier(
         get() = summary.balance
 
     data class SupplierSettings(
+        val lang: String,
         val txnAlertEnabled: Boolean,
         val blockedBySupplier: Boolean,
         val addTransactionRestricted: Boolean,

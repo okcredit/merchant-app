@@ -7,7 +7,6 @@ import tech.okcredit.okdoc.local.OkDocDatabase
 import tech.okcredit.okdoc.local.OkDocDatabaseQueries
 import tech.okcredit.okdoc.remote.OkDocApiClient
 
-
 typealias OkDocDriverFactory = SqlDriverFactory
 
 interface OkDocComponent {

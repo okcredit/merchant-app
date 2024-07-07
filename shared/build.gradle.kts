@@ -54,7 +54,6 @@ kotlin {
             implementation(compose.uiTooling)
         }
         iosMain.invoke {
-
         }
     }
 }

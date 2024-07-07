@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 data class GetCustomizationRequest(
     @SerialName(value = "version_code")
     val versionCode: String,
-    @SerialName(value =  "lang")
-    val lang: String
+    @SerialName(value = "lang")
+    val lang: String,
 )

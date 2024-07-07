@@ -51,7 +51,7 @@ class UpdateTransaction(
 
         ledgerSyncManager.scheduleTransactionSync(
             businessId = transaction.businessId,
-            source = "UPDATE_TRANSACTION_NOTE"
+            source = "UPDATE_TRANSACTION_NOTE",
         )
     }
 

@@ -204,7 +204,7 @@ class SupplierProjection(
                     accountUrl = null,
                     gstNumber = null,
                     status = CustomerStatus.ACTIVE,
-                ),
+                )
             )
             addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
             addOrUpdateSupplierSummary(supplierId = supplier.id, summary = supplier.summary)
@@ -253,6 +253,15 @@ class SupplierProjection(
 
             else -> listAllSuppliersByLastActivity(businessId, limit, offset)
                 .catch { emit(emptyList()) }
+        }
+    }
+
+    fun resetSupplierList(suppliers: List<Supplier>, businessId: String) {
+        database.transaction {
+            accountQueries.deleteAllAccounts(AccountType.SUPPLIER, businessId)
+            suppliers.forEach { supplier ->
+                addSupplier(supplier)
+            }
         }
     }
 }

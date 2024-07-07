@@ -23,7 +23,6 @@ class AddSupplierTest {
 
     private val ledgerTestHelper = LedgerTestHelper()
 
-
     @BeforeTest
     fun setup() {
         addSupplier = AddAccount(

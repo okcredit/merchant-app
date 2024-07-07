@@ -31,6 +31,13 @@ kotlin {
         }
         androidMain.dependencies {
             api(libs.androidx.workmanager)
+            implementation(libs.sqldelight.androidDriver)
+        }
+        iosMain.dependencies {
+            implementation(libs.sqldelight.nativeDriver)
+        }
+        jvmMain.dependencies {
+            implementation(libs.sqldelight.sqliteDriver)
         }
     }
 }

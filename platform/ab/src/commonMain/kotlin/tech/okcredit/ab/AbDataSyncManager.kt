@@ -53,7 +53,7 @@ class AbDataSyncManager(
         )
     }
 
-    suspend fun executeProfileSync(businessId: String, source: String? = null) {
+    suspend fun syncProfile(businessId: String, source: String? = null) {
         profileSyncer.execute(
             mapOf(
                 BUSINESS_ID to businessId,

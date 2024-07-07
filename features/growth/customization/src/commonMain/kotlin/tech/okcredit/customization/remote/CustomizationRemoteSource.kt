@@ -7,16 +7,16 @@ import tech.okcredit.customization.models.TargetComponent
 @Inject
 class CustomizationRemoteSource(
     private val apiClient: Lazy<CustomizationApiClient>,
-    private val appVersionCode: AppVersionCode
+    private val appVersionCode: AppVersionCode,
 ) {
 
     suspend fun getCustomizations(businessId: String): List<TargetComponent> {
         return apiClient.value.listCustomizations(
             GetCustomizationRequest(
                 versionCode = appVersionCode.toString(),
-                lang = "en"
+                lang = "en",
             ),
-            businessId
+            businessId,
         )
     }
 }

@@ -1,10 +1,8 @@
 package okcredit.ledger.core.usecase
 
 import app.cash.turbine.test
-import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.usecase.GetAccountStatement
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import okcredit.ledger.core.LedgerTestHelper
 import kotlin.test.BeforeTest

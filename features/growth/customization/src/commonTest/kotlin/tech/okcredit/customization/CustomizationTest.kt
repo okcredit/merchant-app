@@ -6,7 +6,6 @@ import kotlin.test.Test
 
 class CustomizationTest {
 
-
     @Test
     fun `response parsing test`() {
         val response = """
@@ -489,7 +488,6 @@ class CustomizationTest {
               }
             ]
         """.trimIndent()
-
 
         val json = Json {
             isLenient = true

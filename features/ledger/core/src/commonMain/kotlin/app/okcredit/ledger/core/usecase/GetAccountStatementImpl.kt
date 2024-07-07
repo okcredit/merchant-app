@@ -16,12 +16,12 @@ class GetAccountStatementImpl(
     override fun execute(
         accountId: String,
         startTime: Timestamp?,
-        endTime: Timestamp?
+        endTime: Timestamp?,
     ): Flow<List<Transaction>> {
         return localSource.getTransactionsForAccount(
             accountId = accountId,
             startTime = startTime ?: ZERO_TIMESTAMP,
-            endTime = endTime
+            endTime = endTime,
         )
     }
 }

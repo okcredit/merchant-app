@@ -65,7 +65,7 @@ class DeleteCustomerTest {
     @Test
     fun `if customer exist with non-zero balance then throw BalanceNonZeroError`() = runTest {
         val businessId = ledgerTestHelper.addSomeBusiness()
-        val relationId = ledgerTestHelper. addSomeCustomer(businessId)
+        val relationId = ledgerTestHelper.addSomeCustomer(businessId)
         ledgerTestHelper.addSomeTransaction(relationId)
 
         everySuspend {

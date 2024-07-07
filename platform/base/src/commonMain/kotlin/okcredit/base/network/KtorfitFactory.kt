@@ -25,7 +25,6 @@ import okcredit.base.di.Debug
 import okcredit.base.di.Singleton
 import okcredit.base.randomUUID
 
-
 @OptIn(ExperimentalSerializationApi::class)
 @Inject
 @Singleton

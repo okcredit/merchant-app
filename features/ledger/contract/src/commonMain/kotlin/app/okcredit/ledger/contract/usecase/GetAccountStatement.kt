@@ -4,7 +4,6 @@ import app.okcredit.ledger.contract.model.Transaction
 import kotlinx.coroutines.flow.Flow
 import okcredit.base.units.Timestamp
 
-
 interface GetAccountStatement {
 
     /**

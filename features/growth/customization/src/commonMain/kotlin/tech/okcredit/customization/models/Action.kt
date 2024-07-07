@@ -15,8 +15,6 @@ data class Action(
     val url: String? = null,
 )
 
-
-
 fun Action.withDefaultProperties(targetName: String, component: Component): Action {
     val props = properties.toMutableMap().apply {
         this["target"] = targetName

@@ -4,7 +4,6 @@ import app.okcredit.ledger.core.remote.models.AddCustomerRequest
 import app.okcredit.ledger.core.remote.models.AddSupplierRequest
 import app.okcredit.ledger.core.remote.models.ApiCustomer
 import app.okcredit.ledger.core.remote.models.ApiSupplier
-import app.okcredit.ledger.core.remote.models.ApiTransaction
 import app.okcredit.ledger.core.remote.models.GetFileIdForSyncTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionAmountHistoryRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionAmountHistoryResponse
@@ -14,15 +13,19 @@ import app.okcredit.ledger.core.remote.models.GetTransactionFileResponse
 import app.okcredit.ledger.core.remote.models.GetTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionsResponse
 import app.okcredit.ledger.core.remote.models.SetRemindersApiRequest
+import app.okcredit.ledger.core.remote.models.SuppliersResponse
 import app.okcredit.ledger.core.remote.models.SyncTransactionRequest
 import app.okcredit.ledger.core.remote.models.SyncTransactionResponse
 import app.okcredit.ledger.core.remote.models.UpdateCustomerRequest
+import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
+import app.okcredit.ledger.core.remote.models.UpdateSupplierResponse
 import de.jensklingenberg.ktorfit.Response
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.DELETE
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Header
 import de.jensklingenberg.ktorfit.http.Headers
+import de.jensklingenberg.ktorfit.http.PATCH
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.PUT
 import de.jensklingenberg.ktorfit.http.Path
@@ -52,16 +55,10 @@ interface LedgerApiClient {
     ): Response<GetTransactionFileIdResponse>
 
     @POST("ledger/v1.0/new/GetTransactionFile")
-    fun getTransactionFile(
+    suspend fun getTransactionFile(
         @Body req: GetTransactionFileRequest,
         @Header(HEADER_BUSINESS_ID) businessId: String,
     ): Response<GetTransactionFileResponse>
-
-    @GET("ledger/v1.0/transaction/{tx_id}")
-    suspend fun getTransaction(
-        @Path("tx_id") transactionId: String,
-        @Header(HEADER_BUSINESS_ID) businessId: String,
-    ): Response<ApiTransaction>
 
     @POST("ledger/v1.0/new/GetTxnAmountHistory")
     suspend fun getTransactionAmountHistory(
@@ -88,7 +85,6 @@ interface LedgerApiClient {
         @Header(HEADER_BUSINESS_ID) businessId: String,
     ): Response<ApiCustomer?>
 
-    @Headers("Content-Type: application/json", "Content-Encoding: gzip")
     @PUT("ledger/v1.0/customers/reminders")
     suspend fun setReminderTimeForCustomers(
         @Body request: SetRemindersApiRequest,
@@ -96,23 +92,36 @@ interface LedgerApiClient {
     )
 
     @GET("ledger/v1.0/customer")
-    suspend fun listCustomers(
+    suspend fun listAllCustomers(
         @Query("mobile") mobile: String?,
         @Query("deleted") deleted: Boolean,
         @Header(HEADER_BUSINESS_ID) businessId: String,
     ): Response<List<ApiCustomer>>
-
-    @GET("ledger/v1.0/customer/{customer_id}")
-    suspend fun getCustomer(
-        @Path("customer_id") customerId: String,
-        @Header(HEADER_BUSINESS_ID) businessId: String,
-    ): Response<ApiCustomer?>
 
     @POST("ledger/v1.0/sc/suppliers")
     suspend fun addSupplier(
         @Body request: AddSupplierRequest,
         @Header(HEADER_BUSINESS_ID) businessId: String,
     ): Response<ApiSupplier?>
+
+    @PATCH("ledger/v1.0/sc/suppliers/{supplier_id}")
+    suspend fun updateSupplier(
+        @Path("supplier_id") supplierId: String,
+        @Body req: UpdateSupplierRequest,
+        @Header(HEADER_BUSINESS_ID) businessId: String,
+    ): Response<UpdateSupplierResponse>
+
+    // delete Supplier
+    @DELETE("ledger/v1.0/sc/suppliers/{supplier_id}")
+    suspend fun deleteSupplier(
+        @Path("supplier_id") supplierId: String,
+        @Header(HEADER_BUSINESS_ID) businessId: String,
+    ): Response<Unit>
+
+    @GET("ledger/v1.0/sc/suppliers")
+    suspend fun listAllSuppliers(
+        @Header(HEADER_BUSINESS_ID) businessId: String,
+    ): Response<SuppliersResponse>
 
     companion object {
         const val OKC_SYNC_ID_HEADER = "OKC-SYNC-ID"

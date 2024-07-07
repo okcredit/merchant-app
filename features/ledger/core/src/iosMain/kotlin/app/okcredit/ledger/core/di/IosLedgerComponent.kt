@@ -6,12 +6,16 @@ import app.okcredit.ledger.core.syncer.IosSupplierSyncer
 import app.okcredit.ledger.core.syncer.IosTransactionSyncer
 import app.okcredit.ledger.core.syncer.SupplierSyncer
 import app.okcredit.ledger.core.syncer.TransactionSyncer
+import app.okcredit.ledger.local.LedgerDatabase
 import me.tatarka.inject.annotations.Provides
+import okcredit.base.local.IosSqlDriverFactory
 
 interface IosLedgerComponent : LedgerComponent {
 
     @Provides
-    fun IosLedgerDriverFactory.bind(): LedgerDriverFactory = this
+    fun provideDriverFactory(): LedgerDriverFactory {
+        return IosSqlDriverFactory(LedgerDatabase.Schema, "okcredit_ledger.db")
+    }
 
     @Provides
     fun IosTransactionSyncer.bind(): TransactionSyncer = this

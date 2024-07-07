@@ -1,12 +1,17 @@
 package tech.okcredit.okdoc
 
 import me.tatarka.inject.annotations.Provides
+import okcredit.base.local.IosSqlDriverFactory
 import tech.okcredit.okdoc.di.OkDocDriverFactory
+import tech.okcredit.okdoc.local.OkDocDatabase
 
 interface IosOkDocComponent {
 
     @Provides
-    fun binds(driver: IosOkDocDriverFactory): OkDocDriverFactory {
-        return driver
+    fun provideOkDocDriverFactory(): OkDocDriverFactory {
+        return IosSqlDriverFactory(
+            schema = OkDocDatabase.Schema,
+            name = "okcredit_okdoc.db",
+        )
     }
 }

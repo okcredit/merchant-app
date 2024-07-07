@@ -13,11 +13,13 @@ import app.okcredit.ledger.core.remote.models.GetTransactionAmountHistoryRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionFileRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionsResponse
+import app.okcredit.ledger.core.remote.models.SupplierRequestForUpdate
 import app.okcredit.ledger.core.remote.models.SyncTransactionRequest
 import app.okcredit.ledger.core.remote.models.SyncTransactionResponse
 import app.okcredit.ledger.core.remote.models.TransactionAmountHistory
 import app.okcredit.ledger.core.remote.models.TransactionFile
 import app.okcredit.ledger.core.remote.models.TransactionsRequest
+import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
 import okcredit.base.network.getOrThrow
@@ -65,13 +67,6 @@ class LedgerRemoteSource(
         ).getOrThrow()
     }
 
-    suspend fun getFileIdForSyncTransaction(businessId: String): String {
-        return apiClient.getFileIdForSyncTransactions(
-            businessId = businessId,
-            request = GetFileIdForSyncTransactionsRequest(accountType = 0),
-        ).getOrThrow().transactionFileId
-    }
-
     suspend fun getTransactionsProtoFileUrl(
         transactionFileId: String,
         businessId: String,
@@ -83,11 +78,6 @@ class LedgerRemoteSource(
             .getOrThrow()
             .takeIf { it.txnFile.status == 1 }
             ?.txnFile
-    }
-
-    suspend fun getTransaction(transactionId: String, businessId: String): ApiTransaction {
-        return apiClient.getTransaction(transactionId, businessId)
-            .getOrThrow()
     }
 
     suspend fun getTransactionAmountHistory(
@@ -125,7 +115,7 @@ class LedgerRemoteSource(
     suspend fun listCustomers(
         businessId: String,
     ): List<Customer> {
-        return apiClient.listCustomers(
+        return apiClient.listAllCustomers(
             mobile = null,
             deleted = false,
             businessId = businessId,
@@ -161,6 +151,70 @@ class LedgerRemoteSource(
 
         return response.getOrThrow()?.toDomainSupplier(businessId)
             ?: throw IllegalStateException("Add supplier failed")
+    }
+
+    suspend fun listSuppliers(
+        businessId: String,
+    ): List<Supplier> {
+        return apiClient.listAllSuppliers(
+            businessId = businessId,
+        ).getOrThrow().suppliers.map {
+            it.toDomainSupplier(businessId)
+        }
+    }
+
+    suspend fun deleteSupplier(
+        supplierId: String,
+        businessId: String,
+    ) {
+        apiClient.deleteSupplier(
+            supplierId = supplierId,
+            businessId = businessId,
+        ).getOrThrow()
+    }
+
+    suspend fun updateSupplier(
+        supplierId: String,
+        name: String,
+        mobile: String?,
+        address: String?,
+        profileImage: String?,
+        lang: String?,
+        txnAlertEnabled: Boolean,
+        state: Int,
+        updateTxnAlertEnabled: Boolean,
+        displayTxnAlertSetting: Boolean,
+        updateDisplayTxnAlertSetting: Boolean,
+        isForUpdateState: Boolean,
+        updatedAt: Long,
+        businessId: String,
+    ): Supplier {
+        val request = SupplierRequestForUpdate(
+            id = supplierId,
+            name = name,
+            mobile = mobile,
+            address = address,
+            profileImage = profileImage,
+            lang = lang,
+            txnAlertEnabled = txnAlertEnabled,
+            state = state,
+            displayTxnAlertSetting = displayTxnAlertSetting,
+        )
+
+        val response = apiClient.updateSupplier(
+            supplierId,
+            UpdateSupplierRequest(
+                supplier = request,
+                updateTxnAlertEnabled = updateTxnAlertEnabled,
+                updateDisplayTxnAlertSetting = updateDisplayTxnAlertSetting,
+                state = state,
+                updateState = isForUpdateState,
+                updateTime = updatedAt
+            ),
+            businessId
+        )
+
+        return response.getOrThrow().supplier.toDomainSupplier(businessId)
     }
 }
 
@@ -207,6 +261,7 @@ private fun ApiSupplier.toDomainSupplier(businessId: String): Supplier {
             addTransactionRestricted = this.addTransactionRestricted,
             txnAlertEnabled = this.txnAlertEnabled,
             blockedBySupplier = this.blockedBySupplier,
+            lang = this.lang ?: "en",
         ),
         summary = Supplier.SupplierSummary(
             balance = 0L.paisa,

@@ -1,6 +1,5 @@
 package tech.okcredit.customization.models
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,7 +8,7 @@ data class TargetComponent(
     @SerialName("component")
     val component: Component,
     @SerialName("target")
-    val target: String
+    val target: String,
 )
 
 @Serializable
@@ -29,7 +28,7 @@ data class Component(
     @SerialName("version")
     val version: String,
     @SerialName("items")
-    val items: List<Component>?
+    val items: List<Component>?,
 )
 
 @Serializable
@@ -37,7 +36,7 @@ data class EventHandlers(
     @SerialName("click")
     val click: List<Action>?,
     @SerialName("view")
-    val view: List<Action>?
+    val view: List<Action>?,
 )
 
 @Serializable
@@ -55,5 +54,5 @@ data class Metadata(
     @SerialName(value = "span_count")
     val spanCount: Int? = null,
     @SerialName(value = "item_count")
-    val itemCount: Int? = null
+    val itemCount: Int? = null,
 )
