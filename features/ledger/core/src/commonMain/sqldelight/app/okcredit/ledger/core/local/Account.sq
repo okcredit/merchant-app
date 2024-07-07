@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS SupplierSettings (
     supplierId TEXT NOT NULL UNIQUE PRIMARY KEY ,
     txnAlertEnabled INTEGER AS Boolean NOT NULL DEFAULT 0,
     blockedBySupplier INTEGER AS Boolean NOT NULL DEFAULT 0,
-    addTransactionRestricted INTEGER AS Boolean NOT NULL DEFAULT 0
+    addTransactionRestricted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    language TEXT
 );
 
 
@@ -206,7 +207,8 @@ SELECT
     c.transactionCount,
     s.addTransactionRestricted,
     s.blockedBySupplier,
-    s.txnAlertEnabled
+    s.txnAlertEnabled,
+    s.language
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
@@ -233,7 +235,8 @@ SELECT
     c.transactionCount,
     s.addTransactionRestricted,
     s.blockedBySupplier,
-    s.txnAlertEnabled
+    s.txnAlertEnabled,
+    s.language
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
@@ -260,7 +263,8 @@ SELECT
     c.transactionCount,
     s.addTransactionRestricted,
     s.blockedBySupplier,
-    s.txnAlertEnabled
+    s.txnAlertEnabled,
+    s.language
 FROM Account AS a
 INNER JOIN SupplierSettings AS s ON a.id = s.supplierId
 INNER JOIN SupplierSummary AS c ON a.id = c.supplierId
@@ -284,7 +288,7 @@ VALUES ?;
 
 insertOrReplaceSupplierSettings:
 INSERT OR REPLACE
-INTO SupplierSettings(supplierId, txnAlertEnabled, blockedBySupplier, addTransactionRestricted)
+INTO SupplierSettings(supplierId, txnAlertEnabled, blockedBySupplier, addTransactionRestricted, language)
 VALUES ?;
 
 insertOrReplaceSupplierSummary:

@@ -17,10 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.defaulter_badge_red
+import app.okcredit.ui.ic_ok_credit_tag
 import coil3.compose.AsyncImage
-import merchant_app.shared.generated.resources.Res
-import merchant_app.shared.generated.resources.defaulter_badge_red
-import merchant_app.shared.generated.resources.ic_ok_credit_tag
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.abs
 
@@ -88,7 +87,7 @@ fun DefaultAvatar(
 @Composable
 fun CommonLedgerTag(modifier: Modifier) {
     Image(
-        painter = painterResource(resource = Res.drawable.ic_ok_credit_tag),
+        painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_ok_credit_tag),
         contentDescription = "",
         modifier = modifier
             .size(20.dp)
@@ -99,7 +98,7 @@ fun CommonLedgerTag(modifier: Modifier) {
 @Composable
 fun DefaulterTag(modifier: Modifier) {
     Image(
-        painter = painterResource(resource = Res.drawable.defaulter_badge_red),
+        painter = painterResource(resource = app.okcredit.ui.Res.drawable.defaulter_badge_red),
         contentDescription = "",
         modifier = modifier.height(12.dp)
     )

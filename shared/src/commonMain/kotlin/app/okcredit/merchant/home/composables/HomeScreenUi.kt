@@ -79,8 +79,8 @@ import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.add_customer
 import merchant_app.shared.generated.resources.add_supplier
 import merchant_app.shared.generated.resources.clear_filter
-import merchant_app.shared.generated.resources.ic_add_first_supplier
-import merchant_app.shared.generated.resources.ic_ledger_tutorial
+import app.okcredit.ui.ic_add_first_supplier
+import app.okcredit.ui.ic_ledger_tutorial
 import merchant_app.shared.generated.resources.no_results_found
 import merchant_app.shared.generated.resources.supplier_learn_more_title
 import merchant_app.shared.generated.resources.t_001_addrel_first_time_txt
@@ -318,7 +318,7 @@ fun HomeContent(
                                 EmptyPlaceholder(
                                     emptyImage = {
                                         Image(
-                                            painter = painterResource(resource = Res.drawable.ic_ledger_tutorial),
+                                            painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_ledger_tutorial),
                                             contentDescription = stringResource(resource = Res.string.t_001_addrel_first_time_txt),
                                             modifier = Modifier.size(160.dp)
                                         )
@@ -359,7 +359,7 @@ fun HomeContent(
                                 EmptyPlaceholder(
                                     emptyImage = {
                                         Image(
-                                            painter = painterResource(resource = Res.drawable.ic_add_first_supplier),
+                                            painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_add_first_supplier),
                                             contentDescription = stringResource(resource = Res.string.supplier_learn_more_title),
                                             modifier = Modifier.size(160.dp)
                                         )

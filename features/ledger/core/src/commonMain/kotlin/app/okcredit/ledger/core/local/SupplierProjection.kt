@@ -44,6 +44,7 @@ class SupplierProjection(
                     txnAlertEnabled = supplier.txnAlertEnabled,
                     blockedBySupplier = supplier.blockedBySupplier,
                     addTransactionRestricted = supplier.addTransactionRestricted,
+                    lang = supplier.language ?: "en",
                 ),
                 summary = Supplier.SupplierSummary(
                     balance = supplier.balance,
@@ -80,6 +81,7 @@ class SupplierProjection(
                     txnAlertEnabled = supplier.txnAlertEnabled,
                     blockedBySupplier = supplier.blockedBySupplier,
                     addTransactionRestricted = supplier.addTransactionRestricted,
+                    lang = supplier.language ?: "en",
                 ),
                 summary = Supplier.SupplierSummary(
                     balance = supplier.balance,
@@ -116,6 +118,7 @@ class SupplierProjection(
                     txnAlertEnabled = supplier.txnAlertEnabled,
                     blockedBySupplier = supplier.blockedBySupplier,
                     addTransactionRestricted = supplier.addTransactionRestricted,
+                    lang = supplier.language ?: "en",
                 ),
                 summary = Supplier.SupplierSummary(
                     balance = supplier.balance,
@@ -154,6 +157,7 @@ class SupplierProjection(
                         txnAlertEnabled = settings?.txnAlertEnabled ?: false,
                         addTransactionRestricted = settings?.addTransactionRestricted ?: false,
                         blockedBySupplier = settings?.blockedBySupplier ?: false,
+                        lang = settings?.language ?: "en",
                     ),
                     summary = if (summary != null) {
                         Supplier.SupplierSummary(
@@ -234,6 +238,7 @@ class SupplierProjection(
                 txnAlertEnabled = settings.txnAlertEnabled,
                 blockedBySupplier = settings.blockedBySupplier,
                 addTransactionRestricted = settings.addTransactionRestricted,
+                language = settings.lang,
             ),
         )
     }
