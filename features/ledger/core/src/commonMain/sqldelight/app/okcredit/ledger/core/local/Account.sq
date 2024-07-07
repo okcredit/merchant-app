@@ -380,7 +380,7 @@ UPDATE SupplierSummary SET
     lastAmount = :newAmount
 WHERE supplierId = :supplierId;
 
-deleteAllCustomers:
+deleteAllAccounts:
 DELETE
 FROM Account
 WHERE type = :accountType AND businessId = :businessId;

@@ -23,10 +23,10 @@ class LoginDataSyncer(
     }
 
     private suspend fun syncDataForBusiness(businessId: String) {
-        abDataSyncManager.executeProfileSync(businessId, "LoginDataSyncer")
-        ledgerSyncManager.executeCustomerSync(businessId, "LoginDataSyncer")
-        ledgerSyncManager.executeSupplierSync(businessId, "LoginDataSyncer")
-        ledgerSyncManager.executeCustomerTransactionSync(businessId, "LoginDataSyncer")
-        customizationSyncManager.executeCustomizationSync(businessId)
+        abDataSyncManager.syncProfile(businessId, "LoginDataSyncer")
+        ledgerSyncManager.syncAllCustomers(businessId, "LoginDataSyncer")
+        ledgerSyncManager.syncAllSuppliers(businessId, "LoginDataSyncer")
+        ledgerSyncManager.syncAllCustomerTransactions(businessId, "LoginDataSyncer")
+        customizationSyncManager.syncCustomization(businessId)
     }
 }

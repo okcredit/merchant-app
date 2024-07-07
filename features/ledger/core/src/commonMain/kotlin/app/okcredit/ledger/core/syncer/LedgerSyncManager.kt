@@ -46,7 +46,7 @@ class LedgerSyncManager(
         )
     }
 
-    suspend fun executeCustomerTransactionSync(businessId: String, source: String? = null) {
+    suspend fun syncAllCustomerTransactions(businessId: String, source: String? = null) {
         transactionSyncer.execute(
             mapOf(
                 BUSINESS_ID to businessId,
@@ -55,7 +55,7 @@ class LedgerSyncManager(
         )
     }
 
-    suspend fun executeCustomerSync(businessId: String, source: String? = null) {
+    suspend fun syncAllCustomers(businessId: String, source: String? = null) {
         customerSyncer.execute(
             mapOf(
                 BUSINESS_ID to businessId,
@@ -64,7 +64,7 @@ class LedgerSyncManager(
         )
     }
 
-    suspend fun executeSupplierSync(businessId: String, source: String? = null) {
+    suspend fun syncAllSuppliers(businessId: String, source: String? = null) {
         supplierSyncer.execute(
             mapOf(
                 BUSINESS_ID to businessId,

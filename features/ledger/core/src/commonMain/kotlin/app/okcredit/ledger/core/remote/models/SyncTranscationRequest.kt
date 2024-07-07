@@ -1,14 +1,15 @@
 package app.okcredit.ledger.core.remote.models
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class SyncTransactionRequest(
     @SerialName("operations")
     val operations: List<ApiTransactionCommand>,
 )
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class ApiTransactionCommand(
     @SerialName("id")
     val id: String,

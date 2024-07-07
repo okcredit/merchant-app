@@ -15,7 +15,7 @@ class CustomizationSyncManager(
         const val BUSINESS_ID = "business_id"
     }
 
-    suspend fun executeCustomizationSync(businessId: String) {
+    suspend fun syncCustomization(businessId: String) {
         customizationSyncer.execute(
             mapOf(
                 BUSINESS_ID to businessId,

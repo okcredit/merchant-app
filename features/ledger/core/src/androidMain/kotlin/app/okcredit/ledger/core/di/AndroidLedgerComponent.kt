@@ -8,6 +8,7 @@ import app.okcredit.ledger.core.syncer.AndroidTransactionSyncer
 import app.okcredit.ledger.core.syncer.CustomerSyncer
 import app.okcredit.ledger.core.syncer.SupplierSyncer
 import app.okcredit.ledger.core.syncer.SyncCustomersWorker
+import app.okcredit.ledger.core.syncer.SyncSuppliersWorker
 import app.okcredit.ledger.core.syncer.SyncTransactionsWorker
 import app.okcredit.ledger.core.syncer.TransactionSyncer
 import app.okcredit.ledger.local.LedgerDatabase
@@ -47,5 +48,11 @@ interface AndroidLedgerComponent : LedgerComponent {
     @IntoMap
     fun syncCustomersWorker(factory: SyncCustomersWorker.Factory): Pair<KClass<out ListenableWorker>, ChildWorkerFactory> {
         return SyncCustomersWorker::class to factory
+    }
+
+    @Provides
+    @IntoMap
+    fun syncSuppliersWorker(factory: SyncSuppliersWorker.Factory): Pair<KClass<out ListenableWorker>, ChildWorkerFactory> {
+        return SyncSuppliersWorker::class to factory
     }
 }

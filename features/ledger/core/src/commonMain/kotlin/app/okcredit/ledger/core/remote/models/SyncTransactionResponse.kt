@@ -1,14 +1,15 @@
 package app.okcredit.ledger.core.remote.models
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class SyncTransactionResponse(
     @SerialName("operation_responses")
     val operationResponses: List<OperationResponseForTransactions>,
 )
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class OperationResponseForTransactions(
     @SerialName("id")
     val id: String,
@@ -18,7 +19,7 @@ data class OperationResponseForTransactions(
     val error: Error? = null,
 )
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class Error(
     @SerialName("code")
     val code: Int,

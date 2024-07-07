@@ -13,7 +13,7 @@ class SyncCustomersWorker(
     context: Context,
     params: WorkerParameters,
     private val syncCustomers: SyncCustomers,
-) : BaseCoroutineWorker(context, params, WorkerConfig(label = "SyncTransactionCommand")) {
+) : BaseCoroutineWorker(context, params, WorkerConfig(label = "SyncCustomersWorker")) {
 
     override suspend fun doActualWork() {
         syncCustomers.execute(

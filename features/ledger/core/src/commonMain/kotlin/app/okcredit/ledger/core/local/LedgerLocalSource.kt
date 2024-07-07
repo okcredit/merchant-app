@@ -14,8 +14,10 @@ import app.okcredit.ledger.core.models.DeleteTransaction
 import app.okcredit.ledger.core.models.UpdateTransactionAmount
 import app.okcredit.ledger.core.models.UpdateTransactionNote
 import app.okcredit.ledger.local.LedgerDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.appDispatchers
 import okcredit.base.di.Singleton
@@ -98,7 +100,7 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
     }
 
     suspend fun addCustomer(customer: Customer) {
-        customerProjection.addCustomer(customer)
+        withContext(appDispatchers.io) { customerProjection.addCustomer(customer) }
     }
 
     fun getCustomerById(customerId: String): Flow<Customer?> {
@@ -121,8 +123,8 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
         customerProjection.markCustomerAsDeleted(customerId)
     }
 
-    fun addSupplier(supplier: Supplier) {
-        supplierProjection.addSupplier(supplier)
+    suspend fun addSupplier(supplier: Supplier) {
+        withContext(appDispatchers.io) { supplierProjection.addSupplier(supplier) }
     }
 
     fun listAllSuppliers(
@@ -200,7 +202,7 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
     }
 
     suspend fun resetCustomerList(customers: List<Customer>, businessId: String) {
-        return customerProjection.resetCustomerList(customers, businessId)
+        customerProjection.resetCustomerList(customers, businessId)
     }
 
     suspend fun getTransactionCommands(
@@ -224,6 +226,10 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
 
     suspend fun recalculateCustomerSummary(customers: List<String>) {
         customerProjection.recalculateCustomerSummary(customers)
+    }
+
+    fun resetSupplierList(suppliers: List<Supplier>, businessId: String) {
+        supplierProjection.resetSupplierList(suppliers, businessId)
     }
 }
 

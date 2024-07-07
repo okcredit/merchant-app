@@ -16,6 +16,11 @@ class SupplierRepository(
     private val localSource: LedgerLocalSource by lazy { localSourceLazy.value }
     private val remoteSource: LedgerRemoteSource by lazy { remoteSourceLazy.value }
 
+    suspend fun syncSuppliers(businessId: String) {
+        val suppliers = remoteSource.listSuppliers(businessId)
+        localSource.resetSupplierList(suppliers, businessId)
+    }
+
     fun getSupplierByMobile(mobile: String, businessId: String): Flow<Supplier?> {
         return localSource.getSupplierByMobile(mobile, businessId)
     }
