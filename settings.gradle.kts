@@ -46,7 +46,7 @@ include(":platform:identity:contract")
 include(":platform:okdoc")
 include(":platform:design_system")
 
+include(":features:auth_ui")
 include(":features:growth:customization")
 include(":features:ledger:core")
 include(":features:ledger:contract")
-include(":features:auth_ui")
