@@ -5,6 +5,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+/*
+Headline1 --> DisplayMedium + Bold
+Headline2 --> DisplaySmall + Bold
+Headline3 --> HeadlineLarge
+Headline4 --> HeadlineMedium
+Headline5 --> HeadlineSmall
+Headline6 --> TitleLarge
+subtitle1 --> TitleMedium
+subtitle2 --> TitleSmall
+body1 --> bodyLarge
+body2 --> bodyMedium
+body3 --> bodySmall
+caption1 --> labelLarge
+caption2 --> labelMedium
+caption3 --> labelSmall
+ */
+
 // Material 3 typography
 val typography =
     Typography(
@@ -75,19 +92,19 @@ val typography =
             letterSpacing = 0.4.sp,
         ),
         labelLarge = TextStyle(
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Normal,
             fontSize = 13.sp,
             lineHeight = 18.sp,
             letterSpacing = 0.1.sp,
         ),
         labelMedium = TextStyle(
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             lineHeight = 16.sp,
             letterSpacing = 0.5.sp,
         ),
         labelSmall = TextStyle(
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Normal,
             fontSize = 11.sp,
             lineHeight = 16.sp,
             letterSpacing = 0.5.sp,

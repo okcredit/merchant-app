@@ -46,8 +46,11 @@ private val okCreditLightColorScheme =
         onErrorContainer = red_primary,
         surface = white,
         onSurface = grey900,
+        onSurfaceVariant = grey700,
         background = grey50,
         onBackground = grey900,
+        outline = grey400,
+        outlineVariant = grey200,
     )
 
 @Composable
