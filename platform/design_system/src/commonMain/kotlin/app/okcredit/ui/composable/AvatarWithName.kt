@@ -39,8 +39,8 @@ fun AvatarWithName(
         Box(
             modifier = Modifier.background(
                 if (verified) orange_primary else Color.Transparent,
-                shape = CircleShape
-            )
+                shape = CircleShape,
+            ),
         ) {
             DefaultAvatar(
                 modifier = modifier.padding(if (verified) 1.dp else 0.dp),
@@ -54,8 +54,8 @@ fun AvatarWithName(
             modifier = modifier
                 .background(
                     if (verified) orange_primary else Color.Transparent,
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         ) {
             AsyncImage(
                 model = profileImage,
@@ -79,12 +79,12 @@ fun AvatarWithName(
 
 @Composable
 fun VerifiedLedgerTag(
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Box(
         modifier = modifier
             .padding(top = 2.dp, end = 2.dp)
-            .background(white, CircleShape)
+            .background(white, CircleShape),
     ) {
         Icon(
             painter = painterResource(Res.drawable.icon_verified_user),
@@ -92,7 +92,7 @@ fun VerifiedLedgerTag(
             modifier = Modifier
                 .size(18.dp)
                 .padding(0.5.dp),
-            tint = orange_primary
+            tint = orange_primary,
         )
     }
 }
@@ -106,7 +106,7 @@ fun DefaultAvatar(
 ) {
     Box(
         modifier = modifier
-            .background(backgroundColor(customerName), CircleShape)
+            .background(backgroundColor(customerName), CircleShape),
     ) {
         Text(
             text = customerName.first().toString().uppercase(),
@@ -132,10 +132,9 @@ fun CommonLedgerTag(modifier: Modifier) {
         contentDescription = "common_ledger",
         modifier = modifier
             .size(20.dp)
-            .background(MaterialTheme.colorScheme.primary, CircleShape)
+            .background(MaterialTheme.colorScheme.primary, CircleShape),
     )
 }
-
 
 @Preview
 @Composable

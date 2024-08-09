@@ -99,12 +99,14 @@ fun Transaction.lastActivityMetaInfo() = when {
             else -> 1
         }
     }
+
     this.amountUpdated -> {
         when (this.type) {
             Transaction.Type.CREDIT -> 8
             else -> 9
         }
     }
+
     this.state == Transaction.State.PROCESSING -> 5
     this.type == Transaction.Type.CREDIT -> 2
     this.category == Transaction.Category.DISCOUNT -> 7

@@ -163,3 +163,34 @@ maxUpdatedAt:
 SELECT MAX(updatedAt)
 FROM `Transaction`
 WHERE businessId = ?;
+
+-- getTransactionSummaryForCustomer:
+-- WITH cumulativeSum AS (
+--     SELECT
+--         ROW_NUMBER() OVER (ORDER BY createdAt) AS row_num,
+--         SUM(
+--             CASE
+--                 WHEN type = 1 AND deleted = 0 THEN -amount
+--                 WHEN type = 2 AND deleted = 0 THEN amount
+--                 ELSE 0
+--             END
+--         ) OVER (ORDER BY createdAt) AS cumulative_sum
+--     FROM `Transaction`
+--     WHERE accountId = ?
+-- )
+-- SELECT
+--     SUM(
+--         CASE
+--             WHEN type = 1 AND deleted = 0 THEN -amount
+--             WHEN type = 2 AND deleted = 0 THEN amount
+--             ELSE 0
+--         END
+--     ) AS currentDue,
+--     (
+--         SELECT MAX(row_num)
+--         FROM cumulativeSum
+--         WHERE cumulative_sum = 0
+--         AND row_num != (SELECT COUNT(*) FROM `Transaction` WHERE accountId = ?)
+--     ) AS lastIndexOfZeroBalanceDue
+-- FROM `Transaction`
+-- WHERE accountId = ?;

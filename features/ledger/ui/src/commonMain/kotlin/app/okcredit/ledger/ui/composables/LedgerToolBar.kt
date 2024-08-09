@@ -22,10 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +40,7 @@ import app.okcredit.ui.composable.AvatarWithName
 import app.okcredit.ui.icon_help_outline
 import app.okcredit.ui.icon_menu
 import app.okcredit.ui.icon_okc
+import app.okcredit.ui.theme.OkCreditTheme
 import app.okcredit.ui.theme.green_primary
 import app.okcredit.ui.theme.grey800
 import org.jetbrains.compose.resources.painterResource
@@ -54,8 +52,6 @@ data class RelationshipToolBarState(
     val name: String,
     val profileImage: String?,
     val mobile: String,
-    val canShowContextualHelp: Boolean,
-    val isDefaulter: Boolean,
     val toolbarOptions: List<MenuOptions>,
     val moreMenuOptions: List<MenuOptions>,
 )
@@ -129,22 +125,23 @@ fun LedgerToolBar(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Start,
-                                    //style = subtitle1
+                                    style = MaterialTheme.typography.titleMedium
                                 )
                                 Text(
                                     modifier = Modifier,
                                     text = "View Profile",
                                     textAlign = TextAlign.Start,
-                                    //style = caption2,
-                                    color = green_primary
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }
                             if (registered) {
                                 Spacer(modifier = Modifier.size(6.dp))
-                                Image(
+                                Icon(
                                     modifier = Modifier.size(16.dp),
                                     painter = painterResource(app.okcredit.ui.Res.drawable.icon_okc),
-                                    contentDescription = "okcredit_logo"
+                                    contentDescription = "okcredit_logo",
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                             Spacer(modifier = Modifier.size(12.dp))
@@ -266,7 +263,7 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
                     .fillMaxWidth(fraction = 0.5f)
                     .background(brush)
             )
-            Spacer(modifier = Modifier.height(4.dp)) // creates an empty space between
+            Spacer(modifier = Modifier.height(4.dp))
             Spacer(
                 modifier = Modifier
                     .height(12.dp)
@@ -284,30 +281,28 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
 fun CustomerLedgerToolBarPreview() {
     val state = RelationshipToolBarState(
         toolbarOptions = listOf(
-            MenuOptions.QrCode,
             MenuOptions.RelationshipStatements,
             MenuOptions.Call,
         ),
-        canShowContextualHelp = false,
         moreMenuOptions = listOf(
             MenuOptions.RelationshipStatements,
-            MenuOptions.QrCode,
             MenuOptions.Help
         ),
-        isDefaulter = false,
         name = "John Doe",
         profileImage = null,
         id = "customerI12",
         mobile = ""
     )
-    LedgerToolBar(
-        state = state,
+    OkCreditTheme(darkTheme = false) {
+        LedgerToolBar(
+            state = state,
 
-        onProfileClicked = {},
-        onBackClicked = {},
-        registered = true,
-        blocked = true,
-        openMoreBottomSheet = {},
-        onMenuOptionClicked = {},
-    )
+            onProfileClicked = {},
+            onBackClicked = {},
+            registered = true,
+            blocked = true,
+            openMoreBottomSheet = {},
+            onMenuOptionClicked = {},
+        )
+    }
 }

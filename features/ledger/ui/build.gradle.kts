@@ -19,6 +19,7 @@ kotlin {
             implementation(project(":platform:base"))
             implementation(project(":platform:identity:contract"))
             implementation(project(":features:ledger:contract"))
+            implementation(project(":features:ledger:core"))
             implementation(project(":platform:design_system"))
 
             implementation(compose.ui)
@@ -29,6 +30,7 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.bundles.coil.common)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -39,6 +41,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.sqldelight.androidDriver)
             implementation(libs.androidx.activityCompose)
+            implementation(libs.coil.core.android)
 
             implementation(compose.uiTooling)
         }
@@ -52,7 +55,6 @@ kotlin {
 }
 
 sqldelight {
-
 }
 
 compose.resources {

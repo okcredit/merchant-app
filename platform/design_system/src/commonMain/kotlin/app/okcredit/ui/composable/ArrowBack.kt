@@ -10,7 +10,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ArrowBack(onBackClicked: () -> Unit) {
     Icon(
         painter = painterResource(app.okcredit.ui.Res.drawable.icon_back),
-        contentDescription = "arrow_back"
+        contentDescription = "arrow_back",
     )
 }
 

@@ -2,16 +2,12 @@ package app.okcredit.ledger.ui.model
 
 import app.okcredit.ui.icon_call
 import app.okcredit.ui.icon_help_outline
-import app.okcredit.ui.icon_qr_code
+import app.okcredit.ui.icon_sms
 import app.okcredit.ui.icon_statement
+import app.okcredit.ui.icon_whatsapp
 import org.jetbrains.compose.resources.DrawableResource
 
 sealed class MenuOptions(val icon: DrawableResource, val name: String) {
-
-    data object QrCode : MenuOptions(
-        icon = app.okcredit.ui.Res.drawable.icon_qr_code,
-        name = "QR Code"
-    )
 
     data object RelationshipStatements : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_statement,
@@ -26,5 +22,15 @@ sealed class MenuOptions(val icon: DrawableResource, val name: String) {
     data object Help : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_help_outline,
         name = "Help"
+    )
+
+    data object RemindWithSms: MenuOptions(
+        icon = app.okcredit.ui.Res.drawable.icon_sms,
+        name = "SMS"
+    )
+
+    data object RemindWithWhatsapp: MenuOptions(
+        icon = app.okcredit.ui.Res.drawable.icon_whatsapp,
+        name = "Whatsapp"
     )
 }
