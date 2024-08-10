@@ -15,6 +15,8 @@ import app.okcredit.ledger.ui.model.TransactionDueInfo
 import app.okcredit.ledger.ui.utils.DateTimeUtils.formatDateOnly
 import app.okcredit.ledger.ui.utils.DateTimeUtils.getTimeOnly
 import app.okcredit.ledger.ui.utils.DateTimeUtils.isSameDay
+import app.okcredit.ledger.ui.utils.DateTimeUtils.isSevenDaysPassed
+import app.okcredit.ledger.ui.utils.StringUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -151,7 +153,112 @@ class GetCustomerLedgerData(
                     closingBalance = closingBalance
                 )
             )
+
+            isProcessTransaction(transaction) -> list.add(
+                createProcessingTransaction(
+                    transaction = transaction,
+                    customerId = customerId,
+                    closingBalance = closingBalance
+                )
+            )
+
+            else -> list.add(
+                createTransactionItem(
+                    transaction = transaction,
+                    customerId = customerId,
+                    customerName = customerName,
+                    closingBalance = closingBalance
+                )
+            )
         }
+    }
+
+    private fun createTransactionItem(
+        transaction: Transaction,
+        customerId: String,
+        customerName: String,
+        closingBalance: Paisa
+    ): LedgerItem {
+        return LedgerItem.TransactionItem(
+            txnId = transaction.id,
+            txnGravity = findUiTxnGravity(
+                isPayment = transaction.type == Transaction.Type.PAYMENT,
+                accountType = AccountType.Customer
+            ),
+            amount = transaction.amount,
+            date = findFormattedDateOrTime(
+                createdAt = transaction.createdAt,
+                billDate = transaction.billDate,
+            ),
+            isDirty = transaction.dirty,
+            createdBySelf = transaction.createdByMerchant,
+            isDiscountTransaction = transaction.category == Transaction.Category.DISCOUNT,
+            note = transaction.note,
+            txnTag = findTransactionTag(transaction, customerName = customerName),
+            closingBalance = closingBalance,
+            relationshipId = customerId,
+        )
+    }
+
+    private fun findTransactionTag(transaction: Transaction, customerName: String?): String? {
+        return when {
+            transaction.category == Transaction.Category.DISCOUNT && transaction.deleted -> {
+                "Discount deleted"
+            }
+
+            transaction.category == Transaction.Category.DISCOUNT -> {
+                "Discount offered"
+            }
+
+            transaction.amountUpdated -> {
+                "Edited"
+            }
+
+            transaction.createdByCustomer -> {
+                "Added by ${StringUtils.getShortName(customerName)}"
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
+    private fun createProcessingTransaction(
+        transaction: Transaction,
+        customerId: String,
+        closingBalance: Paisa
+    ): LedgerItem {
+        val action = if (isSevenDaysPassed(transaction.billDate.instant)) {
+            UiTxnStatus.ProcessingTransactionAction.NONE
+        } else {
+            UiTxnStatus.ProcessingTransactionAction.HELP
+        }
+
+        return LedgerItem.TransactionItem(
+            txnId = transaction.id,
+            txnGravity = findUiTxnGravity(
+                isPayment = transaction.type == Transaction.Type.PAYMENT,
+                accountType = AccountType.Customer
+            ),
+            amount = transaction.amount,
+            date = findFormattedDateOrTime(
+                createdAt = transaction.createdAt,
+                billDate = transaction.billDate,
+            ),
+            closingBalance = closingBalance,
+            txnTag = "Online Transaction",
+            txnType = UiTxnStatus.ProcessingTransaction(
+                action = action,
+            ),
+            note = transaction.note,
+            relationshipId = customerId,
+            isDirty = transaction.dirty,
+        )
+    }
+
+    private fun isProcessTransaction(transaction: Transaction): Boolean {
+        return transaction.state == Transaction.State.PROCESSING
     }
 
     private fun isDeletedTransaction(transaction: Transaction) =

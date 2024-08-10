@@ -15,7 +15,6 @@ import app.okcredit.ledger.ui.model.TransactionDueInfo
 import app.okcredit.ledger.ui.utils.DateTimeUtils.formatDateOnly
 import app.okcredit.ledger.ui.utils.DateTimeUtils.getTimeOnly
 import app.okcredit.ledger.ui.utils.DateTimeUtils.isSameDay
-import app.okcredit.ledger.ui.utils.StringUtils
 import app.okcredit.ledger.ui.utils.StringUtils.getShortName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -96,7 +95,6 @@ class GetSupplierLedgerData(
                 closingBalance = txns[index].currentDue
             )
         }
-
         return ledgerItems
     }
 
