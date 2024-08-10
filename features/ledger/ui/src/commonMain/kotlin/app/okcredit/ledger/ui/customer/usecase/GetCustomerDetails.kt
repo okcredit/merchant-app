@@ -1,6 +1,8 @@
 package app.okcredit.ledger.ui.customer.usecase
 
 import app.okcredit.ledger.core.CustomerRepository
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract.CustomerDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
@@ -13,12 +15,12 @@ class GetCustomerDetails(
 
     private val repository by lazy { customerRepository.value }
 
-    fun execute(customerId: String): Flow<CustomerModel?> {
+    fun execute(customerId: String): Flow<CustomerDetails?> {
         return repository.getCustomerDetails(customerId).map {
             if (it == null) {
                 return@map null
             }
-            CustomerModel(
+            CustomerDetails(
                 id = it.id,
                 name = it.name,
                 mobile = it.mobile,
@@ -33,18 +35,4 @@ class GetCustomerDetails(
             )
         }
     }
-
-    data class CustomerModel(
-        val id: String,
-        val name: String,
-        val mobile: String?,
-        val address: String,
-        val profileImage: String?,
-        val balance: Paisa,
-        val formattedDueDate: String,
-        val blockerByCustomer: Boolean,
-        val blocked: Boolean,
-        val reminderMode: String,
-        val registered: Boolean
-    )
 }

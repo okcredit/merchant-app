@@ -6,8 +6,8 @@ import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.SupplierRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
-import app.okcredit.ledger.ui.composables.TxnGravity
-import app.okcredit.ledger.ui.composables.UiTxnStatus
+import app.okcredit.ledger.ui.composable.TxnGravity
+import app.okcredit.ledger.ui.composable.UiTxnStatus
 import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
@@ -146,7 +146,7 @@ class GetSupplierLedgerData(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
                 accountType = AccountType.Supplier
             ),
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
             amount = transaction.amount,
             date = findFormattedDateOrTime(
@@ -183,7 +183,7 @@ class GetSupplierLedgerData(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
                 accountType = AccountType.Supplier
             ),
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
             amount = transaction.amount,
             date = findFormattedDateOrTime(
@@ -221,7 +221,7 @@ class GetSupplierLedgerData(
                 transaction.type == Transaction.Type.PAYMENT,
                 AccountType.Supplier
             ),
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
             amount = transaction.amount,
             date = findFormattedDateOrTime(

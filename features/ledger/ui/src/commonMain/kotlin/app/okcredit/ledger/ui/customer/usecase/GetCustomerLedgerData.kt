@@ -6,8 +6,8 @@ import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
-import app.okcredit.ledger.ui.composables.TxnGravity
-import app.okcredit.ledger.ui.composables.UiTxnStatus
+import app.okcredit.ledger.ui.composable.TxnGravity
+import app.okcredit.ledger.ui.composable.UiTxnStatus
 import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
@@ -40,8 +40,8 @@ class GetCustomerLedgerData(
     private val customerRepository by lazy { customerRepository.value }
     private val getAccountStatement by lazy { getAccountStatement.value }
 
-    fun execute(customerId: String, showOldClicked: Boolean) {
-        flow {
+    fun execute(customerId: String, showOldClicked: Boolean): Flow<Response> {
+       return flow {
             val businessId = getActiveBusinessId.execute()
             emit(businessId)
         }.flatMapLatest {
@@ -190,7 +190,7 @@ class GetCustomerLedgerData(
                 createdAt = transaction.createdAt,
                 billDate = transaction.billDate,
             ),
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
             isDiscountTransaction = transaction.category == Transaction.Category.DISCOUNT,
             note = transaction.note,
@@ -253,7 +253,7 @@ class GetCustomerLedgerData(
             ),
             note = transaction.note,
             relationshipId = customerId,
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
         )
     }
 
@@ -279,7 +279,7 @@ class GetCustomerLedgerData(
                 transaction.type == Transaction.Type.PAYMENT,
                 AccountType.Customer
             ),
-            isDirty = transaction.dirty,
+            dirty = transaction.dirty,
             amount = transaction.amount,
             date = findFormattedDateOrTime(
                 createdAt = transaction.createdAt,

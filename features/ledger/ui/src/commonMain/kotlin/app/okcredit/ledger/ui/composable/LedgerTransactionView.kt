@@ -1,4 +1,4 @@
-package app.okcredit.ledger.ui.composables
+package app.okcredit.ledger.ui.composable
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -30,7 +30,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,11 +63,9 @@ import app.okcredit.ledger.ui.payment_failed
 import app.okcredit.ledger.ui.placeholder_bill_images
 import app.okcredit.ledger.ui.transaction_share
 import app.okcredit.ui.Res
-import app.okcredit.ui.icon_chevron_right
 import app.okcredit.ui.icon_credit_up
 import app.okcredit.ui.icon_delete
 import app.okcredit.ui.icon_payment_down
-import app.okcredit.ui.icon_pdf
 import app.okcredit.ui.icon_refresh_outline
 import app.okcredit.ui.icon_share
 import app.okcredit.ui.icon_single_check
@@ -78,6 +75,8 @@ import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import io.ktor.client.network.sockets.SocketTimeoutException
+import okcredit.base.units.Paisa
+import okcredit.base.units.formatPaisa
 import okcredit.base.utils.toFormattedAmount
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -92,15 +91,13 @@ data class TransactionViewState(
     val image: String? = "",
     val isDiscountTransaction: Boolean = false,
     val txnGravity: TxnGravity,
-    val closingBalance: Long,
-    val amount: Long,
+    val closingBalance: Paisa,
+    val amount: Paisa,
     val date: String,
-    val isDirty: Boolean,
+    val dirty: Boolean,
     val txnTag: String?,
     val note: String?,
     val txnType: UiTxnStatus = UiTxnStatus.Transaction,
-    val collectionId: String?,
-    val billId: String? = null,
     val accountType: AccountType = AccountType.Customer,
 )
 
@@ -121,9 +118,7 @@ sealed class UiTxnStatus {
 
     enum class ProcessingTransactionAction {
         NONE,
-        ADD_BANK,
-        HELP,
-        KYC,
+        HELP;
     }
 }
 
@@ -133,12 +128,10 @@ fun LedgerTransactionView(
     modifier: Modifier,
     item: TransactionViewState,
     isLastItem: Boolean,
-    openBill: (String) -> Unit,
-    onTransactionClicked: (String, Long, Boolean) -> Unit,
+    onTransactionClicked: (String, Paisa, Boolean) -> Unit,
     trackOnRetryClicked: (String, String) -> Unit,
     trackReceiptLoadFailed: (String, String) -> Unit,
     trackNoInternetError: (String, String) -> Unit,
-    onOnlineTransactionClicked: (String) -> Unit,
     onTransactionShareButtonClicked: (String) -> Unit,
 ) {
     TransactionView(
@@ -149,9 +142,7 @@ fun LedgerTransactionView(
         trackOnRetryClicked = trackOnRetryClicked,
         trackReceiptLoadFailed = trackReceiptLoadFailed,
         trackNoInternetError = trackNoInternetError,
-        onOnlineTransactionClicked = onOnlineTransactionClicked,
         onTransactionShareButtonClicked = onTransactionShareButtonClicked,
-        openBill = openBill,
     )
 }
 
@@ -160,12 +151,10 @@ fun TransactionView(
     modifier: Modifier,
     item: TransactionViewState,
     isLastItem: Boolean,
-    openBill: (String) -> Unit,
-    onTransactionClicked: (String, Long, Boolean) -> Unit,
+    onTransactionClicked: (String, Paisa, Boolean) -> Unit,
     trackOnRetryClicked: (String, String) -> Unit,
     trackReceiptLoadFailed: (String, String) -> Unit,
     trackNoInternetError: (String, String) -> Unit,
-    onOnlineTransactionClicked: (String) -> Unit,
     onTransactionShareButtonClicked: (String) -> Unit
 ) {
     val isPayment = item.txnGravity == TxnGravity.LEFT
@@ -189,16 +178,11 @@ fun TransactionView(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        val collectionId = item.collectionId
-                        if (!collectionId.isNullOrEmpty()) {
-                            onOnlineTransactionClicked(item.collectionId)
-                        } else {
-                            onTransactionClicked(
-                                item.txnId,
-                                item.closingBalance,
-                                item.isDiscountTransaction
-                            )
-                        }
+                        onTransactionClicked(
+                            item.txnId,
+                            item.closingBalance,
+                            item.isDiscountTransaction
+                        )
                     },
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(
@@ -229,7 +213,7 @@ fun TransactionView(
                         modifier = Modifier,
                     )
                     TransactionAmountStrip(
-                        transactionAmount = item.amount.toFormattedAmount(true),
+                        transactionAmount = item.amount.value.toFormattedAmount(true),
                         transactionTextColor = getTransactionTextColor(
                             item.amount,
                             isPayment,
@@ -244,22 +228,15 @@ fun TransactionView(
                                 item.txnType is UiTxnStatus.DeletedTransaction
                             )
                         },
-                        collectionId = item.collectionId ?: "",
-                        isDirty = item.isDirty,
+                        isDirty = item.dirty,
                         createdBySelf = item.createdBySelf,
                         isDiscountTransaction = item.isDiscountTransaction,
                         isDeletedTransaction = item.txnType is UiTxnStatus.DeletedTransaction,
-                        isOnlineTxn = !item.collectionId.isNullOrEmpty(),
                         isPayment = isPayment,
                         isTransactionImageAdded = item.imageCount > 0,
-                        supplierLedger = item.accountType.isSupplier()
-                    )
-                    TransactionBillDetails(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        billNumber = item.note ?: "",
-                        billId = item.billId ?: "",
-                        openBill = openBill
-                    )
+                        supplierLedger = item.accountType.isSupplier(),
+
+                        )
                     if (item.txnType !is UiTxnStatus.DeletedTransaction) {
                         TransactionBillImages(
                             image = item.image,
@@ -274,7 +251,6 @@ fun TransactionView(
                     if (item.txnType !is UiTxnStatus.DeletedTransaction && item.txnType !is UiTxnStatus.ProcessingTransaction) {
                         TransactionNote(
                             note = item.note,
-                            billId = item.billId ?: ""
                         )
                     }
                 }
@@ -354,7 +330,7 @@ fun TransactionShareButton(
 
 @Composable
 fun TransactionBottomStrip(
-    totalAmount: Long,
+    totalAmount: Paisa,
     modifier: Modifier,
 ) {
     Row(
@@ -363,19 +339,19 @@ fun TransactionBottomStrip(
     ) {
         Text(
             text = when {
-                (totalAmount * 100).toInt() == 0 -> {
+                totalAmount == Paisa.ZERO -> {
                     "₹0 ${stringResource(app.okcredit.ledger.ui.Res.string.due)}"
                 }
 
-                totalAmount > 0 -> {
+                totalAmount > Paisa.ZERO -> {
                     "${
-                        totalAmount.toFormattedAmount(true)
+                        formatPaisa(totalAmount.value, withRupeePrefix = true)
                     } ${stringResource(app.okcredit.ledger.ui.Res.string.due)}"
                 }
 
                 else -> {
                     "${
-                        totalAmount.toFormattedAmount(true)
+                        formatPaisa(totalAmount.value, withRupeePrefix = true)
                     } ${stringResource(app.okcredit.ledger.ui.Res.string.advance)}"
                 }
             },
@@ -388,9 +364,8 @@ fun TransactionBottomStrip(
 @Composable
 fun TransactionNote(
     note: String?,
-    billId: String,
 ) {
-    if (!note.isNullOrEmpty() && billId.isBlank()) {
+    if (!note.isNullOrEmpty()) {
         Text(
             text = note,
             style = MaterialTheme.typography.labelMedium,
@@ -556,16 +531,14 @@ fun RetryButton(
 fun TransactionAmountStrip(
     modifier: Modifier = Modifier,
     supplierLedger: Boolean,
+    arrowIcon: @Composable () -> Unit,
     transactionAmount: String,
     transactionTextColor: Color,
     transactionDate: String,
-    arrowIcon: @Composable () -> Unit,
-    collectionId: String,
     isDirty: Boolean,
     createdBySelf: Boolean,
     isDiscountTransaction: Boolean,
     isDeletedTransaction: Boolean,
-    isOnlineTxn: Boolean,
     isPayment: Boolean,
     isTransactionImageAdded: Boolean,
 ) {
@@ -587,7 +560,6 @@ fun TransactionAmountStrip(
         ) {
             if (isDeletedTransaction) {
                 DeletedTransactionUi(
-                    isOnlineTxn = isOnlineTxn,
                     isPayment = isPayment,
                     supplierLedger = supplierLedger
                 )
@@ -609,8 +581,7 @@ fun TransactionAmountStrip(
         ) {
             TransactionDate(transactionDate, Modifier.align(Alignment.CenterVertically))
             TransactionSyncStatus(
-                collectionId = collectionId,
-                isDirty = isDirty,
+                dirty = isDirty,
                 isCreatedBySelf = createdBySelf
             )
         }
@@ -619,13 +590,12 @@ fun TransactionAmountStrip(
 
 @Composable
 fun DeletedTransactionUi(
-    isOnlineTxn: Boolean,
     isPayment: Boolean,
     supplierLedger: Boolean,
 ) {
     Icon(
         modifier = Modifier.size(18.dp),
-        painter = painterResource(app.okcredit.ui.Res.drawable.icon_delete),
+        painter = painterResource(Res.drawable.icon_delete),
         contentDescription = "icon_delete",
         tint = MaterialTheme.colorScheme.outlineVariant
     )
@@ -633,7 +603,6 @@ fun DeletedTransactionUi(
     Text(
         text = stringResource(
             getDeletedSuffixText(
-                isOnlineTxn = isOnlineTxn,
                 isPayment = isPayment,
                 supplierLedger = supplierLedger
             )
@@ -680,22 +649,13 @@ fun TransactionAmount(
 }
 
 fun getDeletedSuffixText(
-    isOnlineTxn: Boolean,
     isPayment: Boolean,
     supplierLedger: Boolean
 ): StringResource {
     return if (supplierLedger) {
-        if (isOnlineTxn) {
-            if (isPayment) app.okcredit.ledger.ui.Res.string.credit_failed else app.okcredit.ledger.ui.Res.string.payment_failed
-        } else {
-            if (isPayment) app.okcredit.ledger.ui.Res.string.credit_deleted else app.okcredit.ledger.ui.Res.string.payment_deleted
-        }
+        if (isPayment) app.okcredit.ledger.ui.Res.string.credit_deleted else app.okcredit.ledger.ui.Res.string.payment_deleted
     } else {
-        if (isOnlineTxn) {
-            if (isPayment) app.okcredit.ledger.ui.Res.string.payment_failed else app.okcredit.ledger.ui.Res.string.credit_failed
-        } else {
-            if (isPayment) app.okcredit.ledger.ui.Res.string.payment_deleted else app.okcredit.ledger.ui.Res.string.credit_deleted
-        }
+        if (isPayment) app.okcredit.ledger.ui.Res.string.payment_deleted else app.okcredit.ledger.ui.Res.string.credit_deleted
     }
 }
 
@@ -711,14 +671,13 @@ fun TransactionArrow(
 
 @Composable
 fun TransactionSyncStatus(
-    collectionId: String,
-    isDirty: Boolean,
+    dirty: Boolean,
     isCreatedBySelf: Boolean,
 ) {
     val iconRes = when {
-        collectionId.isEmpty().not() && isDirty -> Res.drawable.icon_sync
+        dirty -> Res.drawable.icon_sync
 
-        isCreatedBySelf -> if (isDirty) {
+        isCreatedBySelf -> if (dirty) {
             Res.drawable.icon_sync_problem
         } else {
             Res.drawable.icon_single_check
@@ -734,19 +693,19 @@ fun TransactionSyncStatus(
             modifier = Modifier
                 .padding(start = 4.dp)
                 .size(16.dp),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = if (collectionId.isNotEmpty()) 0.6f else 0.7f)
+            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     }
 }
 
 @Composable
-fun getTransactionTextColor(amount: Long, isPayment: Boolean, accountType: AccountType): Color {
+fun getTransactionTextColor(amount: Paisa, isPayment: Boolean, accountType: AccountType): Color {
     var color = if (accountType.isSupplier()) {
         MaterialTheme.colorScheme.error
     } else {
         MaterialTheme.colorScheme.primary
     }
-    if (amount < 0L || !isPayment) {
+    if (amount < Paisa.ZERO || !isPayment) {
         color = if (accountType.isSupplier()) {
             MaterialTheme.colorScheme.primary
         } else {
@@ -758,13 +717,13 @@ fun getTransactionTextColor(amount: Long, isPayment: Boolean, accountType: Accou
 
 @Composable
 fun GetTransactionArrows(
-    amount: Long,
+    amount: Paisa,
     isPayment: Boolean,
     accountType: AccountType,
     isDeletedTransaction: Boolean
 ) {
     if (accountType.isSupplier()) {
-        if (amount < 0L || !isPayment) {
+        if (amount < Paisa.ZERO || !isPayment) {
             Icon(
                 painter = painterResource(Res.drawable.icon_credit_up),
                 contentDescription = "transaction_arrow",
@@ -780,7 +739,7 @@ fun GetTransactionArrows(
             )
         }
     } else {
-        if (amount < 0L || !isPayment) {
+        if (amount < Paisa.ZERO || !isPayment) {
             Icon(
                 painter = painterResource(Res.drawable.icon_credit_up),
                 contentDescription = "transaction_arrow",
@@ -823,79 +782,77 @@ fun TransactionTag(
     }
 }
 
-@Composable
-fun TransactionBillDetails(
-    modifier: Modifier = Modifier,
-    billNumber: String,
-    billId: String,
-    openBill: (String) -> Unit,
-) {
-    if (billId.isBlank()) {
-        return
-    }
-    Column(
-        modifier = modifier
-            .padding(horizontal = 12.dp)
-            .clickable { openBill(billId) }
-    ) {
-        HorizontalDivider()
-        Row(
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.icon_pdf),
-                    contentDescription = "Pdf icon",
-                    modifier = Modifier,
-                    tint = Color.Unspecified,
-                )
-                Column(
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = "View Bill Details",
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                        modifier = Modifier,
-                    )
-                    Text(
-                        text = billNumber,
-                        style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.outlineVariant),
-                        modifier = Modifier,
-                    )
-                }
-            }
-
-            Icon(
-                painter = painterResource(app.okcredit.ui.Res.drawable.icon_chevron_right),
-                contentDescription = "Chevron icon",
-                modifier = Modifier,
-            )
-        }
-    }
-}
+//@Composable
+//fun TransactionBillDetails(
+//    modifier: Modifier = Modifier,
+//    billNumber: String,
+//    billId: String,
+//    openBill: (String) -> Unit,
+//) {
+//    if (billId.isBlank()) {
+//        return
+//    }
+//    Column(
+//        modifier = modifier
+//            .padding(horizontal = 12.dp)
+//            .clickable { openBill(billId) }
+//    ) {
+//        HorizontalDivider()
+//        Row(
+//            modifier = Modifier
+//                .padding(vertical = 12.dp)
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Row(
+//                modifier = Modifier
+//            ) {
+//                Icon(
+//                    painter = painterResource(Res.drawable.icon_pdf),
+//                    contentDescription = "Pdf icon",
+//                    modifier = Modifier,
+//                    tint = Color.Unspecified,
+//                )
+//                Column(
+//                    modifier = Modifier.padding(start = 8.dp)
+//                ) {
+//                    Text(
+//                        text = "View Bill Details",
+//                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+//                        modifier = Modifier,
+//                    )
+//                    Text(
+//                        text = billNumber,
+//                        style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.outlineVariant),
+//                        modifier = Modifier,
+//                    )
+//                }
+//            }
+//
+//            Icon(
+//                painter = painterResource(app.okcredit.ui.Res.drawable.icon_chevron_right),
+//                contentDescription = "Chevron icon",
+//                modifier = Modifier,
+//            )
+//        }
+//    }
+//}
 
 @Preview
 @Composable
 fun TransactionItemPreview() {
     val sampleTxnItem = TransactionViewState(
         txnId = "1",
-        amount = 1000L,
+        amount = Paisa(1000L),
         date = "16 Jan 2024",
         txnGravity = TxnGravity.LEFT,
-        closingBalance = 1000L,
+        closingBalance = Paisa(1000L),
         txnTag = "",
         note = "Note",
-        isDirty = false,
+        dirty = false,
         txnType = UiTxnStatus.Transaction,
         relationshipId = "1",
-        collectionId = "1",
-        billId = "1",
         imageCount = 2,
         image = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
     )
@@ -906,15 +863,7 @@ fun TransactionItemPreview() {
         trackOnRetryClicked = { _, _ -> },
         trackReceiptLoadFailed = { _, _ -> },
         trackNoInternetError = { _, _ -> },
-        onOnlineTransactionClicked = {},
         onTransactionShareButtonClicked = {},
         modifier = Modifier,
-        openBill = {},
     )
-}
-
-@Preview
-@Composable
-fun TransactionBillDetailsPreview() {
-    TransactionBillDetails(billNumber = "BILL-54", billId = "abcd", openBill = {})
 }

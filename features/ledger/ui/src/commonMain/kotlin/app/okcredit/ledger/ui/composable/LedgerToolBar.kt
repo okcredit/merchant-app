@@ -1,11 +1,10 @@
-package app.okcredit.ledger.ui.composables
+package app.okcredit.ledger.ui.composable
 
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,17 +40,18 @@ import app.okcredit.ui.icon_help_outline
 import app.okcredit.ui.icon_menu
 import app.okcredit.ui.icon_okc
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.green_primary
 import app.okcredit.ui.theme.grey800
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
-data class RelationshipToolBarState(
+data class LedgerToolBarState(
     val id: String,
     val name: String,
     val profileImage: String?,
     val mobile: String,
+    val registered: Boolean,
+    val blocked: Boolean,
     val toolbarOptions: List<MenuOptions>,
     val moreMenuOptions: List<MenuOptions>,
 )
@@ -59,9 +59,7 @@ data class RelationshipToolBarState(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LedgerToolBar(
-    state: RelationshipToolBarState?,
-    registered: Boolean,
-    blocked: Boolean,
+    state: LedgerToolBarState?,
     onProfileClicked: (String) -> Unit,
     openMoreBottomSheet: (Boolean) -> Unit,
     onMenuOptionClicked: (MenuOptions) -> Unit,
@@ -96,7 +94,7 @@ fun LedgerToolBar(
                                 modifier = Modifier
                                     .size(44.dp)
                                     .clickable {
-                                        if (blocked) {
+                                        if (state.blocked) {
                                             onProfileClicked(state.id)
                                         }
                                     }
@@ -110,7 +108,7 @@ fun LedgerToolBar(
                             Column(
                                 modifier = Modifier
                                     .clickable {
-                                        if (blocked) {
+                                        if (state.blocked) {
                                             onProfileClicked(
                                                 state.id
                                             )
@@ -135,7 +133,7 @@ fun LedgerToolBar(
                                     color = MaterialTheme.colorScheme.primary
                                 )
                             }
-                            if (registered) {
+                            if (state.registered) {
                                 Spacer(modifier = Modifier.size(6.dp))
                                 Icon(
                                     modifier = Modifier.size(16.dp),
@@ -155,7 +153,7 @@ fun LedgerToolBar(
                                 modifier = Modifier
                                     .size(24.dp)
                                     .clickable {
-                                        if (!blocked) {
+                                        if (!state.blocked) {
                                             onMenuOptionClicked(it)
                                         }
                                     },
@@ -173,7 +171,7 @@ fun LedgerToolBar(
                                 modifier = Modifier
                                     .rotate(90f)
                                     .clickable {
-                                        if (blocked) openMoreBottomSheet(true)
+                                        if (state.blocked) openMoreBottomSheet(true)
                                     },
                                 tint = grey800
                             )
@@ -279,7 +277,7 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
 @Preview
 @Composable
 fun CustomerLedgerToolBarPreview() {
-    val state = RelationshipToolBarState(
+    val state = LedgerToolBarState(
         toolbarOptions = listOf(
             MenuOptions.RelationshipStatements,
             MenuOptions.Call,
@@ -291,7 +289,9 @@ fun CustomerLedgerToolBarPreview() {
         name = "John Doe",
         profileImage = null,
         id = "customerI12",
-        mobile = ""
+        mobile = "",
+        registered = true,
+        blocked = false
     )
     OkCreditTheme(darkTheme = false) {
         LedgerToolBar(
@@ -299,8 +299,6 @@ fun CustomerLedgerToolBarPreview() {
 
             onProfileClicked = {},
             onBackClicked = {},
-            registered = true,
-            blocked = true,
             openMoreBottomSheet = {},
             onMenuOptionClicked = {},
         )

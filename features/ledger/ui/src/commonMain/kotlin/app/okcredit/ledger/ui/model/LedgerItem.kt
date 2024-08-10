@@ -1,7 +1,7 @@
 package app.okcredit.ledger.ui.model
 
-import app.okcredit.ledger.ui.composables.TxnGravity
-import app.okcredit.ledger.ui.composables.UiTxnStatus
+import app.okcredit.ledger.ui.composable.TxnGravity
+import app.okcredit.ledger.ui.composable.UiTxnStatus
 import okcredit.base.units.Paisa
 
 sealed class LedgerItem {
@@ -23,7 +23,7 @@ sealed class LedgerItem {
         val closingBalance: Paisa,
         val amount: Paisa,
         val date: String,
-        val isDirty: Boolean,
+        val dirty: Boolean,
         val txnTag: String?,
         val note: String?,
         val txnType: UiTxnStatus = UiTxnStatus.Transaction,

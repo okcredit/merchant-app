@@ -1,4 +1,4 @@
-package app.okcredit.ledger.ui.composables
+package app.okcredit.ledger.ui.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
