@@ -24,7 +24,9 @@ fun SupplierLedgerUi(
     onTransactionShareButtonClicked: (String) -> Unit,
     onReceivedClicked: () -> Unit,
     onGivenClicked: () -> Unit,
-    onBalanceClicked: () -> Unit,
+    onShareReportClicked: () -> Unit,
+    onPayOnlineClicked: () -> Unit,
+    onCallClicked: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -65,7 +67,16 @@ fun SupplierLedgerUi(
             )
         },
         bottomBar = {
-
+            SupplierBottomUi(
+                ledgerNotEmpty = state.ledgerItems.size > 1,
+                onReceivedClicked = onReceivedClicked,
+                onGivenClicked = onGivenClicked,
+                canShowPayOnline = false,
+                onCallClicked = onCallClicked,
+                onPayOnlineClicked = onPayOnlineClicked,
+                closingBalance = state.supplierDetails?.balance ?: Paisa.ZERO,
+                onShareReportClicked = onShareReportClicked,
+            )
         }
     )
 }

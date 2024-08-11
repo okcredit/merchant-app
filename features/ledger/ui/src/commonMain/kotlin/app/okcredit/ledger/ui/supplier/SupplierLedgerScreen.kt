@@ -46,7 +46,9 @@ class SupplierLedgerScreen : Screen {
             onTransactionShareButtonClicked = { },
             onReceivedClicked = { },
             onGivenClicked = { },
-            onBalanceClicked = { },
+            onShareReportClicked = { },
+            onPayOnlineClicked = { },
+            onCallClicked = { }
         )
 
     }
