@@ -1,4 +1,4 @@
-package app.okcredit.ledger.ui.customer.composable
+package app.okcredit.ledger.ui.supplier.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import app.okcredit.ledger.ui.model.LedgerItem
 import okcredit.base.units.Paisa
 
 @Composable
-fun LedgerList(
+fun SupplierLedgerList(
     paddingValues: PaddingValues,
     modifier: Modifier,
     ledgerItems: List<LedgerItem>,
@@ -81,7 +81,7 @@ fun LedgerList(
                         note = item.note,
                         imageCount = item.imageCount,
                         image = item.image,
-                        accountType = AccountType.Customer,
+                        accountType = item.accountType,
                     ),
                     isLastItem = index == ledgerItems.lastIndex,
                     onTransactionClicked = onTransactionClicked,

@@ -11,4 +11,5 @@
     <string name ="payment_failed">Payment Failed</string>
     <string name="credit_deleted">Credit Deleted</string>
     <string name="payment_deleted">Payment Deleted</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

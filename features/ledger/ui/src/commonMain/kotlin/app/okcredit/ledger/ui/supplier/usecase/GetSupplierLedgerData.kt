@@ -38,8 +38,8 @@ class GetSupplierLedgerData(
     private val supplierRepository by lazy { supplierRepository.value }
     private val getAccountStatement by lazy { getAccountStatement.value }
 
-    fun execute(supplierId: String, showOldClicked: Boolean) {
-        flow {
+    fun execute(supplierId: String, showOldClicked: Boolean): Flow<List<LedgerItem>> {
+        return flow {
             val businessId = getActiveBusinessId.execute()
             emit(businessId)
         }.flatMapLatest {
@@ -114,6 +114,7 @@ class GetSupplierLedgerData(
                     closingBalance = closingBalance
                 )
             )
+
             isProcessingTransaction(transaction) -> ledgerItems.add(
                 createProcessingTransaction(
                     transaction = transaction,
@@ -122,6 +123,7 @@ class GetSupplierLedgerData(
                     closingBalance = closingBalance
                 )
             )
+
             else -> ledgerItems.add(
                 createTransaction(
                     transaction = transaction,

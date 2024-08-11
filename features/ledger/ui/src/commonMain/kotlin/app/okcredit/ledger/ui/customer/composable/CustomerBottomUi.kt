@@ -48,7 +48,7 @@ import okcredit.base.units.formatPaisa
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun BottomUi(
+fun CustomerBottomUi(
     dueDate: String?,
     balance: Paisa?,
     modifier: Modifier,

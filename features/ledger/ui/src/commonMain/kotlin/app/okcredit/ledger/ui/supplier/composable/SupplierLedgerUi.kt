@@ -1,20 +1,19 @@
-package app.okcredit.ledger.ui.customer.composable
+package app.okcredit.ledger.ui.supplier.composable
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.okcredit.ledger.ui.composable.LedgerToolBar
 import app.okcredit.ledger.ui.composable.LedgerToolBarState
-import app.okcredit.ledger.ui.customer.CustomerLedgerContract.State
 import app.okcredit.ledger.ui.model.MenuOptions
+import app.okcredit.ledger.ui.supplier.SupplierLedgerContract
 import okcredit.base.units.Paisa
 
 @Composable
-fun LedgerUi(
-    state: State,
+fun SupplierLedgerUi(
+    state: SupplierLedgerContract.State,
     onProfileClicked: (String) -> Unit,
     onBackClicked: () -> Unit,
-    openMoreBottomSheet: (Boolean) -> Unit,
     onMenuOptionClicked: (MenuOptions) -> Unit,
     onLearnMoreClicked: () -> Unit,
     onLoadMoreTransactionsClicked: () -> Unit,
@@ -26,12 +25,10 @@ fun LedgerUi(
     onReceivedClicked: () -> Unit,
     onGivenClicked: () -> Unit,
     onBalanceClicked: () -> Unit,
-    onCallClicked: () -> Unit,
-    onWhatsappClicked: () -> Unit,
 ) {
     Scaffold(
         topBar = {
-            val customer = state.customerDetails
+            val customer = state.supplierDetails
             val toolbar = state.toolbarData
             LedgerToolBar(
                 state = if (customer == null && toolbar == null)
@@ -47,38 +44,28 @@ fun LedgerUi(
                     moreMenuOptions = toolbar.moreMenuOptions
                 ),
                 onProfileClicked = onProfileClicked,
-                openMoreBottomSheet = openMoreBottomSheet,
+                openMoreBottomSheet = {},
                 onMenuOptionClicked = onMenuOptionClicked,
                 onBackClicked = onBackClicked
             )
         },
         content = { paddingValues ->
-            LedgerList(
-                paddingValues = paddingValues,
+            SupplierLedgerList(
                 modifier = Modifier,
+                paddingValues = paddingValues,
                 ledgerItems = state.ledgerItems,
                 transactionScrollPosition = state.transactionScrollPosition,
-                onLearnMoreClicked = onLearnMoreClicked,
-                onLoadMoreTransactionsClicked = onLoadMoreTransactionsClicked,
-                onTransactionShareButtonClicked = onTransactionShareButtonClicked,
                 onTransactionClicked = onTransactionClicked,
-                trackReceiptLoadFailed = trackReceiptLoadFailed,
+                onLoadMoreTransactionsClicked = onLoadMoreTransactionsClicked,
                 trackOnRetryClicked = trackOnRetryClicked,
+                trackReceiptLoadFailed = trackReceiptLoadFailed,
                 trackNoInternetError = trackNoInternetError,
+                onTransactionShareButtonClicked = onTransactionShareButtonClicked,
+                onLearnMoreClicked = onLearnMoreClicked,
             )
         },
         bottomBar = {
-            BottomUi(
-                modifier = Modifier,
-                dueDate = state.customerDetails?.formattedDueDate,
-                balance = state.customerDetails?.balance,
-                onMoreClicked = { openMoreBottomSheet(true) },
-                onGivenClicked = onGivenClicked,
-                onReceivedClicked = onReceivedClicked,
-                onBalanceClicked = onBalanceClicked,
-                onWhatsappClicked = onWhatsappClicked,
-                onCallClicked = onCallClicked
-            )
+
         }
     )
 }

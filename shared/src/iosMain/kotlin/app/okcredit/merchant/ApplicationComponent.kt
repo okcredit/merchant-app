@@ -1,6 +1,7 @@
 package app.okcredit.merchant
 
 import app.okcredit.ledger.core.di.IosLedgerComponent
+import app.okcredit.ledger.core.di.LedgerComponent
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import app.okcredit.onboarding.di.OnboardingComponent
 import me.tatarka.inject.annotations.Component
@@ -39,6 +40,7 @@ abstract class ApplicationComponent(
     IosOkDocComponent,
     IosSharedComponent,
     OnboardingComponent,
+    LedgerComponent,
     IosLedgerComponent,
     IosCustomizationComponent {
 
