@@ -2,7 +2,6 @@ plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
     alias(libs.plugins.kotlin.serialization)
-    id("okcredit.ktorfit")
 }
 
 kotlin {

@@ -9,7 +9,7 @@ import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 @Inject
 class AndroidSupplierSyncer(
     private val supplierRepository: SupplierRepository,
-    private val getActiveBusinessId: GetActiveBusinessId
+    private val getActiveBusinessId: GetActiveBusinessId,
 ) : SupplierSyncer {
 
     override suspend fun execute(input: JsonObject) {

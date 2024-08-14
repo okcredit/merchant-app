@@ -1,32 +1,37 @@
 package tech.okcredit.ab.remote
 
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.network.asError
+import okcredit.base.di.BaseUrl
+import okcredit.base.network.AuthorizedHttpClient
+import okcredit.base.network.HEADER_BUSINESS_ID
+import okcredit.base.network.get
+import okcredit.base.network.getOrThrow
+import okcredit.base.network.post
 import tech.okcredit.ab.Profile
 
 @Inject
 class AbRemoteSource(
-    private val abApiClientLazy: Lazy<AbApiClient>,
+    private val baseUrl: BaseUrl,
+    private val authorizedHttpClient: AuthorizedHttpClient,
 ) {
-
-    private val abApiClient by lazy { abApiClientLazy.value }
 
     suspend fun getProfile(
         deviceId: String,
         sourceType: String,
         businessId: String,
     ): Profile {
-        val response = abApiClient.getProfile(
-            deviceId = deviceId,
-            source = "sync",
-            sourceType = sourceType,
-            businessId = businessId,
-        )
-        return if (response.isSuccessful) {
-            response.body()?.profile?.toProfile() ?: Profile(hashMapOf())
-        } else {
-            throw response.asError()
-        }
+        return authorizedHttpClient.get<GetProfileResponse>(
+            baseUrl = baseUrl,
+            endPoint = "ab/v2/GetProfile",
+            queryParams = mapOf(
+                "device_id" to deviceId,
+            ),
+            headers = mapOf(
+                "X-App-Source" to "sync",
+                "X-App-Source-Type" to sourceType,
+                "X-Business-Id" to businessId,
+            ),
+        ).getOrThrow().profile.toProfile()
     }
 
     suspend fun acknowledgeExperiment(
@@ -37,16 +42,20 @@ class AbRemoteSource(
         acknowledgeTime: Long,
         businessId: String,
     ) {
-        abApiClient.acknowledge(
-            req = AcknowledgementRequest(
+        authorizedHttpClient.post<AcknowledgementRequest, Unit>(
+            baseUrl = baseUrl,
+            endPoint = "ab/v2/Ack",
+            requestBody = AcknowledgementRequest(
                 deviceId = deviceId,
                 type = experimentStatus,
                 time = acknowledgeTime,
                 experiments = listOf(Experiment(experimentName, 0, experimentVariant, mapOf())),
             ),
-            source = "sync",
-            sourceType = "user_action",
-            businessId = businessId,
+            headers = mapOf(
+                "X-App-Source" to "sync",
+                "X-App-Source-Type" to "user_action",
+                HEADER_BUSINESS_ID to businessId,
+            ),
         )
     }
 
@@ -54,25 +63,33 @@ class AbRemoteSource(
         feature: String,
         businessId: String,
     ) {
-        abApiClient.disableFeature(
-            req = DisableFeatureRequest(
+        authorizedHttpClient.post<DisableFeatureRequest, Unit>(
+            baseUrl = baseUrl,
+            endPoint = "ab/v1/DisableFeature",
+            requestBody = DisableFeatureRequest(
                 feature = feature,
                 merchantIds = listOf(businessId),
                 reason = "user_action",
             ),
-            source = "disable_feature",
-            sourceType = "user_action",
+            headers = mapOf(
+                "X-App-Source" to "disable_feature",
+                "X-App-Source-Type" to "user_action",
+            ),
         )
     }
 
     suspend fun enableFeature(feature: String, businessId: String) {
-        abApiClient.enableFeature(
-            req = EnableFeatureRequest(
+        authorizedHttpClient.post<EnableFeatureRequest, Unit>(
+            baseUrl = baseUrl,
+            endPoint = "ab/v1/EnableFeature",
+            requestBody = EnableFeatureRequest(
                 feature = feature,
                 merchantIds = listOf(businessId),
             ),
-            source = "enable_feature",
-            sourceType = "user_action",
+            headers = mapOf(
+                "X-App-Source" to "enable_feature",
+                "X-App-Source-Type" to "user_action",
+            ),
         )
     }
 }

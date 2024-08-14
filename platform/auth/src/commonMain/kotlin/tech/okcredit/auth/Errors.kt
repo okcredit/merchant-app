@@ -1,7 +1,7 @@
 package tech.okcredit.auth
 
-import de.jensklingenberg.ktorfit.Response
-import io.ktor.utils.io.errors.*
+import io.ktor.utils.io.errors.IOException
+import okcredit.base.network.Response
 import okcredit.base.network.asError
 import tech.okcredit.auth.remote.CookieProvider.Companion.RESPONSE_CODE_INVALID_GRANT
 import tech.okcredit.auth.remote.CookieProvider.Companion.RESPONSE_CODE_SESSION_LIMIT_EXCEEDED

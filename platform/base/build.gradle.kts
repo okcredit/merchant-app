@@ -21,7 +21,7 @@ kotlin {
 
             api(libs.log.kermit)
             api(libs.bundles.multiplatform.settings)
-            api(libs.bundles.ktorfit.common)
+            api(libs.bundles.ktor.common)
             api(libs.kotlininject.runtime)
             api(libs.bundles.voyager.common)
             implementation(libs.bundles.sqldelight.common)
@@ -32,12 +32,15 @@ kotlin {
         androidMain.dependencies {
             api(libs.androidx.workmanager)
             implementation(libs.sqldelight.androidDriver)
+            implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.nativeDriver)
+            implementation(libs.ktor.client.ios)
         }
         jvmMain.dependencies {
             implementation(libs.sqldelight.sqliteDriver)
+            implementation(libs.ktor.client.cio)
         }
     }
 }

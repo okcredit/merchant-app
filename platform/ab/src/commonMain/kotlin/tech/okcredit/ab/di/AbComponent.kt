@@ -1,6 +1,5 @@
 package tech.okcredit.ab.di
 
-import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.SqlDriverFactory
@@ -12,16 +11,10 @@ import tech.okcredit.ab.AbRepositoryImpl
 import tech.okcredit.ab.AbSignOutListener
 import tech.okcredit.ab.local.AbDatabase
 import tech.okcredit.ab.local.AbDatabaseQueries
-import tech.okcredit.ab.remote.AbApiClient
 
 typealias AbDriverFactory = SqlDriverFactory
 
 interface AbComponent {
-
-    @Provides
-    fun abApiClient(ktorfit: Ktorfit): AbApiClient {
-        return ktorfit.create()
-    }
 
     @Provides
     fun abDatabaseDao(abDriverFactory: AbDriverFactory): AbDatabaseQueries {

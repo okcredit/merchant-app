@@ -1,7 +1,6 @@
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
-    id("okcredit.ktorfit")
 
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.sqldelight)

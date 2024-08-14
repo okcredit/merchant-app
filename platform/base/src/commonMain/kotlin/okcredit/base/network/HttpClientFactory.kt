@@ -1,11 +1,12 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+
 package okcredit.base.network
 
-import de.jensklingenberg.ktorfit.Ktorfit
-import de.jensklingenberg.ktorfit.converter.ResponseConverterFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.api.createClientPlugin
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -25,27 +26,29 @@ import okcredit.base.di.Debug
 import okcredit.base.di.Singleton
 import okcredit.base.randomUUID
 
-@OptIn(ExperimentalSerializationApi::class)
-@Inject
+typealias AuthorizedHttpClient = HttpClient
+typealias DefaultHttpClient = HttpClient
+
 @Singleton
-class KtorfitFactory(
-    private val baseUrl: BaseUrl,
-    private val appVersion: AppVersion,
-    private val debug: Debug,
-    private val clientConfigs: Set<ClientConfig>,
+@Inject
+class HttpClientFactory(
     private val serializerModules: Set<SerializersModule> = emptySet(),
+    private val debug: Debug,
+    private val appVersion: AppVersion,
+    private val clientConfigs: Set<ClientConfig>,
+    private val baseUrl: BaseUrl,
 ) {
 
-    fun create(): Ktorfit {
-        return Ktorfit.Builder()
-            .baseUrl(baseUrl)
-            .httpClient(createHttpClient())
-            .converterFactories(ResponseConverterFactory())
-            .build()
-    }
+    fun createHttpClient(): HttpClient {
+        return providePlatformClient().config {
+            defaultRequest {
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HEADER_REQUEST_ID, randomUUID())
+                header(HEADER_DATE, Clock.System.now().epochSeconds)
+                header(HEADER_APP_VERSION, appVersion)
+                url(baseUrl)
+            }
 
-    private fun createHttpClient(): HttpClient {
-        return HttpClient {
             install(ContentNegotiation) {
                 json(
                     Json {
@@ -65,19 +68,20 @@ class KtorfitFactory(
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
 
-            install(stdHeaderPlugin) {
-                this.appVersion = this@KtorfitFactory.appVersion
+            install(HttpRequestRetry) {
+                retryOnExceptionOrServerErrors(maxRetries = 3)
+                exponentialDelay()
             }
 
             clientConfigs.forEach {
-                it.config.invoke(this@HttpClient)
+                it.config.invoke(this@config)
             }
 
             if (debug) {
                 install(Logging) {
                     logger = object : Logger {
                         override fun log(message: String) {
-                            co.touchlab.kermit.Logger.d(message)
+                            println(message)
                         }
                     }
                     level = LogLevel.ALL
@@ -87,21 +91,9 @@ class KtorfitFactory(
     }
 }
 
-class StdHeadersConfig(
-    var appVersion: AppVersion = "",
-)
-
-val stdHeaderPlugin = createClientPlugin("StdHeaders", ::StdHeadersConfig) {
-    onRequest { request, _ ->
-        request.header(HEADER_REQUEST_ID, randomUUID())
-        request.header(HEADER_DATE, Clock.System.now().epochSeconds)
-        request.header(HEADER_APP_VERSION, this@createClientPlugin.pluginConfig.appVersion)
-    }
-}
-
-class Unauthorized : Throwable("unauthorized")
+expect fun providePlatformClient(): HttpClient
 
 const val HEADER_BUSINESS_ID = "OKC-BUSINESS-ID"
-private const val HEADER_REQUEST_ID = "X-Request-ID"
-private const val HEADER_DATE = "Date"
-private const val HEADER_APP_VERSION = "OKC_APP_VERSION"
+const val HEADER_REQUEST_ID = "X-Request-ID"
+const val HEADER_DATE = "Date"
+const val HEADER_APP_VERSION = "OKC_APP_VERSION"

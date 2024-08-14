@@ -208,7 +208,7 @@ class SupplierProjection(
                     accountUrl = null,
                     gstNumber = null,
                     status = CustomerStatus.ACTIVE,
-                )
+                ),
             )
             addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
             addOrUpdateSupplierSummary(supplierId = supplier.id, summary = supplier.summary)
