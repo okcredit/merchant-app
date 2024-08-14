@@ -1,48 +1,7 @@
 package tech.okcredit.auth.remote
 
-import de.jensklingenberg.ktorfit.Response
-import de.jensklingenberg.ktorfit.http.*
-import tech.okcredit.auth.remote.model.request.*
-import tech.okcredit.auth.remote.model.response.*
-
 // api spec
 interface AuthApiClient {
-
-    @POST("auth/v3/auth")
-    suspend fun authenticate(
-        @Body req: AuthenticateRequest,
-        @Header(OKC_LOGIN_FLOW_ID) flowId: String,
-    ): Response<AuthenticateResponse>
-
-    @POST("auth/v1.0/otp:request")
-    suspend fun requestOtp(
-        @Body req: RequestOtpRequest,
-        @Header(OKC_LOGIN_FLOW_ID) flowId: String,
-    ): Response<RequestOtpResponse>
-
-    @POST("auth/v1.0/otp/retry")
-    suspend fun resendOtp(
-        @Body req: ResendOtpRequest,
-        @Header("okc-login-flow-id") flowId: String,
-    ): Response<ResendOtpResponse>
-
-    @POST("auth/v1.0/otp/retry/options")
-    suspend fun requestFallbackOptions(@Body req: FallbackOptionRequest): Response<FallbackOptionResponse>
-
-    @POST("auth/v1.0/otp/whatsapp/code")
-    suspend fun requestWhatsappCode(@Body req: WhatsAppCodeRequest): Response<WhatsAppCodeResponse>
-
-    @POST("auth/v1.0/otp:verify")
-    suspend fun verifyOtp(
-        @Body req: VerifyOtpRequest,
-        @Header(OKC_LOGIN_FLOW_ID) flowId: String,
-    ): Response<VerifyOtpResponse>
-
-    @GET("auth/v1.0/otp/{otp_id}/status")
-    suspend fun checkOtpStatus(
-        @Path("otp_id") otp_id: String,
-        @Query("otp_key") otp_key: String,
-    ): Response<CheckOtpStatusResponse>
 
     companion object {
         const val GRANT_TYPE_REFRESH_TOKEN = "refresh_token"

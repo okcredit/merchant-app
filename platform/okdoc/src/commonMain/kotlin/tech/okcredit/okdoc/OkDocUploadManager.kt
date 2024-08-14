@@ -1,18 +1,25 @@
 package tech.okcredit.okdoc
 
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
+import io.ktor.client.plugins.onUpload
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
 import me.tatarka.inject.annotations.Inject
+import okcredit.base.di.BaseUrl
+import okcredit.base.network.AuthorizedHttpClient
+import okcredit.base.randomUUID
 import okcredit.base.syncer.OneTimeDataSyncer
 import okio.Path
 import okio.Path.Companion.toPath
 import tech.okcredit.okdoc.local.FileUploadCommand
 import tech.okcredit.okdoc.local.FileUploadStatus
 import tech.okcredit.okdoc.local.OkDocLocalSource
-import tech.okcredit.okdoc.remote.OkDocApiClient
 
 typealias OkDocSyncer = OneTimeDataSyncer
 
@@ -22,9 +29,10 @@ private fun String.toStatus(): FileUploadStatus {
 
 @Inject
 class OkDocUploadManager(
+    private val baseUrl: BaseUrl,
     private val localSource: OkDocLocalSource,
-    private val apiClient: OkDocApiClient,
     private val okDocSyncer: OkDocSyncer,
+    private val authorizedHttpClient: AuthorizedHttpClient,
 ) {
 
     companion object {
@@ -64,25 +72,33 @@ class OkDocUploadManager(
     }
 
     private suspend fun uploadToServer(command: FileUploadCommand) {
-        val multipart = formData {
-            append(
-                key = "file",
-                value = fileBytes(command.filePath.toPath()),
-                headers = Headers.build {
-                    append(HttpHeaders.ContentType, "multipart/form-data")
-                    append(HttpHeaders.ContentDisposition, "filename=ktor_logo.png")
-                },
-            )
-        }
-
-        localSource.updatePendingCommandStatus(command.commandId, FileUploadStatus.IN_PROGRESS)
-        apiClient.uploadFile(
-            businessId = command.businessId,
-            requestId = command.commandId,
-            useCase = command.type,
-            isSecured = false,
-            file = multipart,
+        localSource.updatePendingCommandStatus(
+            commandId = command.commandId,
+            status = FileUploadStatus.IN_PROGRESS,
         )
+
+        authorizedHttpClient.post(baseUrl + "app/okdoc/v2/file/upload") {
+            setBody(
+                MultiPartFormDataContent(
+                    formData {
+                        append("is_secured", "false")
+                        append("request_id", randomUUID())
+                        append("use_case", "unknown")
+                        append(
+                            key = "file",
+                            value = fileBytes(command.filePath.toPath()),
+                            headers = Headers.build {
+                                append(HttpHeaders.ContentType, "image/png")
+                                append(HttpHeaders.ContentDisposition, "filename=ktor_logo.png")
+                            },
+                        )
+                    },
+                ),
+            )
+            onUpload { bytesSentTotal, contentLength ->
+                println("Sent $bytesSentTotal bytes from $contentLength")
+            }
+        }
     }
 }
 

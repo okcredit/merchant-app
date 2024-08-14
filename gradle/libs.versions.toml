@@ -1,19 +1,18 @@
 [versions]
 agp = "8.4.2"
-kotlin = "2.0.10"
+kotlin = "2.0.20-RC"
 compose-multiplatform="1.7.0-alpha02"
 kotlin-coroutines = "1.9.0-RC"
 kotlinx-serialization = "1.7.1"
 kotlinx-dateTime = "0.6.0"
-ksp = "2.0.10-1.0.24"
+ksp = "2.0.20-RC-1.0.24"
 ktlint = "1.0.1"
 okio = "3.9.0"
 spotless = "6.25.0"
 kover = "0.7.6"
 mokkery = "2.1.1"
 coil3 = "3.0.0-alpha09"
-ktor = "2.3.12"
-ktorfit = "2.0.0-rc01"
+ktor = "3.0.0-beta-2"
 sqldelight = "2.0.2"
 activity-compose = "1.9.1"
 kermit = "2.0.4"
@@ -43,7 +42,6 @@ sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 gms-googleServices = "com.google.gms.google-services:4.4.2"
 firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
-ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 [libraries]
@@ -74,13 +72,14 @@ multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-setti
 
 log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
-ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
-ktorfit-converter = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
-ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-clientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-clientAuth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kotlin-inject" }
 kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
@@ -115,6 +114,6 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 [bundles]
 multiplatform-settings = ["multiplatform-settings", "multiplatform-settings-coroutines"]
 sqldelight-common = ["sqldelight-runtime", "sqldelight-coroutineExtensions", "sqldelight-primitiveAdapter"]
-ktorfit-common = ["ktorfit", "ktorfit-converter", "ktor-json", "ktor-contentNegotiation", "ktor-clientLogging", "ktor-clientAuth"]
+ktor-common = ["ktor-core", "ktor-json","ktor-clientAuth","ktor-clientLogging","ktor-contentNegotiation"]
 voyager-common = ["voyager-navigator", "voyager-tabNavigator", "voyager-bottomsheet", "voyager-screenmodel"]
 coil-common = ["coil-mp", "coil-network-ktor", "coil-compose-core", "coil-compose"]
