@@ -1,10 +1,10 @@
-package app.okcredit.merchant.home
+package app.okcredit.merchant.ledger
 
-import app.okcredit.merchant.home.HomeContract.Intent
-import app.okcredit.merchant.home.HomeContract.PartialState
-import app.okcredit.merchant.home.HomeContract.State
-import app.okcredit.merchant.home.HomeContract.ViewEvent
-import app.okcredit.merchant.home.usecase.GetCustomersForHome
+import app.okcredit.merchant.ledger.HomeContract.Intent
+import app.okcredit.merchant.ledger.HomeContract.PartialState
+import app.okcredit.merchant.ledger.HomeContract.State
+import app.okcredit.merchant.ledger.HomeContract.ViewEvent
+import app.okcredit.merchant.ledger.usecase.GetCustomersForHome
 import app.okcredit.merchant.usecase.HomeDataSyncer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.Result
-import app.okcredit.merchant.home.usecase.GetDynamicComponentsForHome
-import app.okcredit.merchant.home.usecase.GetSuppliersForHome
-import app.okcredit.merchant.home.usecase.GetToolbarActionForHome
-import app.okcredit.merchant.home.usecase.GetUserAlertForHome
+import app.okcredit.merchant.ledger.usecase.GetDynamicComponentsForHome
+import app.okcredit.merchant.ledger.usecase.GetSuppliersForHome
+import app.okcredit.merchant.ledger.usecase.GetToolbarActionForHome
+import app.okcredit.merchant.ledger.usecase.GetUserAlertForHome
 import tech.okcredit.identity.contract.usecase.GetActiveBusiness
 
 @Inject
-class HomeScreenModel(
+class HomeLedgerScreenModel(
     private val homeDataSyncer: HomeDataSyncer,
     private val getCustomersForHome: GetCustomersForHome,
     private val getSuppliersForHome: GetSuppliersForHome,

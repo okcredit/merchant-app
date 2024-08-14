@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,8 +21,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.okcredit.merchant.home.HomeContract
-import app.okcredit.merchant.home.SubtitleType
+import app.okcredit.merchant.ledger.HomeContract
+import app.okcredit.merchant.ledger.SubtitleType
 import app.okcredit.ui.advance
 import app.okcredit.ui.due
 import app.okcredit.ui.icon_date

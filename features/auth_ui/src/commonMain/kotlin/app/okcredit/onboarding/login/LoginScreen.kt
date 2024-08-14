@@ -19,7 +19,7 @@ class LoginScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<LoginScreenModel>(LoginScreenModel::class)
+        val screenModel = rememberScreenModel<LoginScreenModel>()
 
         val state by screenModel.states.collectAsState()
 

@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -17,13 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.okcredit.merchant.home.HomeContract
-import app.okcredit.merchant.home.HomeTab
-import app.okcredit.merchant.home.isCustomerTab
+import app.okcredit.merchant.ledger.HomeContract
+import app.okcredit.merchant.ledger.HomeTab
+import app.okcredit.merchant.ledger.isCustomerTab
 import app.okcredit.ui.icon_chevron_right
 import app.okcredit.ui.icon_name
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.grey50
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.net_balance
 import merchant_app.shared.generated.resources.you_get
@@ -42,7 +41,7 @@ fun SummaryCard(
     Surface(
         onClick = { onSummaryCardClicked(summaryItem.homeTab) },
         shape = RoundedCornerShape(16.dp),
-        color = grey50,
+        color = MaterialTheme.colorScheme.background,
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, top = 12.dp, end = 16.dp)

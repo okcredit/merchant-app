@@ -8,23 +8,19 @@ import cafe.adriel.voyager.core.registry.screenModule
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class SharedScreenRegistryProvider(
-    private val homeScreen: () -> HomeScreen,
-    private val splashScreen: () -> SplashScreen,
-    private val syncScreen: () -> SyncScreen,
-) {
+class SharedScreenRegistryProvider {
 
     fun screenRegistry() = screenModule {
         register<SharedScreenRegistry.Home> {
-            homeScreen.invoke()
+            HomeScreen()
         }
 
         register<SharedScreenRegistry.Splash> {
-            splashScreen.invoke()
+            SplashScreen()
         }
 
         register<SharedScreenRegistry.SyncData> {
-            syncScreen.invoke()
+            SyncScreen()
         }
     }
 }

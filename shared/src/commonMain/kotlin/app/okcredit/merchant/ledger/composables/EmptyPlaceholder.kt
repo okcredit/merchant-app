@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

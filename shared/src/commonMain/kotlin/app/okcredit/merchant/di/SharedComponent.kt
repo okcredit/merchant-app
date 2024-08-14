@@ -1,6 +1,6 @@
 package app.okcredit.merchant.di
 
-import app.okcredit.merchant.home.HomeScreenModel
+import app.okcredit.merchant.ledger.HomeLedgerScreenModel
 import app.okcredit.merchant.splash.SplashScreenModel
 import app.okcredit.merchant.sync.SyncScreenModel
 import me.tatarka.inject.annotations.IntoMap
@@ -17,8 +17,8 @@ interface SharedComponent {
 
     @Provides
     @IntoMap
-    fun homeScreenModel(homeScreenModel: HomeScreenModel): ScreenModelPair {
-        return HomeScreenModel::class to homeScreenModel
+    fun homeScreenModel(homeScreenModel: HomeLedgerScreenModel): ScreenModelPair {
+        return HomeLedgerScreenModel::class to homeScreenModel
     }
 
     @Provides

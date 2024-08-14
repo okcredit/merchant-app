@@ -20,12 +20,6 @@ interface AuthComponent {
 
     @Provides
     @IntoSet
-    fun authClientConfig(authClientConfig: AuthClientConfig): ClientConfig {
-        return authClientConfig
-    }
-
-    @Provides
-    @IntoSet
     fun authSignOutListener(listener: AuthSignOutListener): SignOutListener {
         return listener
     }

@@ -1,19 +1,17 @@
-package app.okcredit.merchant.home.usecase
+package app.okcredit.merchant.ledger.usecase
 
 import androidx.compose.ui.text.AnnotatedString
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.usecase.GetAccounts
 import app.okcredit.ledger.contract.usecase.SortBy
-import app.okcredit.merchant.home.HomeContract
-import app.okcredit.merchant.home.HomeTab
-import app.okcredit.merchant.home.ReminderFilterOption
-import app.okcredit.merchant.home.SortOption
-import app.okcredit.merchant.home.SortOption.*
-import app.okcredit.merchant.home.SubtitleType
+import app.okcredit.merchant.ledger.HomeContract
+import app.okcredit.merchant.ledger.HomeTab
+import app.okcredit.merchant.ledger.ReminderFilterOption
+import app.okcredit.merchant.ledger.SortOption
+import app.okcredit.merchant.ledger.SortOption.*
+import app.okcredit.merchant.ledger.SubtitleType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
@@ -29,7 +27,6 @@ import okcredit.base.appDispatchers
 import okcredit.base.units.instant
 import okcredit.base.units.paisa
 import org.jetbrains.compose.resources.getString
-import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 @Inject
 class GetCustomersForHome constructor(

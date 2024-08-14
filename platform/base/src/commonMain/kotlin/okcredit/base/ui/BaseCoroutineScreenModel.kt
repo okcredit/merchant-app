@@ -44,7 +44,7 @@ abstract class BaseCoroutineScreenModel<
     protected val currentState get() = stateRelay.value
     final override val states: StateFlow<S> = stateRelay.asStateFlow()
 
-    private val intentRelay: MutableSharedFlow<I> = MutableSharedFlow()
+    private val intentRelay: MutableSharedFlow<I> = MutableSharedFlow(replay = Int.MAX_VALUE)
     final override fun pushIntent(intent: I) = screenModelScope.launch { intentRelay.emit(intent) }
     protected val intents: Flow<I> = intentRelay.asSharedFlow()
 

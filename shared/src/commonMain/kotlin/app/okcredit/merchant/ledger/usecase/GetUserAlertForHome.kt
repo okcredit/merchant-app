@@ -1,6 +1,6 @@
-package app.okcredit.merchant.home.usecase
+package app.okcredit.merchant.ledger.usecase
 
-import app.okcredit.merchant.home.HomeContract
+import app.okcredit.merchant.ledger.HomeContract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import me.tatarka.inject.annotations.Inject

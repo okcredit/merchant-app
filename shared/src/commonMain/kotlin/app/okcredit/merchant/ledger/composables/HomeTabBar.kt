@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,8 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import app.okcredit.merchant.home.HomeContract
+import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.ui.icon_namsthe
 import app.okcredit.ui.icon_qr_code
 import app.okcredit.ui.icon_upi

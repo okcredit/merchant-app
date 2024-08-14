@@ -28,6 +28,7 @@ class IdentityRemoteSource(
             baseUrl = baseUrl,
             endPoint = "identity/v1/GetBusinessUser",
             requestBody = GetBusinessRequest(businessId),
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow().business_user
     }
 

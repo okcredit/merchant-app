@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,26 +12,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.okcredit.merchant.home.HomeContract
+import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.grey100
-import app.okcredit.ui.theme.grey200
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -172,9 +167,6 @@ fun SingleVerticalDynamicItem(
                 AsyncImage(
                     model = item.icon,
                     contentDescription = "",
-                    placeholder = remember {
-                        ColorPainter(color = grey200)
-                    },
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape),
@@ -218,7 +210,7 @@ fun SingleDynamicItem(
                 contentDescription = item.title
             },
         colors = CardDefaults.cardColors().copy(
-            containerColor = grey100
+            containerColor = MaterialTheme.colorScheme.outlineVariant
         ),
     ) {
         Row(
@@ -236,9 +228,6 @@ fun SingleDynamicItem(
                 AsyncImage(
                     model = item.icon,
                     contentDescription = "",
-                    placeholder = remember {
-                        ColorPainter(color = grey200)
-                    },
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape),

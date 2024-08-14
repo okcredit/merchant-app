@@ -1,75 +1,71 @@
 package app.okcredit.merchant.home
 
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import app.okcredit.merchant.home.HomeContract.State
-import app.okcredit.merchant.home.HomeContract.ViewEvent
-import app.okcredit.merchant.home.composables.HomeScreenUi
-import app.okcredit.ui.theme.OkCreditTheme
+import app.okcredit.merchant.home.NavItem.*
+import app.okcredit.merchant.ledger.HomeLedgerTab
+import app.okcredit.merchant.loans.HomeLoansTab
+import app.okcredit.merchant.okfeed.HomeOkFeedTab
+import app.okcredit.merchant.payment.HomePaymentTab
+import app.okcredit.ui.Res
+import app.okcredit.ui.icon_collections
+import app.okcredit.ui.icon_feed
+import app.okcredit.ui.icon_home
+import app.okcredit.ui.icon_more
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.observeViewEvents
-import okcredit.base.di.rememberScreenModel
+import cafe.adriel.voyager.navigator.tab.CurrentTab
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.TabNavigator
+import org.jetbrains.compose.resources.painterResource
 
-@Inject
 class HomeScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<HomeScreenModel>(HomeScreenModel::class)
-
-        // collect state and render
-        val state by screenModel.states.collectAsState()
-        Render(screenModel, state)
-
-        // collect view events and handle
-        val navigator = LocalNavigator.currentOrThrow
-        screenModel.observeViewEvents {
-            handleViewEvent(it, navigator)
-        }
-    }
-
-    @Composable
-    private fun Render(screenModel: HomeScreenModel, state: State) {
-        OkCreditTheme {
-            HomeScreenUi(
-                state = state,
-                onTabChanged = {
-                    val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
-                    screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
+        TabNavigator(HomeLedgerTab) {
+            Scaffold(
+                content = {
+                    CurrentTab()
                 },
-                onAvatarClicked = ::onBusinessClicked,
-                onToolbarActionClicked = {},
-                onPrimaryVpaClicked = {},
-                onSearchClicked = {},
-                onSortAndFilterClicked = {},
-                onCustomerClicked = {},
-                onSupplierClicked = {},
-                onCustomerProfileClicked = {},
-                onSupplierProfileClicked = {},
-                onAddRelationshipClicked = {},
-                onDynamicItemClicked = { _, _ -> },
-                onSummaryCardClicked = {},
-                onPullToRefresh = {},
-                onClearFilterClicked = {},
-                onUserAlertClicked = {},
+                bottomBar = {
+                    val tabNavigator = LocalTabNavigator.current
+                    BottomNavigationUi(
+                        onItemClicked = {
+                            val tab = when (it) {
+                                HOME_LEDGER -> HomeLedgerTab
+                                HOME_PAYMENT -> HomePaymentTab
+                                HOME_OKLOAN -> HomeLoansTab
+                                HOME_OK_FEED -> HomeOkFeedTab
+                                HOME_MORE_OPTIONS -> tabNavigator.current
+                            }
+                            tabNavigator.current = tab
+                        },
+                        list = listOf(
+                            BottomMenuItem(
+                                navItem = HOME_LEDGER,
+                                drawableId = HomeLedgerTab.options.icon ?: painterResource(Res.drawable.icon_home),
+                                label = HomeLedgerTab.options.title
+                            ),
+                            BottomMenuItem(
+                                navItem = HOME_PAYMENT,
+                                drawableId = painterResource(Res.drawable.icon_collections),
+                                label = HomePaymentTab.options.title
+                            ),
+                            BottomMenuItem(
+                                navItem = HOME_OK_FEED,
+                                drawableId = painterResource(Res.drawable.icon_feed),
+                                label = HomeOkFeedTab.options.title
+                            ),
+                            BottomMenuItem(
+                                navItem = HOME_MORE_OPTIONS,
+                                drawableId = painterResource(Res.drawable.icon_more),
+                                label = "More"
+                            )
+                        ),
+                        selectedItem = HOME_LEDGER
+                    )
+                }
             )
-        }
-    }
-
-    private fun onBusinessClicked() {
-
-    }
-
-    private fun handleViewEvent(viewEvent: ViewEvent, navigator: Navigator) {
-        when (viewEvent) {
-            ViewEvent.LaunchAskSmsPermissionForAutoReminder -> {}
-            is ViewEvent.ShowAutoReminderSummarySnackBar -> {}
-            is ViewEvent.ShowError -> {}
         }
     }
 }

@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import app.okcredit.merchant.home.HomeContract
+import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.ui.icon_cloud_off
 import app.okcredit.ui.theme.OkCreditTheme
 import app.okcredit.ui.theme.orange_lite_1

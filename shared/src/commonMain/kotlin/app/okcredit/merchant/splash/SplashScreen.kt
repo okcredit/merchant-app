@@ -21,12 +21,11 @@ import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 import org.jetbrains.compose.resources.painterResource
 
-@Inject
 class SplashScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<SplashScreenModel>(SplashScreenModel::class)
+        val screenModel = rememberScreenModel<SplashScreenModel>()
 
         Render()
 

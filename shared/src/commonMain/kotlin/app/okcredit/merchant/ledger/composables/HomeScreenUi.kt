@@ -1,9 +1,8 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +25,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
@@ -60,11 +58,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.okcredit.merchant.home.HomeContract
-import app.okcredit.merchant.home.HomeTab
-import app.okcredit.merchant.home.ReminderFilterOption
-import app.okcredit.merchant.home.isCustomerTab
-import app.okcredit.merchant.home.isSupplierTab
+import app.okcredit.merchant.ledger.HomeContract
+import app.okcredit.merchant.ledger.HomeTab
+import app.okcredit.merchant.ledger.ReminderFilterOption
+import app.okcredit.merchant.ledger.isCustomerTab
+import app.okcredit.merchant.ledger.isSupplierTab
 import app.okcredit.ui.icon_add
 import app.okcredit.ui.icon_add_photo
 import app.okcredit.ui.icon_error_fill
@@ -110,13 +108,8 @@ fun HomeScreenUi(
     onClearFilterClicked: () -> Unit,
     onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
 ) {
-    val pullRefreshState = rememberPullToRefreshState {
-        state.homeSyncLoading
-    }
-
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         val customerListState = rememberLazyListState()
         val supplierListState = rememberLazyListState()
@@ -134,7 +127,6 @@ fun HomeScreenUi(
         BottomSheetScaffold(
             scaffoldState = rememberBottomSheetScaffoldState(
                 bottomSheetState = bottomSheetState,
-
             ),
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -148,7 +140,7 @@ fun HomeScreenUi(
                 )
             },
             content = {
-                Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+                Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)) {
                     DynamicComponent(
                         dynamicItems = state.dynamicItems,
                         userAlert = state.userAlert,
@@ -281,7 +273,7 @@ fun HomeContent(
     onAddRelationshipClicked: () -> Unit,
     onClearFilterClicked: () -> Unit,
 ) {
-    Column {
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
         Spacer(modifier = Modifier.size(12.dp))
         val pagerState = rememberPagerState { 2 }
         val scope = rememberCoroutineScope()
@@ -562,7 +554,7 @@ fun HomeHeader(
 
         CustomerSupplierTab(
             selectedTab = selectedTab,
-            width = 360.dp - 136.dp,
+            modifier = Modifier.weight(1.0f),
             onTabChanged = onTabChanged
         )
         if (showSortAndFilter) {

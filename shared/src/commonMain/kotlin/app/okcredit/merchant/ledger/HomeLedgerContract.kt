@@ -1,13 +1,13 @@
-package app.okcredit.merchant.home
+package app.okcredit.merchant.ledger
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.AnnotatedString
-import app.okcredit.merchant.home.usecase.CustomerForHomeResponse
+import app.okcredit.merchant.ledger.usecase.CustomerForHomeResponse
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
 import okcredit.base.ui.UserIntent
 import okcredit.base.units.Paisa
-import app.okcredit.merchant.home.usecase.SupplierForHomeResponse
+import app.okcredit.merchant.ledger.usecase.SupplierForHomeResponse
 import tech.okcredit.identity.contract.model.Business
 
 interface HomeContract {

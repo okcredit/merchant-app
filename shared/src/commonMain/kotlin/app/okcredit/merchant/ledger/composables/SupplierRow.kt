@@ -1,4 +1,4 @@
-package app.okcredit.merchant.home.composables
+package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.okcredit.merchant.home.HomeContract
-import app.okcredit.merchant.home.SubtitleIconType
+import app.okcredit.merchant.ledger.HomeContract
+import app.okcredit.merchant.ledger.SubtitleIconType
 import app.okcredit.ui.advance
 import app.okcredit.ui.due
 import app.okcredit.ui.error_outline_24px
