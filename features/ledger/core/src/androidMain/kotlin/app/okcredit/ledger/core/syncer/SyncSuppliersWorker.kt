@@ -33,7 +33,7 @@ class SyncSuppliersWorker(
                 context = context,
                 params = params,
                 supplierRepository = supplierRepository,
-                getActiveBusinessId = getActiveBusinessId
+                getActiveBusinessId = getActiveBusinessId,
             )
         }
     }

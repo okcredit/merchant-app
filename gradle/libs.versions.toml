@@ -1,31 +1,31 @@
 [versions]
-agp = "8.4.1"
-kotlin = "2.0.0"
-compose-multiplatform="1.6.11"
+agp = "8.4.2"
+kotlin = "2.0.20-RC"
+compose-multiplatform="1.7.0-alpha02"
 kotlin-coroutines = "1.9.0-RC"
-kotlinx-serialization = "1.7.0-RC"
+kotlinx-serialization = "1.7.1"
 kotlinx-dateTime = "0.6.0"
-ksp = "2.0.0-1.0.22"
+ksp = "2.0.20-RC-1.0.24"
 ktlint = "1.0.1"
 okio = "3.9.0"
 spotless = "6.25.0"
 kover = "0.7.6"
-mokkery = "2.0.0-RC1"
-coil3 = "3.0.0-alpha06"
-ktor = "2.3.11"
-ktorfit = "2.0.0-rc01"
+mokkery = "2.1.1"
+coil3 = "3.0.0-alpha09"
+ktor = "3.0.0-beta-2"
 sqldelight = "2.0.2"
-activity-compose = "1.9.0"
-kermit = "2.0.3"
+activity-compose = "1.9.1"
+kermit = "2.0.4"
 multiplatform-settings = "1.1.1"
-kotlin-inject = "0.7.0-SNAPSHOT"
+kotlin-inject = "0.7.1"
 mixpanel = "7.3.1"
 firebase-bom = "32.1.1"
 firebase-messaging = "24.0.0"
 voyager = "1.1.0-beta02"
 turbine = "1.1.0"
-
-workmanager = "2.9.0"
+uuid = "0.8.4"
+filekt = "0.7.0"
+workmanager = "2.9.1"
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -41,8 +41,7 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 gms-googleServices = "com.google.gms.google-services:4.4.2"
-firebase-crashlytics = "com.google.firebase.crashlytics:3.0.1"
-ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
+firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 [libraries]
@@ -50,7 +49,7 @@ kotlinx-serializationCore = { module = "org.jetbrains.kotlinx:kotlinx-serializat
 kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlinx-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-dateTime" }
-kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.24.0"
+kotlinx-atomicfu = "org.jetbrains.kotlinx:atomicfu:0.25.0"
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version = "0.28.1" }
 
@@ -62,9 +61,9 @@ sqldelight-nativeDriver = { module = "app.cash.sqldelight:native-driver", versio
 sqldelight-sqliteDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 sqldelight-primitiveAdapter = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
 
-firebase-bom = "com.google.firebase:firebase-bom:33.1.0"
-firebase-analytics = "com.google.firebase:firebase-analytics-ktx:22.0.1"
-firebase-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:19.0.1"
+firebase-bom = "com.google.firebase:firebase-bom:33.1.2"
+firebase-analytics = "com.google.firebase:firebase-analytics-ktx:22.0.2"
+firebase-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:19.0.3"
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx", version.ref = "firebase-messaging" }
 
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
@@ -73,13 +72,14 @@ multiplatform-settings-datastore = { module = "com.russhwolf:multiplatform-setti
 
 log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
-ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
-ktorfit-converter = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-response", version.ref = "ktorfit" }
-ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-clientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-clientAuth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kotlin-inject" }
 kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
@@ -98,8 +98,11 @@ tools-desugarjdklibs = "com.android.tools:desugar_jdk_libs:2.0.4"
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil3" }
 coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+
+filekt-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekt" }
+filekt-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekt" }
 
 # Build logic dependencies
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -111,6 +114,6 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 [bundles]
 multiplatform-settings = ["multiplatform-settings", "multiplatform-settings-coroutines"]
 sqldelight-common = ["sqldelight-runtime", "sqldelight-coroutineExtensions", "sqldelight-primitiveAdapter"]
-ktorfit-common = ["ktorfit", "ktorfit-converter", "ktor-json", "ktor-contentNegotiation", "ktor-clientLogging", "ktor-clientAuth"]
+ktor-common = ["ktor-core", "ktor-json","ktor-clientAuth","ktor-clientLogging","ktor-contentNegotiation"]
 voyager-common = ["voyager-navigator", "voyager-tabNavigator", "voyager-bottomsheet", "voyager-screenmodel"]
 coil-common = ["coil-mp", "coil-network-ktor", "coil-compose-core", "coil-compose"]

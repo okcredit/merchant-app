@@ -1,7 +1,5 @@
 package okcredit.base.network
 
-import de.jensklingenberg.ktorfit.Response
-
 data class ApiError(val code: Int = 500, val error: String = "unknown") : Throwable(message = error) {
     fun mapCode(errorMapping: Pair<Int, Throwable>): Throwable = mapCode(mapOf(errorMapping))
 

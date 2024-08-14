@@ -9,20 +9,17 @@ import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.AppVersionCode
 import okcredit.base.randomUUID
 import tech.okcredit.device.local.DeviceLocalSource
-import tech.okcredit.device.remote.DeviceRemoteSource
 import tech.okcredit.device.usecase.GetOrCreateDeviceId
 
 @Inject
 class DeviceRepository(
     private val versionCode: AppVersionCode,
     private val deviceLocalSourceLazy: Lazy<DeviceLocalSource>,
-    private val deviceRemoteSourceLazy: Lazy<DeviceRemoteSource>,
     private val deviceSyncerLazy: Lazy<DeviceSyncer>,
     private val deviceIdProviderLazy: Lazy<GetOrCreateDeviceId>,
 ) {
 
     private val deviceLocalSource by lazy { deviceLocalSourceLazy.value }
-    private val deviceRemoteSource by lazy { deviceRemoteSourceLazy.value }
     private val deviceSyncer by lazy { deviceSyncerLazy.value }
     private val deviceIdProvider by lazy { deviceIdProviderLazy.value }
 
@@ -32,20 +29,6 @@ class DeviceRepository(
     private var deviceInMemoryCache: Device? = null
 
     private val isDeviceReady by lazy { isReady.asStateFlow() }
-
-    suspend fun getIpRegion(): String {
-        return runCatching {
-            if (deviceLocalSource.getIsIpRegionSynced()) {
-                deviceLocalSource.getIpRegion() ?: ""
-            } else {
-                deviceRemoteSource.getIpAddressData()
-                    .let { it.region_code ?: "" }
-                    .also {
-                        deviceLocalSource.setIpRegion(it)
-                    }
-            }
-        }.getOrNull() ?: ""
-    }
 
     suspend fun syncDeviceData() {
         mutex.withLock {

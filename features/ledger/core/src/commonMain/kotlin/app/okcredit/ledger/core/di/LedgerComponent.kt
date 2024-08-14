@@ -5,21 +5,14 @@ import app.okcredit.ledger.contract.usecase.GetAccountStatement
 import app.okcredit.ledger.contract.usecase.GetAccounts
 import app.okcredit.ledger.core.LedgerImpl
 import app.okcredit.ledger.core.local.LedgerSqlDriver
-import app.okcredit.ledger.core.remote.LedgerApiClient
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.core.usecase.GetAccountsImpl
-import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.SqlDriverFactory
 
 typealias LedgerDriverFactory = SqlDriverFactory
 
 interface LedgerComponent {
-
-    @Provides
-    fun ledgerApiClient(ktorfit: Ktorfit): LedgerApiClient {
-        return ktorfit.create()
-    }
 
     @Provides
     fun sqlDriver(factory: LedgerDriverFactory): LedgerSqlDriver {
