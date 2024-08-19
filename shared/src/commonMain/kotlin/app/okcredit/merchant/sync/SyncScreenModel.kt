@@ -21,7 +21,11 @@ class SyncScreenModel(private val loginDataSyncer: LoginDataSyncer) :
         loginDataSyncer.execute()
     }.onEach {
         if (it is Result.Success) {
-            emitViewEvent(ViewEvent.GoToHome)
+            if (it.value) {
+                emitViewEvent(ViewEvent.GoToSelectBusiness)
+            } else {
+                emitViewEvent(ViewEvent.GoToHome)
+            }
         }
     }.dropAll()
 

@@ -11,8 +11,8 @@ interface EnterBusinessNameContract {
     ) : UiState
 
     sealed class PartialState : UiState.Partial {
-        object ShowLoading : PartialState()
-        object HideLoading : PartialState()
+        data object ShowLoading : PartialState()
+        data object HideLoading : PartialState()
     }
 
     sealed class Intent : UserIntent {

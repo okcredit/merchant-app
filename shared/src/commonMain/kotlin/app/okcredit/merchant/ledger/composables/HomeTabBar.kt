@@ -61,7 +61,7 @@ fun HomeTabBar(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
 
-    ) {
+        ) {
         AvatarWithName(
             customerName = activeBusiness?.name?.takeIf { it.isNotEmpty() }
                 ?: activeBusiness?.mobile?.takeIf { it.isNotEmpty() }
@@ -75,7 +75,7 @@ fun HomeTabBar(
         Spacer(modifier = Modifier.weight(1.0f))
         if (!primaryVpa.isNullOrEmpty()) {
             PrimaryVpa(primaryVpa = primaryVpa, onPrimaryVpaClicked = onPrimaryVpaClicked)
-            if (toolbarAction != null) {
+            if (toolbarAction != null && toolbarAction != HomeContract.ToolbarAction.ACTIVATE_UPI) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Box(
                     modifier = Modifier
@@ -108,7 +108,11 @@ fun HomeTabBar(
                             painter = painterResource(resource = getIconForToolbar(toolbarAction = toolbarAction)),
                             contentDescription = getLabelForToolbar(toolbarAction = toolbarAction),
                             modifier = Modifier.size(20.dp),
-                            colorFilter = if (toolbarAction == HomeContract.ToolbarAction.ACTIVATE_UPI) null else ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                            colorFilter = if (toolbarAction == HomeContract.ToolbarAction.ACTIVATE_UPI) {
+                                null
+                            } else {
+                                ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                            }
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(

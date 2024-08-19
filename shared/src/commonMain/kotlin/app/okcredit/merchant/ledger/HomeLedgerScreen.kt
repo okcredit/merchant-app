@@ -36,30 +36,30 @@ object HomeLedgerTab : Tab {
 
     @Composable
     private fun Render(screenModel: HomeLedgerScreenModel, state: State) {
-        OkCreditTheme {
-            HomeScreenUi(
-                state = state,
-                onTabChanged = {
-                    val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
-                    screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
-                },
-                onAvatarClicked = ::onBusinessClicked,
-                onToolbarActionClicked = {},
-                onPrimaryVpaClicked = {},
-                onSearchClicked = {},
-                onSortAndFilterClicked = {},
-                onCustomerClicked = {},
-                onSupplierClicked = {},
-                onCustomerProfileClicked = {},
-                onSupplierProfileClicked = {},
-                onAddRelationshipClicked = {},
-                onDynamicItemClicked = { _, _ -> },
-                onSummaryCardClicked = {},
-                onPullToRefresh = {},
-                onClearFilterClicked = {},
-                onUserAlertClicked = {},
-            )
-        }
+        HomeScreenUi(
+            state = state,
+            onTabChanged = {
+                val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
+                screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
+            },
+            onAvatarClicked = ::onBusinessClicked,
+            onToolbarActionClicked = {
+
+            },
+            onPrimaryVpaClicked = {},
+            onSearchClicked = {},
+            onSortAndFilterClicked = {},
+            onCustomerClicked = {},
+            onSupplierClicked = {},
+            onCustomerProfileClicked = {},
+            onSupplierProfileClicked = {},
+            onAddRelationshipClicked = {},
+            onDynamicItemClicked = { _, _ -> },
+            onSummaryCardClicked = {},
+            onPullToRefresh = {},
+            onClearFilterClicked = {},
+            onUserAlertClicked = {},
+        )
     }
 
     private fun onBusinessClicked() {

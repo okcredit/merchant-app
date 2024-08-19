@@ -1,4 +1,4 @@
-package app.okcredit.onboarding.di
+package app.okcredit.onboarding
 
 import app.okcredit.onboarding.businessName.EnterBusinessNameScreenModel
 import app.okcredit.onboarding.login.LoginScreenModel

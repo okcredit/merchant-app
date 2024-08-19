@@ -39,6 +39,10 @@ class SyncScreen : Screen {
             SyncContract.ViewEvent.GoToHome -> {
                 navigator.replaceAll(ScreenRegistry.get(SharedScreenRegistry.Home))
             }
+
+            SyncContract.ViewEvent.GoToSelectBusiness -> {
+                navigator.replaceAll(ScreenRegistry.get(SharedScreenRegistry.SelectBusiness))
+            }
         }
     }
 

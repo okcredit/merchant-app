@@ -16,5 +16,7 @@ interface SyncContract {
 
     sealed class ViewEvent : BaseViewEvent {
         data object GoToHome : ViewEvent()
+
+        data object GoToSelectBusiness : ViewEvent()
     }
 }

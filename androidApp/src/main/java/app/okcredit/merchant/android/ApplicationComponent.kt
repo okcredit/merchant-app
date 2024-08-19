@@ -5,7 +5,7 @@ import app.okcredit.ledger.core.di.AndroidLedgerComponent
 import app.okcredit.merchant.AndroidSharedComponent
 import app.okcredit.merchant.SharedScreenRegistryProvider
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
-import app.okcredit.onboarding.di.OnboardingComponent
+import app.okcredit.onboarding.OnboardingComponent
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides

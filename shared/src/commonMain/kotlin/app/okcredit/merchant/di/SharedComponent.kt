@@ -1,6 +1,7 @@
 package app.okcredit.merchant.di
 
 import app.okcredit.merchant.ledger.HomeLedgerScreenModel
+import app.okcredit.merchant.selectBusiness.SelectBusinessScreenModel
 import app.okcredit.merchant.splash.SplashScreenModel
 import app.okcredit.merchant.sync.SyncScreenModel
 import me.tatarka.inject.annotations.IntoMap
@@ -25,5 +26,11 @@ interface SharedComponent {
     @IntoMap
     fun syncScreenModel(syncScreenModel: SyncScreenModel): ScreenModelPair {
         return SyncScreenModel::class to syncScreenModel
+    }
+
+    @Provides
+    @IntoMap
+    fun selectBusinessScreenModel(screenModel: SelectBusinessScreenModel): ScreenModelPair {
+        return SelectBusinessScreenModel::class to screenModel
     }
 }

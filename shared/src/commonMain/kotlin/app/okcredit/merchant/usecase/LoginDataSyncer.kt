@@ -15,18 +15,20 @@ class LoginDataSyncer(
     private val customizationSyncManager: CustomizationSyncManager,
 ) {
 
-    suspend fun execute() {
-        val individual = getIndividual.execute().firstOrNull() ?: return
+    suspend fun execute(): Boolean {
+        val individual = getIndividual.execute().firstOrNull() ?: return false
         individual.businessIds.forEach { businessId ->
             syncDataForBusiness(businessId)
         }
+
+        return individual.businessIds.size > 1
     }
 
     private suspend fun syncDataForBusiness(businessId: String) {
-        abDataSyncManager.syncProfile(businessId, "LoginDataSyncer")
-        ledgerSyncManager.syncAllCustomers(businessId, "LoginDataSyncer")
-        ledgerSyncManager.syncAllSuppliers(businessId, "LoginDataSyncer")
-        ledgerSyncManager.syncAllCustomerTransactions(businessId, "LoginDataSyncer")
+        abDataSyncManager.syncProfile(businessId, "sync_screen")
+        ledgerSyncManager.syncAllCustomers(businessId, "sync_screen")
+        ledgerSyncManager.syncAllSuppliers(businessId, "sync_screen")
+        ledgerSyncManager.syncAllCustomerTransactions(businessId, "sync_screen")
         customizationSyncManager.syncCustomization(businessId)
     }
 }
