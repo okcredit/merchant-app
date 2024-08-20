@@ -57,7 +57,7 @@ fun EnterOtpUi(
             ticks++
         }
     }
-    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background).fillMaxSize()) {
+    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface).fillMaxSize()) {
         Box(
             modifier = Modifier
                 .padding(16.dp)
@@ -79,7 +79,7 @@ fun EnterOtpUi(
         Spacer(Modifier.height(16.dp))
         Text(
             text = "Enter 6 digit OTP sent to ${state.mobile}",
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,11 +156,11 @@ fun FallbackOptionView(
             .clickable { onClick.invoke() }
             .padding(horizontal = 16.dp, vertical = 16.dp),
     ) {
-        Image(
+        Icon(
             painter = painterResource(icon),
             contentDescription = null,
             modifier = Modifier.align(Alignment.CenterVertically),
-            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+            tint = MaterialTheme.colorScheme.primary,
         )
         Text(
             text = title,
@@ -168,9 +168,14 @@ fun FallbackOptionView(
             modifier = Modifier
                 .padding(start = 12.dp)
                 .align(Alignment.CenterVertically),
+            color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.weight(1.0f))
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurface,
+        )
     }
     Divider(modifier = Modifier.padding(horizontal = 16.dp))
 }

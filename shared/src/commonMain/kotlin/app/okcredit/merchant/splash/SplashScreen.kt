@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import app.okcredit.onboarding.OnboardingScreenRegistry
 import app.okcredit.shared.contract.SharedScreenRegistry
 import app.okcredit.ui.ic_okcredit_logo
@@ -54,6 +55,7 @@ class SplashScreen : Screen {
                 painter = painterResource(app.okcredit.ui.Res.drawable.ic_okcredit_logo),
                 modifier = Modifier.align(Alignment.Center),
                 contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
         }
     }
