@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import app.okcredit.ui.components.BoxInputField
 import app.okcredit.ui.ic_okcredit_logo
 import app.okcredit.ui.icon_phone
 import merchant_app.features.auth_ui.generated.resources.Res
@@ -46,7 +47,7 @@ fun EnterBusinessNameUi(
     onSkipClicked: () -> Unit,
     onSubmitClick: (String) -> Unit,
 ) {
-    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
             Image(
                 painter = painterResource(app.okcredit.ui.Res.drawable.ic_okcredit_logo),
@@ -59,7 +60,7 @@ fun EnterBusinessNameUi(
                 modifier = Modifier.wrapContentHeight(),
                 shape = RoundedCornerShape(50),
                 border = BorderStroke(
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                     width = 1.dp,
                 ),
             ) {
@@ -115,7 +116,7 @@ private fun EnterBusinessNameTextField(
             .padding(start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        OutlinedTextField(
+        BoxInputField(
             value = inputValue.value,
             onValueChange = {
                 inputValue.value = it
@@ -124,30 +125,14 @@ private fun EnterBusinessNameTextField(
                 .padding(end = 16.dp)
                 .weight(1.0f)
                 .fillMaxWidth(0.9f),
-            label = {
-                Text(
-                    text = "Business/ Shop Name",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            },
-            leadingIcon = {
-                Image(
-                    painter = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-            ),
+            label = "Business/ Shop Name",
+            leadingIcon = painterResource(app.okcredit.ui.Res.drawable.icon_phone),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
         )
 
-        FloatingActionButton(onClick = {
-            if (!loading) {
-                onSubmitClick()
-            }
-        }) {
+        FloatingActionButton(
+            onClick = { if (!loading) { onSubmitClick() } }
+        ) {
             Icon(imageVector = Icons.Default.Check, contentDescription = "Submit!")
         }
     }

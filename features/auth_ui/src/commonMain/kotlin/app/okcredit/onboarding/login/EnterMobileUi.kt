@@ -37,7 +37,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun EnterMobile(onSubmitClick: (String) -> Unit) {
-    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+    Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.surface)) {
         Image(
             painter = painterResource(app.okcredit.ui.Res.drawable.ic_okcredit_logo),
             contentDescription = null,
