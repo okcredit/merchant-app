@@ -1,5 +1,6 @@
 package app.okcredit.merchant.ledger.composables
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.ui.theme.OkCreditTheme
+import coil3.ImageLoader
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.size.Size
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -143,16 +150,13 @@ fun SingleVerticalDynamicItem(
     modifier: Modifier = Modifier,
     onDynamicItemClicked: (String, String) -> Unit,
 ) {
-    Card(
+    Surface(
+        onClick = {
+            onDynamicItemClicked(item.deeplink, item.id)
+            item.trackOnItemClicked()
+        },
+        shape = MaterialTheme.shapes.small,
         modifier = modifier
-            .clickable {
-                onDynamicItemClicked(item.deeplink, item.id)
-                item.trackOnItemClicked()
-            }
-            .semantics {
-                contentDescription = item.title
-            },
-        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -191,7 +195,18 @@ fun GifImage(
     gif: String,
     modifier: Modifier = Modifier,
 ) {
-
+    val context = LocalPlatformContext.current
+    val imageLoader = ImageLoader.Builder(context).build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(context)
+                .data(data = gif).apply { size(Size.ORIGINAL) }
+                .build(),
+            imageLoader = imageLoader
+        ),
+        contentDescription = null,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -200,18 +215,13 @@ fun SingleDynamicItem(
     modifier: Modifier = Modifier,
     onDynamicItemClicked: (String, String) -> Unit,
 ) {
-    Card(
+    Surface(
+        onClick = {
+            onDynamicItemClicked(item.deeplink, item.id)
+            item.trackOnItemClicked()
+        },
+        shape = MaterialTheme.shapes.small,
         modifier = modifier
-            .clickable {
-                onDynamicItemClicked(item.deeplink, item.id)
-                item.trackOnItemClicked()
-            }
-            .semantics {
-                contentDescription = item.title
-            },
-        colors = CardDefaults.cardColors().copy(
-            containerColor = MaterialTheme.colorScheme.outlineVariant
-        ),
     ) {
         Row(
             modifier = Modifier

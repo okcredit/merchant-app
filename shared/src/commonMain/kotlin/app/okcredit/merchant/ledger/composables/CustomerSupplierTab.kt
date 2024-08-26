@@ -51,7 +51,7 @@ fun CustomerSupplierTab(
             }
         }
         Surface(
-            onClick = { onTabChanged(false) },
+            onClick = { onTabChanged(true) },
             color = if (selectedTab.isSupplierTab()) MaterialTheme.colorScheme.surface else Color.Transparent,
             shape = RoundedCornerShape(50),
             modifier = Modifier.weight(1.0f).padding(2.dp).fillMaxHeight()

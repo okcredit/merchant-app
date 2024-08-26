@@ -17,20 +17,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.okcredit.merchant.ledger.HomeContract
-import app.okcredit.merchant.ledger.SubtitleType
 import app.okcredit.ui.advance
 import app.okcredit.ui.due
 import app.okcredit.ui.icon_date
 import app.okcredit.ui.icon_done
-import app.okcredit.ui.icon_error
 import app.okcredit.ui.icon_name
 import app.okcredit.ui.theme.OkCreditTheme
+import kotlinx.datetime.Clock
+import okcredit.base.units.Paisa
+import okcredit.base.units.Timestamp
+import okcredit.base.units.differenceInDays
+import okcredit.base.units.formattedDaysDifference
+import okcredit.base.units.isZero
 import okcredit.base.units.paisa
+import okcredit.base.units.timestamp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -70,8 +73,10 @@ fun CustomerRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 SubtitleText(
-                    subtitle = customerItem.subtitle,
-                    type = customerItem.type,
+                    lastActivityMetaInfo = customerItem.lastActivityMetaInfo,
+                    lastActivity = customerItem.lastActivity,
+                    lastAmount = customerItem.lastAmount,
+                    dueDate = customerItem.dueDate
                 )
             }
 
@@ -108,51 +113,94 @@ fun CustomerRow(
 }
 
 @Composable
-fun SubtitleText(subtitle: AnnotatedString, type: SubtitleType?) {
+fun SubtitleText(
+    dueDate: Timestamp?,
+    lastActivityMetaInfo: Int,
+    lastActivity: Timestamp,
+    lastAmount: Paisa?
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        val image = findSubtitleImageForType(type ?: SubtitleType.NONE)
-        image?.let {
-            Image(
-                painter = painterResource(resource = image),
-                contentDescription = subtitle.text,
-                colorFilter = ColorFilter.tint(findSubtitleColorForType(type ?: SubtitleType.NONE)),
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .align(Alignment.CenterVertically)
-                    .size(16.dp)
-            )
-        }
+        val image = findSubtitleImageForType(dueDate, lastActivityMetaInfo)
+        val text = findSubtitle(dueDate, lastActivityMetaInfo, lastActivity, lastAmount)
+        Image(
+            painter = painterResource(resource = image),
+            contentDescription = text,
+            colorFilter = ColorFilter.tint(
+                color = findSubtitleColorForType(
+                    dueDate = dueDate
+                )
+            ),
+            modifier = Modifier
+                .padding(end = 4.dp)
+                .align(Alignment.CenterVertically)
+                .size(16.dp)
+        )
         Text(
-            text = subtitle,
+            text = text,
             style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
             modifier = Modifier.weight(1.0f),
             overflow = TextOverflow.Ellipsis,
-            color = findSubtitleColorForType(type ?: SubtitleType.NONE),
+            color = findSubtitleColorForType(dueDate),
         )
     }
 }
 
 @Composable
-fun findSubtitleColorForType(subtitleType: SubtitleType): Color {
-    return when (subtitleType) {
-        SubtitleType.DUE_TODAY -> MaterialTheme.colorScheme.primary
-        SubtitleType.DUE_DATE_PASSED -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+fun findSubtitle(
+    dueDate: Timestamp?,
+    lastActivityMetaInfo: Int,
+    lastActivity: Timestamp,
+    lastAmount: Paisa?
+): String {
+    if (dueDate != null && dueDate.isZero.not()) {
+        val daysDifference = dueDate.differenceInDays()
+        return when {
+            daysDifference == 0 -> "Collect today"
+            daysDifference < 0 -> "Pending collection since ${daysDifference.formattedDaysDifference()}"
+            else -> "Collect on ${dueDate.format()}"
+        }
+    }
+
+    return when (lastActivityMetaInfo) {
+        0 -> "${lastAmount.toString()} credit deleted ${lastActivity.relativeDate()}"
+        1 -> "${lastAmount.toString()} payment deleted ${lastActivity.relativeDate()}"
+        2 -> "${lastAmount.toString()} credit added ${lastActivity.relativeDate()}"
+        3 -> "${lastAmount.toString()} payment added ${lastActivity.relativeDate()}"
+        5 -> "Processing"
+        6 -> "${lastAmount.toString()} discount deleted ${lastActivity.relativeDate()}"
+        7 -> "${lastAmount.toString()} discount added ${lastActivity.relativeDate()}"
+        8 -> "${lastAmount.toString()} credit updated ${lastActivity.relativeDate()}"
+        9 -> "${lastAmount.toString()} payment updated ${lastActivity.relativeDate()}"
+        else -> "Account added ${lastActivity.relativeDate()}"
     }
 }
 
-fun findSubtitleImageForType(type: SubtitleType): DrawableResource? {
-    return when (type) {
-        SubtitleType.CUSTOMER_ADDED -> app.okcredit.ui.Res.drawable.icon_name
-        SubtitleType.DUE_TODAY -> app.okcredit.ui.Res.drawable.icon_date
-        SubtitleType.DUE_DATE_PASSED -> app.okcredit.ui.Res.drawable.icon_date
-        SubtitleType.DUE_DATE_INCOMING ->app.okcredit.ui.Res.drawable.icon_date
-        SubtitleType.TRANSACTION_SYNC_DONE -> app.okcredit.ui.Res.drawable.icon_done
-        SubtitleType.TRANSACTION_SYNC_PENDING -> app.okcredit.ui.Res.drawable.icon_date
-        SubtitleType.ERROR -> app.okcredit.ui.Res.drawable.icon_error
-        SubtitleType.NONE -> null
+fun findSubtitleImageForType(
+    dueDate: Timestamp?,
+    lastActivityMetaInfo: Int
+): DrawableResource {
+    if (dueDate != null) {
+        return app.okcredit.ui.Res.drawable.icon_date
     }
+    return when (lastActivityMetaInfo) {
+        4 -> app.okcredit.ui.Res.drawable.icon_name
+        else -> app.okcredit.ui.Res.drawable.icon_done
+    }
+}
+
+@Composable
+fun findSubtitleColorForType(dueDate: Timestamp?): Color {
+    if (dueDate != null && dueDate.isZero.not()) {
+        val daysDifference = dueDate.differenceInDays()
+        return when {
+            daysDifference == 0 -> MaterialTheme.colorScheme.primary
+            daysDifference < 0 -> MaterialTheme.colorScheme.error
+            else -> MaterialTheme.colorScheme.primary
+        }
+    }
+
+   return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
 }
 
 @Preview
@@ -165,10 +213,11 @@ fun CustomerRowPreview() {
                 name = "Jarvi qowdnqwpdb qwdoqwdnpiqwbd qowdbnp qidwqdo qds",
                 balance = 0L.paisa,
                 profileImage = null,
-                subtitle = buildAnnotatedString { append("Last activity on 12/12/2020") },
                 commonLedger = true,
                 isDefaulter = false,
-                type = SubtitleType.TRANSACTION_SYNC_DONE
+                lastActivity = Clock.System.now().timestamp,
+                lastActivityMetaInfo = 0,
+                dueDate = null
             ),
             onItemClicked = {},
             onProfileClicked = { }

@@ -29,7 +29,7 @@ import okcredit.base.units.paisa
 import org.jetbrains.compose.resources.getString
 
 @Inject
-class GetCustomersForHome constructor(
+class GetCustomersForHome(
     private val getAccounts: GetAccounts,
 ) {
 
@@ -79,16 +79,17 @@ class GetCustomersForHome constructor(
                 sortBy = sortBy,
                 reminderFilters = reminderFilters
             ).forEach { customer ->
-                val subTitlePair = findSubTitleAndType(customer)
                 val customerItem = HomeContract.HomeItem.CustomerItem(
                     customerId = customer.id,
                     profileImage = customer.profileImage,
                     name = customer.name,
                     balance = customer.balance,
                     commonLedger = customer.registered,
-                    subtitle = subTitlePair.first,
-                    type = subTitlePair.second,
+                    lastActivityMetaInfo = customer.summary.lastActivityMetaInfo,
+                    lastActivity = customer.summary.lastActivity,
+                    lastAmount = customer.summary.lastAmount,
                     isDefaulter = defaulters.contains(customer.mobile),
+                    dueDate = customer.dueDate
                 )
                 netBalance += customer.balance
                 counter++

@@ -1,6 +1,6 @@
 package app.okcredit.merchant.ledger.composables
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.okcredit.merchant.ledger.HomeContract
@@ -69,23 +69,24 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
             )
             Spacer(modifier = Modifier.size(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
+                Icon(
                     painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_name),
                     contentDescription = "",
-                    modifier = Modifier
-                        .size(12.dp)
+                    modifier = Modifier.size(12.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "$totalAccounts Accounts",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp),
                     fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             }
         }
         Column(
-            modifier = Modifier
+            modifier = Modifier,
+            horizontalAlignment = Alignment.End
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -93,15 +94,13 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                     style = MaterialTheme.typography.titleMedium,
                     color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
-                Image(
+                Icon(
                     painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_chevron_right),
                     contentDescription = "",
                     modifier = Modifier
                         .padding(top = 2.dp)
                         .size(16.dp),
-                    colorFilter = ColorFilter.tint(
-                        color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                    )
+                    tint = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                 )
             }
             Spacer(modifier = Modifier.size(2.dp))
@@ -118,7 +117,7 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                     .padding(start = 4.dp)
                     .align(Alignment.End),
                 fontSize = 10.sp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
         }
     }

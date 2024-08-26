@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS `CustomizationEntityV2` (
 listComponentsForTarget:
 SELECT `component`
 FROM `CustomizationEntityV2`
-WHERE `target` = :target;
+WHERE `target` = :target AND `businessId` = :businessId;

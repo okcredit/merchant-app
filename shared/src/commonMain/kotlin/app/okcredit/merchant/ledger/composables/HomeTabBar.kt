@@ -77,17 +77,17 @@ fun HomeTabBar(
             PrimaryVpa(primaryVpa = primaryVpa, onPrimaryVpaClicked = onPrimaryVpaClicked)
             if (toolbarAction != null && toolbarAction != HomeContract.ToolbarAction.ACTIVATE_UPI) {
                 Spacer(modifier = Modifier.width(8.dp))
-                Box(
-                    modifier = Modifier
-                        .clickable { onToolbarActionClicked(toolbarAction) }
-                        .size(40.dp)
-                        .background(color = grey100, shape = CircleShape),
-                    contentAlignment = Alignment.Center
+                Surface(
+                    onClick = { onToolbarActionClicked(toolbarAction) },
+                    shape = CircleShape,
+                    modifier = Modifier.size(40.dp)
                 ) {
-                    Icon(
-                        painterResource(resource = getIconForToolbar(toolbarAction)),
-                        contentDescription = "",
-                    )
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            painterResource(resource = getIconForToolbar(toolbarAction)),
+                            contentDescription = "",
+                        )
+                    }
                 }
             }
         } else {
@@ -97,7 +97,6 @@ fun HomeTabBar(
                         onToolbarActionClicked(toolbarAction)
                     },
                     shape = RoundedCornerShape(50),
-                    color = grey100,
                     modifier = Modifier.padding(vertical = 4.dp)
                 ) {
                     Row(
@@ -149,7 +148,6 @@ fun PrimaryVpa(primaryVpa: String, onPrimaryVpaClicked: () -> Unit) {
     Surface(
         onClick = onPrimaryVpaClicked,
         shape = RoundedCornerShape(50),
-        color = grey100,
         modifier = Modifier.padding(vertical = 4.dp)
     ) {
         Row(

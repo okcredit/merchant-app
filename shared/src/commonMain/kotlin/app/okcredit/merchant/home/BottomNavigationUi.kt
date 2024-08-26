@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_home
 import app.okcredit.ui.theme.OkCreditTheme
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -37,23 +37,21 @@ fun BottomNavigationUi(
     selectedItem: NavItem,
     onItemClicked: (NavItem) -> Unit
 ) {
-    OkCreditTheme {
-        Card(
-            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+    Surface(
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        shadowElevation = 12.dp,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                list.forEach { bottomMenuItem ->
-                    SelectableTab(
-                        bottomMenuItem = bottomMenuItem,
-                        modifier = Modifier.weight(1.0f),
-                        selected = bottomMenuItem.navItem == selectedItem,
-                        onItemClicked = onItemClicked,
-                    )
-                }
+            list.forEach { bottomMenuItem ->
+                SelectableTab(
+                    bottomMenuItem = bottomMenuItem,
+                    modifier = Modifier.weight(1.0f),
+                    selected = bottomMenuItem.navItem == selectedItem,
+                    onItemClicked = onItemClicked,
+                )
             }
         }
     }
@@ -87,11 +85,7 @@ fun SelectableTab(
             Spacer(Modifier.height(2.dp))
             Text(
                 text = bottomMenuItem.label,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                },
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                 style = MaterialTheme.typography.labelSmall
             )
             Spacer(Modifier.height(12.dp))
@@ -114,7 +108,7 @@ fun SelectableIcon(selected: Boolean, icon: Painter, showDotBadge: Boolean) {
         Icon(
             painter = icon,
             contentDescription = "",
-            tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+            tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.size(20.dp)
         )
 
@@ -135,7 +129,7 @@ fun SelectableIconPreview() {
     OkCreditTheme {
         SelectableIcon(
             selected = true,
-            icon = painterResource(Res.drawable.icon_home) ,
+            icon = painterResource(Res.drawable.icon_home),
             showDotBadge = true
         )
     }
@@ -170,24 +164,4 @@ fun BottomNavigationUiPreview() {
         selectedItem = NavItem.HOME_LEDGER,
         onItemClicked = {}
     )
-}
-
-data class MoreOptionItem(
-    val id: MoreOption,
-    val icon: DrawableResource,
-    val title: String,
-    val deeplink: String? = null,
-    val iconUrl: String? = null
-)
-
-enum class MoreOption {
-    STATEMENT,
-    PROFILE,
-    HELP,
-    SETTINGS,
-    SUBSCRIPTION,
-    BILLING,
-    INVENTORY,
-    PSP_UPI,
-    DYNAMIC, // all the options coming from side menu dynamic component
 }

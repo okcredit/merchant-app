@@ -1,6 +1,5 @@
 package app.okcredit.merchant.ledger.composables
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -41,14 +38,8 @@ import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.ReminderFilterOption
 import app.okcredit.merchant.ledger.SortOption
 import app.okcredit.merchant.ledger.isCustomerTab
+import app.okcredit.ui.components.TwinBottomButtons
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.green_lite
-import app.okcredit.ui.theme.green_lite_1
-import app.okcredit.ui.theme.green_primary
-import app.okcredit.ui.theme.grey300
-import app.okcredit.ui.theme.grey50
-import app.okcredit.ui.theme.grey900
-import app.okcredit.ui.theme.white
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.amount_due
 import merchant_app.shared.generated.resources.clear
@@ -184,7 +175,7 @@ fun SortByAndFilterUi(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .background(grey50),
+                .background(MaterialTheme.colorScheme.background),
             onCategorySelected = {
                 selectedCategory.value = it
             },
@@ -232,7 +223,7 @@ fun FilterCategoryItemUi(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = if (!isSelected) grey50 else white)
+                    .background(color = if (!isSelected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.surface)
                     .drawBehind {
                         if (isSelected) {
                             drawRect(
@@ -252,14 +243,14 @@ fun FilterCategoryItemUi(
                         ),
                     text = findLabelForCategory(category),
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isSelected) green_primary else grey900
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                 )
             }
             HorizontalDivider(
                 modifier = Modifier
                     .align(Alignment.End)
                     .width(104.dp),
-                color = grey300,
+                color = MaterialTheme.colorScheme.outlineVariant,
                 thickness = 1.dp
             )
         }
@@ -304,8 +295,8 @@ fun FilterOptionsRadioButtonsUi(
                     modifier = Modifier.padding(end = 4.dp),
                     selected = selectedOption == option,
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = green_primary,
-                        unselectedColor = grey900
+                        selectedColor = MaterialTheme.colorScheme.primary,
+                        unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     ),
                     onClick = { onOptionSelected(option) },
                 )
@@ -323,7 +314,7 @@ fun FilterOptionsCheckboxUi(
 ) {
     LazyColumn(
         modifier = modifier
-            .background(white)
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxHeight(),
         userScrollEnabled = true,
     ) {
@@ -350,7 +341,7 @@ fun FilterOptionsCheckboxUi(
                         checked = selectedOptions.contains(item),
                         onCheckedChange = { _ -> onOptionSelected(item) },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = green_primary,
+                            checkedColor = MaterialTheme.colorScheme.primary,
                             uncheckedColor = MaterialTheme.colorScheme.onSurface.copy(
                                 alpha = 0.6f
                             ),
@@ -374,36 +365,12 @@ fun findLabelForReminderOption(option: ReminderFilterOption): String {
 
 @Composable
 fun Footer(onApplyClicked: () -> Unit, onClearClicked: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-    ) {
-        Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
-            border = BorderStroke(1.dp, green_lite_1),
-            colors = ButtonDefaults.buttonColors(containerColor = green_lite),
-            onClick = onClearClicked
-        ) {
-            Text(text = stringResource(Res.string.clear), style = MaterialTheme.typography.labelLarge)
-        }
-
-        Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = green_primary),
-            onClick = onApplyClicked
-        ) {
-            Text(
-                text = stringResource(resource = Res.string.cta_apply),
-                style = MaterialTheme.typography.labelLarge,
-                color = white
-            )
-        }
-    }
+    TwinBottomButtons(
+        primaryText = stringResource(resource = Res.string.cta_apply),
+        secondaryText = stringResource(resource = Res.string.clear),
+        onPrimaryClick = onApplyClicked,
+        onSecondaryClick = onClearClicked
+    )
 }
 
 @Composable

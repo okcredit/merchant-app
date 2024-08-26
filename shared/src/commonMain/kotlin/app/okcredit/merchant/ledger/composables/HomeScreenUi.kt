@@ -3,7 +3,6 @@
 package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,20 +25,18 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -63,26 +59,26 @@ import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.ReminderFilterOption
 import app.okcredit.merchant.ledger.isCustomerTab
 import app.okcredit.merchant.ledger.isSupplierTab
+import app.okcredit.ui.ic_add_first_supplier
+import app.okcredit.ui.ic_ledger_tutorial
 import app.okcredit.ui.icon_add
 import app.okcredit.ui.icon_add_photo
 import app.okcredit.ui.icon_error_fill
 import app.okcredit.ui.icon_filter_list
 import app.okcredit.ui.icon_search
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.green_lite_1
-import app.okcredit.ui.theme.grey50
 import app.okcredit.ui.theme.grey900
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.add_customer
 import merchant_app.shared.generated.resources.add_supplier
 import merchant_app.shared.generated.resources.clear_filter
-import app.okcredit.ui.ic_add_first_supplier
-import app.okcredit.ui.ic_ledger_tutorial
 import merchant_app.shared.generated.resources.no_results_found
 import merchant_app.shared.generated.resources.supplier_learn_more_title
 import merchant_app.shared.generated.resources.t_001_addrel_first_time_txt
 import okcredit.base.units.paisa
+import okcredit.base.units.timestamp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -108,28 +104,18 @@ fun HomeScreenUi(
     onClearFilterClicked: () -> Unit,
     onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val customerListState = rememberLazyListState()
-        val supplierListState = rememberLazyListState()
-        val extendedFabInCustomer by remember {
-            derivedStateOf { customerListState.firstVisibleItemIndex == 0 }
-        }
-        val extendFabInSupplier by remember {
-            derivedStateOf { supplierListState.firstVisibleItemIndex == 0 }
-        }
-        val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val customerListState = rememberLazyListState()
+    val supplierListState = rememberLazyListState()
+    val extendedFabInCustomer by remember {
+        derivedStateOf { customerListState.firstVisibleItemIndex == 0 }
+    }
+    val extendFabInSupplier by remember {
+        derivedStateOf { supplierListState.firstVisibleItemIndex == 0 }
+    }
 
-        LaunchedEffect(Unit) {
-            bottomSheetState.show()
-        }
-        BottomSheetScaffold(
-            scaffoldState = rememberBottomSheetScaffoldState(
-                bottomSheetState = bottomSheetState,
-            ),
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
+    Scaffold(
+        topBar = {
+            Column {
                 HomeTabBar(
                     toolbarAction = state.toolbarAction,
                     activeBusiness = state.activeBusiness,
@@ -138,44 +124,42 @@ fun HomeScreenUi(
                     onToolbarActionClicked = onToolbarActionClicked,
                     onPrimaryVpaClicked = onPrimaryVpaClicked,
                 )
-            },
-            content = {
-                Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)) {
-                    DynamicComponent(
-                        dynamicItems = state.dynamicItems,
-                        userAlert = state.userAlert,
-                        onDynamicItemClicked = onDynamicItemClicked,
-                        onUserAlertClicked = onUserAlertClicked,
-                    )
-                }
-            },
-            sheetContainerColor = MaterialTheme.colorScheme.surface,
-            sheetContent = {
-                HomeContent(
-                    state = state,
-                    customerListState = customerListState,
-                    supplierListState = supplierListState,
-                    onTabChanged = onTabChanged,
-                    onSearchClicked = onSearchClicked,
-                    onSortAndFilterClicked = onSortAndFilterClicked,
-                    onCustomerClicked = onCustomerClicked,
-                    onCustomerProfileClicked = onCustomerProfileClicked,
-                    onSupplierClicked = onSupplierClicked,
-                    onSupplierProfileClicked = onSupplierProfileClicked,
-                    onSummaryCardClicked = onSummaryCardClicked,
-                    onAddRelationshipClicked = onAddRelationshipClicked,
-                    onClearFilterClicked = onClearFilterClicked
+                DynamicComponent(
+                    dynamicItems = state.dynamicItems,
+                    userAlert = state.userAlert,
+                    onDynamicItemClicked = onDynamicItemClicked,
+                    onUserAlertClicked = onUserAlertClicked,
                 )
             }
+        },
+        floatingActionButton = {
+            BottomActions(
+                selectedTab = state.selectedTab,
+                modifier = Modifier,
+                extendFab = if (state.selectedTab.isCustomerTab()) extendedFabInCustomer else extendFabInSupplier,
+                showAddRelationship = state.showAddRelationship,
+                onAddRelationshipClicked = onAddRelationshipClicked,
+            )
+        },
+        floatingActionButtonPosition = FabPosition.End,
+    ) {
+        HomeContent(
+            modifier = Modifier.padding(it),
+            state = state,
+            customerListState = customerListState,
+            supplierListState = supplierListState,
+            onTabChanged = onTabChanged,
+            onSearchClicked = onSearchClicked,
+            onSortAndFilterClicked = onSortAndFilterClicked,
+            onCustomerClicked = onCustomerClicked,
+            onCustomerProfileClicked = onCustomerProfileClicked,
+            onSupplierClicked = onSupplierClicked,
+            onSupplierProfileClicked = onSupplierProfileClicked,
+            onSummaryCardClicked = onSummaryCardClicked,
+            onAddRelationshipClicked = onAddRelationshipClicked,
+            onClearFilterClicked = onClearFilterClicked
         )
 
-        BottomActions(
-            selectedTab = state.selectedTab,
-            modifier = Modifier.align(Alignment.BottomEnd),
-            extendFab = if (state.selectedTab.isCustomerTab()) extendedFabInCustomer else extendFabInSupplier,
-            showAddRelationship = state.showAddRelationship,
-            onAddRelationshipClicked = onAddRelationshipClicked,
-        )
     }
 }
 
@@ -188,7 +172,7 @@ fun BottomActions(
     onAddRelationshipClicked: () -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(all = 16.dp),
+        modifier = modifier,
         horizontalAlignment = Alignment.End,
     ) {
         if (showAddRelationship) {
@@ -232,7 +216,7 @@ fun AnimatedExtendedFloatingActionButton(
     icon: @Composable () -> Unit,
     label: @Composable () -> Unit,
     minSize: Dp = 56.dp,
-    background: Color = green_lite_1,
+    background: Color = MaterialTheme.colorScheme.secondary,
     onClick: () -> Unit,
 ) {
     FloatingActionButton(
@@ -256,9 +240,9 @@ fun AnimatedExtendedFloatingActionButton(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(
+    modifier: Modifier,
     state: HomeContract.State,
     customerListState: LazyListState,
     supplierListState: LazyListState,
@@ -273,7 +257,12 @@ fun HomeContent(
     onAddRelationshipClicked: () -> Unit,
     onClearFilterClicked: () -> Unit,
 ) {
-    Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+    Column(
+        modifier = modifier.background(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+        )
+    ) {
         Spacer(modifier = Modifier.size(12.dp))
         val pagerState = rememberPagerState { 2 }
         val scope = rememberCoroutineScope()
@@ -323,7 +312,7 @@ fun HomeContent(
                                                 .fillMaxWidth()
                                                 .padding(horizontal = 20.dp),
                                             drawableId = app.okcredit.ui.Res.drawable.icon_add_photo,
-                                            color = green_lite_1,
+                                            color = MaterialTheme.colorScheme.secondary,
                                             text = stringResource(resource = Res.string.add_customer),
                                             drawableTint = MaterialTheme.colorScheme.onSurface,
                                             textStyle = MaterialTheme.typography.titleSmall.copy(
@@ -364,7 +353,7 @@ fun HomeContent(
                                                 .fillMaxWidth()
                                                 .padding(horizontal = 20.dp),
                                             drawableId = app.okcredit.ui.Res.drawable.icon_add_photo,
-                                            color = green_lite_1,
+                                            color = MaterialTheme.colorScheme.secondary,
                                             text = stringResource(resource = Res.string.add_supplier),
                                             drawableTint = MaterialTheme.colorScheme.onSurface,
                                             textStyle = MaterialTheme.typography.labelLarge.copy(
@@ -551,7 +540,6 @@ fun HomeHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         CustomerSupplierTab(
             selectedTab = selectedTab,
             modifier = Modifier.weight(1.0f),
@@ -561,7 +549,11 @@ fun HomeHeader(
             Box {
                 Surface(
                     shape = CircleShape,
-                    color = if (sortOrFilterAppliedCount > 0) green_lite_1 else grey50,
+                    color = if (sortOrFilterAppliedCount > 0) {
+                        MaterialTheme.colorScheme.secondary
+                    } else {
+                        MaterialTheme.colorScheme.background
+                    },
                     onClick = onSortAndFilterClicked,
                 ) {
                     Box(
@@ -573,9 +565,9 @@ fun HomeHeader(
                             contentDescription = "",
                             modifier = Modifier.size(24.dp),
                             tint = if (sortOrFilterAppliedCount > 0) {
-                                MaterialTheme.colorScheme.primary
+                                MaterialTheme.colorScheme.onSecondary
                             } else {
-                                MaterialTheme.colorScheme.onSurface
+                                MaterialTheme.colorScheme.onBackground
                             }
                         )
                     }
@@ -597,7 +589,7 @@ fun HomeHeader(
         if (showSearch) {
             Surface(
                 shape = CircleShape,
-                color = grey50,
+                color = MaterialTheme.colorScheme.background,
                 onClick = onSearchClicked,
             ) {
                 Box(
@@ -608,7 +600,7 @@ fun HomeHeader(
                         painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_search),
                         contentDescription = "",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -660,7 +652,8 @@ fun HomeScreenUiPreview() {
                         profileImage = "",
                         name = "Harsh",
                         balance = 1000L.paisa,
-                        subtitle = buildAnnotatedString { append("Last payment 2 days ago") },
+                        lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
+                        lastActivityMetaInfo = 1
                     ),
                     HomeContract.HomeItem.CustomerItem(
                         customerId = "3",
@@ -668,7 +661,8 @@ fun HomeScreenUiPreview() {
                         name = "Aditya",
                         balance = 1000L.paisa,
                         commonLedger = true,
-                        subtitle = buildAnnotatedString { append("Last payment 2 days ago") },
+                        lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
+                        lastActivityMetaInfo = 1
                     ),
                     HomeContract.HomeItem.CustomerItem(
                         isDefaulter = false,
@@ -676,7 +670,8 @@ fun HomeScreenUiPreview() {
                         profileImage = "",
                         name = "Gaurav",
                         balance = (-1000L).paisa,
-                        subtitle = buildAnnotatedString { append("Last payment 2 days ago") },
+                        lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
+                        lastActivityMetaInfo = 1
                     )
                 ),
             ),

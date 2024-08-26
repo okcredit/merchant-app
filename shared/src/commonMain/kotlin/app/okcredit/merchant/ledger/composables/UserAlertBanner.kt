@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.ui.icon_cloud_off
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.orange_lite_1
-import app.okcredit.ui.theme.orange_primary
+import app.okcredit.ui.theme.orange_200
+import app.okcredit.ui.theme.orange_800
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.alert_transactions_not_synced
 import merchant_app.shared.generated.resources.retry
@@ -32,9 +32,12 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (HomeContract.UserAlert) -> Unit) {
+fun UserAlertBanner(
+    userAlert: HomeContract.UserAlert,
+    onUserAlertClicked: (HomeContract.UserAlert) -> Unit
+) {
     Card(
-        colors = CardDefaults.cardColors().copy(containerColor = orange_lite_1),
+        colors = CardDefaults.cardColors().copy(containerColor = orange_200),
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.padding(horizontal = 16.dp),
     ) {
@@ -48,7 +51,7 @@ fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (Home
             Image(
                 painter = painterResource(resource = userAlert.getIcon()),
                 contentDescription = userAlert.getMessage(),
-                colorFilter = ColorFilter.tint(orange_primary),
+                colorFilter = ColorFilter.tint(orange_800),
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -58,13 +61,11 @@ fun UserAlertBanner(userAlert: HomeContract.UserAlert, onUserAlertClicked: (Home
                 modifier = Modifier.weight(1.0f)
             )
             if (userAlert.getCta().isNotEmpty()) {
-                TextButton(onClick = {
-                    onUserAlertClicked.invoke(userAlert)
-                }) {
+                TextButton(onClick = { onUserAlertClicked.invoke(userAlert) }) {
                     Text(
                         text = userAlert.getCta(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = orange_primary
+                        color = orange_800
                     )
                 }
             }

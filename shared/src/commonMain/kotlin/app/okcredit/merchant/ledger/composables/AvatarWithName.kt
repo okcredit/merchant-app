@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -71,8 +72,7 @@ fun DefaultAvatar(
             text = customerName.first().toString().uppercase(),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 9.dp),
+                .align(Alignment.Center),
             textAlign = TextAlign.Center,
             color = Color.White,
         )
@@ -91,7 +91,8 @@ fun CommonLedgerTag(modifier: Modifier) {
         contentDescription = "",
         modifier = modifier
             .size(20.dp)
-            .background(MaterialTheme.colorScheme.primary, CircleShape)
+            .background(MaterialTheme.colorScheme.primary, CircleShape),
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
     )
 }
 

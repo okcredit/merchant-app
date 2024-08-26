@@ -48,8 +48,8 @@ class CustomizationLocalSource(
         }
     }
 
-    fun listComponentsForTarget(target: String): Flow<List<Component>> {
-        return queries.listComponentsForTarget(target = target)
+    fun listComponentsForTarget(businessId: String, target: String): Flow<List<Component>> {
+        return queries.listComponentsForTarget(target = target, businessId = businessId)
             .asFlow()
             .mapToList(appDispatchers.io)
             .map { list ->

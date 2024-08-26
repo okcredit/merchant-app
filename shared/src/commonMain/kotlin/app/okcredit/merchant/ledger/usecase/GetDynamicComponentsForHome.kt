@@ -8,15 +8,16 @@ import tech.okcredit.analytics.AnalyticsProvider
 import tech.okcredit.customization.local.CustomizationLocalSource
 import tech.okcredit.customization.models.Component
 import tech.okcredit.customization.models.withDefaultProperties
+import tech.okcredit.customization.usecase.GetCustomization
 
 @Inject
 class GetDynamicComponentsForHome(
-    private val getCustomization: Lazy<CustomizationLocalSource>,
+    private val getCustomization: Lazy<GetCustomization>,
     private val analyticsProvider: Lazy<AnalyticsProvider>,
 ) {
 
     fun execute(): Flow<List<HomeContract.DynamicItem>> {
-        return getCustomization.value.listComponentsForTarget("home_banner")
+        return getCustomization.value.execute("home_banner")
             .map { list ->
                 buildDynamicList(list)
             }
@@ -25,7 +26,6 @@ class GetDynamicComponentsForHome(
     private fun buildDynamicList(components: List<Component>): List<HomeContract.DynamicItem> {
         val list = mutableListOf<HomeContract.DynamicItem>()
         components.forEach { component ->
-            println("GetDynamicComponentsForHome Component: $component")
             component.items?.forEach { item ->
                 val action = item.eventHandlers?.click
                     ?.find { it.action == "navigate" }

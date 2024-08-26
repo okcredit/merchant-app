@@ -1,5 +1,6 @@
 package app.okcredit.merchant.di
 
+import app.okcredit.merchant.home.HomeScreenModel
 import app.okcredit.merchant.ledger.HomeLedgerScreenModel
 import app.okcredit.merchant.selectBusiness.SelectBusinessScreenModel
 import app.okcredit.merchant.splash.SplashScreenModel
@@ -12,14 +13,20 @@ interface SharedComponent {
 
     @Provides
     @IntoMap
-    fun splashModel(splashScreenModel: SplashScreenModel): ScreenModelPair {
-        return SplashScreenModel::class to splashScreenModel
+    fun splashModel(screenModel: SplashScreenModel): ScreenModelPair {
+        return SplashScreenModel::class to screenModel
     }
 
     @Provides
     @IntoMap
-    fun homeScreenModel(homeScreenModel: HomeLedgerScreenModel): ScreenModelPair {
-        return HomeLedgerScreenModel::class to homeScreenModel
+    fun homeScreenModel(homeScreenModel: HomeScreenModel): ScreenModelPair {
+        return HomeScreenModel::class to homeScreenModel
+    }
+
+    @Provides
+    @IntoMap
+    fun ledgerScreenModel(screenModel: HomeLedgerScreenModel): ScreenModelPair {
+        return HomeLedgerScreenModel::class to screenModel
     }
 
     @Provides

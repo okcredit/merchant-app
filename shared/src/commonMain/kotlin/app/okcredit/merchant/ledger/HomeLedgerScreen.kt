@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.merchant.ledger.HomeContract.State
+import app.okcredit.merchant.ledger.HomeContract.ToolbarAction.*
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
 import app.okcredit.merchant.ledger.composables.HomeScreenUi
 import app.okcredit.ui.theme.OkCreditTheme
@@ -43,8 +44,12 @@ object HomeLedgerTab : Tab {
                 screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
             },
             onAvatarClicked = ::onBusinessClicked,
-            onToolbarActionClicked = {
-
+            onToolbarActionClicked = { toolbarAction ->
+                when (toolbarAction) {
+                    ACTIVATE_UPI -> TODO()
+                    NEED_HELP -> TODO()
+                    SHARE -> TODO()
+                }
             },
             onPrimaryVpaClicked = {},
             onSearchClicked = {},

@@ -34,8 +34,8 @@
     <string name="need_help">Need help?</string>
     <string name="share">Share</string>
 
-    <string name="add_supplier">"Add Supplier"</string>
-    <string name="add_customer">"Add Customer"</string>
+    <string name="add_supplier">Add Supplier</string>
+    <string name="add_customer">Add Customer</string>
 
     <string name="t_001_addrel_first_time_txt">Start your digital ledger by adding a customer</string>
     <string name="t_001_addrel_cta_add_manually">Add By Yourself</string>

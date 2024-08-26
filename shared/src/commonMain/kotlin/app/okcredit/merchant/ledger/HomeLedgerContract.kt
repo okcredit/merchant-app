@@ -1,13 +1,13 @@
 package app.okcredit.merchant.ledger
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.text.AnnotatedString
 import app.okcredit.merchant.ledger.usecase.CustomerForHomeResponse
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
 import okcredit.base.ui.UserIntent
 import okcredit.base.units.Paisa
 import app.okcredit.merchant.ledger.usecase.SupplierForHomeResponse
+import okcredit.base.units.Timestamp
 import tech.okcredit.identity.contract.model.Business
 
 interface HomeContract {
@@ -62,9 +62,11 @@ interface HomeContract {
             val customerId: String,
             val profileImage: String?,
             val name: String,
-            val subtitle: AnnotatedString,
-            val type: SubtitleType? = null,
             val balance: Paisa,
+            val lastActivityMetaInfo: Int,
+            val lastActivity: Timestamp,
+            val dueDate: Timestamp? = null,
+            val lastAmount: Paisa? = null,
             val commonLedger: Boolean = false,
             val isDefaulter: Boolean = false,
         ) : HomeItem()
@@ -191,7 +193,6 @@ enum class SubtitleType {
     DUE_DATE_INCOMING,
     TRANSACTION_SYNC_DONE,
     TRANSACTION_SYNC_PENDING,
-
     NONE,
     ERROR,
 }
