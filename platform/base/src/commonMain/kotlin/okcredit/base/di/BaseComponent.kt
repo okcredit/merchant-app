@@ -1,10 +1,10 @@
 package okcredit.base.di
 
-import de.jensklingenberg.ktorfit.Ktorfit
 import kotlinx.coroutines.CoroutineDispatcher
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.appDispatchers
-import okcredit.base.network.KtorfitFactory
+import okcredit.base.network.DefaultHttpClient
+import okcredit.base.network.HttpClientFactory
 
 typealias IoDispatcher = CoroutineDispatcher
 typealias MainDispatcher = CoroutineDispatcher
@@ -18,11 +18,6 @@ typealias Flavor = String
 @Singleton
 interface BaseComponent {
 
-    @Provides
-    fun provideKtorfit(
-        ktorfitUtils: KtorfitFactory,
-    ): Ktorfit = ktorfitUtils.create()
-
     @Singleton
     @Provides
     fun ioDispatcher(): IoDispatcher = appDispatchers.io
@@ -30,4 +25,10 @@ interface BaseComponent {
     @Singleton
     @Provides
     fun mainDispatcher(): MainDispatcher = appDispatchers.main
+
+    @Singleton
+    @Provides
+    fun defaultHttpClient(factory: HttpClientFactory): DefaultHttpClient {
+        return factory.createHttpClient()
+    }
 }

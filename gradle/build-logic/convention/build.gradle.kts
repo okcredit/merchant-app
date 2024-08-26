@@ -71,11 +71,5 @@ gradlePlugin {
             id = "okcredit.compose"
             implementationClass = "okcredit.gradle.ComposeMultiplatformConventionPlugin"
         }
-
-
-        register("ktorfit") {
-            id = "okcredit.ktorfit"
-            implementationClass = "okcredit.gradle.KtorfitPlugin"
-        }
     }
 }

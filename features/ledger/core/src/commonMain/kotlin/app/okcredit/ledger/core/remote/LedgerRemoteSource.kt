@@ -7,42 +7,55 @@ import app.okcredit.ledger.core.remote.models.AddCustomerRequest
 import app.okcredit.ledger.core.remote.models.AddSupplierRequest
 import app.okcredit.ledger.core.remote.models.ApiCustomer
 import app.okcredit.ledger.core.remote.models.ApiSupplier
-import app.okcredit.ledger.core.remote.models.ApiTransaction
-import app.okcredit.ledger.core.remote.models.GetFileIdForSyncTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionAmountHistoryRequest
+import app.okcredit.ledger.core.remote.models.GetTransactionAmountHistoryResponse
 import app.okcredit.ledger.core.remote.models.GetTransactionFileRequest
+import app.okcredit.ledger.core.remote.models.GetTransactionFileResponse
 import app.okcredit.ledger.core.remote.models.GetTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionsResponse
 import app.okcredit.ledger.core.remote.models.SupplierRequestForUpdate
+import app.okcredit.ledger.core.remote.models.SuppliersResponse
 import app.okcredit.ledger.core.remote.models.SyncTransactionRequest
 import app.okcredit.ledger.core.remote.models.SyncTransactionResponse
 import app.okcredit.ledger.core.remote.models.TransactionAmountHistory
 import app.okcredit.ledger.core.remote.models.TransactionFile
 import app.okcredit.ledger.core.remote.models.TransactionsRequest
 import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
+import app.okcredit.ledger.core.remote.models.UpdateSupplierResponse
 import me.tatarka.inject.annotations.Inject
+import okcredit.base.di.BaseUrl
 import okcredit.base.di.Singleton
+import okcredit.base.network.AuthorizedHttpClient
+import okcredit.base.network.HEADER_BUSINESS_ID
+import okcredit.base.network.delete
+import okcredit.base.network.get
 import okcredit.base.network.getOrThrow
+import okcredit.base.network.patch
+import okcredit.base.network.post
 import okcredit.base.units.paisa
 import okcredit.base.units.timestamp
 
 @Inject
 @Singleton
 class LedgerRemoteSource(
-    private val lazyApiClient: Lazy<LedgerApiClient>,
+    private val baseUrl: BaseUrl,
+    private val authorizedHttpClient: AuthorizedHttpClient,
 ) {
 
-    private val apiClient by lazy { lazyApiClient.value }
+    companion object {
+        const val OKC_SYNC_ID_HEADER = "OKC-SYNC-ID"
+    }
 
     suspend fun syncTransactions(
         request: SyncTransactionRequest,
         businessId: String,
         flowId: String,
     ): SyncTransactionResponse? {
-        return apiClient.syncTransactions(
-            request = request,
-            businessId = businessId,
-            flowId = flowId,
+        return authorizedHttpClient.post<SyncTransactionRequest, SyncTransactionResponse?>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/sync-transactions",
+            requestBody = request,
+            headers = mapOf(HEADER_BUSINESS_ID to businessId, OKC_SYNC_ID_HEADER to flowId),
         ).getOrThrow()
     }
 
@@ -53,8 +66,10 @@ class LedgerRemoteSource(
         customerId: String? = null,
         type: Int = 0,
     ): GetTransactionsResponse? {
-        return apiClient.getTransactions(
-            request = GetTransactionsRequest(
+        return authorizedHttpClient.post<GetTransactionsRequest, GetTransactionsResponse?>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v2/GetTransactions",
+            requestBody = GetTransactionsRequest(
                 TransactionsRequest(
                     type = type,
                     role = 1,
@@ -62,8 +77,7 @@ class LedgerRemoteSource(
                     startTimeMs = startDate,
                 ),
             ),
-            source = "core_module_$source",
-            businessId = businessId,
+            headers = mapOf("X-Source" to "core_module_$source", HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()
     }
 
@@ -71,11 +85,12 @@ class LedgerRemoteSource(
         transactionFileId: String,
         businessId: String,
     ): TransactionFile? {
-        return apiClient.getTransactionFile(
-            GetTransactionFileRequest(transactionFileId),
-            businessId,
-        )
-            .getOrThrow()
+        return authorizedHttpClient.post<GetTransactionFileRequest, GetTransactionFileResponse>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/new/GetTransactionFile",
+            requestBody = GetTransactionFileRequest(transactionFileId),
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
+        ).getOrThrow()
             .takeIf { it.txnFile.status == 1 }
             ?.txnFile
     }
@@ -84,11 +99,11 @@ class LedgerRemoteSource(
         transactionId: String,
         businessId: String,
     ): TransactionAmountHistory? {
-        return apiClient.getTransactionAmountHistory(
-            GetTransactionAmountHistoryRequest(
-                transactionId,
-            ),
-            businessId,
+        return authorizedHttpClient.post<GetTransactionAmountHistoryRequest, GetTransactionAmountHistoryResponse?>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/new/GetTxnAmountHistory",
+            requestBody = GetTransactionAmountHistoryRequest(transactionId),
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()?.transaction
     }
 
@@ -98,40 +113,43 @@ class LedgerRemoteSource(
         reactivate: Boolean,
         businessId: String,
     ): Customer {
-        val response = apiClient.addCustomer(
-            request = AddCustomerRequest(
+        val response = authorizedHttpClient.post<AddCustomerRequest, ApiCustomer?>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/customer",
+            requestBody = AddCustomerRequest(
                 mobile = mobile,
                 description = name,
                 reactivate = reactivate,
                 profileImage = null,
             ),
-            businessId = businessId,
-        )
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
+        ).getOrThrow()
 
-        return response.getOrThrow()?.toDomainCustomer(businessId)
+        return response?.toDomainCustomer(businessId)
             ?: throw IllegalStateException("Add customer failed")
     }
 
     suspend fun listCustomers(
         businessId: String,
     ): List<Customer> {
-        return apiClient.listAllCustomers(
-            mobile = null,
-            deleted = false,
-            businessId = businessId,
-        ).getOrThrow()
-            .map {
-                it.toDomainCustomer(businessId)
-            }
+        return authorizedHttpClient.get<List<ApiCustomer>>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/customer",
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
+            queryParams = mapOf("deleted" to false),
+        ).getOrThrow().map {
+            it.toDomainCustomer(businessId)
+        }
     }
 
     suspend fun deleteCustomer(
         customerId: String,
         businessId: String,
     ) {
-        apiClient.deleteCustomer(
-            customerId = customerId,
-            businessId = businessId,
+        return authorizedHttpClient.delete<Unit>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/customer/$customerId",
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()
     }
 
@@ -140,13 +158,15 @@ class LedgerRemoteSource(
         name: String,
         mobile: String?,
     ): Supplier {
-        val response = apiClient.addSupplier(
-            request = AddSupplierRequest(
+        val response = authorizedHttpClient.post<AddSupplierRequest, ApiSupplier?>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/sc/suppliers",
+            requestBody = AddSupplierRequest(
                 mobile = mobile,
                 name = name,
                 profileImage = null,
             ),
-            businessId = businessId,
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         )
 
         return response.getOrThrow()?.toDomainSupplier(businessId)
@@ -156,8 +176,10 @@ class LedgerRemoteSource(
     suspend fun listSuppliers(
         businessId: String,
     ): List<Supplier> {
-        return apiClient.listAllSuppliers(
-            businessId = businessId,
+        return authorizedHttpClient.get<SuppliersResponse>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/sc/suppliers",
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow().suppliers.map {
             it.toDomainSupplier(businessId)
         }
@@ -167,9 +189,10 @@ class LedgerRemoteSource(
         supplierId: String,
         businessId: String,
     ) {
-        apiClient.deleteSupplier(
-            supplierId = supplierId,
-            businessId = businessId,
+        return authorizedHttpClient.delete<Unit>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/sc/suppliers/$supplierId",
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()
     }
 
@@ -201,20 +224,21 @@ class LedgerRemoteSource(
             displayTxnAlertSetting = displayTxnAlertSetting,
         )
 
-        val response = apiClient.updateSupplier(
-            supplierId,
-            UpdateSupplierRequest(
+        val response = authorizedHttpClient.patch<UpdateSupplierRequest, UpdateSupplierResponse>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/sc/suppliers/$supplierId",
+            requestBody = UpdateSupplierRequest(
                 supplier = request,
                 updateTxnAlertEnabled = updateTxnAlertEnabled,
                 updateDisplayTxnAlertSetting = updateDisplayTxnAlertSetting,
                 state = state,
                 updateState = isForUpdateState,
-                updateTime = updatedAt
+                updateTime = updatedAt,
             ),
-            businessId
-        )
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
+        ).getOrThrow()
 
-        return response.getOrThrow().supplier.toDomainSupplier(businessId)
+        return response.supplier.toDomainSupplier(businessId)
     }
 }
 

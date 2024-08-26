@@ -1,6 +1,5 @@
 package tech.okcredit.identity.di
 
-import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.SqlDriverFactory
@@ -18,7 +17,6 @@ import tech.okcredit.identity.contract.usecase.UpdateIndividualMobile
 import tech.okcredit.identity.contract.usecase.UpdateRecoveryNumber
 import tech.okcredit.identity.local.IdentityDatabase
 import tech.okcredit.identity.local.IdentityDatabaseQueries
-import tech.okcredit.identity.remote.IdentityApiClient
 import tech.okcredit.identity.usecase.GetActiveBusinessIdImpl
 import tech.okcredit.identity.usecase.GetActiveBusinessImpl
 import tech.okcredit.identity.usecase.GetIndividualImpl
@@ -33,9 +31,6 @@ import tech.okcredit.identity.usecase.UpdateRecoveryNumberImpl
 typealias IdentityDriverFactory = SqlDriverFactory
 
 interface IdentityComponent {
-
-    @Provides
-    fun identityApiClient(ktorfit: Ktorfit): IdentityApiClient = ktorfit.create()
 
     @Provides
     fun identityDatabase(driverFactory: IdentityDriverFactory): IdentityDatabaseQueries {

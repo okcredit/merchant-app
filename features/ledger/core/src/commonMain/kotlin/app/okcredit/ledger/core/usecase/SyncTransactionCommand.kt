@@ -12,9 +12,9 @@ import app.okcredit.ledger.core.remote.models.ApiCommandType
 import app.okcredit.ledger.core.remote.models.ApiTransaction
 import app.okcredit.ledger.core.remote.models.ApiTransactionCommand
 import app.okcredit.ledger.core.remote.models.SyncTransactionRequest
-import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.io.IOException
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
 import okcredit.base.network.ApiError

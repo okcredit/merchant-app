@@ -2,17 +2,19 @@ package tech.okcredit.auth.di
 
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.AuthConfig
 import io.ktor.client.plugins.auth.AuthProvider
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.auth.HttpAuthHeader
-import io.ktor.util.KtorDsl
+import io.ktor.utils.io.KtorDsl
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CompletableDeferred
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Singleton
 import okcredit.base.network.ClientConfig
+import okcredit.base.network.HttpClientFactory
 import tech.okcredit.auth.isValid
 import tech.okcredit.auth.local.AuthLocalSource
 import tech.okcredit.auth.remote.CookieProvider
@@ -32,9 +34,13 @@ class AuthClientConfig(
             install(Auth) {
                 cookie {
                     loadTokens {
-                        localSource.getGrant().takeIf { it.isValid() }?.accessToken
+                        println("loadTokens")
+                        val token = localSource.getGrant().takeIf { it.isValid() }?.accessToken
+                        println("loadTokens: $token")
+                        token
                     }
                     refreshTokens {
+                        println("refreshTokens")
                         cookieProvider.current(true)
                     }
                 }
@@ -42,7 +48,7 @@ class AuthClientConfig(
         }
 }
 
-fun Auth.cookie(block: CookieAuthConfig.() -> Unit) {
+fun AuthConfig.cookie(block: CookieAuthConfig.() -> Unit) {
     with(CookieAuthConfig().apply(block)) {
         this@cookie.providers.add(CookieAuthProvider(refreshTokens, loadTokens))
     }
@@ -158,3 +164,16 @@ class CookieHolder<T>(private val loadTokens: suspend () -> T) {
 }
 
 private const val HEADER_COOKIE_NAME = "Cookie"
+
+@Singleton
+@Inject
+class AuthorizedHttpClientFactory(
+    private val authClientConfig: AuthClientConfig,
+    private val httpClientFactory: HttpClientFactory,
+) {
+
+    fun createAuthorizedHttpClient() = httpClientFactory.createHttpClient()
+        .config {
+            authClientConfig.config.invoke(this)
+        }
+}
