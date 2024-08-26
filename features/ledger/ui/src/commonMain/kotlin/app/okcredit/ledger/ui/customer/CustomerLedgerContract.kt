@@ -13,7 +13,8 @@ interface CustomerLedgerContract {
         val ledgerItems: List<LedgerItem> = emptyList(),
         val customerDetails: CustomerDetails? = null,
         val toolbarData: ToolbarData? = null,
-        val transactionScrollPosition: Int? = null
+        val transactionScrollPosition: Int? = null,
+        val errorMessage: String? = null
     ): UiState
 
     data class CustomerDetails(

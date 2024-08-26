@@ -1,6 +1,5 @@
 package app.okcredit.ledger.ui.customer.usecase
 
-import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.ui.model.MenuOptions
 import app.okcredit.ledger.ui.model.ToolbarData
@@ -13,10 +12,8 @@ import okcredit.base.units.ZERO_TIMESTAMP
 
 @Inject
 class GetCustomerToolbarData(
-    customerRepository: Lazy<CustomerRepository>,
     getAccountStatement: Lazy<GetAccountStatementImpl>
 ) {
-    private val repository by lazy { customerRepository.value }
     private val getAccountStatement by lazy { getAccountStatement.value }
 
 

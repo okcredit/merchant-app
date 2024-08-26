@@ -1,12 +1,18 @@
 package app.okcredit.ledger.ui.customer.composable
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.okcredit.ledger.ui.composable.LedgerToolBar
 import app.okcredit.ledger.ui.composable.LedgerToolBarState
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.State
 import app.okcredit.ledger.ui.model.MenuOptions
+import app.okcredit.ui.composable.ErrorToast
+import app.okcredit.ui.composable.GetToastState
+import app.okcredit.ui.composable.shortToast
 import okcredit.base.units.Paisa
 
 @Composable
@@ -28,7 +34,15 @@ fun CustomerLedgerUi(
     onBalanceClicked: () -> Unit,
     onCallClicked: () -> Unit,
     onWhatsappClicked: () -> Unit,
+    onErrorToastDismissed: () -> Unit
 ) {
+    val toastState = GetToastState { onErrorToastDismissed() }
+    LaunchedEffect(state.errorMessage) {
+        if (state.errorMessage != null) {
+            toastState.shortToast(message = state.errorMessage)
+        }
+    }
+
     Scaffold(
         topBar = {
             val customer = state.customerDetails
@@ -68,17 +82,23 @@ fun CustomerLedgerUi(
             )
         },
         bottomBar = {
-            CustomerBottomUi(
-                modifier = Modifier,
-                dueDate = state.customerDetails?.formattedDueDate,
-                balance = state.customerDetails?.balance,
-                onMoreClicked = { openMoreBottomSheet(true) },
-                onGivenClicked = onGivenClicked,
-                onReceivedClicked = onReceivedClicked,
-                onBalanceClicked = onBalanceClicked,
-                onWhatsappClicked = onWhatsappClicked,
-                onCallClicked = onCallClicked
-            )
+            Box(
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                CustomerBottomUi(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    dueDate = state.customerDetails?.formattedDueDate,
+                    balance = state.customerDetails?.balance,
+                    onMoreClicked = { openMoreBottomSheet(true) },
+                    onGivenClicked = onGivenClicked,
+                    onReceivedClicked = onReceivedClicked,
+                    onBalanceClicked = onBalanceClicked,
+                    onWhatsappClicked = onWhatsappClicked,
+                    onCallClicked = onCallClicked
+                )
+
+                ErrorToast(state = toastState)
+            }
         }
     )
 }
