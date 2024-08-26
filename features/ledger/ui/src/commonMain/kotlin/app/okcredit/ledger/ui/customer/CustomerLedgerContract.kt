@@ -40,6 +40,7 @@ interface CustomerLedgerContract {
 
     sealed class Intent: UserIntent {
         data class LoadTransactions(val showOldClicked: Boolean): Intent()
+        data object OnCallClicked : Intent()
     }
 
     sealed class ViewEvent : BaseViewEvent {

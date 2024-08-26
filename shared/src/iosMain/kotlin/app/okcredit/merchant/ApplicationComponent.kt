@@ -2,6 +2,7 @@ package app.okcredit.merchant
 
 import app.okcredit.ledger.core.di.IosLedgerComponent
 import app.okcredit.ledger.core.di.LedgerComponent
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import app.okcredit.onboarding.di.OnboardingComponent
 import me.tatarka.inject.annotations.Component
@@ -51,6 +52,8 @@ abstract class ApplicationComponent(
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
 
     abstract val appScreenModelFactory: AppScreenModelFactory
+
+    abstract val ledgerScreenRegistryProvider: LedgerScreenRegistryProvider
 }
 
 @KmpComponentCreate

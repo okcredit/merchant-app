@@ -3,17 +3,16 @@ package app.okcredit.ledger.ui.customer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract.*
 import app.okcredit.ledger.ui.customer.composable.CustomerLedgerUi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
-@Inject
-class CustomerLedgerScreen : Screen {
+data class CustomerLedgerScreen(val customerId: String) : Screen {
 
     @Composable
     override fun Content() {
@@ -27,22 +26,25 @@ class CustomerLedgerScreen : Screen {
             handleViewEvent(it, navigator)
         }
 
-        render(screenModel, state)
+        render(screenModel, state, navigator)
     }
 
     @Composable
     private fun render(
         screenModel: CustomerLedgerModel,
-        state: CustomerLedgerContract.State
+        state: State,
+        navigator: Navigator
     ) {
         CustomerLedgerUi(
             state = state,
             onProfileClicked = { },
-            onBackClicked = { },
+            onBackClicked = { navigator.pop() },
             openMoreBottomSheet = { },
             onMenuOptionClicked = { },
             onLearnMoreClicked = { },
-            onLoadMoreTransactionsClicked = { },
+            onLoadMoreTransactionsClicked = {
+                screenModel.pushIntent(Intent.LoadTransactions(true))
+            },
             onTransactionClicked = { _, _, _ -> },
             trackOnRetryClicked = { _, _ -> },
             trackReceiptLoadFailed = { _, _ -> },
@@ -52,13 +54,13 @@ class CustomerLedgerScreen : Screen {
             onGivenClicked = { },
             onBalanceClicked = { },
             onWhatsappClicked = { },
-            onCallClicked = { },
+            onCallClicked = { screenModel.pushIntent(Intent.OnCallClicked) },
         )
     }
 
-    private fun handleViewEvent(event: CustomerLedgerContract.ViewEvent, navigator: Navigator) {
+    private fun handleViewEvent(event: ViewEvent, navigator: Navigator) {
         when (event) {
-            is CustomerLedgerContract.ViewEvent.ShowError -> {}
+            is ViewEvent.ShowError -> {}
         }
     }
 

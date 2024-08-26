@@ -3,6 +3,7 @@ package app.okcredit.merchant.android
 import android.content.Context
 import app.okcredit.ledger.core.di.AndroidLedgerComponent
 import app.okcredit.ledger.core.di.LedgerComponent
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
 import app.okcredit.merchant.AndroidSharedComponent
 import app.okcredit.merchant.SharedScreenRegistryProvider
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
@@ -59,6 +60,8 @@ abstract class ApplicationComponent(
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
 
     abstract val onboardingScreenRegistryProvider: OnboardingScreenRegistryProvider
+
+    abstract val ledgerScreenRegistryProvider: LedgerScreenRegistryProvider
 
     @Singleton
     @Provides

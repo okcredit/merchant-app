@@ -7,7 +7,7 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 
 object DateTimeUtils {
-
+ //todo check with @mohitesh, this might not work in iOS
     fun getCurrentTime(): Instant {
         return Clock.System.now()
     }
