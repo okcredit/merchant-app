@@ -1,5 +1,7 @@
 package app.okcredit.ledger.ui.customer
 
+import app.okcredit.ledger.ui.customer.usecase.TrackWithIntent
+import app.okcredit.ledger.ui.customer.usecase.TrackWithIntent.EventType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.ToolbarData
 import okcredit.base.ui.BaseViewEvent
@@ -40,8 +42,9 @@ interface CustomerLedgerContract {
     }
 
     sealed class Intent: UserIntent {
-        data class LoadTransactions(val showOldClicked: Boolean): Intent()
+        data class LoadTransactions(val showOldClicked: Boolean, val customerId: String): Intent()
         data object OnCallClicked : Intent()
+        data class TrackWithIntent(val eventType: EventType): Intent()
     }
 
     sealed class ViewEvent : BaseViewEvent {

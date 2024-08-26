@@ -19,6 +19,7 @@ import okcredit.base.units.Paisa
 fun CustomerLedgerUi(
     state: State,
     onProfileClicked: (String) -> Unit,
+    loadTransactions: () -> Unit,
     onBackClicked: () -> Unit,
     openMoreBottomSheet: (Boolean) -> Unit,
     onMenuOptionClicked: (MenuOptions) -> Unit,
@@ -41,6 +42,10 @@ fun CustomerLedgerUi(
         if (state.errorMessage != null) {
             toastState.shortToast(message = state.errorMessage)
         }
+    }
+
+    LaunchedEffect(true) {
+        loadTransactions()
     }
 
     Scaffold(

@@ -4,6 +4,7 @@ import app.okcredit.ledger.ui.customer.CustomerLedgerContract.*
 import app.okcredit.ledger.ui.customer.usecase.GetCustomerDetails
 import app.okcredit.ledger.ui.customer.usecase.GetCustomerLedgerData
 import app.okcredit.ledger.ui.customer.usecase.GetCustomerToolbarData
+import app.okcredit.ledger.ui.customer.usecase.TrackWithIntent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -18,19 +19,29 @@ import okcredit.base.ui.Result
 class CustomerLedgerModel(
     private val getCustomerDetails: GetCustomerDetails,
     private val getToolbarData: GetCustomerToolbarData,
-    private val getLedgerItems: GetCustomerLedgerData
+    private val getLedgerItems: GetCustomerLedgerData,
+    private val trackWithIntent: TrackWithIntent
 ) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(State()) {
 
     override fun partialStates(): Flow<PartialState> {
         return merge(
             observeCustomerDetails(),
             observeToolbarData(),
-            observeLedgerItems()
+            observeLedgerItems(),
+            observeTrackWithIntent()
         )
     }
 
-    private fun observeToolbarData() = wrap(getToolbarData.execute(""))
+    private fun observeTrackWithIntent() = intent<Intent.TrackWithIntent>()
         .map {
+            trackWithIntent.execute(it.eventType)
+            PartialState.NoChange
+        }
+
+    private fun observeToolbarData() = intent<Intent.LoadTransactions>()
+        .flatMapLatest {
+            wrap(getToolbarData.execute(it.customerId))
+        }.map {
             when (it) {
                 is Result.Failure -> PartialState.NoChange
                 is Result.Progress -> PartialState.NoChange
@@ -39,7 +50,14 @@ class CustomerLedgerModel(
         }
 
     private fun observeLedgerItems() = intent<Intent.LoadTransactions>()
-        .flatMapLatest { wrap(getLedgerItems.execute("", showOldClicked = it.showOldClicked)) }
+        .flatMapLatest {
+            wrap(
+                getLedgerItems.execute(
+                    customerId = it.customerId,
+                    showOldClicked = it.showOldClicked
+                )
+            )
+        }
         .map {
             when (it) {
                 is Result.Failure -> PartialState.SetLoading(false)
@@ -48,7 +66,10 @@ class CustomerLedgerModel(
             }
         }
 
-    private fun observeCustomerDetails() = wrap(getCustomerDetails.execute(""))
+    private fun observeCustomerDetails() = intent<Intent.LoadTransactions>()
+        .flatMapLatest {
+            wrap(getCustomerDetails.execute(it.customerId))
+        }
         .map {
             when (it) {
                 is Result.Failure -> PartialState.SetLoading(false)

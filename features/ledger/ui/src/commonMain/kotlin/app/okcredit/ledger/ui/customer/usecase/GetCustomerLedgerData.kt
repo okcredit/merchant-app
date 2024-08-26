@@ -41,7 +41,8 @@ class GetCustomerLedgerData(
     private val getAccountStatement by lazy { getAccountStatement.value }
 
     fun execute(customerId: String, showOldClicked: Boolean): Flow<Response> {
-       return flow {
+        if (customerId.isEmpty()) throw IllegalArgumentException("Customer Id is empty")
+        return flow {
             val businessId = getActiveBusinessId.execute()
             emit(businessId)
         }.flatMapLatest {
