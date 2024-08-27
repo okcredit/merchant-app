@@ -42,8 +42,22 @@ class HomeLedgerScreenModel(
             loadUserAlert(),
             observeOnTabChanged(),
             observeOnScrollToTop(),
+            observeOnCustomerClicked(),
+            observeOnSupplierClicked(),
         )
     }
+
+    private fun observeOnSupplierClicked() = intent<Intent.OnSupplierClicked>()
+        .map {
+            emitViewEvent(ViewEvent.GoToSupplierLedgerScreen(it.supplierId))
+            PartialState.NoChange
+        }
+
+    private fun observeOnCustomerClicked() = intent<Intent.OnCustomerClicked>()
+        .map {
+            emitViewEvent(ViewEvent.GoToCustomerLedgerScreen(it.customerId))
+            PartialState.NoChange
+        }
 
     private fun loadInitialData() = drip {
         pushIntent(Intent.LoadCustomersWithFilter())

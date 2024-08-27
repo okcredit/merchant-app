@@ -3,18 +3,20 @@ package app.okcredit.merchant.ledger
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.okcredit.ledger.ui.LedgerScreenRegistry
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.customer.CustomerLedgerScreen
+import app.okcredit.ledger.ui.supplier.SupplierLedgerScreen
 import app.okcredit.merchant.ledger.HomeContract.State
 import app.okcredit.merchant.ledger.HomeContract.ToolbarAction.*
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
 import app.okcredit.merchant.ledger.composables.HomeScreenUi
-import app.okcredit.ui.theme.OkCreditTheme
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
@@ -54,8 +56,12 @@ object HomeLedgerTab : Tab {
             onPrimaryVpaClicked = {},
             onSearchClicked = {},
             onSortAndFilterClicked = {},
-            onCustomerClicked = {},
-            onSupplierClicked = {},
+            onCustomerClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnCustomerClicked(it))
+            },
+            onSupplierClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnSupplierClicked(it))
+            },
             onCustomerProfileClicked = {},
             onSupplierProfileClicked = {},
             onAddRelationshipClicked = {},
@@ -76,7 +82,26 @@ object HomeLedgerTab : Tab {
             ViewEvent.LaunchAskSmsPermissionForAutoReminder -> {}
             is ViewEvent.ShowAutoReminderSummarySnackBar -> {}
             is ViewEvent.ShowError -> {}
+            is ViewEvent.GoToCustomerLedgerScreen -> goToCustomerLedgerScreen(
+                customerId = viewEvent.customerId,
+                navigator = navigator
+            )
+
+            is ViewEvent.GoToSupplierLedgerScreen -> goToSupplierLedgerScreen(
+                supplierId = viewEvent.supplierId,
+                navigator = navigator
+            )
         }
+    }
+
+    private fun goToSupplierLedgerScreen(supplierId: String, navigator: Navigator) {
+        println("Navigating to Supplier Ledger Screen")
+        navigator.parent?.push(ScreenRegistry.get(LedgerScreenRegistry.SupplierLedger(supplierId)))
+    }
+
+    private fun goToCustomerLedgerScreen(customerId: String, navigator: Navigator) {
+        println("Navigating to Customer Ledger Screen")
+        navigator.parent?.push(ScreenRegistry.get(LedgerScreenRegistry.CustomerLedger(customerId)))
     }
 
     override val options: TabOptions

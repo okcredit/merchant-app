@@ -138,7 +138,11 @@ interface HomeContract {
             val reminderFilters: Set<ReminderFilterOption> = emptySet()
         ) : Intent()
 
-        class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
+        data class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
+
+        data class OnCustomerClicked(val customerId: String) : Intent()
+
+        data class OnSupplierClicked(val supplierId: String) : Intent()
 
         data object LoadAutoReminderSummary : Intent()
 
@@ -155,6 +159,10 @@ interface HomeContract {
             val message: String,
             val customerCount: Int
         ) : ViewEvent()
+
+        data class GoToCustomerLedgerScreen(val customerId: String) : ViewEvent()
+
+        data class GoToSupplierLedgerScreen(val supplierId: String) : ViewEvent()
     }
 }
 
