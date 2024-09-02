@@ -92,9 +92,6 @@ class HomeLedgerScreenModel(
                 is Result.Failure -> PartialState.NoChange
                 is Result.Progress -> PartialState.NoChange
                 is Result.Success -> {
-                    if (currentState.customers.isEmpty() && it.value.items.isNotEmpty()) {
-                        pushIntent(Intent.LoadAutoReminderSummary)
-                    }
                     PartialState.SetCustomersForHome(it.value)
                 }
             }

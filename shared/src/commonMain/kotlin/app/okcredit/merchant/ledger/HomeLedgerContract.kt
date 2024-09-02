@@ -84,10 +84,11 @@ interface HomeContract {
             val supplierId: String,
             val name: String,
             val profileImage: String?,
-            val subtitle: String?,
-            val subtitleIconType: SubtitleIconType?,
             val balance: Paisa,
+            val lastActivityMetaInfo: Int,
+            val lastActivity: Timestamp,
             val commonLedger: Boolean = false,
+            val lastAmount: Paisa? = null,
         ) : HomeItem()
     }
 
@@ -140,21 +141,11 @@ interface HomeContract {
 
         class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
 
-        data object LoadAutoReminderSummary : Intent()
-
-        data object OnAutoReminderSummaryShown : Intent()
-
         data object OnRetrySyncTransactionsClicked : Intent()
     }
 
     sealed class ViewEvent : BaseViewEvent {
-        data object LaunchAskSmsPermissionForAutoReminder : ViewEvent()
-
         data class ShowError(val errorRes: String) : ViewEvent()
-        data class ShowAutoReminderSummarySnackBar(
-            val message: String,
-            val customerCount: Int
-        ) : ViewEvent()
     }
 }
 
@@ -166,7 +157,6 @@ enum class HomeTab {
 fun HomeTab.isCustomerTab() = this == HomeTab.CUSTOMER_TAB
 
 fun HomeTab.isSupplierTab() = this == HomeTab.SUPPLIER_TAB
-
 
 enum class CategoryOption {
     SORT_BY,
@@ -184,25 +174,4 @@ enum class ReminderFilterOption {
     TODAY,
     OVERDUE,
     UPCOMING
-}
-
-enum class SubtitleType {
-    CUSTOMER_ADDED,
-    DUE_TODAY,
-    DUE_DATE_PASSED,
-    DUE_DATE_INCOMING,
-    TRANSACTION_SYNC_DONE,
-    TRANSACTION_SYNC_PENDING,
-    NONE,
-    ERROR,
-}
-
-enum class SubtitleIconType {
-    USER,
-    NONE,
-    ERROR,
-    TRANSACTION_SYNC_PENDING,
-    TRANSACTION_SYNC_DONE,
-    TRANSACTION_DELIVERED,
-    TRANSACTION_SEEN,
 }

@@ -39,8 +39,8 @@ object HomeLedgerTab : Tab {
     private fun Render(screenModel: HomeLedgerScreenModel, state: State) {
         HomeScreenUi(
             state = state,
-            onTabChanged = {
-                val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
+            onTabChanged = { selected ->
+                val tab = if (selected) HomeTab.SUPPLIER_TAB else HomeTab.CUSTOMER_TAB
                 screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
             },
             onAvatarClicked = ::onBusinessClicked,
@@ -52,8 +52,12 @@ object HomeLedgerTab : Tab {
                 }
             },
             onPrimaryVpaClicked = {},
-            onSearchClicked = {},
-            onSortAndFilterClicked = {},
+            onSearchClicked = {
+
+            },
+            onSortAndFilterClicked = {
+
+            },
             onCustomerClicked = {},
             onSupplierClicked = {},
             onCustomerProfileClicked = {},
@@ -73,8 +77,6 @@ object HomeLedgerTab : Tab {
 
     private fun handleViewEvent(viewEvent: ViewEvent, navigator: Navigator) {
         when (viewEvent) {
-            ViewEvent.LaunchAskSmsPermissionForAutoReminder -> {}
-            is ViewEvent.ShowAutoReminderSummarySnackBar -> {}
             is ViewEvent.ShowError -> {}
         }
     }
