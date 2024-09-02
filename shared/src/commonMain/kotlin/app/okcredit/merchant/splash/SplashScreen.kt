@@ -55,7 +55,7 @@ class SplashScreen : Screen {
                 painter = painterResource(app.okcredit.ui.Res.drawable.ic_okcredit_logo),
                 modifier = Modifier.align(Alignment.Center),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
             )
         }
     }
