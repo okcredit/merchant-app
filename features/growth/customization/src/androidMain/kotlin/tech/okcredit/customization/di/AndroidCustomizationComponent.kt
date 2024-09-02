@@ -1,16 +1,14 @@
 package tech.okcredit.customization.di
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.AndroidSqlDriverFactory
-import okcredit.base.syncer.ChildWorkerFactory
+import okcredit.base.syncer.WorkerFactoryPair
 import tech.okcredit.customization.local.CustomizationDatabase
 import tech.okcredit.customization.syncer.AndroidCustomizationSyncer
 import tech.okcredit.customization.syncer.CustomizationSyncer
 import tech.okcredit.customization.syncer.SyncCustomizationsWorker
-import kotlin.reflect.KClass
 
 interface AndroidCustomizationComponent : CustomizationComponent {
 
@@ -28,7 +26,7 @@ interface AndroidCustomizationComponent : CustomizationComponent {
 
     @Provides
     @IntoMap
-    fun syncCustomizationsWorker(factory: SyncCustomizationsWorker.Factory): Pair<KClass<out ListenableWorker>, ChildWorkerFactory> {
+    fun syncCustomizationsWorker(factory: SyncCustomizationsWorker.Factory): WorkerFactoryPair {
         return SyncCustomizationsWorker::class to factory
     }
 }

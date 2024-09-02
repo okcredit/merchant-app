@@ -14,10 +14,6 @@ abstract class BaseCoroutineWorker(
     private val workerConfig: WorkerConfig,
 ) : CoroutineWorker(appContext, workerParams) {
 
-    companion object {
-        const val WORKER_INSTRUMENTATION_SAMPLING = "worker_instrumentation_sampling"
-    }
-
     private var outputData: Data? = null
 
     abstract suspend fun doActualWork()

@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import okcredit.base.appDispatchers
 import okcredit.base.local.Scope.Companion.getScopedKey
 
-open class BasePreferences constructor(
+open class BasePreferences(
     private val prefs: Lazy<FlowSettings>,
     private val coroutineDispatcher: CoroutineDispatcher = appDispatchers.io,
 ) {
