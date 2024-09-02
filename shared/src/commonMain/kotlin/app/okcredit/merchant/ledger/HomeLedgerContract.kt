@@ -33,6 +33,7 @@ interface HomeContract {
         val customers: List<HomeItem> = emptyList(),
         val suppliers: List<HomeItem> = emptyList(),
         val scrollListToTop: Boolean = false,
+        val bottomSheet: BottomSheet = BottomSheet.None,
     ) : UiState {
         val sortOrFilterAppliedCount: Int
             get() = if (selectedTab.isCustomerTab()) {
@@ -55,6 +56,17 @@ interface HomeContract {
                     true
                 }
             }
+    }
+
+    sealed interface BottomSheet {
+        data object None : BottomSheet
+
+        data class SortAndFilterBottomSheet(
+            val selectedSortOption: SortOption,
+            val selectedReminderFilterOptions: Set<ReminderFilterOption>,
+            val sortOptions: List<SortOption>,
+            val reminderFilterOptions: List<ReminderFilterOption>,
+        ) : BottomSheet
     }
 
     sealed class HomeItem {
@@ -125,6 +137,11 @@ interface HomeContract {
         data class SetSelectedTab(val selectedTab: HomeTab) : PartialState()
         data class SetPrimaryVpa(val primaryVpa: String?) : PartialState()
         data class SetHomeSyncLoading(val loading: Boolean) : PartialState()
+        data class SetBottomSheetType(val bottomSheet: BottomSheet) : PartialState()
+        data class SetFiltersAndSortOption(
+            val sortBy: SortOption,
+            val reminderFilters: Set<ReminderFilterOption>
+        ) : PartialState()
     }
 
     sealed class Intent : UserIntent {
@@ -139,9 +156,15 @@ interface HomeContract {
             val reminderFilters: Set<ReminderFilterOption> = emptySet()
         ) : Intent()
 
-        class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
+        data class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
+
+        data object OnSortAndFilterClicked : Intent()
+
+        data class OnSortAndFilterApplied(val sortBy: SortOption, val reminderFilters: Set<ReminderFilterOption>) : Intent()
 
         data object OnRetrySyncTransactionsClicked : Intent()
+
+        data object OnDismissDialog : Intent()
     }
 
     sealed class ViewEvent : BaseViewEvent {

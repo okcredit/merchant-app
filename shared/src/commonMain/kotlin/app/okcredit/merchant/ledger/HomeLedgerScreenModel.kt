@@ -42,6 +42,9 @@ class HomeLedgerScreenModel(
             loadUserAlert(),
             observeOnTabChanged(),
             observeOnScrollToTop(),
+            observeOnDismissDialog(),
+            observeOnSortAndFilterClicked(),
+            observeOnSortAndFilterApplied(),
         )
     }
 
@@ -130,6 +133,39 @@ class HomeLedgerScreenModel(
         homeDataSyncer.execute()
     }.dropAll()
 
+    private fun observeOnSortAndFilterClicked() = intent<Intent.OnSortAndFilterClicked>()
+        .map {
+            PartialState.SetBottomSheetType(
+                HomeContract.BottomSheet.SortAndFilterBottomSheet(
+                    selectedSortOption = if (currentState.selectedTab.isCustomerTab()) currentState.selectedCustomerSortOption else currentState.selectedSupplierSortOption,
+                    selectedReminderFilterOptions = currentState.selectedCustomerReminderFilterOptions,
+                    reminderFilterOptions = listOf(),
+                    sortOptions = listOf(),
+                ),
+            )
+        }
+
+    private fun observeOnDismissDialog() = intent<Intent.OnDismissDialog>()
+        .map {
+            PartialState.SetBottomSheetType(HomeContract.BottomSheet.None)
+        }
+
+    private fun observeOnSortAndFilterApplied() = intent<Intent.OnSortAndFilterApplied>()
+        .map {
+            if (currentState.selectedTab.isCustomerTab()) {
+                pushIntent(
+                    Intent.LoadCustomersWithFilter(
+                        sortBy = it.sortBy,
+                        reminderFilters = it.reminderFilters,
+                    )
+                )
+            } else {
+                pushIntent(Intent.LoadSuppliersWithFilter(it.sortBy))
+            }
+            PartialState.SetFiltersAndSortOption(it.sortBy, it.reminderFilters)
+        }
+
+
     override fun reduce(currentState: State, partialState: PartialState): State {
         return when (partialState) {
             PartialState.NoChange -> currentState
@@ -140,13 +176,15 @@ class HomeLedgerScreenModel(
                 customers = partialState.customers.items,
                 selectedCustomerReminderFilterOptions = partialState.customers.reminderFilters,
                 selectedCustomerSortOption = partialState.customers.sortOption,
-                loadingCustomers = false
+                loadingCustomers = false,
+                bottomSheet = HomeContract.BottomSheet.None,
             )
 
             is PartialState.SetSuppliersForHome -> currentState.copy(
                 suppliers = partialState.suppliers.items,
                 selectedSupplierSortOption = partialState.suppliers.sortOption,
-                loadingSuppliers = false
+                loadingSuppliers = false,
+                bottomSheet = HomeContract.BottomSheet.None,
             )
 
             is PartialState.SetDynamicComponentsForHome -> currentState.copy(
@@ -181,6 +219,20 @@ class HomeLedgerScreenModel(
             is PartialState.SetScrollToTop -> currentState.copy(
                 scrollListToTop = partialState.shouldScroll
             )
+
+            is PartialState.SetBottomSheetType -> currentState.copy(
+                bottomSheet = partialState.bottomSheet
+            )
+            is PartialState.SetFiltersAndSortOption -> if (currentState.selectedTab.isCustomerTab()) {
+                currentState.copy(
+                    selectedCustomerSortOption = partialState.sortBy,
+                    selectedCustomerReminderFilterOptions = partialState.reminderFilters
+                )
+            } else {
+                currentState.copy(
+                    selectedSupplierSortOption = partialState.sortBy
+                )
+            }
         }
     }
 }

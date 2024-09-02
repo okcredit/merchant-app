@@ -46,17 +46,16 @@ object HomeLedgerTab : Tab {
             onAvatarClicked = ::onBusinessClicked,
             onToolbarActionClicked = { toolbarAction ->
                 when (toolbarAction) {
-                    ACTIVATE_UPI -> TODO()
-                    NEED_HELP -> TODO()
-                    SHARE -> TODO()
+                    ACTIVATE_UPI -> {}
+                    NEED_HELP -> {}
+                    SHARE -> {}
                 }
             },
             onPrimaryVpaClicked = {},
             onSearchClicked = {
-
             },
             onSortAndFilterClicked = {
-
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterClicked)
             },
             onCustomerClicked = {},
             onSupplierClicked = {},
@@ -66,8 +65,18 @@ object HomeLedgerTab : Tab {
             onDynamicItemClicked = { _, _ -> },
             onSummaryCardClicked = {},
             onPullToRefresh = {},
-            onClearFilterClicked = {},
-            onUserAlertClicked = {},
+            onClearFilterClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(SortOption.LAST_ACTIVITY, emptySet()))
+            },
+            onUserAlertClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnRetrySyncTransactionsClicked)
+            },
+            onDismissDialog = {
+                screenModel.pushIntent(HomeContract.Intent.OnDismissDialog)
+            },
+            onSortAndFilterApplied = { sortOption, reminderFilters ->
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(sortOption, reminderFilters))
+            }
         )
     }
 

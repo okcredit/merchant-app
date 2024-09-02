@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package app.okcredit.merchant.ledger.composables
 
@@ -33,10 +33,12 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.ReminderFilterOption
+import app.okcredit.merchant.ledger.SortOption
 import app.okcredit.merchant.ledger.isCustomerTab
 import app.okcredit.merchant.ledger.isSupplierTab
 import app.okcredit.ui.ic_add_first_supplier
@@ -103,6 +106,8 @@ fun HomeScreenUi(
     onPullToRefresh: () -> Unit,
     onClearFilterClicked: () -> Unit,
     onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
+    onDismissDialog: () -> Unit,
+    onSortAndFilterApplied: (SortOption, Set<ReminderFilterOption>) -> Unit,
 ) {
     val customerListState = rememberLazyListState()
     val supplierListState = rememberLazyListState()
@@ -160,6 +165,31 @@ fun HomeScreenUi(
             onClearFilterClicked = onClearFilterClicked
         )
 
+    }
+
+
+    when (val sheet = state.bottomSheet) {
+        HomeContract.BottomSheet.None -> {}
+        is HomeContract.BottomSheet.SortAndFilterBottomSheet -> {
+            ModalBottomSheet(
+                onDismissRequest = onDismissDialog,
+                containerColor = MaterialTheme.colorScheme.surface,
+                sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                dragHandle = {
+                    Spacer(
+                        modifier = Modifier.fillMaxWidth().height(8.dp),
+                    )
+                },
+            ) {
+                SortAndFilterBottomSheet(
+                    currentTab = state.selectedTab,
+                    selectedSortByOption = sheet.selectedSortOption,
+                    selectedReminderFilters = sheet.selectedReminderFilterOptions,
+                    onDismissClicked = onDismissDialog,
+                    onApplyClicked = onSortAndFilterApplied,
+                )
+            }
+        }
     }
 }
 
@@ -691,6 +721,8 @@ fun HomeScreenUiPreview() {
             onPullToRefresh = {},
             onClearFilterClicked = {},
             onUserAlertClicked = {},
+            onDismissDialog = {},
+            onSortAndFilterApplied = { _, _ -> }
         )
     }
 }
