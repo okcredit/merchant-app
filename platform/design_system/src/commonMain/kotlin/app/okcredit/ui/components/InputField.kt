@@ -6,17 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 
@@ -43,7 +40,7 @@ fun BoxInputField(
             label = {
                 Text(
                     label,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             },
             leadingIcon = {
@@ -51,7 +48,7 @@ fun BoxInputField(
                     Icon(
                         painter = leadingIcon,
                         contentDescription = "",
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             },
@@ -60,7 +57,7 @@ fun BoxInputField(
                     Icon(
                         painter = trailingIcon,
                         contentDescription = "",
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             },
@@ -75,7 +72,7 @@ fun BoxInputField(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             )
         }
     }
@@ -104,7 +101,7 @@ fun BoxInputField(
             label = {
                 Text(
                     label,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             },
             leadingIcon = {
@@ -112,7 +109,7 @@ fun BoxInputField(
                     Icon(
                         painter = leadingIcon,
                         contentDescription = "",
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             },
@@ -121,7 +118,7 @@ fun BoxInputField(
                     Icon(
                         painter = trailingIcon,
                         contentDescription = "",
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             },
@@ -136,7 +133,7 @@ fun BoxInputField(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             )
         }
     }

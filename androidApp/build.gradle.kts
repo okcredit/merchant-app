@@ -129,6 +129,8 @@ dependencies {
     implementation(project(":features:ledger:contract"))
     implementation(project(":features:ledger:core"))
 
+    implementation(project(":features:online_payments:collection"))
+
     implementation(project(":shared"))
 
     implementation(libs.firebase.analytics)

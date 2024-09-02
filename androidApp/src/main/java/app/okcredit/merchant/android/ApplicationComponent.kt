@@ -22,6 +22,7 @@ import okcredit.base.syncer.AppWorkerFactory
 import tech.okcredit.ab.AndroidAbComponent
 import tech.okcredit.analytics.AndroidAnalyticsComponent
 import tech.okcredit.auth.AndroidAuthComponent
+import tech.okcredit.collection.AndroidCollectionComponent
 import tech.okcredit.customization.di.AndroidCustomizationComponent
 import tech.okcredit.device.AndroidDeviceComponent
 import tech.okcredit.identity.AndroidIdentityComponent
@@ -46,7 +47,8 @@ abstract class ApplicationComponent(
     AndroidSharedComponent,
     AndroidLedgerComponent,
     OnboardingComponent,
-    AndroidCustomizationComponent {
+    AndroidCustomizationComponent,
+    AndroidCollectionComponent {
 
     abstract val appWorkerFactory: () -> AppWorkerFactory
 

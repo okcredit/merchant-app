@@ -1,0 +1,172 @@
+import kotlin.Int;
+import kotlin.Boolean;
+
+CREATE TABLE `OnlinePaymentEntity` (
+    `id` TEXT NOT NULL,
+    `createdTime` INTEGER NOT NULL,
+    `updatedTime` INTEGER NOT NULL,
+    `status` INTEGER AS Int NOT NULL,
+    `accountId` TEXT,
+    `amount` INTEGER NOT NULL,
+    `paymentId` TEXT NOT NULL,
+    `paymentSource` TEXT NOT NULL,
+    `paymentMode` TEXT NOT NULL,
+    `type` TEXT NOT NULL,
+    `read` INTEGER AS Boolean NOT NULL DEFAULT 0,
+    `errorCode` TEXT NOT NULL,
+    `errorDescription` TEXT NOT NULL,
+    `surcharge` INTEGER NOT NULL,
+    `businessId` TEXT NOT NULL,
+    `paymentFrom` TEXT,
+    `paymentUtr` TEXT,
+    `payoutUtr` TEXT,
+    `payoutTo` TEXT,
+    `payoutDestination` TEXT,
+    `platformFee` INTEGER NOT NULL,
+    `discount` INTEGER NOT NULL DEFAULT 0,
+    `estimatedSettlementTime` INTEGER,
+    PRIMARY KEY(`id`)
+);
+
+CREATE INDEX IF NOT EXISTS `index_OnlinePaymentEntity_businessId` ON `OnlinePaymentEntity` (`businessId`);
+
+insertCollections:
+INSERT OR REPLACE INTO `OnlinePaymentEntity` VALUES ?;
+
+listCollections:
+SELECT * FROM OnlinePaymentEntity WHERE businessId = ? ORDER BY createdTime DESC;
+
+listCollectionsOfAccount:
+SELECT * FROM OnlinePaymentEntity WHERE accountId == ? AND businessId = ? ORDER BY createdTime DESC;
+
+getCollection:
+SELECT * FROM OnlinePaymentEntity WHERE id == ? AND businessId = ?;
+
+updateCollectionEntity:
+UPDATE OnlinePaymentEntity
+SET
+    updatedTime = ?,
+    accountId = ?,
+    status = ?,
+    errorCode = ?,
+    paymentSource = ?,
+    surcharge = ?,
+    payoutDestination = ?,
+    platformFee = ?,
+    estimatedSettlementTime = ?
+WHERE id = ?;
+
+deleteAllCollections:
+DELETE FROM OnlinePaymentEntity;
+
+updateOnlinePaymentStatus:
+UPDATE OnlinePaymentEntity SET status = ? WHERE paymentId = ?;
+
+collectionWithErrorExist:
+SELECT EXISTS(SELECT id FROM OnlinePaymentEntity WHERE businessId = ? AND errorCode = ?);
+
+lastOnlinePayment:
+SELECT * FROM OnlinePaymentEntity WHERE businessId = ? AND (status = 5 OR status = 2) ORDER BY createdTime DESC LIMIT 1;
+
+listOfNewOnlinePaymentsCount:
+SELECT COUNT(*) FROM OnlinePaymentEntity WHERE businessId = :businessId AND read = 0;
+
+isPaymentExist:
+SELECT EXISTS(SELECT id FROM OnlinePaymentEntity WHERE id = ?);
+
+tagCustomerToPayment:
+UPDATE OnlinePaymentEntity SET accountId = ? WHERE id = ? AND businessId = ?;
+
+getOnlinePaymentsCount:
+SELECT COUNT(*) FROM OnlinePaymentEntity WHERE businessId = ?;
+
+CREATE TABLE `CollectionProfile` (
+    `businessId` TEXT NOT NULL,
+    `name` TEXT,
+    `payment_address` TEXT NOT NULL,
+    `type` TEXT NOT NULL,
+    `merchant_vpa` TEXT,
+    `limit_type` TEXT,
+    `kyc_limit` INTEGER NOT NULL,
+    `remaining_limit` INTEGER NOT NULL,
+    `merchant_qr_enabled` INTEGER AS Boolean NOT NULL,
+    `merchantLink` TEXT,
+    `qrIntent` TEXT,
+    `kycStatus` TEXT,
+    `riskCategory` TEXT,
+     PRIMARY KEY(`businessId`)
+);
+
+setCollectionsProfile:
+INSERT OR REPLACE INTO `CollectionProfile`  VALUES ?;
+
+deleteMerchantProfileForBusinessId:
+DELETE FROM `CollectionProfile` WHERE businessId == ?;
+
+deleteMerchantProfile:
+DELETE FROM CollectionProfile;
+
+getCollectionsProfile:
+SELECT * FROM CollectionProfile WHERE businessId == ?;
+
+getMerchantLink:
+SELECT merchantLink FROM CollectionProfile WHERE businessId = ?;
+
+CREATE TABLE IF NOT EXISTS `CustomerCollectionProfile` (
+    `customerId` TEXT NOT NULL,
+    `messageLink` TEXT,
+    `qrIntent` TEXT,
+    `linkId` TEXT,
+    `businessId` TEXT NOT NULL,
+    PRIMARY KEY(`customerId`)
+);
+CREATE INDEX IF NOT EXISTS `index_CustomerCollectionProfile_businessId` ON `CustomerCollectionProfile` (`businessId`);
+
+listCustomerQrIntents:
+SELECT customerId, qrIntent FROM CustomerCollectionProfile WHERE businessId = ?;
+
+listCollectionCustomerProfiles:
+SELECT * FROM CustomerCollectionProfile WHERE businessId = ?;
+
+getCustomerCollectionProfile:
+SELECT * FROM CustomerCollectionProfile WHERE customerId = ? AND businessId = ?;
+
+insertCustomerCollectionProfile:
+INSERT OR REPLACE INTO `CustomerCollectionProfile`  VALUES ?;
+
+deleteAllCollectionCustomerProfiles:
+DELETE FROM CustomerCollectionProfile;
+
+CREATE TABLE IF NOT EXISTS `SupplierCollectionProfile` (
+    `accountId` TEXT NOT NULL,
+    `messageLink` TEXT,
+    `linkId` TEXT,
+    `name` TEXT,
+    `type` TEXT,
+    `paymentAddress` TEXT,
+    `destinationUpdateAllowed` INTEGER AS Boolean NOT NULL DEFAULT 0,
+    `businessId` TEXT NOT NULL,
+     PRIMARY KEY(`accountId`)
+);
+
+CREATE INDEX IF NOT EXISTS `index_SupplierCollectionProfile_businessId` ON `SupplierCollectionProfile` (`businessId`);
+
+insertSupplierCollectionProfile:
+INSERT OR REPLACE INTO `SupplierCollectionProfile` VALUES ?;
+
+listSupplierCollectionProfiles:
+SELECT * FROM SupplierCollectionProfile WHERE businessId = ?;
+
+getSupplierCollectionProfile:
+SELECT * FROM SupplierCollectionProfile WHERE accountId = ? AND businessId = ?;
+
+insertSupplierCollectionProfiles:
+INSERT OR REPLACE INTO `SupplierCollectionProfile` VALUES ?;
+
+deleteAllSupplierCollectionProfiles:
+DELETE FROM SupplierCollectionProfile;
+
+getSuppliersWithGivenPaymentAddress:
+SELECT * FROM SupplierCollectionProfile WHERE businessId = ? AND paymentAddress = ?;
+
+

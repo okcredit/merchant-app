@@ -13,7 +13,7 @@ import tech.okcredit.auth.usecases.EncryptionHelper
 
 @OptIn(ExperimentalSettingsApi::class, DelicateCoroutinesApi::class)
 @Inject
-class AuthLocalSource constructor(
+class AuthLocalSource(
     settingsFactory: SettingsFactory,
     private val encryptionHelper: EncryptionHelper,
 ) {

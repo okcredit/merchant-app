@@ -4,6 +4,7 @@ import app.okcredit.ledger.core.syncer.LedgerSyncManager
 import kotlinx.coroutines.flow.firstOrNull
 import me.tatarka.inject.annotations.Inject
 import tech.okcredit.ab.AbDataSyncManager
+import tech.okcredit.collection.syncer.CollectionSyncer
 import tech.okcredit.customization.syncer.CustomizationSyncManager
 import tech.okcredit.identity.contract.usecase.GetIndividual
 
@@ -13,6 +14,7 @@ class LoginDataSyncer(
     private val abDataSyncManager: AbDataSyncManager,
     private val ledgerSyncManager: LedgerSyncManager,
     private val customizationSyncManager: CustomizationSyncManager,
+    private val collectionSyncer: CollectionSyncer,
 ) {
 
     suspend fun execute() {
@@ -28,5 +30,6 @@ class LoginDataSyncer(
         ledgerSyncManager.syncAllSuppliers(businessId, "LoginDataSyncer")
         ledgerSyncManager.syncAllCustomerTransactions(businessId, "LoginDataSyncer")
         customizationSyncManager.syncCustomization(businessId)
+        collectionSyncer.scheduleSyncEverything(businessId, "LoginDataSyncer")
     }
 }
