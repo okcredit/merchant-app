@@ -12,12 +12,10 @@ object HomeLoansTab : Tab {
         Text("Loans")
     }
 
-
     override val options: TabOptions
         @Composable get() = TabOptions(
             title = "Loans",
             icon = null,
-            index = 2u
+            index = 2u,
         )
-
 }

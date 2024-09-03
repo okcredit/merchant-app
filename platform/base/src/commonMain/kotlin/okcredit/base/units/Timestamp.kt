@@ -90,26 +90,24 @@ value class Timestamp(val epochMillis: Long) {
         }
     }
 
-
     fun relativeDate(): String {
         val now = Clock.System.now()
         val localDate = Instant.fromEpochMilliseconds(epochMillis)
         val days = localDate.daysUntil(now, TimeZone.currentSystemDefault()).absoluteValue
-        return when(days) {
+        return when (days) {
             0 -> "Today"
             1 -> "Yesterday"
             else -> format("dd MMM yyyy")
         }
     }
 
-
     fun relativeDateWithTime(): String {
         val now = Clock.System.now()
         val localDate = Instant.fromEpochMilliseconds(epochMillis)
-        return when(val minuteDifference = localDate.until(now, DateTimeUnit.MINUTE).absoluteValue) {
-            0L ->  "Just Now"
+        return when (val minuteDifference = localDate.until(now, DateTimeUnit.MINUTE).absoluteValue) {
+            0L -> "Just Now"
             in 1..59 -> "$minuteDifference min ago"
-            in 60..(60*24) -> {
+            in 60..(60 * 24) -> {
                 val hours = minuteDifference / 60
                 "$hours hrs ago"
             }
@@ -124,7 +122,7 @@ value class Timestamp(val epochMillis: Long) {
             val localDate = LocalDate(
                 year = dateParts[0].toInt(),
                 monthNumber = dateParts[1].toInt(),
-                dayOfMonth = dateParts[2].toInt()
+                dayOfMonth = dateParts[2].toInt(),
             )
             return localDate.atStartOfDayIn(TimeZone.currentSystemDefault()).timestamp
         }

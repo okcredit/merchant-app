@@ -40,7 +40,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun SupplierRow(
     supplierItem: HomeContract.HomeItem.SupplierItem,
     onClick: (String) -> Unit,
-    onProfileClicked: (String) -> Unit
+    onProfileClicked: (String) -> Unit,
 ) {
     Column {
         Row(Modifier.clickable { onClick(supplierItem.supplierId) }) {
@@ -53,7 +53,7 @@ fun SupplierRow(
                     .clickable { onProfileClicked(supplierItem.supplierId) }
                     .padding(vertical = 16.dp)
                     .size(44.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
             Column(
                 modifier = Modifier
@@ -89,7 +89,7 @@ fun SupplierRow(
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.error
-                    }
+                    },
                 )
                 Text(
                     text = if (supplierItem.balance > 0.paisa) {
@@ -99,7 +99,7 @@ fun SupplierRow(
                     },
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.End),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
             }
         }
@@ -111,7 +111,7 @@ fun SupplierRow(
 fun SubtitleTextForSupplier(
     lastActivityMetaInfo: Int,
     lastAmount: Paisa?,
-    lastActivity: Timestamp
+    lastActivity: Timestamp,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         val image =
@@ -124,7 +124,7 @@ fun SubtitleTextForSupplier(
             modifier = Modifier
                 .padding(end = 4.dp)
                 .align(Alignment.CenterVertically)
-                .size(16.dp)
+                .size(16.dp),
         )
         if (!subtitle.isNullOrEmpty()) {
             Text(
@@ -140,16 +140,16 @@ fun SubtitleTextForSupplier(
 fun findSubtitleForSupplier(
     lastActivityMetaInfo: Int,
     lastAmount: Paisa?,
-    lastActivity: Timestamp
+    lastActivity: Timestamp,
 ): String {
     return when (lastActivityMetaInfo) {
-        0 -> "${lastAmount.toString()} credit deleted ${lastActivity.relativeDate()}"
-        1 -> "${lastAmount.toString()} payment deleted ${lastActivity.relativeDate()}"
-        2 -> "${lastAmount.toString()} credit added ${lastActivity.relativeDate()}"
-        3 -> "${lastAmount.toString()} payment added ${lastActivity.relativeDate()}"
+        0 -> "$lastAmount credit deleted ${lastActivity.relativeDate()}"
+        1 -> "$lastAmount payment deleted ${lastActivity.relativeDate()}"
+        2 -> "$lastAmount credit added ${lastActivity.relativeDate()}"
+        3 -> "$lastAmount payment added ${lastActivity.relativeDate()}"
         5 -> "Processing"
-        8 -> "${lastAmount.toString()} credit updated ${lastActivity.relativeDate()}"
-        9 -> "${lastAmount.toString()} payment updated ${lastActivity.relativeDate()}"
+        8 -> "$lastAmount credit updated ${lastActivity.relativeDate()}"
+        9 -> "$lastAmount payment updated ${lastActivity.relativeDate()}"
         else -> "Supplier added ${lastActivity.relativeDate()}"
     }
 }
@@ -175,10 +175,10 @@ fun SupplierRowPreview() {
                 commonLedger = false,
                 lastActivity = Clock.System.now().timestamp,
                 lastActivityMetaInfo = 0,
-                lastAmount = 1000L.paisa
+                lastAmount = 1000L.paisa,
             ),
             onClick = {},
-            onProfileClicked = {}
+            onProfileClicked = {},
         )
     }
 }

@@ -2,11 +2,11 @@ package app.okcredit.merchant.ledger
 
 import androidx.compose.runtime.Immutable
 import app.okcredit.merchant.ledger.usecase.CustomerForHomeResponse
+import app.okcredit.merchant.ledger.usecase.SupplierForHomeResponse
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
 import okcredit.base.ui.UserIntent
 import okcredit.base.units.Paisa
-import app.okcredit.merchant.ledger.usecase.SupplierForHomeResponse
 import okcredit.base.units.Timestamp
 import tech.okcredit.identity.contract.model.Business
 
@@ -140,7 +140,7 @@ interface HomeContract {
         data class SetBottomSheetType(val bottomSheet: BottomSheet) : PartialState()
         data class SetFiltersAndSortOption(
             val sortBy: SortOption,
-            val reminderFilters: Set<ReminderFilterOption>
+            val reminderFilters: Set<ReminderFilterOption>,
         ) : PartialState()
     }
 
@@ -153,7 +153,7 @@ interface HomeContract {
 
         data class LoadCustomersWithFilter(
             val sortBy: SortOption? = null,
-            val reminderFilters: Set<ReminderFilterOption> = emptySet()
+            val reminderFilters: Set<ReminderFilterOption> = emptySet(),
         ) : Intent()
 
         data class LoadSuppliersWithFilter(val sortBy: SortOption) : Intent()
@@ -174,7 +174,7 @@ interface HomeContract {
 
 enum class HomeTab {
     CUSTOMER_TAB,
-    SUPPLIER_TAB
+    SUPPLIER_TAB,
 }
 
 fun HomeTab.isCustomerTab() = this == HomeTab.CUSTOMER_TAB
@@ -183,18 +183,18 @@ fun HomeTab.isSupplierTab() = this == HomeTab.SUPPLIER_TAB
 
 enum class CategoryOption {
     SORT_BY,
-    REMINDER_DATE
+    REMINDER_DATE,
 }
 
 enum class SortOption {
     LAST_ACTIVITY,
     LAST_PAYMENT,
     AMOUNT_DUE,
-    NAME
+    NAME,
 }
 
 enum class ReminderFilterOption {
     TODAY,
     OVERDUE,
-    UPCOMING
+    UPCOMING,
 }

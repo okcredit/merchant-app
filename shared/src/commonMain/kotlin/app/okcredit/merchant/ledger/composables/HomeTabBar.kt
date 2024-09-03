@@ -34,7 +34,6 @@ import app.okcredit.ui.icon_qr_code
 import app.okcredit.ui.icon_upi
 import app.okcredit.ui.icon_whatsapp
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.grey100
 import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.need_help
 import merchant_app.shared.generated.resources.share
@@ -61,7 +60,7 @@ fun HomeTabBar(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
 
-        ) {
+    ) {
         AvatarWithName(
             customerName = activeBusiness?.name?.takeIf { it.isNotEmpty() }
                 ?: activeBusiness?.mobile?.takeIf { it.isNotEmpty() }
@@ -70,7 +69,7 @@ fun HomeTabBar(
             commonLedger = true,
             modifier = Modifier
                 .clickable { onAvatarClicked() }
-                .size(40.dp)
+                .size(40.dp),
         )
         Spacer(modifier = Modifier.weight(1.0f))
         if (!primaryVpa.isNullOrEmpty()) {
@@ -80,7 +79,7 @@ fun HomeTabBar(
                 Surface(
                     onClick = { onToolbarActionClicked(toolbarAction) },
                     shape = CircleShape,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(40.dp),
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
@@ -97,11 +96,11 @@ fun HomeTabBar(
                         onToolbarActionClicked(toolbarAction)
                     },
                     shape = RoundedCornerShape(50),
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 4.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     ) {
                         Image(
                             painter = painterResource(resource = getIconForToolbar(toolbarAction = toolbarAction)),
@@ -111,7 +110,7 @@ fun HomeTabBar(
                                 null
                             } else {
                                 ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
@@ -148,17 +147,17 @@ fun PrimaryVpa(primaryVpa: String, onPrimaryVpaClicked: () -> Unit) {
     Surface(
         onClick = onPrimaryVpaClicked,
         shape = RoundedCornerShape(50),
-        modifier = Modifier.padding(vertical = 4.dp)
+        modifier = Modifier.padding(vertical = 4.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
         ) {
             Image(
                 painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_qr_code),
                 contentDescription = "",
                 modifier = Modifier.size(20.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
@@ -187,7 +186,7 @@ fun HomeTabBarPreview() {
             primaryVpa = "",
             onAvatarClicked = {},
             onToolbarActionClicked = { },
-            onPrimaryVpaClicked = { }
+            onPrimaryVpaClicked = { },
         )
     }
 }

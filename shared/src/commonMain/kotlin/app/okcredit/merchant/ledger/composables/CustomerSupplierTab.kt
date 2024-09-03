@@ -24,29 +24,29 @@ import app.okcredit.merchant.ledger.isSupplierTab
 fun CustomerSupplierTab(
     selectedTab: HomeTab,
     modifier: Modifier,
-    onTabChanged: (Boolean) -> Unit
+    onTabChanged: (Boolean) -> Unit,
 ) {
     Row(
         modifier = modifier
             .height(40.dp)
             .background(MaterialTheme.colorScheme.background, RoundedCornerShape(50))
-            .padding(2.dp)
+            .padding(2.dp),
     ) {
         Surface(
             onClick = { onTabChanged(false) },
             color = if (selectedTab.isCustomerTab()) MaterialTheme.colorScheme.surface else Color.Transparent,
             shape = RoundedCornerShape(50),
-            modifier = Modifier.weight(1.0f).padding(2.dp).fillMaxHeight()
+            modifier = Modifier.weight(1.0f).padding(2.dp).fillMaxHeight(),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = "Customer",
                     modifier = Modifier,
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (selectedTab.isCustomerTab()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                    color = if (selectedTab.isCustomerTab()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -54,17 +54,17 @@ fun CustomerSupplierTab(
             onClick = { onTabChanged(true) },
             color = if (selectedTab.isSupplierTab()) MaterialTheme.colorScheme.surface else Color.Transparent,
             shape = RoundedCornerShape(50),
-            modifier = Modifier.weight(1.0f).padding(2.dp).fillMaxHeight()
+            modifier = Modifier.weight(1.0f).padding(2.dp).fillMaxHeight(),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
                     text = "Supplier",
                     modifier = Modifier,
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (selectedTab.isSupplierTab()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                    color = if (selectedTab.isSupplierTab()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

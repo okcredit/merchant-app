@@ -33,44 +33,44 @@ class GetHomeMoreOptionItems(
             MoreOptionItem(
                 id = MoreOption.STATEMENT,
                 icon = Res.drawable.icon_statement,
-                title = "Account"
-            )
+                title = "Account",
+            ),
         )
         list.add(
             MoreOptionItem(
                 id = MoreOption.PROFILE,
                 icon = Res.drawable.icon_account,
-                title = "Profile"
-            )
+                title = "Profile",
+            ),
         )
         list.add(
             MoreOptionItem(
                 id = MoreOption.HELP,
                 icon = Res.drawable.icon_namsthe,
-                title = "Help"
-            )
+                title = "Help",
+            ),
         )
         list.add(
             MoreOptionItem(
                 id = MoreOption.SETTINGS,
                 icon = Res.drawable.icon_settings,
-                title = "Settings"
-            )
+                title = "Settings",
+            ),
         )
 
         customization?.forEach { component ->
             component.items?.forEach { item: Component ->
                 val action = item.eventHandlers?.click
                     ?.find { it.action == "navigate" }
-                println("Customization action -  ${item}")
+                println("Customization action -  $item")
                 list.add(
                     MoreOptionItem(
                         id = MoreOption.DYNAMIC,
                         iconUrl = item.icon,
                         title = item.title ?: "",
                         icon = null,
-                        deeplink = action?.url
-                    )
+                        deeplink = action?.url,
+                    ),
                 )
             }
         }

@@ -17,7 +17,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 import org.jetbrains.compose.resources.painterResource

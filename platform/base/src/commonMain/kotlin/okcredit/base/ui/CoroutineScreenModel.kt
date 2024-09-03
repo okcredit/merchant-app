@@ -1,7 +1,6 @@
 package okcredit.base.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 

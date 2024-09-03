@@ -22,7 +22,7 @@ class LoginUser(
         setupAnalyticsData(
             newUser = newUser,
             individualId = individual.individualId,
-            businessId = individual.businessIdList.first()
+            businessId = individual.businessIdList.first(),
         )
         setActiveBusinessId.execute(individual.businessIdList.first())
         return newUser to appLockEnabled

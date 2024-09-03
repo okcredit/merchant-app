@@ -42,5 +42,9 @@
     <string name="t_001_addrel_cta_add_from_contacts">Add from contacts</string>
 
     <string name="supplier_learn_more_title">Add all your supplier here and save time by easily recording sale/ purchase done with them.</string>
+    <string name="balance">Balance</string>
 
+    <string name="customers">Customers</string>
+    <string name="suppliers">Suppliers</string>
+    <string name="contacts">Contacts</string>
 </resources>

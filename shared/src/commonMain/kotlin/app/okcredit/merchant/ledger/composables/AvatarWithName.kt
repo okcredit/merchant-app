@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +65,7 @@ fun DefaultAvatar(
     commonLedger: Boolean = false,
 ) {
     Box(
-        modifier = modifier.background(backgroundColor(customerName), CircleShape)
+        modifier = modifier.background(backgroundColor(customerName), CircleShape),
     ) {
         Text(
             text = customerName.first().toString().uppercase(),
@@ -92,7 +91,7 @@ fun CommonLedgerTag(modifier: Modifier) {
         modifier = modifier
             .size(20.dp)
             .background(MaterialTheme.colorScheme.primary, CircleShape),
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
     )
 }
 
@@ -101,7 +100,7 @@ fun DefaulterTag(modifier: Modifier) {
     Image(
         painter = painterResource(resource = app.okcredit.ui.Res.drawable.defaulter_badge_red),
         contentDescription = "",
-        modifier = modifier.height(12.dp)
+        modifier = modifier.height(12.dp),
     )
 }
 

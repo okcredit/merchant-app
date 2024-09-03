@@ -43,13 +43,13 @@ fun SummaryCard(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, top = 12.dp, end = 16.dp)
+            .padding(start = 16.dp, top = 12.dp, end = 16.dp),
     ) {
         Column {
             NetBalanceUi(
                 homeTab = summaryItem.homeTab,
                 netBalance = summaryItem.netBalance,
-                totalAccounts = summaryItem.totalAccounts
+                totalAccounts = summaryItem.totalAccounts,
             )
         }
     }
@@ -59,7 +59,7 @@ fun SummaryCard(
 fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
     Row(
         modifier = Modifier.padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1.0f)) {
             Text(
@@ -72,26 +72,26 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                     painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_name),
                     contentDescription = "",
                     modifier = Modifier.size(12.dp),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(
                     text = "$totalAccounts Accounts",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp),
                     fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 )
             }
         }
         Column(
             modifier = Modifier,
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.End,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = netBalance.toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    color = if (netBalance >= 0.paisa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                 )
                 Icon(
                     painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_chevron_right),
@@ -109,14 +109,14 @@ fun NetBalanceUi(homeTab: HomeTab, netBalance: Paisa, totalAccounts: Int) {
                         (if (netBalance >= 0.paisa) Res.string.you_pay else Res.string.you_get)
                     } else {
                         (if (netBalance <= 0.paisa) Res.string.you_pay else Res.string.you_get)
-                    }
+                    },
                 ),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .align(Alignment.End),
                 fontSize = 10.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
             )
         }
     }

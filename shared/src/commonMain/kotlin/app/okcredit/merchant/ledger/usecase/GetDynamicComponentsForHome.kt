@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 import tech.okcredit.analytics.AnalyticsProvider
-import tech.okcredit.customization.local.CustomizationLocalSource
 import tech.okcredit.customization.models.Component
 import tech.okcredit.customization.models.withDefaultProperties
 import tech.okcredit.customization.usecase.GetCustomization
@@ -40,14 +39,14 @@ class GetDynamicComponentsForHome(
                     trackOnItemClicked = {
                         actionTrack?.withDefaultProperties(
                             targetName = "home_banner",
-                            component = item
+                            component = item,
                         )?.let {
                             analyticsProvider.value.logProductEvent(
                                 it.event!!,
-                                it.properties
+                                it.properties,
                             )
                         }
-                    }
+                    },
                 )
                 list.add(dynamicItem)
             }

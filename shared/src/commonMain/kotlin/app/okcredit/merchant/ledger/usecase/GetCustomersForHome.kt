@@ -72,7 +72,7 @@ class GetCustomersForHome(
             applySortAndFilters(
                 originalList = legacyCustomers,
                 sortBy = sortBy,
-                reminderFilters = reminderFilters
+                reminderFilters = reminderFilters,
             ).forEach { customer ->
                 val customerItem = HomeContract.HomeItem.CustomerItem(
                     customerId = customer.id,
@@ -84,7 +84,7 @@ class GetCustomersForHome(
                     lastActivity = customer.summary.lastActivity,
                     lastAmount = customer.summary.lastAmount,
                     isDefaulter = defaulters.contains(customer.mobile),
-                    dueDate = customer.dueDate
+                    dueDate = customer.dueDate,
                 )
                 netBalance += customer.balance
                 counter++
@@ -98,7 +98,7 @@ class GetCustomersForHome(
                         homeTab = HomeTab.CUSTOMER_TAB,
                         netBalance = netBalance,
                         totalAccounts = counter,
-                    )
+                    ),
                 )
             }
 
@@ -109,7 +109,7 @@ class GetCustomersForHome(
     private fun applySortAndFilters(
         originalList: List<Customer>,
         sortBy: SortOption,
-        reminderFilters: Set<ReminderFilterOption>
+        reminderFilters: Set<ReminderFilterOption>,
     ): List<Customer> {
         val sortedAndFilterList = mutableListOf<Customer>()
 

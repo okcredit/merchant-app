@@ -11,7 +11,7 @@ object HomeOkFeedTab : Tab {
             return TabOptions(
                 title = "Feed",
                 icon = null,
-                index = 3u
+                index = 3u,
             )
         }
 

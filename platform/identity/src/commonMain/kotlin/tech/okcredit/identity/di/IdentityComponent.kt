@@ -91,7 +91,7 @@ interface IdentityComponent {
     }
 
     @Provides
-    fun GetAllBusinessesImpl.binds() : GetAllBusinesses {
+    fun GetAllBusinessesImpl.binds(): GetAllBusinesses {
         return this
     }
 

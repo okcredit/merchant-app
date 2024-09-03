@@ -34,7 +34,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun UserAlertBanner(
     userAlert: HomeContract.UserAlert,
-    onUserAlertClicked: (HomeContract.UserAlert) -> Unit
+    onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
 ) {
     Card(
         colors = CardDefaults.cardColors().copy(containerColor = orange_200),
@@ -45,27 +45,27 @@ fun UserAlertBanner(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp, horizontal = 8.dp)
+                .padding(vertical = 8.dp, horizontal = 8.dp),
         ) {
             Spacer(modifier = Modifier.width(8.dp))
             Image(
                 painter = painterResource(resource = userAlert.getIcon()),
                 contentDescription = userAlert.getMessage(),
                 colorFilter = ColorFilter.tint(orange_800),
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = userAlert.getMessage(),
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1.0f)
+                modifier = Modifier.weight(1.0f),
             )
             if (userAlert.getCta().isNotEmpty()) {
                 TextButton(onClick = { onUserAlertClicked.invoke(userAlert) }) {
                     Text(
                         text = userAlert.getCta(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = orange_800
+                        color = orange_800,
                     )
                 }
             }
@@ -99,7 +99,7 @@ fun UserAlertBannerPreview() {
     OkCreditTheme {
         UserAlertBanner(
             userAlert = HomeContract.UserAlert.UnSyncedTransactions,
-            onUserAlertClicked = {}
+            onUserAlertClicked = {},
         )
     }
 }

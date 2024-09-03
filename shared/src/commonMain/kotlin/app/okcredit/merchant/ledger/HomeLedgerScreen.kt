@@ -7,14 +7,13 @@ import app.okcredit.merchant.ledger.HomeContract.State
 import app.okcredit.merchant.ledger.HomeContract.ToolbarAction.*
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
 import app.okcredit.merchant.ledger.composables.HomeScreenUi
-import app.okcredit.ui.theme.OkCreditTheme
-import cafe.adriel.voyager.core.screen.Screen
+import app.okcredit.shared.contract.SharedScreenRegistry
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import me.tatarka.inject.annotations.Inject
+import okcredit.base.di.moveTo
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
@@ -37,6 +36,7 @@ object HomeLedgerTab : Tab {
 
     @Composable
     private fun Render(screenModel: HomeLedgerScreenModel, state: State) {
+        val navigator = LocalNavigator.currentOrThrow.parent
         HomeScreenUi(
             state = state,
             onTabChanged = { selected ->
@@ -53,6 +53,7 @@ object HomeLedgerTab : Tab {
             },
             onPrimaryVpaClicked = {},
             onSearchClicked = {
+                navigator?.moveTo(SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name))
             },
             onSortAndFilterClicked = {
                 screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterClicked)
@@ -76,12 +77,11 @@ object HomeLedgerTab : Tab {
             },
             onSortAndFilterApplied = { sortOption, reminderFilters ->
                 screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(sortOption, reminderFilters))
-            }
+            },
         )
     }
 
     private fun onBusinessClicked() {
-
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent, navigator: Navigator) {

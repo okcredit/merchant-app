@@ -25,7 +25,7 @@ class GetSuppliersForHome(
                         suppliers = suppliers as List<Supplier>,
                         sortOption = sortOption,
                     ),
-                    sortOption = sortOption
+                    sortOption = sortOption,
                 )
             }
     }
@@ -47,7 +47,7 @@ class GetSuppliersForHome(
                 lastActivity = supplier.summary.lastActivity,
                 lastAmount = supplier.summary.lastAmount,
                 lastActivityMetaInfo = supplier.summary.lastActivityMetaInfo,
-                commonLedger = supplier.registered
+                commonLedger = supplier.registered,
             )
             list.add(item)
             netBalance += supplier.balance
@@ -55,15 +55,14 @@ class GetSuppliersForHome(
         }
 
         if (list.size > 0) {
-
             // add summary item only if there are suppliers
             list.add(
                 0,
                 HomeContract.HomeItem.SummaryItem(
                     homeTab = HomeTab.SUPPLIER_TAB,
                     netBalance = netBalance,
-                    totalAccounts = counter
-                )
+                    totalAccounts = counter,
+                ),
             )
         }
         return list
