@@ -7,14 +7,9 @@ import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.SortOption
-import app.okcredit.merchant.ledger.SubtitleIconType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.daysUntil
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.units.Timestamp
-import okcredit.base.units.instant
 import okcredit.base.units.paisa
 
 @Inject
@@ -30,7 +25,7 @@ class GetSuppliersForHome(
                         suppliers = suppliers as List<Supplier>,
                         sortOption = sortOption,
                     ),
-                    sortOption = sortOption
+                    sortOption = sortOption,
                 )
             }
     }
@@ -49,9 +44,10 @@ class GetSuppliersForHome(
                 profileImage = supplier.profileImage,
                 name = supplier.name,
                 balance = supplier.balance,
-                subtitle = getLastActivityText(supplier.summary.lastActivity, supplier.createdAt),
-                subtitleIconType = SubtitleIconType.NONE,
-                commonLedger = supplier.registered
+                lastActivity = supplier.summary.lastActivity,
+                lastAmount = supplier.summary.lastAmount,
+                lastActivityMetaInfo = supplier.summary.lastActivityMetaInfo,
+                commonLedger = supplier.registered,
             )
             list.add(item)
             netBalance += supplier.balance
@@ -59,15 +55,14 @@ class GetSuppliersForHome(
         }
 
         if (list.size > 0) {
-
             // add summary item only if there are suppliers
             list.add(
                 0,
                 HomeContract.HomeItem.SummaryItem(
                     homeTab = HomeTab.SUPPLIER_TAB,
                     netBalance = netBalance,
-                    totalAccounts = counter
-                )
+                    totalAccounts = counter,
+                ),
             )
         }
         return list
@@ -75,18 +70,6 @@ class GetSuppliersForHome(
 
     private fun applySortOption(suppliers: List<Supplier>, sortOption: SortOption): List<Supplier> {
         return suppliers
-    }
-
-    private fun getLastActivityText(lastActivityTime: Timestamp?, createTime: Timestamp): String? {
-        if (lastActivityTime == null) {
-            return createTime.instant.toString()
-        }
-        val duration = createTime.instant.daysUntil(lastActivityTime.instant, TimeZone.UTC)
-        return when (duration) {
-            0 -> "Paid today"
-            1 -> "Paid Yesterday"
-            else -> lastActivityTime.instant.toString()
-        }
     }
 }
 

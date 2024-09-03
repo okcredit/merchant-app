@@ -1,6 +1,7 @@
 package app.okcredit.merchant
 
 import app.okcredit.merchant.home.HomeScreen
+import app.okcredit.merchant.search.HomeSearchScreen
 import app.okcredit.merchant.selectBusiness.SelectBusinessScreen
 import app.okcredit.merchant.splash.SplashScreen
 import app.okcredit.merchant.sync.SyncScreen
@@ -26,6 +27,10 @@ class SharedScreenRegistryProvider {
 
         register<SharedScreenRegistry.SelectBusiness> {
             SelectBusinessScreen()
+        }
+
+        register<SharedScreenRegistry.Search> {
+            HomeSearchScreen(it.currentTab)
         }
     }
 }

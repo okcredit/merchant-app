@@ -1,12 +1,12 @@
 package app.okcredit.merchant.home
 
-import okcredit.base.ui.BaseCoroutineScreenModel
 import app.okcredit.merchant.home.HomeContract.*
 import app.okcredit.merchant.home.usecase.GetHomeMoreOptionItems
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
+import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.Result
 
 @Inject
@@ -20,7 +20,7 @@ class HomeScreenModel(
         )
     }
 
-    private fun loadHomeMoreOptions() =  wrap(getHomeMoreOptionItems.execute()).map {
+    private fun loadHomeMoreOptions() = wrap(getHomeMoreOptionItems.execute()).map {
         when (it) {
             is Result.Failure -> PartialState.NoChange
             is Result.Progress -> PartialState.NoChange
@@ -35,7 +35,7 @@ class HomeScreenModel(
         return when (partialState) {
             PartialState.NoChange -> currentState
             is PartialState.SetHomeMoreOptionItems -> currentState.copy(
-                moreOptions = partialState.items
+                moreOptions = partialState.items,
             )
         }
     }

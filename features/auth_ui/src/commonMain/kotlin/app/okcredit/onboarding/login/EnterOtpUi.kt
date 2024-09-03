@@ -1,7 +1,6 @@
 package app.okcredit.onboarding.login
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import app.okcredit.ui.icon_recovery_mobile
 import app.okcredit.ui.icon_sms_outline
@@ -168,7 +166,7 @@ fun FallbackOptionView(
             modifier = Modifier
                 .padding(start = 12.dp)
                 .align(Alignment.CenterVertically),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Spacer(modifier = Modifier.weight(1.0f))
         Icon(

@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,7 +33,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun BottomNavigationUi(
     list: List<BottomMenuItem>,
     selectedItem: NavItem,
-    onItemClicked: (NavItem) -> Unit
+    onItemClicked: (NavItem) -> Unit,
 ) {
     Surface(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -43,7 +41,7 @@ fun BottomNavigationUi(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             list.forEach { bottomMenuItem ->
                 SelectableTab(
@@ -66,10 +64,10 @@ fun SelectableTab(
 ) {
     Box(
         modifier = modifier.clickable(onClick = { onItemClicked(bottomMenuItem.navItem) }),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(12.dp))
             val icon = if (selected && bottomMenuItem.selectedIcon != null) {
@@ -80,13 +78,13 @@ fun SelectableTab(
             SelectableIcon(
                 selected = selected,
                 icon = icon,
-                showDotBadge = bottomMenuItem.showDotBadge
+                showDotBadge = bottomMenuItem.showDotBadge,
             )
             Spacer(Modifier.height(2.dp))
             Text(
                 text = bottomMenuItem.label,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
             )
             Spacer(Modifier.height(12.dp))
         }
@@ -101,7 +99,7 @@ fun SelectableIcon(selected: Boolean, icon: Painter, showDotBadge: Boolean) {
             .height(24.dp)
             .background(
                 color = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                shape = RoundedCornerShape(50)
+                shape = RoundedCornerShape(50),
             ),
         contentAlignment = Alignment.Center,
     ) {
@@ -109,7 +107,7 @@ fun SelectableIcon(selected: Boolean, icon: Painter, showDotBadge: Boolean) {
             painter = icon,
             contentDescription = "",
             tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(20.dp),
         )
 
         if (showDotBadge && !selected) {
@@ -117,7 +115,7 @@ fun SelectableIcon(selected: Boolean, icon: Painter, showDotBadge: Boolean) {
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.error, shape = CircleShape)
                     .align(Alignment.TopEnd)
-                    .size(4.dp)
+                    .size(4.dp),
             )
         }
     }
@@ -130,7 +128,7 @@ fun SelectableIconPreview() {
         SelectableIcon(
             selected = true,
             icon = painterResource(Res.drawable.icon_home),
-            showDotBadge = true
+            showDotBadge = true,
         )
     }
 }
@@ -159,9 +157,9 @@ fun BottomNavigationUiPreview() {
                 navItem = NavItem.HOME_MORE_OPTIONS,
                 drawableId = painterResource(Res.drawable.icon_home),
                 label = "Home",
-            )
+            ),
         ),
         selectedItem = NavItem.HOME_LEDGER,
-        onItemClicked = {}
+        onItemClicked = {},
     )
 }

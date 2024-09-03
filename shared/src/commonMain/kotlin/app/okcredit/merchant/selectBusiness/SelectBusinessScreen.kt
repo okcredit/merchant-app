@@ -45,12 +45,11 @@ class SelectBusinessScreen : Screen {
             state = state,
             onBusinessSelected = {
                 screenModel.pushIntent(SelectBusinessContract.Intent.OnBusinessSelected(it))
-            }
+            },
         )
 
         val navigator = LocalNavigator.currentOrThrow
         screenModel.observeViewEvents { handleViewEvent(it, navigator) }
-
     }
 
     private fun handleViewEvent(viewEvent: SelectBusinessContract.ViewEvent, navigator: Navigator) {
@@ -65,19 +64,19 @@ class SelectBusinessScreen : Screen {
 @Composable
 fun SelectBusinessScreenUi(
     state: SelectBusinessContract.State,
-    onBusinessSelected: (String) -> Unit
+    onBusinessSelected: (String) -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Select Business", style = MaterialTheme.typography.titleLarge) }
+                title = { Text("Select Business", style = MaterialTheme.typography.titleLarge) },
             )
-        }
+        },
     ) {
         BusinessList(
             modifier = Modifier.padding(it),
             businesses = state.businesses,
-            onBusinessSelected = onBusinessSelected
+            onBusinessSelected = onBusinessSelected,
         )
     }
 }
@@ -86,7 +85,7 @@ fun SelectBusinessScreenUi(
 fun BusinessList(
     businesses: List<Business>,
     onBusinessSelected: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     LazyColumn(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         items(businesses) { business ->
@@ -100,22 +99,21 @@ fun BusinessItem(business: Business, onBusinessSelected: (String) -> Unit) {
     Surface(
         onClick = { onBusinessSelected(business.id) },
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium
+        shape = MaterialTheme.shapes.medium,
     ) {
         Row {
             Text(
                 text = business.name,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             )
             Spacer(Modifier.weight(1.0f))
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             )
         }
-
     }
 }

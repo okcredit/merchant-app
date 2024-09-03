@@ -46,8 +46,7 @@ class HomeScreen : Screen {
         HomeScreenUi(
             state = state,
             onMoreItemClicked = { option, deeplink ->
-
-            }
+            },
         )
     }
 }
@@ -61,7 +60,7 @@ fun HomeScreenUi(state: HomeContract.State, onMoreItemClicked: (MoreOption, Stri
             content = {
                 Box(
                     modifier = Modifier.padding(it).fillMaxSize(),
-                    contentAlignment = Alignment.BottomCenter
+                    contentAlignment = Alignment.BottomCenter,
                 ) {
                     CurrentTab()
 
@@ -69,14 +68,14 @@ fun HomeScreenUi(state: HomeContract.State, onMoreItemClicked: (MoreOption, Stri
                     AnimatedVisibility(
                         visible = showHomeMoreOptions,
                         enter = slideInVertically { with(density) { 120.dp.roundToPx() } } +
-                                fadeIn(initialAlpha = 0.3f),
+                            fadeIn(initialAlpha = 0.3f),
                         exit = slideOutVertically(targetOffsetY = { with(density) { 120.dp.roundToPx() } }) +
-                                fadeOut()
+                            fadeOut(),
                     ) {
                         HomeMoreOptions(
                             modifier = Modifier.align(Alignment.BottomCenter),
                             items = state.moreOptions,
-                            onMoreItemClicked = onMoreItemClicked
+                            onMoreItemClicked = onMoreItemClicked,
                         )
                     }
                 }
@@ -119,27 +118,27 @@ fun HomeScreenUi(state: HomeContract.State, onMoreItemClicked: (MoreOption, Stri
                             navItem = HOME_LEDGER,
                             drawableId = HomeLedgerTab.options.icon
                                 ?: painterResource(Res.drawable.icon_home),
-                            label = HomeLedgerTab.options.title
+                            label = HomeLedgerTab.options.title,
                         ),
                         BottomMenuItem(
                             navItem = HOME_PAYMENT,
                             drawableId = painterResource(Res.drawable.icon_collections),
-                            label = HomePaymentTab.options.title
+                            label = HomePaymentTab.options.title,
                         ),
                         BottomMenuItem(
                             navItem = HOME_OK_FEED,
                             drawableId = painterResource(Res.drawable.icon_feed),
-                            label = HomeOkFeedTab.options.title
+                            label = HomeOkFeedTab.options.title,
                         ),
                         BottomMenuItem(
                             navItem = HOME_MORE_OPTIONS,
                             drawableId = painterResource(Res.drawable.icon_more),
-                            label = "More"
-                        )
+                            label = "More",
+                        ),
                     ),
-                    selectedItem = selectedItem
+                    selectedItem = selectedItem,
                 )
-            }
+            },
         )
     }
 }

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package app.okcredit.merchant.ledger.composables
 
@@ -33,10 +33,12 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -50,13 +52,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.ReminderFilterOption
+import app.okcredit.merchant.ledger.SortOption
 import app.okcredit.merchant.ledger.isCustomerTab
 import app.okcredit.merchant.ledger.isSupplierTab
 import app.okcredit.ui.ic_add_first_supplier
@@ -103,6 +105,8 @@ fun HomeScreenUi(
     onPullToRefresh: () -> Unit,
     onClearFilterClicked: () -> Unit,
     onUserAlertClicked: (HomeContract.UserAlert) -> Unit,
+    onDismissDialog: () -> Unit,
+    onSortAndFilterApplied: (SortOption, Set<ReminderFilterOption>) -> Unit,
 ) {
     val customerListState = rememberLazyListState()
     val supplierListState = rememberLazyListState()
@@ -157,9 +161,32 @@ fun HomeScreenUi(
             onSupplierProfileClicked = onSupplierProfileClicked,
             onSummaryCardClicked = onSummaryCardClicked,
             onAddRelationshipClicked = onAddRelationshipClicked,
-            onClearFilterClicked = onClearFilterClicked
+            onClearFilterClicked = onClearFilterClicked,
         )
+    }
 
+    when (val sheet = state.bottomSheet) {
+        HomeContract.BottomSheet.None -> {}
+        is HomeContract.BottomSheet.SortAndFilterBottomSheet -> {
+            ModalBottomSheet(
+                onDismissRequest = onDismissDialog,
+                containerColor = MaterialTheme.colorScheme.surface,
+                sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                dragHandle = {
+                    Spacer(
+                        modifier = Modifier.fillMaxWidth().height(8.dp),
+                    )
+                },
+            ) {
+                SortAndFilterBottomSheet(
+                    currentTab = state.selectedTab,
+                    selectedSortByOption = sheet.selectedSortOption,
+                    selectedReminderFilters = sheet.selectedReminderFilterOptions,
+                    onDismissClicked = onDismissDialog,
+                    onApplyClicked = onSortAndFilterApplied,
+                )
+            }
+        }
     }
 }
 
@@ -186,10 +213,10 @@ fun BottomActions(
                                 Res.string.add_supplier
                             } else {
                                 Res.string.add_customer
-                            }
+                            },
                         ),
                         style = MaterialTheme.typography.titleSmall,
-                        color = grey900
+                        color = grey900,
                     )
                 },
                 icon = {
@@ -197,13 +224,13 @@ fun BottomActions(
                         painterResource(resource = app.okcredit.ui.Res.drawable.icon_add),
                         contentDescription = "",
                         tint = grey900,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
                     )
                 },
                 minSize = 56.dp,
                 onClick = onAddRelationshipClicked,
                 modifier = Modifier.semantics { contentDescription = "Add Relationship" }
-                    .testTag("Add Relationship")
+                    .testTag("Add Relationship"),
             )
         }
     }
@@ -227,7 +254,7 @@ fun AnimatedExtendedFloatingActionButton(
     ) {
         Row(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             icon()
             AnimatedVisibility(visible = extendFab) {
@@ -260,8 +287,8 @@ fun HomeContent(
     Column(
         modifier = modifier.background(
             color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-        )
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        ),
     ) {
         Spacer(modifier = Modifier.size(12.dp))
         val pagerState = rememberPagerState { 2 }
@@ -281,7 +308,7 @@ fun HomeContent(
                 }
             },
             onSearchClicked = onSearchClicked,
-            onSortAndFilterClicked = onSortAndFilterClicked
+            onSortAndFilterClicked = onSortAndFilterClicked,
         )
         HorizontalPager(
             modifier = Modifier,
@@ -301,7 +328,7 @@ fun HomeContent(
                                         Image(
                                             painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_ledger_tutorial),
                                             contentDescription = stringResource(resource = Res.string.t_001_addrel_first_time_txt),
-                                            modifier = Modifier.size(160.dp)
+                                            modifier = Modifier.size(160.dp),
                                         )
                                     },
                                     message = stringResource(resource = Res.string.t_001_addrel_first_time_txt),
@@ -316,10 +343,10 @@ fun HomeContent(
                                             text = stringResource(resource = Res.string.add_customer),
                                             drawableTint = MaterialTheme.colorScheme.onSurface,
                                             textStyle = MaterialTheme.typography.titleSmall.copy(
-                                                color = MaterialTheme.colorScheme.onSurface
+                                                color = MaterialTheme.colorScheme.onSurface,
                                             ),
                                         )
-                                    }
+                                    },
                                 )
                             },
                             onItemClicked = onCustomerClicked,
@@ -342,7 +369,7 @@ fun HomeContent(
                                         Image(
                                             painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_add_first_supplier),
                                             contentDescription = stringResource(resource = Res.string.supplier_learn_more_title),
-                                            modifier = Modifier.size(160.dp)
+                                            modifier = Modifier.size(160.dp),
                                         )
                                     },
                                     message = stringResource(resource = Res.string.supplier_learn_more_title),
@@ -357,10 +384,10 @@ fun HomeContent(
                                             text = stringResource(resource = Res.string.add_supplier),
                                             drawableTint = MaterialTheme.colorScheme.onSurface,
                                             textStyle = MaterialTheme.typography.labelLarge.copy(
-                                                color = MaterialTheme.colorScheme.onSurface
+                                                color = MaterialTheme.colorScheme.onSurface,
                                             ),
                                         )
-                                    }
+                                    },
                                 )
                             },
                             onItemClicked = onSupplierClicked,
@@ -370,7 +397,7 @@ fun HomeContent(
                         )
                     }
                 }
-            }
+            },
         )
         LaunchedEffect(pagerState.currentPage) {
             onTabChanged(pagerState.currentPage == 1)
@@ -393,22 +420,22 @@ fun DarkSolidButton(
     drawableHeight: Dp = 32.dp,
     drawableWidth: Dp = 32.dp,
     drawablePadding: Dp = 8.dp,
-    drawableTint: Color = Color.Unspecified
+    drawableTint: Color = Color.Unspecified,
 ) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(
             horizontal = horizontalContentPadding,
-            vertical = verticalContentPadding
+            vertical = verticalContentPadding,
         ),
         shape = RoundedCornerShape(percent = 50),
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
-            contentColor = MaterialTheme.colorScheme.onSurface
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ),
         elevation = elevation,
         enabled = enabled,
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (drawableId != null) {
             Icon(
@@ -418,7 +445,7 @@ fun DarkSolidButton(
                     .height(drawableHeight)
                     .width(drawableWidth)
                     .padding(end = drawablePadding),
-                tint = drawableTint
+                tint = drawableTint,
             )
         }
 
@@ -460,7 +487,7 @@ fun HomeList(
                         is HomeContract.HomeItem.SummaryItem -> "summaryCard"
                         is HomeContract.HomeItem.SupplierItem -> it.supplierId
                     }
-                }
+                },
             ) {
                 when (it) {
                     is HomeContract.HomeItem.CustomerItem -> {
@@ -516,10 +543,10 @@ fun EmptyFilterPlaceHolder(onClearFilterClicked: () -> Unit) {
                 Text(
                     text = stringResource(resource = Res.string.clear_filter),
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
-        }
+        },
     )
 }
 
@@ -531,19 +558,19 @@ fun HomeHeader(
     sortOrFilterAppliedCount: Int,
     onTabChanged: (Boolean) -> Unit,
     onSearchClicked: () -> Unit,
-    onSortAndFilterClicked: () -> Unit
+    onSortAndFilterClicked: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CustomerSupplierTab(
             selectedTab = selectedTab,
             modifier = Modifier.weight(1.0f),
-            onTabChanged = onTabChanged
+            onTabChanged = onTabChanged,
         )
         if (showSortAndFilter) {
             Box {
@@ -558,7 +585,7 @@ fun HomeHeader(
                 ) {
                     Box(
                         modifier = Modifier.size(40.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Icon(
                             painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_filter_list),
@@ -568,7 +595,7 @@ fun HomeHeader(
                                 MaterialTheme.colorScheme.onSecondary
                             } else {
                                 MaterialTheme.colorScheme.onBackground
-                            }
+                            },
                         )
                     }
                 }
@@ -594,13 +621,13 @@ fun HomeHeader(
             ) {
                 Box(
                     modifier = Modifier.size(40.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_search),
                         contentDescription = "",
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onBackground,
                     )
                 }
             }
@@ -621,29 +648,29 @@ fun HomeScreenUiPreview() {
                         icon = "",
                         title = "Stock Entry",
                         subtitle = "subtitle",
-                        deeplink = ""
+                        deeplink = "",
                     ),
                     HomeContract.DynamicItem(
                         id = "1",
                         icon = "",
                         title = "GST Bills",
                         subtitle = "subtitle",
-                        deeplink = ""
+                        deeplink = "",
                     ),
                     HomeContract.DynamicItem(
                         id = "1",
                         icon = "",
                         title = "Earn Interest Daily",
                         subtitle = "subtitle",
-                        deeplink = ""
-                    )
+                        deeplink = "",
+                    ),
                 ),
                 userAlert = HomeContract.UserAlert.UnSyncedTransactions,
                 primaryVpa = "okcredit@upi",
                 selectedCustomerReminderFilterOptions = setOf(
                     ReminderFilterOption.OVERDUE,
                     ReminderFilterOption.TODAY,
-                    ReminderFilterOption.UPCOMING
+                    ReminderFilterOption.UPCOMING,
                 ),
                 customers = listOf(
                     HomeContract.HomeItem.CustomerItem(
@@ -653,7 +680,7 @@ fun HomeScreenUiPreview() {
                         name = "Harsh",
                         balance = 1000L.paisa,
                         lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
-                        lastActivityMetaInfo = 1
+                        lastActivityMetaInfo = 1,
                     ),
                     HomeContract.HomeItem.CustomerItem(
                         customerId = "3",
@@ -662,7 +689,7 @@ fun HomeScreenUiPreview() {
                         balance = 1000L.paisa,
                         commonLedger = true,
                         lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
-                        lastActivityMetaInfo = 1
+                        lastActivityMetaInfo = 1,
                     ),
                     HomeContract.HomeItem.CustomerItem(
                         isDefaulter = false,
@@ -671,8 +698,8 @@ fun HomeScreenUiPreview() {
                         name = "Gaurav",
                         balance = (-1000L).paisa,
                         lastActivity = Clock.System.now().toEpochMilliseconds().timestamp,
-                        lastActivityMetaInfo = 1
-                    )
+                        lastActivityMetaInfo = 1,
+                    ),
                 ),
             ),
             onAvatarClicked = {},
@@ -691,6 +718,8 @@ fun HomeScreenUiPreview() {
             onPullToRefresh = {},
             onClearFilterClicked = {},
             onUserAlertClicked = {},
+            onDismissDialog = {},
+            onSortAndFilterApplied = { _, _ -> },
         )
     }
 }

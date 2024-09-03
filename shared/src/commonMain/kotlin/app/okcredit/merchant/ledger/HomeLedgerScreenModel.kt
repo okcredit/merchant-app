@@ -5,6 +5,10 @@ import app.okcredit.merchant.ledger.HomeContract.PartialState
 import app.okcredit.merchant.ledger.HomeContract.State
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
 import app.okcredit.merchant.ledger.usecase.GetCustomersForHome
+import app.okcredit.merchant.ledger.usecase.GetDynamicComponentsForHome
+import app.okcredit.merchant.ledger.usecase.GetSuppliersForHome
+import app.okcredit.merchant.ledger.usecase.GetToolbarActionForHome
+import app.okcredit.merchant.ledger.usecase.GetUserAlertForHome
 import app.okcredit.merchant.usecase.HomeDataSyncer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -13,10 +17,6 @@ import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.Result
-import app.okcredit.merchant.ledger.usecase.GetDynamicComponentsForHome
-import app.okcredit.merchant.ledger.usecase.GetSuppliersForHome
-import app.okcredit.merchant.ledger.usecase.GetToolbarActionForHome
-import app.okcredit.merchant.ledger.usecase.GetUserAlertForHome
 import tech.okcredit.identity.contract.usecase.GetActiveBusiness
 
 @Inject
@@ -42,6 +42,9 @@ class HomeLedgerScreenModel(
             loadUserAlert(),
             observeOnTabChanged(),
             observeOnScrollToTop(),
+            observeOnDismissDialog(),
+            observeOnSortAndFilterClicked(),
+            observeOnSortAndFilterApplied(),
             observeOnCustomerClicked(),
             observeOnSupplierClicked(),
         )
@@ -97,8 +100,8 @@ class HomeLedgerScreenModel(
             wrap(
                 getCustomersForHome.execute(
                     reminderFilters = it.reminderFilters,
-                    sortBy = it.sortBy
-                )
+                    sortBy = it.sortBy,
+                ),
             )
         }
         .map {
@@ -106,9 +109,6 @@ class HomeLedgerScreenModel(
                 is Result.Failure -> PartialState.NoChange
                 is Result.Progress -> PartialState.NoChange
                 is Result.Success -> {
-                    if (currentState.customers.isEmpty() && it.value.items.isNotEmpty()) {
-                        pushIntent(Intent.LoadAutoReminderSummary)
-                    }
                     PartialState.SetCustomersForHome(it.value)
                 }
             }
@@ -147,6 +147,38 @@ class HomeLedgerScreenModel(
         homeDataSyncer.execute()
     }.dropAll()
 
+    private fun observeOnSortAndFilterClicked() = intent<Intent.OnSortAndFilterClicked>()
+        .map {
+            PartialState.SetBottomSheetType(
+                HomeContract.BottomSheet.SortAndFilterBottomSheet(
+                    selectedSortOption = if (currentState.selectedTab.isCustomerTab()) currentState.selectedCustomerSortOption else currentState.selectedSupplierSortOption,
+                    selectedReminderFilterOptions = currentState.selectedCustomerReminderFilterOptions,
+                    reminderFilterOptions = listOf(),
+                    sortOptions = listOf(),
+                ),
+            )
+        }
+
+    private fun observeOnDismissDialog() = intent<Intent.OnDismissDialog>()
+        .map {
+            PartialState.SetBottomSheetType(HomeContract.BottomSheet.None)
+        }
+
+    private fun observeOnSortAndFilterApplied() = intent<Intent.OnSortAndFilterApplied>()
+        .map {
+            if (currentState.selectedTab.isCustomerTab()) {
+                pushIntent(
+                    Intent.LoadCustomersWithFilter(
+                        sortBy = it.sortBy,
+                        reminderFilters = it.reminderFilters,
+                    ),
+                )
+            } else {
+                pushIntent(Intent.LoadSuppliersWithFilter(it.sortBy))
+            }
+            PartialState.SetFiltersAndSortOption(it.sortBy, it.reminderFilters)
+        }
+
     override fun reduce(currentState: State, partialState: PartialState): State {
         return when (partialState) {
             PartialState.NoChange -> currentState
@@ -157,13 +189,15 @@ class HomeLedgerScreenModel(
                 customers = partialState.customers.items,
                 selectedCustomerReminderFilterOptions = partialState.customers.reminderFilters,
                 selectedCustomerSortOption = partialState.customers.sortOption,
-                loadingCustomers = false
+                loadingCustomers = false,
+                bottomSheet = HomeContract.BottomSheet.None,
             )
 
             is PartialState.SetSuppliersForHome -> currentState.copy(
                 suppliers = partialState.suppliers.items,
                 selectedSupplierSortOption = partialState.suppliers.sortOption,
-                loadingSuppliers = false
+                loadingSuppliers = false,
+                bottomSheet = HomeContract.BottomSheet.None,
             )
 
             is PartialState.SetDynamicComponentsForHome -> currentState.copy(
@@ -172,32 +206,46 @@ class HomeLedgerScreenModel(
             )
 
             is PartialState.SetSelectedTab -> currentState.copy(
-                selectedTab = partialState.selectedTab
+                selectedTab = partialState.selectedTab,
             )
 
             is PartialState.SetPrimaryVpa -> currentState.copy(
-                primaryVpa = partialState.primaryVpa
+                primaryVpa = partialState.primaryVpa,
             )
 
             is PartialState.SetToolbarAction -> currentState.copy(
-                toolbarAction = partialState.toolbarAction
+                toolbarAction = partialState.toolbarAction,
             )
 
             is PartialState.SetUserAlert -> currentState.copy(
-                userAlert = partialState.userAlert
+                userAlert = partialState.userAlert,
             )
 
             is PartialState.SetKachhaChittaEnabled -> currentState.copy(
-                showKachaNote = partialState.enabled
+                showKachaNote = partialState.enabled,
             )
 
             is PartialState.SetHomeSyncLoading -> currentState.copy(
-                homeSyncLoading = partialState.loading
+                homeSyncLoading = partialState.loading,
             )
 
             is PartialState.SetScrollToTop -> currentState.copy(
-                scrollListToTop = partialState.shouldScroll
+                scrollListToTop = partialState.shouldScroll,
             )
+
+            is PartialState.SetBottomSheetType -> currentState.copy(
+                bottomSheet = partialState.bottomSheet,
+            )
+            is PartialState.SetFiltersAndSortOption -> if (currentState.selectedTab.isCustomerTab()) {
+                currentState.copy(
+                    selectedCustomerSortOption = partialState.sortBy,
+                    selectedCustomerReminderFilterOptions = partialState.reminderFilters,
+                )
+            } else {
+                currentState.copy(
+                    selectedSupplierSortOption = partialState.sortBy,
+                )
+            }
         }
     }
 }

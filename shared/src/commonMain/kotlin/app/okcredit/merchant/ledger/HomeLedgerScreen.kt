@@ -11,12 +11,14 @@ import app.okcredit.merchant.ledger.HomeContract.State
 import app.okcredit.merchant.ledger.HomeContract.ToolbarAction.*
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
 import app.okcredit.merchant.ledger.composables.HomeScreenUi
+import app.okcredit.shared.contract.SharedScreenRegistry
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import okcredit.base.di.moveTo
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
@@ -39,23 +41,28 @@ object HomeLedgerTab : Tab {
 
     @Composable
     private fun Render(screenModel: HomeLedgerScreenModel, state: State) {
+        val navigator = LocalNavigator.currentOrThrow.parent
         HomeScreenUi(
             state = state,
-            onTabChanged = {
-                val tab = if (it) HomeTab.CUSTOMER_TAB else HomeTab.SUPPLIER_TAB
+            onTabChanged = { selected ->
+                val tab = if (selected) HomeTab.SUPPLIER_TAB else HomeTab.CUSTOMER_TAB
                 screenModel.pushIntent(HomeContract.Intent.OnTabChanged(tab))
             },
             onAvatarClicked = ::onBusinessClicked,
             onToolbarActionClicked = { toolbarAction ->
                 when (toolbarAction) {
-                    ACTIVATE_UPI -> TODO()
-                    NEED_HELP -> TODO()
-                    SHARE -> TODO()
+                    ACTIVATE_UPI -> {}
+                    NEED_HELP -> {}
+                    SHARE -> {}
                 }
             },
             onPrimaryVpaClicked = {},
-            onSearchClicked = {},
-            onSortAndFilterClicked = {},
+            onSearchClicked = {
+                navigator?.moveTo(SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name))
+            },
+            onSortAndFilterClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterClicked)
+            },
             onCustomerClicked = {
                 screenModel.pushIntent(HomeContract.Intent.OnCustomerClicked(it))
             },
@@ -68,19 +75,26 @@ object HomeLedgerTab : Tab {
             onDynamicItemClicked = { _, _ -> },
             onSummaryCardClicked = {},
             onPullToRefresh = {},
-            onClearFilterClicked = {},
-            onUserAlertClicked = {},
+            onClearFilterClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(SortOption.LAST_ACTIVITY, emptySet()))
+            },
+            onUserAlertClicked = {
+                screenModel.pushIntent(HomeContract.Intent.OnRetrySyncTransactionsClicked)
+            },
+            onDismissDialog = {
+                screenModel.pushIntent(HomeContract.Intent.OnDismissDialog)
+            },
+            onSortAndFilterApplied = { sortOption, reminderFilters ->
+                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(sortOption, reminderFilters))
+            },
         )
     }
 
     private fun onBusinessClicked() {
-
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent, navigator: Navigator) {
         when (viewEvent) {
-            ViewEvent.LaunchAskSmsPermissionForAutoReminder -> {}
-            is ViewEvent.ShowAutoReminderSummarySnackBar -> {}
             is ViewEvent.ShowError -> {}
             is ViewEvent.GoToCustomerLedgerScreen -> goToCustomerLedgerScreen(
                 customerId = viewEvent.customerId,

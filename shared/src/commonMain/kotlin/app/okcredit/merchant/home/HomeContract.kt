@@ -12,12 +12,11 @@ interface HomeContract {
     ) : UiState
 
     sealed interface PartialState : UiState.Partial {
-        data object NoChange: PartialState
+        data object NoChange : PartialState
         data class SetHomeMoreOptionItems(val items: List<MoreOptionItem>) : PartialState
     }
 
     sealed interface Intent : UserIntent
 
-    sealed interface ViewEvent : BaseViewEvent {
-    }
+    sealed interface ViewEvent : BaseViewEvent
 }

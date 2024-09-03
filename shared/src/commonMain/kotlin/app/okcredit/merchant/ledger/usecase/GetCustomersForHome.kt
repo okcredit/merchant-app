@@ -1,6 +1,5 @@
 package app.okcredit.merchant.ledger.usecase
 
-import androidx.compose.ui.text.AnnotatedString
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.usecase.GetAccounts
@@ -9,24 +8,20 @@ import app.okcredit.merchant.ledger.HomeContract
 import app.okcredit.merchant.ledger.HomeTab
 import app.okcredit.merchant.ledger.ReminderFilterOption
 import app.okcredit.merchant.ledger.SortOption
-import app.okcredit.merchant.ledger.SortOption.*
-import app.okcredit.merchant.ledger.SubtitleType
+import app.okcredit.merchant.ledger.SortOption.AMOUNT_DUE
+import app.okcredit.merchant.ledger.SortOption.LAST_ACTIVITY
+import app.okcredit.merchant.ledger.SortOption.LAST_PAYMENT
+import app.okcredit.merchant.ledger.SortOption.NAME
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
-import kotlinx.datetime.minus
 import me.tatarka.inject.annotations.Inject
-import merchant_app.shared.generated.resources.Res
-import merchant_app.shared.generated.resources.today
-import merchant_app.shared.generated.resources.yesterday
 import okcredit.base.appDispatchers
 import okcredit.base.units.instant
 import okcredit.base.units.paisa
-import org.jetbrains.compose.resources.getString
 
 @Inject
 class GetCustomersForHome(
@@ -77,7 +72,7 @@ class GetCustomersForHome(
             applySortAndFilters(
                 originalList = legacyCustomers,
                 sortBy = sortBy,
-                reminderFilters = reminderFilters
+                reminderFilters = reminderFilters,
             ).forEach { customer ->
                 val customerItem = HomeContract.HomeItem.CustomerItem(
                     customerId = customer.id,
@@ -89,7 +84,7 @@ class GetCustomersForHome(
                     lastActivity = customer.summary.lastActivity,
                     lastAmount = customer.summary.lastAmount,
                     isDefaulter = defaulters.contains(customer.mobile),
-                    dueDate = customer.dueDate
+                    dueDate = customer.dueDate,
                 )
                 netBalance += customer.balance
                 counter++
@@ -103,7 +98,7 @@ class GetCustomersForHome(
                         homeTab = HomeTab.CUSTOMER_TAB,
                         netBalance = netBalance,
                         totalAccounts = counter,
-                    )
+                    ),
                 )
             }
 
@@ -114,7 +109,7 @@ class GetCustomersForHome(
     private fun applySortAndFilters(
         originalList: List<Customer>,
         sortBy: SortOption,
-        reminderFilters: Set<ReminderFilterOption>
+        reminderFilters: Set<ReminderFilterOption>,
     ): List<Customer> {
         val sortedAndFilterList = mutableListOf<Customer>()
 
@@ -171,42 +166,6 @@ class GetCustomersForHome(
 
         return sortedAndFilterList
     }
-
-    private suspend fun findSubTitleAndType(
-        customer: Customer,
-    ): Pair<AnnotatedString, SubtitleType> {
-        val subtitleType: SubtitleType
-        val subTitle = AnnotatedString.Builder("")
-
-        if (customer.summary.lastActivity != customer.createdAt) {
-            val currentTime = Clock.System.now()
-            currentTime.minus(24, DateTimeUnit.HOUR)
-            subTitle.append(
-                when {
-                    currentTime.compareTo(customer.summary.lastActivity.instant) == 0 -> {
-                        getString(Res.string.today)
-                    }
-
-                    currentTime.minus(24, DateTimeUnit.HOUR)
-                        .compareTo(customer.summary.lastActivity.instant) == 0 -> {
-                        getString(Res.string.yesterday)
-                    }
-
-                    else -> {
-                        ""
-                    }
-                }
-            )
-
-            subtitleType = SubtitleType.TRANSACTION_SYNC_DONE
-        } else {
-            subTitle.append(
-                customer.createdAt.instant.toString()
-            )
-            subtitleType = SubtitleType.CUSTOMER_ADDED
-        }
-        return subTitle.toAnnotatedString() to subtitleType
-    }
 }
 
 data class CustomerForHomeResponse(
@@ -214,6 +173,3 @@ data class CustomerForHomeResponse(
     val sortOption: SortOption,
     val reminderFilters: Set<ReminderFilterOption>,
 )
-
-const val DATE_TYPE_TODAY_OR_YESTERDAY = 3
-const val DATE_TYPE_DATE = 1

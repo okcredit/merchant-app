@@ -6,8 +6,8 @@ import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
 import app.okcredit.ledger.ui.di.LedgerUiComponent
 import app.okcredit.merchant.AndroidSharedComponent
 import app.okcredit.merchant.SharedScreenRegistryProvider
-import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import app.okcredit.onboarding.OnboardingComponent
+import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -24,6 +24,7 @@ import okcredit.base.syncer.AppWorkerFactory
 import tech.okcredit.ab.AndroidAbComponent
 import tech.okcredit.analytics.AndroidAnalyticsComponent
 import tech.okcredit.auth.AndroidAuthComponent
+import tech.okcredit.collection.AndroidCollectionComponent
 import tech.okcredit.customization.di.AndroidCustomizationComponent
 import tech.okcredit.device.AndroidDeviceComponent
 import tech.okcredit.identity.AndroidIdentityComponent
@@ -49,7 +50,8 @@ abstract class ApplicationComponent(
     AndroidLedgerComponent,
     OnboardingComponent,
     LedgerUiComponent,
-    AndroidCustomizationComponent {
+    AndroidCustomizationComponent,
+    AndroidCollectionComponent {
 
     abstract val appWorkerFactory: () -> AppWorkerFactory
 

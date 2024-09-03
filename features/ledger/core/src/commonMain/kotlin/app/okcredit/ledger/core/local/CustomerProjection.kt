@@ -8,7 +8,6 @@ import app.okcredit.ledger.contract.model.CustomerStatus
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf

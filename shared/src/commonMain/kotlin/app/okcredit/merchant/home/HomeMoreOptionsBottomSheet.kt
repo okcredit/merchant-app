@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,8 +13,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,18 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.okcredit.ui.theme.OkCreditTheme
-import app.okcredit.ui.theme.grey100
+import app.okcredit.ui.theme.colorAlphasBlackAlpha40
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-
 
 data class MoreOptionItem(
     val id: MoreOption,
     val icon: DrawableResource?,
     val title: String,
     val deeplink: String? = null,
-    val iconUrl: String? = null
+    val iconUrl: String? = null,
 )
 
 enum class MoreOption {
@@ -56,23 +54,25 @@ enum class MoreOption {
 fun HomeMoreOptions(
     modifier: Modifier,
     items: List<MoreOptionItem>,
-    onMoreItemClicked: (MoreOption, String?) -> Unit
+    onMoreItemClicked: (MoreOption, String?) -> Unit,
 ) {
     OkCreditTheme {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            modifier = modifier.padding(vertical = 8.dp),
-            shadowElevation = 12.dp
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(4),
-                modifier = Modifier.padding(vertical = 8.dp),
+        Box(modifier = Modifier.fillMaxSize().background(colorAlphasBlackAlpha40)) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                modifier = modifier.padding(vertical = 8.dp),
+                shadowElevation = 12.dp,
             ) {
-                items(items) {
-                    MoreOptionItem(
-                        item = it,
-                        onMoreItemClicked = onMoreItemClicked
-                    )
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(4),
+                    modifier = Modifier.padding(vertical = 8.dp),
+                ) {
+                    items(items) {
+                        MoreOptionItem(
+                            item = it,
+                            onMoreItemClicked = onMoreItemClicked,
+                        )
+                    }
                 }
             }
         }
@@ -90,12 +90,12 @@ fun MoreOptionItem(item: MoreOptionItem, onMoreItemClicked: (MoreOption, String?
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp, bottom = 12.dp)
+                .padding(top = 12.dp, bottom = 12.dp),
         ) {
             Box(
                 modifier = Modifier
                     .size(32.dp)
-                    .background(MaterialTheme.colorScheme.background, shape = CircleShape)
+                    .background(MaterialTheme.colorScheme.background, shape = CircleShape),
             ) {
                 if (!item.iconUrl.isNullOrEmpty()) {
                     AsyncImage(
@@ -104,7 +104,7 @@ fun MoreOptionItem(item: MoreOptionItem, onMoreItemClicked: (MoreOption, String?
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .size(20.dp)
+                            .size(20.dp),
                     )
                 } else {
                     Image(
@@ -118,7 +118,7 @@ fun MoreOptionItem(item: MoreOptionItem, onMoreItemClicked: (MoreOption, String?
                         },
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .size(20.dp)
+                            .size(20.dp),
                     )
                 }
             }
@@ -131,7 +131,7 @@ fun MoreOptionItem(item: MoreOptionItem, onMoreItemClicked: (MoreOption, String?
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                 maxLines = 2,
                 minLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import merchant_app.shared.generated.resources.Res
 import app.okcredit.ui.ic_add_first_supplier
+import merchant_app.shared.generated.resources.Res
 import merchant_app.shared.generated.resources.supplier_learn_more_title
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -31,7 +31,7 @@ fun EmptyPlaceholder(emptyImage: @Composable () -> Unit, message: String, emptyB
             text = message,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         )
         Spacer(modifier = Modifier.height(20.dp))
         emptyButton()
@@ -47,11 +47,11 @@ fun EmptyPlaceholderPreview() {
             Image(
                 painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_add_first_supplier),
                 contentDescription = stringResource(resource = Res.string.supplier_learn_more_title),
-                modifier = Modifier.size(160.dp)
+                modifier = Modifier.size(160.dp),
             )
         },
         message = stringResource(resource = Res.string.supplier_learn_more_title),
         emptyButton = {
-        }
+        },
     )
 }

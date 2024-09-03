@@ -10,4 +10,6 @@ sealed class SharedScreenRegistry : ScreenProvider {
     data object Splash : SharedScreenRegistry()
 
     data object SelectBusiness : SharedScreenRegistry()
+
+    data class Search(val currentTab: String) : SharedScreenRegistry()
 }

@@ -69,12 +69,12 @@ fun SortAndFilterBottomSheet(
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-            )
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            ),
     ) {
         SortAndFilterHeader(
             tab = currentTab,
-            onDismissClicked = onDismissClicked
+            onDismissClicked = onDismissClicked,
         )
         HorizontalDivider()
 
@@ -111,7 +111,7 @@ fun SortAndFilterBottomSheet(
                 onApplyClicked(SortOption.LAST_ACTIVITY, emptySet())
                 currentSortBy.value = SortOption.LAST_ACTIVITY
                 currentReminderFilters.value = emptySet()
-            }
+            },
         )
     }
 }
@@ -146,7 +146,7 @@ fun SortAndFilterContent(
 fun SortByUi(
     modifier: Modifier,
     selectedSortByOption: SortOption,
-    onSortBySelected: (SortOption) -> Unit
+    onSortBySelected: (SortOption) -> Unit,
 ) {
     FilterOptionsRadioButtonsUi(
         modifier = modifier.fillMaxWidth(),
@@ -164,7 +164,7 @@ fun SortByAndFilterUi(
     selectedSortByOption: SortOption,
     selectedReminderFilters: Set<ReminderFilterOption>,
     onSortBySelected: (SortOption) -> Unit,
-    onReminderFilterSelected: (ReminderFilterOption) -> Unit
+    onReminderFilterSelected: (ReminderFilterOption) -> Unit,
 ) {
     Row(modifier = modifier) {
         val selectedCategory = remember { mutableStateOf(CategoryOption.SORT_BY) }
@@ -228,22 +228,22 @@ fun FilterCategoryItemUi(
                         if (isSelected) {
                             drawRect(
                                 color = color,
-                                size = Size(width = 4.dp.toPx(), height = size.height)
+                                size = Size(width = 4.dp.toPx(), height = size.height),
                             )
                         }
                     }
-                    .clickable { onCategorySelected(category) }
+                    .clickable { onCategorySelected(category) },
             ) {
                 Text(
                     modifier = Modifier
                         .padding(
                             start = if (isSelected) 12.dp else 16.dp,
                             top = 14.dp,
-                            bottom = 14.dp
+                            bottom = 14.dp,
                         ),
                     text = findLabelForCategory(category),
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                 )
             }
             HorizontalDivider(
@@ -251,7 +251,7 @@ fun FilterCategoryItemUi(
                     .align(Alignment.End)
                     .width(104.dp),
                 color = MaterialTheme.colorScheme.outlineVariant,
-                thickness = 1.dp
+                thickness = 1.dp,
             )
         }
     }
@@ -279,13 +279,13 @@ fun FilterOptionsRadioButtonsUi(
                     .fillMaxWidth()
                     .clickable { onOptionSelected(option) },
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.padding(
                         start = 16.dp,
                         top = 16.dp,
-                        bottom = 18.dp
+                        bottom = 18.dp,
                     ),
                     text = findLabelForSortOption(option),
                     style = MaterialTheme.typography.bodyMedium,
@@ -325,13 +325,13 @@ fun FilterOptionsCheckboxUi(
                         .fillMaxWidth()
                         .clickable { onOptionSelected(item) },
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         modifier = Modifier.padding(
                             start = 16.dp,
                             top = 18.dp,
-                            bottom = 18.dp
+                            bottom = 18.dp,
                         ),
                         text = findLabelForReminderOption(item),
                         style = MaterialTheme.typography.bodyMedium,
@@ -343,10 +343,10 @@ fun FilterOptionsCheckboxUi(
                         colors = CheckboxDefaults.colors(
                             checkedColor = MaterialTheme.colorScheme.primary,
                             uncheckedColor = MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = 0.6f
+                                alpha = 0.6f,
                             ),
-                            checkmarkColor = MaterialTheme.colorScheme.surface
-                        )
+                            checkmarkColor = MaterialTheme.colorScheme.surface,
+                        ),
                     )
                 }
             }
@@ -369,7 +369,7 @@ fun Footer(onApplyClicked: () -> Unit, onClearClicked: () -> Unit) {
         primaryText = stringResource(resource = Res.string.cta_apply),
         secondaryText = stringResource(resource = Res.string.clear),
         onPrimaryClick = onApplyClicked,
-        onSecondaryClick = onClearClicked
+        onSecondaryClick = onClearClicked,
     )
 }
 
@@ -385,7 +385,7 @@ fun SortAndFilterHeader(tab: HomeTab, onDismissClicked: () -> Unit) {
             modifier = Modifier
                 .weight(1.0f)
                 .padding(16.dp),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         IconButton(onClick = onDismissClicked) {
@@ -403,7 +403,7 @@ fun SortAndFilterBottomSheetPreview() {
             selectedReminderFilters = emptySet(),
             onApplyClicked = { _, _ -> },
             onDismissClicked = { },
-            currentTab = HomeTab.SUPPLIER_TAB
+            currentTab = HomeTab.SUPPLIER_TAB,
         )
     }
 }

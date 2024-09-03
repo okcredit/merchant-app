@@ -317,19 +317,14 @@ class GetCustomerLedgerData(
         currentDate: Timestamp
     ): Long {
         return if (!isSameDay(lastDate, currentDate.epochMillis)) {
-            list.add(
-                LedgerItem.DateItem(currentDate.relativeDate())
-            )
+            list.add(LedgerItem.DateItem(currentDate.relativeDate()))
             currentDate.epochMillis
         } else {
             lastDate
         }
     }
 
-
-    private fun getEmptyCustomerPlaceHolderItem(name: String) = listOf(
-        LedgerItem.EmptyPlaceHolder(name)
-    )
+    private fun getEmptyCustomerPlaceHolderItem(name: String) = listOf(LedgerItem.EmptyPlaceHolder(name))
 
     private fun getCustomerDetails(customerId: String) =
         customerRepository.getCustomerDetails(customerId)

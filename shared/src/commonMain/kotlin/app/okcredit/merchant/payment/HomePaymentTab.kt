@@ -14,7 +14,7 @@ object HomePaymentTab : Tab {
             return TabOptions(
                 title = "Payment",
                 icon = painterResource(Res.drawable.icon_collections),
-                index = 1u
+                index = 1u,
             )
         }
 

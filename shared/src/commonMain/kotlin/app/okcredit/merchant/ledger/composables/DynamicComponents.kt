@@ -1,7 +1,6 @@
 package app.okcredit.merchant.ledger.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,9 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -59,7 +54,7 @@ fun DynamicComponent(
                     SingleDynamicItem(
                         item = dynamicItems.first(),
                         onDynamicItemClicked = onDynamicItemClicked,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     )
                 }
 
@@ -67,7 +62,7 @@ fun DynamicComponent(
                     DoubleDynamicItems(
                         firstItem = dynamicItems[0],
                         secondItem = dynamicItems[1],
-                        onDynamicItemClicked = onDynamicItemClicked
+                        onDynamicItemClicked = onDynamicItemClicked,
                     )
                 }
 
@@ -76,7 +71,7 @@ fun DynamicComponent(
                         firstItem = dynamicItems[0],
                         secondItem = dynamicItems[1],
                         thirdItem = dynamicItems[2],
-                        onDynamicItemClicked = onDynamicItemClicked
+                        onDynamicItemClicked = onDynamicItemClicked,
                     )
                 }
             }
@@ -101,21 +96,21 @@ fun TripleDynamicItems(
             onDynamicItemClicked = onDynamicItemClicked,
             modifier = Modifier
                 .weight(1.0f)
-                .padding(start = 16.dp, end = 6.dp)
+                .padding(start = 16.dp, end = 6.dp),
         )
         SingleVerticalDynamicItem(
             item = secondItem,
             onDynamicItemClicked = onDynamicItemClicked,
             modifier = Modifier
                 .weight(1.0f)
-                .padding(end = 6.dp, start = 6.dp)
+                .padding(end = 6.dp, start = 6.dp),
         )
         SingleVerticalDynamicItem(
             item = thirdItem,
             onDynamicItemClicked = onDynamicItemClicked,
             modifier = Modifier
                 .weight(1.0f)
-                .padding(end = 16.dp, start = 6.dp)
+                .padding(end = 16.dp, start = 6.dp),
         )
     }
 }
@@ -132,14 +127,14 @@ fun DoubleDynamicItems(
             onDynamicItemClicked = onDynamicItemClicked,
             modifier = Modifier
                 .weight(1.0f)
-                .padding(start = 16.dp, end = 6.dp, top = 8.dp, bottom = 12.dp)
+                .padding(start = 16.dp, end = 6.dp, top = 8.dp, bottom = 12.dp),
         )
         SingleDynamicItem(
             item = secondItem.copy(subtitle = null),
             onDynamicItemClicked = onDynamicItemClicked,
             modifier = Modifier
                 .weight(1.0f)
-                .padding(end = 16.dp, start = 6.dp, top = 8.dp, bottom = 12.dp)
+                .padding(end = 16.dp, start = 6.dp, top = 8.dp, bottom = 12.dp),
         )
     }
 }
@@ -156,11 +151,11 @@ fun SingleVerticalDynamicItem(
             item.trackOnItemClicked()
         },
         shape = MaterialTheme.shapes.small,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(12.dp),
         ) {
             if (item.icon.endsWith(".gif")) {
                 GifImage(
@@ -184,7 +179,7 @@ fun SingleVerticalDynamicItem(
                 textAlign = TextAlign.Center,
                 minLines = 2,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -202,7 +197,7 @@ fun GifImage(
             model = ImageRequest.Builder(context)
                 .data(data = gif).apply { size(Size.ORIGINAL) }
                 .build(),
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
         ),
         contentDescription = null,
         modifier = modifier,
@@ -221,13 +216,13 @@ fun SingleDynamicItem(
             item.trackOnItemClicked()
         },
         shape = MaterialTheme.shapes.small,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (item.icon.endsWith(".gif")) {
                 GifImage(
@@ -248,18 +243,18 @@ fun SingleDynamicItem(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(1.0f)
-                    .padding(start = 8.dp)
+                    .padding(start = 8.dp),
             ) {
                 Text(
                     text = item.title,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 if (!item.subtitle.isNullOrEmpty()) {
                     Text(
                         text = item.subtitle,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }
@@ -277,23 +272,23 @@ fun TripleDynamicItemsPreview() {
                 icon = "",
                 title = "GST Bills",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
             secondItem = HomeContract.DynamicItem(
                 id = "2",
                 icon = "",
                 title = "Stock Inventory",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
             thirdItem = HomeContract.DynamicItem(
                 id = "3",
                 icon = "",
                 title = "Stock Inventory",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
-            onDynamicItemClicked = { _, _ -> }
+            onDynamicItemClicked = { _, _ -> },
         )
     }
 }
@@ -308,16 +303,16 @@ fun DoubleDynamicItemsPreview() {
                 icon = "",
                 title = "GST Bills",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
             secondItem = HomeContract.DynamicItem(
                 id = "2",
                 icon = "",
                 title = "Stock Inventory",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
-            onDynamicItemClicked = { _, _ -> }
+            onDynamicItemClicked = { _, _ -> },
         )
     }
 }
@@ -332,9 +327,9 @@ fun SingleDynamicItemPreview() {
                 icon = "",
                 title = "title",
                 subtitle = "subtitle",
-                deeplink = ""
+                deeplink = "",
             ),
-            onDynamicItemClicked = { _, _ -> }
+            onDynamicItemClicked = { _, _ -> },
         )
     }
 }

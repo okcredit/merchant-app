@@ -54,7 +54,6 @@ val colorAlphasWhiteAlpha20: Color = Color(0x33FFFFFF)
 val colorAlphasWhiteAlpha40: Color = Color(0x66FFFFFF)
 val colorAlphasWhiteAlpha60: Color = Color(0x99FFFFFF)
 
-
 val light_brand_primary = green_800
 val light_brand_accent = green_300
 val light_brand_alert = orange_800

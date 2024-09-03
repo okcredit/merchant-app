@@ -1,16 +1,14 @@
 package tech.okcredit.ab
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.Singleton
 import okcredit.base.local.AndroidSqlDriverFactory
-import okcredit.base.syncer.ChildWorkerFactory
+import okcredit.base.syncer.WorkerFactoryPair
 import tech.okcredit.ab.di.AbComponent
 import tech.okcredit.ab.di.AbDriverFactory
 import tech.okcredit.ab.local.AbDatabase
-import kotlin.reflect.KClass
 
 interface AndroidAbComponent : AbComponent {
 
@@ -32,14 +30,14 @@ interface AndroidAbComponent : AbComponent {
     @Provides
     @IntoMap
     @Singleton
-    fun experimentAcknowledgeWorker(factory: ExperimentAcknowledgeWorker.Factory): Pair<KClass<out ListenableWorker>, ChildWorkerFactory> {
+    fun experimentAcknowledgeWorker(factory: ExperimentAcknowledgeWorker.Factory): WorkerFactoryPair {
         return ExperimentAcknowledgeWorker::class to factory
     }
 
     @Provides
     @IntoMap
     @Singleton
-    fun abSyncWorker(factory: AbSyncWorker.Factory): Pair<KClass<out ListenableWorker>, ChildWorkerFactory> {
+    fun abSyncWorker(factory: AbSyncWorker.Factory): WorkerFactoryPair {
         return AbSyncWorker::class to factory
     }
 }

@@ -20,8 +20,8 @@ class GetCustomization(
             emitAll(
                 customizationLocalSource.listComponentsForTarget(
                     businessId = businessId,
-                    target = target
-                )
+                    target = target,
+                ),
             )
         }
     }

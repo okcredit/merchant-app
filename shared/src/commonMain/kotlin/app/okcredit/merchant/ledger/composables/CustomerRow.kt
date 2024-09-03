@@ -43,7 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun CustomerRow(
     customerItem: HomeContract.HomeItem.CustomerItem,
     onItemClicked: (String) -> Unit,
-    onProfileClicked: (String) -> Unit
+    onProfileClicked: (String) -> Unit,
 ) {
     Column {
         Row(Modifier.clickable { onItemClicked(customerItem.customerId) }) {
@@ -57,7 +57,7 @@ fun CustomerRow(
                     .padding(vertical = 16.dp)
                     .size(44.dp)
                     .clickable { onProfileClicked(customerItem.customerId) }
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
             Column(
                 modifier = Modifier
@@ -76,7 +76,7 @@ fun CustomerRow(
                     lastActivityMetaInfo = customerItem.lastActivityMetaInfo,
                     lastActivity = customerItem.lastActivity,
                     lastAmount = customerItem.lastAmount,
-                    dueDate = customerItem.dueDate
+                    dueDate = customerItem.dueDate,
                 )
             }
 
@@ -94,7 +94,7 @@ fun CustomerRow(
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.error
-                    }
+                    },
                 )
                 Text(
                     text = if (customerItem.balance > 0.paisa) {
@@ -104,7 +104,7 @@ fun CustomerRow(
                     },
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.End),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
             }
         }
@@ -117,7 +117,7 @@ fun SubtitleText(
     dueDate: Timestamp?,
     lastActivityMetaInfo: Int,
     lastActivity: Timestamp,
-    lastAmount: Paisa?
+    lastAmount: Paisa?,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         val image = findSubtitleImageForType(dueDate, lastActivityMetaInfo)
@@ -127,13 +127,13 @@ fun SubtitleText(
             contentDescription = text,
             colorFilter = ColorFilter.tint(
                 color = findSubtitleColorForType(
-                    dueDate = dueDate
-                )
+                    dueDate = dueDate,
+                ),
             ),
             modifier = Modifier
                 .padding(end = 4.dp)
                 .align(Alignment.CenterVertically)
-                .size(16.dp)
+                .size(16.dp),
         )
         Text(
             text = text,
@@ -151,7 +151,7 @@ fun findSubtitle(
     dueDate: Timestamp?,
     lastActivityMetaInfo: Int,
     lastActivity: Timestamp,
-    lastAmount: Paisa?
+    lastAmount: Paisa?,
 ): String {
     if (dueDate != null && dueDate.isZero.not()) {
         val daysDifference = dueDate.differenceInDays()
@@ -163,22 +163,22 @@ fun findSubtitle(
     }
 
     return when (lastActivityMetaInfo) {
-        0 -> "${lastAmount.toString()} credit deleted ${lastActivity.relativeDate()}"
-        1 -> "${lastAmount.toString()} payment deleted ${lastActivity.relativeDate()}"
-        2 -> "${lastAmount.toString()} credit added ${lastActivity.relativeDate()}"
-        3 -> "${lastAmount.toString()} payment added ${lastActivity.relativeDate()}"
+        0 -> "$lastAmount credit deleted ${lastActivity.relativeDate()}"
+        1 -> "$lastAmount payment deleted ${lastActivity.relativeDate()}"
+        2 -> "$lastAmount credit added ${lastActivity.relativeDate()}"
+        3 -> "$lastAmount payment added ${lastActivity.relativeDate()}"
         5 -> "Processing"
-        6 -> "${lastAmount.toString()} discount deleted ${lastActivity.relativeDate()}"
-        7 -> "${lastAmount.toString()} discount added ${lastActivity.relativeDate()}"
-        8 -> "${lastAmount.toString()} credit updated ${lastActivity.relativeDate()}"
-        9 -> "${lastAmount.toString()} payment updated ${lastActivity.relativeDate()}"
+        6 -> "$lastAmount discount deleted ${lastActivity.relativeDate()}"
+        7 -> "$lastAmount discount added ${lastActivity.relativeDate()}"
+        8 -> "$lastAmount credit updated ${lastActivity.relativeDate()}"
+        9 -> "$lastAmount payment updated ${lastActivity.relativeDate()}"
         else -> "Account added ${lastActivity.relativeDate()}"
     }
 }
 
 fun findSubtitleImageForType(
     dueDate: Timestamp?,
-    lastActivityMetaInfo: Int
+    lastActivityMetaInfo: Int,
 ): DrawableResource {
     if (dueDate != null) {
         return app.okcredit.ui.Res.drawable.icon_date
@@ -200,7 +200,7 @@ fun findSubtitleColorForType(dueDate: Timestamp?): Color {
         }
     }
 
-   return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+    return MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
 }
 
 @Preview
@@ -217,10 +217,10 @@ fun CustomerRowPreview() {
                 isDefaulter = false,
                 lastActivity = Clock.System.now().timestamp,
                 lastActivityMetaInfo = 0,
-                dueDate = null
+                dueDate = null,
             ),
             onItemClicked = {},
-            onProfileClicked = { }
+            onProfileClicked = { },
         )
     }
 }

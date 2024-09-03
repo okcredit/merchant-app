@@ -31,21 +31,21 @@ fun LoadingShimmer(numberOfItems: Int = 3) {
     // These colors will be used on the brush. The lightest color should be in the middle
 
     val gradient = listOf(
-        Color.LightGray.copy(alpha = 0.9f), // darker grey (90% opacity)
-        Color.LightGray.copy(alpha = 0.3f), // lighter grey (30% opacity)
-        Color.LightGray.copy(alpha = 0.9f)
+        Color.LightGray.copy(alpha = 0.9f),
+        Color.LightGray.copy(alpha = 0.3f),
+        Color.LightGray.copy(alpha = 0.9f),
     )
 
-    val transition = rememberInfiniteTransition(label = "") // animate infinite times
+    val transition = rememberInfiniteTransition(label = "")
 
-    val translateAnimation = transition.animateFloat( // animate the transition
+    val translateAnimation = transition.animateFloat(
         initialValue = 0f,
         targetValue = 1000f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 1000, // duration for the animation
-                easing = FastOutLinearInEasing
-            )
+                durationMillis = 1000,
+                easing = FastOutLinearInEasing,
+            ),
         ),
         label = "",
     )
@@ -54,8 +54,8 @@ fun LoadingShimmer(numberOfItems: Int = 3) {
         start = Offset(200f, 200f),
         end = Offset(
             x = translateAnimation.value,
-            y = translateAnimation.value
-        )
+            y = translateAnimation.value,
+        ),
     )
     Column {
         for (i in 0 until numberOfItems) {
@@ -69,32 +69,32 @@ fun LoadingShimmer(numberOfItems: Int = 3) {
 fun ShimmerGridItem(brush: Brush) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(all = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(
             modifier = Modifier
                 .size(44.dp)
                 .clip(CircleShape)
-                .background(brush)
+                .background(brush),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(
-            modifier = Modifier.weight(1.0f)
+            modifier = Modifier.weight(1.0f),
         ) {
             Spacer(
                 modifier = Modifier
                     .height(16.dp)
                     .clip(RoundedCornerShape(2.dp))
                     .fillMaxWidth(fraction = 0.5f)
-                    .background(brush)
+                    .background(brush),
             )
-            Spacer(modifier = Modifier.height(4.dp)) // creates an empty space between
+            Spacer(modifier = Modifier.height(4.dp))
             Spacer(
                 modifier = Modifier
                     .height(12.dp)
                     .clip(RoundedCornerShape(2.dp))
                     .fillMaxWidth(fraction = 0.7f)
-                    .background(brush)
+                    .background(brush),
             )
         }
     }

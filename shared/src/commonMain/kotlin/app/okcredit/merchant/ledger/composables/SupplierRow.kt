@@ -19,16 +19,18 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.okcredit.merchant.ledger.HomeContract
-import app.okcredit.merchant.ledger.SubtitleIconType
 import app.okcredit.ui.advance
 import app.okcredit.ui.due
-import app.okcredit.ui.error_outline_24px
 import app.okcredit.ui.icon_done
 import app.okcredit.ui.icon_name
 import app.okcredit.ui.icon_schedule
 import app.okcredit.ui.theme.OkCreditTheme
 import app.okcredit.ui.theme.grey900
+import kotlinx.datetime.Clock
+import okcredit.base.units.Paisa
+import okcredit.base.units.Timestamp
 import okcredit.base.units.paisa
+import okcredit.base.units.timestamp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -38,7 +40,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun SupplierRow(
     supplierItem: HomeContract.HomeItem.SupplierItem,
     onClick: (String) -> Unit,
-    onProfileClicked: (String) -> Unit
+    onProfileClicked: (String) -> Unit,
 ) {
     Column {
         Row(Modifier.clickable { onClick(supplierItem.supplierId) }) {
@@ -51,7 +53,7 @@ fun SupplierRow(
                     .clickable { onProfileClicked(supplierItem.supplierId) }
                     .padding(vertical = 16.dp)
                     .size(44.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
             Column(
                 modifier = Modifier
@@ -67,8 +69,9 @@ fun SupplierRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 SubtitleTextForSupplier(
-                    subtitle = supplierItem.subtitle,
-                    type = supplierItem.subtitleIconType,
+                    lastActivityMetaInfo = supplierItem.lastActivityMetaInfo,
+                    lastAmount = supplierItem.lastAmount,
+                    lastActivity = supplierItem.lastActivity,
                 )
             }
 
@@ -86,7 +89,7 @@ fun SupplierRow(
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.error
-                    }
+                    },
                 )
                 Text(
                     text = if (supplierItem.balance > 0.paisa) {
@@ -96,7 +99,7 @@ fun SupplierRow(
                     },
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.align(Alignment.End),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
             }
         }
@@ -105,10 +108,15 @@ fun SupplierRow(
 }
 
 @Composable
-fun SubtitleTextForSupplier(subtitle: String?, type: SubtitleIconType?) {
+fun SubtitleTextForSupplier(
+    lastActivityMetaInfo: Int,
+    lastAmount: Paisa?,
+    lastActivity: Timestamp,
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         val image =
-            findSupplierSubtitleImageForType(type ?: SubtitleIconType.NONE)
+            findSupplierSubtitleImageForType(lastActivityMetaInfo)
+        val subtitle = findSubtitleForSupplier(lastActivityMetaInfo, lastAmount, lastActivity)
         Image(
             painter = painterResource(resource = image),
             contentDescription = subtitle,
@@ -116,7 +124,7 @@ fun SubtitleTextForSupplier(subtitle: String?, type: SubtitleIconType?) {
             modifier = Modifier
                 .padding(end = 4.dp)
                 .align(Alignment.CenterVertically)
-                .size(16.dp)
+                .size(16.dp),
         )
         if (!subtitle.isNullOrEmpty()) {
             Text(
@@ -129,11 +137,27 @@ fun SubtitleTextForSupplier(subtitle: String?, type: SubtitleIconType?) {
     }
 }
 
-fun findSupplierSubtitleImageForType(subtitleIconType: SubtitleIconType): DrawableResource {
-    return when (subtitleIconType) {
-        SubtitleIconType.USER -> app.okcredit.ui.Res.drawable.icon_name
-        SubtitleIconType.ERROR -> app.okcredit.ui.Res.drawable.error_outline_24px
-        SubtitleIconType.TRANSACTION_SYNC_PENDING -> app.okcredit.ui.Res.drawable.icon_schedule
+fun findSubtitleForSupplier(
+    lastActivityMetaInfo: Int,
+    lastAmount: Paisa?,
+    lastActivity: Timestamp,
+): String {
+    return when (lastActivityMetaInfo) {
+        0 -> "$lastAmount credit deleted ${lastActivity.relativeDate()}"
+        1 -> "$lastAmount payment deleted ${lastActivity.relativeDate()}"
+        2 -> "$lastAmount credit added ${lastActivity.relativeDate()}"
+        3 -> "$lastAmount payment added ${lastActivity.relativeDate()}"
+        5 -> "Processing"
+        8 -> "$lastAmount credit updated ${lastActivity.relativeDate()}"
+        9 -> "$lastAmount payment updated ${lastActivity.relativeDate()}"
+        else -> "Supplier added ${lastActivity.relativeDate()}"
+    }
+}
+
+fun findSupplierSubtitleImageForType(lastActivityMetaInfo: Int): DrawableResource {
+    return when (lastActivityMetaInfo) {
+        4 -> app.okcredit.ui.Res.drawable.icon_name
+        5 -> app.okcredit.ui.Res.drawable.icon_schedule
         else -> app.okcredit.ui.Res.drawable.icon_done
     }
 }
@@ -148,12 +172,13 @@ fun SupplierRowPreview() {
                 name = "Shubham",
                 balance = 1000L.paisa,
                 profileImage = null,
-                subtitle = "subtitle",
-                subtitleIconType = null,
-                commonLedger = false
+                commonLedger = false,
+                lastActivity = Clock.System.now().timestamp,
+                lastActivityMetaInfo = 0,
+                lastAmount = 1000L.paisa,
             ),
             onClick = {},
-            onProfileClicked = {}
+            onProfileClicked = {},
         )
     }
 }
