@@ -86,6 +86,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 data class TransactionViewState(
     val txnId: String,
     val relationshipId: String,
+    val collectionId: String,
     val createdBySelf: Boolean = true,
     val imageCount: Int = 0,
     val image: String? = "",
@@ -117,8 +118,7 @@ sealed class UiTxnStatus {
     ) : UiTxnStatus()
 
     enum class ProcessingTransactionAction {
-        NONE,
-        HELP;
+        NONE, HELP;
     }
 }
 
@@ -160,28 +160,20 @@ fun TransactionView(
     val isPayment = item.txnGravity == TxnGravity.LEFT
 
     Box(
-        modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier
-                .wrapContentWidth()
+            modifier = Modifier.wrapContentWidth()
                 .align(if (isPayment) Alignment.CenterStart else Alignment.CenterEnd),
         ) {
             Card(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .border(
+                modifier = Modifier.wrapContentWidth().border(
                         1.dp,
                         MaterialTheme.colorScheme.outlineVariant,
                         shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
+                    ).clickable {
                         onTransactionClicked(
-                            item.txnId,
-                            item.closingBalance,
-                            item.isDiscountTransaction
+                            item.txnId, item.closingBalance, item.isDiscountTransaction
                         )
                     },
                 shape = RoundedCornerShape(8.dp),
@@ -191,9 +183,7 @@ fun TransactionView(
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = 0.dp),
             ) {
                 Column(
-                    modifier = Modifier
-                        .widthIn(max = 240.dp)
-                        .background(
+                    modifier = Modifier.widthIn(max = 240.dp).background(
                             brush = if (!item.txnTag.isNullOrEmpty()) {
                                 verticalGradient(
                                     getHeightOfGreyBackground(item) to MaterialTheme.colorScheme.outlineVariant,
@@ -202,8 +192,7 @@ fun TransactionView(
                                 )
                             } else {
                                 Brush.linearGradient(
-                                    1.0f to Color.White,
-                                    1f to Color.White
+                                    1.0f to Color.White, 1f to Color.White
                                 )
                             }
                         )
@@ -215,9 +204,7 @@ fun TransactionView(
                     TransactionAmountStrip(
                         transactionAmount = item.amount.value.toFormattedAmount(true),
                         transactionTextColor = getTransactionTextColor(
-                            item.amount,
-                            isPayment,
-                            item.accountType
+                            item.amount, isPayment, item.accountType
                         ),
                         transactionDate = item.date,
                         arrowIcon = {
@@ -233,8 +220,10 @@ fun TransactionView(
                         isPayment = isPayment,
                         isTransactionImageAdded = item.imageCount > 0,
                         supplierLedger = item.accountType.isSupplier(),
-
-                        )
+                        createdBySelf = item.createdBySelf,
+                        isDirty = item.dirty,
+                        collectionId = item.collectionId,
+                    )
                     if (item.txnType !is UiTxnStatus.DeletedTransaction) {
                         TransactionBillImages(
                             image = item.image,
@@ -288,34 +277,27 @@ fun TransactionShareButton(
     if (isLastItem.not()) return
 
     Row(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(20.dp)
-            )
-            .border(
+        modifier = modifier.background(
+                color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(20.dp)
+            ).border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outlineVariant,
                 shape = RoundedCornerShape(20.dp)
-            ),
-        horizontalArrangement = when (gravity) {
+            ), horizontalArrangement = when (gravity) {
             TxnGravity.LEFT -> Arrangement.End
             TxnGravity.RIGHT -> Arrangement.Start
-        },
-        verticalAlignment = Alignment.CenterVertically
+        }, verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .clickable {
-                    onShareClicked()
-                }
-                .padding(vertical = 10.dp, horizontal = 8.dp)
-                .defaultMinSize(minWidth = ButtonDefaults.MinWidth),
-        ) {
+        Row(modifier = Modifier.clickable {
+                onShareClicked()
+            }.padding(vertical = 10.dp, horizontal = 8.dp)
+            .defaultMinSize(minWidth = ButtonDefaults.MinWidth),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(app.okcredit.ui.Res.drawable.icon_share),
+                painter = painterResource(Res.drawable.icon_share),
                 contentDescription = "Share",
-                modifier = Modifier.padding(end = 6.dp),
+                modifier = Modifier.size(18.dp).padding(end = 6.dp),
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
             )
             Text(
@@ -392,10 +374,7 @@ fun TransactionBillImages(
     var loadKey by remember { mutableIntStateOf(1) }
 
     Box(
-        modifier = modifier
-            .padding(4.dp)
-            .wrapContentWidth()
-            .wrapContentHeight()
+        modifier = modifier.padding(4.dp).wrapContentWidth().wrapContentHeight()
     ) {
         val painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalPlatformContext.current)
@@ -425,18 +404,13 @@ fun TransactionBillImages(
         Image(
             painter = painter,
             contentDescription = "Transaction Bill",
-            modifier = Modifier
-                .widthIn(max = 240.dp)
-                .heightIn(max = 180.dp),
+            modifier = Modifier.widthIn(max = 240.dp).heightIn(max = 180.dp),
             contentScale = ContentScale.Crop
         )
         if (imageCount > 1) {
             Card(
                 shape = RoundedCornerShape(4.dp),
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-                    .size(32.dp),
+                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp).size(32.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 ),
@@ -479,28 +453,22 @@ fun TxnBillLoader(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite_txns")
     val angle by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
+        initialValue = 0f, targetValue = 360f, animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 600, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        ),
-        label = "rotation_animation"
+        ), label = "rotation_animation"
     )
 
     Image(
         painter = painterResource(Res.drawable.icon_refresh_outline),
         contentDescription = "Loader",
-        modifier = modifier
-            .rotate(angle)
-            .size(40.dp)
+        modifier = modifier.rotate(angle).size(40.dp)
     )
 }
 
 @Composable
 fun RetryButton(
-    onRetryClicked: () -> Unit,
-    modifier: Modifier
+    onRetryClicked: () -> Unit, modifier: Modifier
 ) {
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onSurface),
@@ -517,9 +485,7 @@ fun RetryButton(
             tint = Color.White
         )
         Text(
-            text = "Retry",
-            color = Color.White,
-            style = MaterialTheme.typography.labelMedium.copy(
+            text = "Retry", color = Color.White, style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.SemiBold
             )
         )
@@ -538,6 +504,9 @@ fun TransactionAmountStrip(
     isDeletedTransaction: Boolean,
     isPayment: Boolean,
     isTransactionImageAdded: Boolean,
+    createdBySelf: Boolean,
+    isDirty: Boolean,
+    collectionId: String,
 ) {
     val findWidth = if (isTransactionImageAdded) {
         modifier.widthIn(min = 240.dp, max = 240.dp)
@@ -545,8 +514,7 @@ fun TransactionAmountStrip(
         modifier.widthIn(max = 240.dp)
     }
     Row(
-        modifier = findWidth
-            .padding(horizontal = 12.dp, vertical = 10.dp)
+        modifier = findWidth.padding(horizontal = 12.dp, vertical = 10.dp)
             .background(color = Color.Transparent),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -557,8 +525,7 @@ fun TransactionAmountStrip(
         ) {
             if (isDeletedTransaction) {
                 DeletedTransactionUi(
-                    isPayment = isPayment,
-                    supplierLedger = supplierLedger
+                    isPayment = isPayment, supplierLedger = supplierLedger
                 )
             }
             TransactionArrow(
@@ -573,11 +540,40 @@ fun TransactionAmountStrip(
             )
         }
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End
         ) {
             TransactionDate(transactionDate, Modifier.align(Alignment.CenterVertically))
         }
+        TransactionSyncStatus(
+            collectionId = collectionId, isCreatedBySelf = createdBySelf, isDirty = isDirty
+        )
+    }
+}
+
+@Composable
+fun TransactionSyncStatus(
+    collectionId: String, isCreatedBySelf: Boolean, isDirty: Boolean
+) {
+    val iconRes = when {
+        collectionId.isEmpty().not() && isDirty -> Res.drawable.icon_sync
+
+        isCreatedBySelf -> if (isDirty) {
+            Res.drawable.icon_sync
+        } else {
+            Res.drawable.icon_single_check
+        }
+
+        else -> null
+    }
+
+    iconRes?.let {
+        Icon(
+            painter = painterResource(it),
+            contentDescription = "Sync Status",
+            modifier = Modifier.padding(start = 4.dp).size(16.dp),
+            tint = if (collectionId.isNotEmpty()) MaterialTheme.colorScheme.outlineVariant
+            else MaterialTheme.colorScheme.outlineVariant
+        )
     }
 }
 
@@ -596,12 +592,9 @@ fun DeletedTransactionUi(
     Text(
         text = stringResource(
             getDeletedSuffixText(
-                isPayment = isPayment,
-                supplierLedger = supplierLedger
+                isPayment = isPayment, supplierLedger = supplierLedger
             )
-        ),
-        style = MaterialTheme.typography.labelSmall,
-        modifier = Modifier.padding(end = 2.dp)
+        ), style = MaterialTheme.typography.labelSmall, modifier = Modifier.padding(end = 2.dp)
     )
 }
 
@@ -611,7 +604,7 @@ fun TransactionDate(transactionDate: String, modifier: Modifier) {
         text = transactionDate,
         style = MaterialTheme.typography.labelMedium,
         modifier = modifier,
-        color = MaterialTheme.colorScheme.outlineVariant,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
@@ -631,8 +624,7 @@ fun TransactionAmount(
                 TextDecoration.LineThrough
             } else {
                 TextDecoration.None
-            },
-            fontSize = if (isDeletedTransaction) 13.sp else 20.sp
+            }, fontSize = if (isDeletedTransaction) 13.sp else 20.sp
         ),
         modifier = Modifier.padding(end = 6.dp),
         color = if (isDiscountTransaction) MaterialTheme.colorScheme.onSurface
@@ -642,8 +634,7 @@ fun TransactionAmount(
 }
 
 fun getDeletedSuffixText(
-    isPayment: Boolean,
-    supplierLedger: Boolean
+    isPayment: Boolean, supplierLedger: Boolean
 ): StringResource {
     return if (supplierLedger) {
         if (isPayment) app.okcredit.ledger.ui.Res.string.credit_deleted else app.okcredit.ledger.ui.Res.string.payment_deleted
@@ -682,10 +673,7 @@ fun getTransactionTextColor(amount: Paisa, isPayment: Boolean, accountType: Acco
 
 @Composable
 fun GetTransactionArrows(
-    amount: Paisa,
-    isPayment: Boolean,
-    accountType: AccountType,
-    isDeletedTransaction: Boolean
+    amount: Paisa, isPayment: Boolean, accountType: AccountType, isDeletedTransaction: Boolean
 ) {
     if (accountType.isSupplier()) {
         if (amount < Paisa.ZERO || !isPayment) {
@@ -724,8 +712,7 @@ fun GetTransactionArrows(
 
 @Composable
 fun TransactionTag(
-    transactionTag: String?,
-    modifier: Modifier = Modifier
+    transactionTag: String?, modifier: Modifier = Modifier
 ) {
     if (!transactionTag.isNullOrEmpty()) {
         Row(
@@ -735,8 +722,7 @@ fun TransactionTag(
                 text = transactionTag,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .wrapContentWidth()
+                modifier = Modifier.wrapContentWidth()
                     .padding(start = 16.dp, top = 4.dp, end = 16.dp, bottom = 4.dp),
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
@@ -819,7 +805,10 @@ fun TransactionItemPreview() {
         txnType = UiTxnStatus.Transaction,
         relationshipId = "1",
         imageCount = 2,
-        image = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+        image = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+        createdBySelf = true,
+        isDiscountTransaction = false,
+        collectionId = "1",
     )
     LedgerTransactionView(
         item = sampleTxnItem,

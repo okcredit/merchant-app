@@ -4,13 +4,15 @@ import app.okcredit.ui.icon_call
 import app.okcredit.ui.icon_help_outline
 import app.okcredit.ui.icon_sms
 import app.okcredit.ui.icon_statement
+import app.okcredit.ui.icon_statement_2
+import app.okcredit.ui.icon_stats
 import app.okcredit.ui.icon_whatsapp
 import org.jetbrains.compose.resources.DrawableResource
 
 sealed class MenuOptions(val icon: DrawableResource, val name: String) {
 
     data object RelationshipStatements : MenuOptions(
-        icon = app.okcredit.ui.Res.drawable.icon_statement,
+        icon = app.okcredit.ui.Res.drawable.icon_statement_2,
         name = "Customer Statements"
     )
 

@@ -12,8 +12,6 @@ import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
 import app.okcredit.ledger.ui.model.TransactionDueInfo
-import app.okcredit.ledger.ui.utils.DateTimeUtils.formatDateOnly
-import app.okcredit.ledger.ui.utils.DateTimeUtils.getTimeOnly
 import app.okcredit.ledger.ui.utils.DateTimeUtils.isSameDay
 import app.okcredit.ledger.ui.utils.DateTimeUtils.isSevenDaysPassed
 import app.okcredit.ledger.ui.utils.StringUtils
@@ -52,7 +50,7 @@ class GetCustomerLedgerData(
             ) { customer, transactions ->
                 processTransactionsData(
                     customer = customer,
-                    transactions = transactions,
+                    transactions = transactions.reversed(),
                     showOldClicked = showOldClicked
                 )
             }
@@ -89,7 +87,7 @@ class GetCustomerLedgerData(
             lastTransactionDate = checkForDateItem(
                 list = list,
                 lastDate = lastTransactionDate,
-                currentDate = currentTransactionDate.epochMillis
+                currentDate = currentTransactionDate
             )
             addTransactionItemInList(
                 list = list,
@@ -187,10 +185,7 @@ class GetCustomerLedgerData(
                 accountType = AccountType.Customer
             ),
             amount = transaction.amount,
-            date = findFormattedDateOrTime(
-                createdAt = transaction.createdAt,
-                billDate = transaction.billDate,
-            ),
+            date = transaction.billDate.relativeTime(),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
             isDiscountTransaction = transaction.category == Transaction.Category.DISCOUNT,
@@ -198,6 +193,7 @@ class GetCustomerLedgerData(
             txnTag = findTransactionTag(transaction, customerName = customerName),
             closingBalance = closingBalance,
             relationshipId = customerId,
+            collectionId = "",
         )
     }
 
@@ -205,6 +201,10 @@ class GetCustomerLedgerData(
         return when {
             transaction.category == Transaction.Category.DISCOUNT && transaction.deleted -> {
                 "Discount deleted"
+            }
+
+            transaction.category == Transaction.Category.AUTO_CREDIT -> {
+                "Subscription"
             }
 
             transaction.category == Transaction.Category.DISCOUNT -> {
@@ -243,10 +243,7 @@ class GetCustomerLedgerData(
                 accountType = AccountType.Customer
             ),
             amount = transaction.amount,
-            date = findFormattedDateOrTime(
-                createdAt = transaction.createdAt,
-                billDate = transaction.billDate,
-            ),
+            date = transaction.billDate.relativeTime(),
             closingBalance = closingBalance,
             txnTag = "Online Transaction",
             txnType = UiTxnStatus.ProcessingTransaction(
@@ -255,6 +252,7 @@ class GetCustomerLedgerData(
             note = transaction.note,
             relationshipId = customerId,
             dirty = transaction.dirty,
+            collectionId = ""
         )
     }
 
@@ -282,10 +280,7 @@ class GetCustomerLedgerData(
             ),
             dirty = transaction.dirty,
             amount = transaction.amount,
-            date = findFormattedDateOrTime(
-                createdAt = transaction.createdAt,
-                billDate = transaction.billDate,
-            ),
+            date = transaction.billDate.relativeTime(),
             closingBalance = closingBalance,
             relationshipId = customerId,
             note = transaction.note,
@@ -293,6 +288,7 @@ class GetCustomerLedgerData(
                 customerName,
                 transaction.deletedByCustomer,
             ),
+            collectionId = ""
         )
     }
 
@@ -307,22 +303,6 @@ class GetCustomerLedgerData(
         }
     }
 
-    private fun findFormattedDateOrTime(
-        createdAt: Timestamp,
-        billDate: Timestamp,
-    ): String {
-        return if (isSameDay(
-                lastDate = createdAt.epochMillis,
-                currentDate = billDate.epochMillis
-            )
-        ) {
-            getTimeOnly(billDate.instant).trim()
-        } else {
-            formatDateOnly(billDate.instant).trim()
-        }
-    }
-
-
     private fun findUiTxnGravity(isPayment: Boolean, accountType: AccountType): TxnGravity {
         return if (isPayment) {
             if (accountType == AccountType.Customer) TxnGravity.LEFT else TxnGravity.RIGHT
@@ -334,15 +314,13 @@ class GetCustomerLedgerData(
     private fun checkForDateItem(
         list: MutableList<LedgerItem>,
         lastDate: Long,
-        currentDate: Long
+        currentDate: Timestamp
     ): Long {
-        return if (!isSameDay(lastDate, currentDate)) {
+        return if (!isSameDay(lastDate, currentDate.epochMillis)) {
             list.add(
-                LedgerItem.DateItem(
-                    ""
-                )
+                LedgerItem.DateItem(currentDate.relativeDate())
             )
-            currentDate
+            currentDate.epochMillis
         } else {
             lastDate
         }

@@ -1,6 +1,8 @@
 package app.okcredit.ledger.ui.customer.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -74,7 +76,7 @@ fun CustomerLedgerUi(
         content = { paddingValues ->
             CustomerLedgerList(
                 paddingValues = paddingValues,
-                modifier = Modifier,
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.surface),
                 ledgerItems = state.ledgerItems,
                 transactionScrollPosition = state.transactionScrollPosition,
                 onLearnMoreClicked = onLearnMoreClicked,

@@ -73,7 +73,10 @@ fun LedgerToolBar(
         } else {
             state.toolbarOptions
         }
-        Column {
+        Card(
+            shape = RoundedCornerShape(0.dp),
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+        ) {
             TopAppBar(
                 modifier = Modifier,
                 title = {

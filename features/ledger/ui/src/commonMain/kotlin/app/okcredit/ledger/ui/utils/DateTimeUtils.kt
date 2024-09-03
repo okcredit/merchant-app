@@ -2,12 +2,15 @@ package app.okcredit.ledger.ui.utils
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
+import okcredit.base.units.Timestamp
 
 object DateTimeUtils {
- //todo check with @mohitesh, this might not work in iOS
+    //todo check with @mohitesh, this might not work in iOS
     fun getCurrentTime(): Instant {
         return Clock.System.now()
     }
@@ -23,14 +26,19 @@ object DateTimeUtils {
     }
 
     fun isSameDay(lastDate: Long, currentDate: Long): Boolean {
-        return Instant.fromEpochMilliseconds(epochMilliseconds = lastDate)
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date == Instant.fromEpochMilliseconds(
-            epochMilliseconds = currentDate
-        ).toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return Instant.fromEpochMilliseconds(lastDate)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+            .atStartOfDayIn(TimeZone.currentSystemDefault())
+            .toEpochMilliseconds() == Instant.fromEpochMilliseconds(currentDate)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+            .atStartOfDayIn(TimeZone.currentSystemDefault())
+            .toEpochMilliseconds()
     }
 
     fun isSevenDaysPassed(billDate: Instant): Boolean {
-        return billDate.toLocalDateTime(TimeZone.currentSystemDefault()).date.daysUntil(getCurrentTime().toLocalDateTime(TimeZone.currentSystemDefault()).date) > 7
+        return billDate.toLocalDateTime(TimeZone.currentSystemDefault()).date.daysUntil(
+            getCurrentTime().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        ) > 7
     }
 
     fun formatDateOnly(dateTime: Instant): String {

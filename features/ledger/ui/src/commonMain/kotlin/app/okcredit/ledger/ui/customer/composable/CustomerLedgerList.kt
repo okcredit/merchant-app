@@ -82,6 +82,7 @@ fun CustomerLedgerList(
                         imageCount = item.imageCount,
                         image = item.image,
                         accountType = AccountType.Customer,
+                        collectionId = item.collectionId,
                     ),
                     isLastItem = index == ledgerItems.lastIndex,
                     onTransactionClicked = onTransactionClicked,

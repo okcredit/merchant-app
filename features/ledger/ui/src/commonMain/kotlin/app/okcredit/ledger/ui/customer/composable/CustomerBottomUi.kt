@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,10 +41,14 @@ import app.okcredit.ui.icon_chevron_right
 import app.okcredit.ui.icon_credit_up
 import app.okcredit.ui.icon_date
 import app.okcredit.ui.icon_menu
+import app.okcredit.ui.icon_more_horiz
 import app.okcredit.ui.icon_payment_down
 import app.okcredit.ui.icon_sms_outline
 import app.okcredit.ui.icon_statement
+import app.okcredit.ui.icon_statement_2
 import app.okcredit.ui.icon_whatsapp
+import app.okcredit.ui.theme.grey400
+import app.okcredit.ui.theme.grey800
 import okcredit.base.units.Paisa
 import okcredit.base.units.formatPaisa
 import org.jetbrains.compose.resources.painterResource
@@ -69,18 +74,28 @@ fun CustomerBottomUi(
             onMoreClicked = onMoreClicked,
         )
         DueDateUi(
-            modifier = Modifier,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.tertiaryContainer),
             dueDate = dueDate,
             onCallClicked = onCallClicked,
             onWhatsappClicked = onWhatsappClicked,
         )
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.surface
+        )
         BalanceUi(
-            modifier = Modifier,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background),
             balance = balance ?: Paisa.ZERO,
             onBalanceClicked = onBalanceClicked
         )
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.surface
+        )
         PaymentAndCreditCta(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(16.dp),
             onReceivedClicked = onReceivedClicked,
             onGivenClicked = onGivenClicked
         )
@@ -262,6 +277,7 @@ fun BalanceUi(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { onBalanceClicked() },
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         Text(
@@ -358,7 +374,7 @@ fun TopBar(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val customIconModifier = Modifier
-        .background(MaterialTheme.colorScheme.outlineVariant, CircleShape)
+        .background(grey400, CircleShape)
         .padding(4.dp)
         .width(16.dp)
         .height(16.dp)
@@ -384,27 +400,31 @@ fun TopBar(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Icon(
-                painter = painterResource(app.okcredit.ui.Res.drawable.icon_statement),
+                painter = painterResource(app.okcredit.ui.Res.drawable.icon_statement_2),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
+                tint = MaterialTheme.colorScheme.surface
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_sms_outline),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
+                tint = MaterialTheme.colorScheme.surface
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_call),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
+                tint = MaterialTheme.colorScheme.surface
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_whatsapp),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
+                tint = MaterialTheme.colorScheme.surface
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
@@ -417,15 +437,15 @@ fun TopBar(
                 modifier = Modifier,
                 text = "More",
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 ),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 12.sp
             )
             Spacer(modifier = Modifier.width(5.dp))
 
             Icon(
-                painter = painterResource(app.okcredit.ui.Res.drawable.icon_menu),
+                painter = painterResource(app.okcredit.ui.Res.drawable.icon_more_horiz),
                 contentDescription = "More icon",
                 modifier = Modifier
             )

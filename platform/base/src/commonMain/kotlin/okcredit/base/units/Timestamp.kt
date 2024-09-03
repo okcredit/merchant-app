@@ -102,6 +102,18 @@ value class Timestamp(val epochMillis: Long) {
         }
     }
 
+    fun relativeTime(): String {
+        val instant = Instant.fromEpochMilliseconds(epochMillis)
+        val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+
+        val hours = localDateTime.hour
+        val minutes = localDateTime.minute
+        val amPm = if (hours < 12) "AM" else "PM"
+
+        val adjustedHour = if (hours == 0 || hours == 12) 12 else hours % 12
+        return "$adjustedHour:$minutes $amPm"
+    }
+
 
     fun relativeDateWithTime(): String {
         val now = Clock.System.now()
