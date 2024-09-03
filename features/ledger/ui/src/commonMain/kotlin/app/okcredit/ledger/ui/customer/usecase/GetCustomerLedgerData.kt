@@ -275,8 +275,8 @@ class GetCustomerLedgerData(
                 isDeletedByCustomer = transaction.deletedByCustomer,
             ),
             txnGravity = findUiTxnGravity(
-                transaction.type == Transaction.Type.PAYMENT,
-                AccountType.Customer
+                isPayment = transaction.type == Transaction.Type.PAYMENT,
+                accountType = AccountType.Customer
             ),
             dirty = transaction.dirty,
             amount = transaction.amount,
@@ -328,9 +328,7 @@ class GetCustomerLedgerData(
 
 
     private fun getEmptyCustomerPlaceHolderItem(name: String) = listOf(
-        LedgerItem.EmptyPlaceHolder(
-            name
-        )
+        LedgerItem.EmptyPlaceHolder(name)
     )
 
     private fun getCustomerDetails(customerId: String) =
