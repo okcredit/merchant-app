@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -40,15 +40,12 @@ import app.okcredit.ui.icon_call
 import app.okcredit.ui.icon_chevron_right
 import app.okcredit.ui.icon_credit_up
 import app.okcredit.ui.icon_date
-import app.okcredit.ui.icon_menu
 import app.okcredit.ui.icon_more_horiz
 import app.okcredit.ui.icon_payment_down
 import app.okcredit.ui.icon_sms_outline
-import app.okcredit.ui.icon_statement
 import app.okcredit.ui.icon_statement_2
 import app.okcredit.ui.icon_whatsapp
 import app.okcredit.ui.theme.grey400
-import app.okcredit.ui.theme.grey800
 import okcredit.base.units.Paisa
 import okcredit.base.units.formatPaisa
 import org.jetbrains.compose.resources.painterResource
@@ -122,7 +119,7 @@ fun DueDateUi(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (dueDate == null) {
+            if (dueDate.isNullOrEmpty()) {
                 DueDateWhenNotSet()
             } else {
                 DueDateWhenSet(dueDate)
@@ -130,7 +127,8 @@ fun DueDateUi(
         }
         Row(
             modifier = Modifier
-                .weight(1.1f),
+                .weight(1f),
+            horizontalArrangement = Arrangement.End
         ) {
             CTAs(
                 modifier = Modifier,
@@ -143,24 +141,13 @@ fun DueDateUi(
 
 @Composable
 fun DueDateWhenSet(dueDate: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(app.okcredit.ui.Res.drawable.icon_date),
-            contentDescription = "Date icon",
-            modifier = Modifier
-                .width(16.dp)
-                .height(16.dp)
-        )
-        Spacer(modifier = Modifier.width(2.dp))
-        Text(
-            text = "Due Date",
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelMedium,
-        )
-    }
+    Icon(
+        painter = painterResource(app.okcredit.ui.Res.drawable.icon_date),
+        contentDescription = "Date icon",
+        modifier = Modifier
+            .width(16.dp)
+            .height(16.dp)
+    )
     Spacer(modifier = Modifier.height(5.dp))
     Row(
         modifier = Modifier,
@@ -179,7 +166,7 @@ fun DueDateWhenSet(dueDate: String) {
             modifier = Modifier,
             painter = painterResource(app.okcredit.ui.Res.drawable.icon_chevron_right),
             contentDescription = "chevron_right",
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -215,52 +202,62 @@ fun CTAs(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(
-            onClick = { onCallClicked() },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            modifier = Modifier,
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp),
+        Row(
+            modifier = Modifier
+                .clickable { onCallClicked() }
+                .padding(vertical = 8.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_call),
                 contentDescription = "Call icon",
                 modifier = Modifier.height(20.dp),
                 tint = MaterialTheme.colorScheme.surface,
             )
-            Spacer(modifier = Modifier.width(5.dp))
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = "Call",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.surface,
                 fontSize = 12.sp,
                 maxLines = 1,
+                modifier = Modifier.padding(vertical = 10.dp),
                 overflow = TextOverflow.Ellipsis
             )
+            Spacer(modifier = Modifier.width(12.dp))
         }
-        Spacer(modifier = Modifier.width(5.dp))
-        Button(
-            onClick = { onWhatsappClicked() },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-            modifier = Modifier,
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp),
-        ) {
+        Spacer(modifier = Modifier.width(12.dp))
+        Row (
+            modifier = Modifier
+                .clickable { onWhatsappClicked() }
+                .padding(vertical = 8.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        )  {
+            Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_whatsapp),
                 contentDescription = "WhatsApp icon",
                 modifier = Modifier.height(20.dp),
                 tint = MaterialTheme.colorScheme.surface,
             )
-            Spacer(modifier = Modifier.width(5.dp))
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = "Remind",
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.surface,
                 fontSize = 12.sp,
                 maxLines = 1,
+                modifier = Modifier.padding(vertical = 10.dp),
                 overflow = TextOverflow.Ellipsis
             )
+            Spacer(modifier = Modifier.width(12.dp))
         }
     }
 }

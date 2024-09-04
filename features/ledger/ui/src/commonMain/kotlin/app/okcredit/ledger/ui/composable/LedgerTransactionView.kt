@@ -86,7 +86,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 data class TransactionViewState(
     val txnId: String,
     val relationshipId: String,
-    val collectionId: String,
+    val collectionId: String?,
     val createdBySelf: Boolean = true,
     val imageCount: Int = 0,
     val image: String? = "",
@@ -115,10 +115,11 @@ sealed class UiTxnStatus {
 
     data class ProcessingTransaction(
         val action: ProcessingTransactionAction,
+        val paymentId: String,
     ) : UiTxnStatus()
 
     enum class ProcessingTransactionAction {
-        NONE, HELP;
+        NONE, HELP, KYC, ADD_BANK;
     }
 }
 
@@ -168,14 +169,14 @@ fun TransactionView(
         ) {
             Card(
                 modifier = Modifier.wrapContentWidth().border(
-                        1.dp,
-                        MaterialTheme.colorScheme.outlineVariant,
-                        shape = RoundedCornerShape(8.dp)
-                    ).clickable {
-                        onTransactionClicked(
-                            item.txnId, item.closingBalance, item.isDiscountTransaction
-                        )
-                    },
+                    1.dp,
+                    MaterialTheme.colorScheme.outlineVariant,
+                    shape = RoundedCornerShape(8.dp)
+                ).clickable {
+                    onTransactionClicked(
+                        item.txnId, item.closingBalance, item.isDiscountTransaction
+                    )
+                },
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
@@ -184,18 +185,18 @@ fun TransactionView(
             ) {
                 Column(
                     modifier = Modifier.widthIn(max = 240.dp).background(
-                            brush = if (!item.txnTag.isNullOrEmpty()) {
-                                verticalGradient(
-                                    getHeightOfGreyBackground(item) to MaterialTheme.colorScheme.outlineVariant,
-                                    0.1f to Color.White,
-                                    1.0f to Color.White
-                                )
-                            } else {
-                                Brush.linearGradient(
-                                    1.0f to Color.White, 1f to Color.White
-                                )
-                            }
-                        )
+                        brush = if (!item.txnTag.isNullOrEmpty()) {
+                            verticalGradient(
+                                getHeightOfGreyBackground(item) to MaterialTheme.colorScheme.outlineVariant,
+                                0.1f to Color.White,
+                                1.0f to Color.White
+                            )
+                        } else {
+                            Brush.linearGradient(
+                                1.0f to Color.White, 1f to Color.White
+                            )
+                        }
+                    )
                 ) {
                     TransactionTag(
                         transactionTag = item.txnTag,
@@ -236,9 +237,7 @@ fun TransactionView(
                         )
                     }
                     if (item.txnType !is UiTxnStatus.DeletedTransaction && item.txnType !is UiTxnStatus.ProcessingTransaction) {
-                        TransactionNote(
-                            note = item.note,
-                        )
+                        TransactionNote(note = item.note)
                     }
                 }
             }
@@ -278,22 +277,24 @@ fun TransactionShareButton(
 
     Row(
         modifier = modifier.background(
-                color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(20.dp)
-            ).border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                shape = RoundedCornerShape(20.dp)
-            ), horizontalArrangement = when (gravity) {
+            color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(20.dp)
+        ).border(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outlineVariant,
+            shape = RoundedCornerShape(20.dp)
+        ), horizontalArrangement = when (gravity) {
             TxnGravity.LEFT -> Arrangement.End
             TxnGravity.RIGHT -> Arrangement.Start
         }, verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(modifier = Modifier.clickable {
+        Row(
+            modifier = Modifier.clickable {
                 onShareClicked()
             }.padding(vertical = 10.dp, horizontal = 8.dp)
-            .defaultMinSize(minWidth = ButtonDefaults.MinWidth),
+                .defaultMinSize(minWidth = ButtonDefaults.MinWidth),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
                 painter = painterResource(Res.drawable.icon_share),
                 contentDescription = "Share",
@@ -506,7 +507,7 @@ fun TransactionAmountStrip(
     isTransactionImageAdded: Boolean,
     createdBySelf: Boolean,
     isDirty: Boolean,
-    collectionId: String,
+    collectionId: String?,
 ) {
     val findWidth = if (isTransactionImageAdded) {
         modifier.widthIn(min = 240.dp, max = 240.dp)
@@ -552,10 +553,12 @@ fun TransactionAmountStrip(
 
 @Composable
 fun TransactionSyncStatus(
-    collectionId: String, isCreatedBySelf: Boolean, isDirty: Boolean
+    collectionId: String?,
+    isCreatedBySelf: Boolean,
+    isDirty: Boolean
 ) {
     val iconRes = when {
-        collectionId.isEmpty().not() && isDirty -> Res.drawable.icon_sync
+        !collectionId.isNullOrEmpty() && isDirty -> Res.drawable.icon_sync
 
         isCreatedBySelf -> if (isDirty) {
             Res.drawable.icon_sync
@@ -571,8 +574,7 @@ fun TransactionSyncStatus(
             painter = painterResource(it),
             contentDescription = "Sync Status",
             modifier = Modifier.padding(start = 4.dp).size(16.dp),
-            tint = if (collectionId.isNotEmpty()) MaterialTheme.colorScheme.outlineVariant
-            else MaterialTheme.colorScheme.outlineVariant
+            tint = MaterialTheme.colorScheme.onSurface
         )
     }
 }

@@ -25,18 +25,22 @@ import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Paisa
 import okcredit.base.units.Timestamp
 import okcredit.base.units.instant
+import tech.okcredit.collection.model.OnlinePayment
+import tech.okcredit.collection.usecase.GetCollectionsForAccount
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 @Inject
 class GetSupplierLedgerData(
     getActiveBusinessId: Lazy<GetActiveBusinessId>,
     supplierRepository: Lazy<SupplierRepository>,
-    getAccountStatement: Lazy<GetAccountStatementImpl>
+    getAccountStatement: Lazy<GetAccountStatementImpl>,
+    getCollectionsForAccount: Lazy<GetCollectionsForAccount>
 ) {
 
     private val getActiveBusinessId by lazy { getActiveBusinessId.value }
     private val supplierRepository by lazy { supplierRepository.value }
     private val getAccountStatement by lazy { getAccountStatement.value }
+    private val collectionsForAccount by lazy { getCollectionsForAccount.value }
 
     fun execute(supplierId: String, showOldClicked: Boolean): Flow<List<LedgerItem>> {
         return flow {
@@ -45,29 +49,35 @@ class GetSupplierLedgerData(
         }.flatMapLatest {
             combine(
                 getSupplierDetails(supplierId),
-                getSupplierTransactions(supplierId)
-            ) { supplier, transactions ->
+                getSupplierTransactions(supplierId),
+                getSupplierCollections(supplierId, it)
+            ) { supplier, transactions, onlinePayments ->
                 processTransactionsData(
                     supplier = supplier,
                     transactions = transactions,
-                    showOldClicked = showOldClicked
+                    showOldClicked = showOldClicked,
+                    onlinePayments = onlinePayments
                 )
             }
         }
     }
 
+    private fun getSupplierCollections(supplierId: String, businessId: String) =
+        collectionsForAccount.execute(businessId, supplierId)
+
     private fun processTransactionsData(
         supplier: Supplier?,
         transactions: List<Transaction>,
-        showOldClicked: Boolean
+        showOldClicked: Boolean,
+        onlinePayments: List<OnlinePayment>
     ): List<LedgerItem> {
         val ledgerItems = mutableListOf<LedgerItem>()
         if (supplier == null && transactions.isEmpty()) {
             ledgerItems.add(LedgerItem.EmptyPlaceHolder(name = supplier?.name ?: ""))
             return ledgerItems
         }
-
-        val transactionInfo = processTransactionDueInfo(transactions)
+        val collectionMap = onlinePayments.associateBy { it.id }
+        val transactionInfo = processTransactionDueInfo(transactions, collectionMap)
 
         val startIndex = if (!showOldClicked && transactionInfo.lastIndexOfZeroBalanceDue > 0) {
             ledgerItems.add(LedgerItem.LoadMoreItem)
@@ -79,8 +89,8 @@ class GetSupplierLedgerData(
         var lastTransactionDate = 0L
         val txns = transactionInfo.transactions
         for (index in startIndex until transactions.size) {
-            val transaction = txns[index].transaction
-            val currentTransactionDate = transaction.billDate
+            val transactionItem = txns[index]
+            val currentTransactionDate = transactionItem.transaction.billDate
 
             lastTransactionDate = checkForDateItem(
                 ledgerItems = ledgerItems,
@@ -89,10 +99,9 @@ class GetSupplierLedgerData(
             )
             addTransactionItemInList(
                 ledgerItems = ledgerItems,
-                transaction = transaction,
+                item = transactionItem,
                 supplierId = supplier?.id!!,
                 supplierName = supplier.name,
-                closingBalance = txns[index].currentDue
             )
         }
         return ledgerItems
@@ -100,47 +109,44 @@ class GetSupplierLedgerData(
 
     private fun addTransactionItemInList(
         ledgerItems: MutableList<LedgerItem>,
-        transaction: Transaction,
+        item: TransactionDueInfo,
         supplierId: String,
         supplierName: String,
-        closingBalance: Paisa
     ) {
         when {
-            isDeletedTransaction(transaction) -> ledgerItems.add(
+            isDeletedTransaction(item.transaction) -> ledgerItems.add(
                 createDeletedTransaction(
-                    transaction = transaction,
+                    item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                    closingBalance = closingBalance
                 )
             )
 
-            isProcessingTransaction(transaction) -> ledgerItems.add(
+            isProcessingTransaction(item.transaction) -> ledgerItems.add(
                 createProcessingTransaction(
-                    transaction = transaction,
+                    item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                    closingBalance = closingBalance
                 )
             )
 
             else -> ledgerItems.add(
                 createTransaction(
-                    transaction = transaction,
+                    item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                    closingBalance = closingBalance
                 )
             )
         }
     }
 
     private fun createProcessingTransaction(
-        transaction: Transaction,
+        item: TransactionDueInfo,
         supplierId: String,
         supplierName: String,
-        closingBalance: Paisa
     ): LedgerItem {
+        val transaction = item.transaction
+        val closingBalance = item.currentDue
         return LedgerItem.TransactionItem(
             txnId = transaction.id,
             relationshipId = supplierId,
@@ -159,12 +165,14 @@ class GetSupplierLedgerData(
             closingBalance = closingBalance,
             txnType = UiTxnStatus.ProcessingTransaction(
                 action = UiTxnStatus.ProcessingTransactionAction.NONE,
+                paymentId = item.onlinePayment?.paymentId ?: ""
             ),
             accountType = AccountType.Supplier,
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
-            )
+            ),
+            collectionId = transaction.collectionId
         )
     }
 
@@ -173,11 +181,12 @@ class GetSupplierLedgerData(
     }
 
     private fun createTransaction(
-        transaction: Transaction,
         supplierId: String,
         supplierName: String,
-        closingBalance: Paisa
+        item: TransactionDueInfo
     ): LedgerItem {
+        val transaction = item.transaction
+        val closingBalance = item.currentDue
         return LedgerItem.TransactionItem(
             txnId = transaction.id,
             relationshipId = supplierId,
@@ -199,7 +208,8 @@ class GetSupplierLedgerData(
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
-            )
+            ),
+            collectionId = transaction.collectionId
         )
     }
 
@@ -211,17 +221,18 @@ class GetSupplierLedgerData(
     }
 
     private fun createDeletedTransaction(
-        transaction: Transaction,
+        item: TransactionDueInfo,
         supplierId: String,
         supplierName: String,
-        closingBalance: Paisa
     ): LedgerItem {
+        val transaction = item.transaction
+        val closingBalance = item.currentDue
         return LedgerItem.TransactionItem(
             txnId = transaction.id,
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
-                transaction.type == Transaction.Type.PAYMENT,
-                AccountType.Supplier
+                isPayment = transaction.type == Transaction.Type.PAYMENT,
+                accountType = AccountType.Supplier
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -231,6 +242,7 @@ class GetSupplierLedgerData(
                 billDate = transaction.billDate,
             ),
             note = transaction.note,
+
             closingBalance = closingBalance,
             txnType = UiTxnStatus.DeletedTransaction(
                 isDeletedByCustomer = transaction.deletedByCustomer,
@@ -240,6 +252,7 @@ class GetSupplierLedgerData(
                 deletedByCustomer = transaction.deletedByCustomer
             ),
             accountType = AccountType.Supplier,
+            collectionId = transaction.collectionId
         )
     }
 
@@ -297,7 +310,10 @@ class GetSupplierLedgerData(
         }
     }
 
-    private fun processTransactionDueInfo(transactions: List<Transaction>): TransactionData {
+    private fun processTransactionDueInfo(
+        transactions: List<Transaction>,
+        collectionMap: Map<String, OnlinePayment>
+    ): TransactionData {
         var currentDue: Paisa = Paisa.ZERO
         var lastIndexOfZeroBalanceDue = 0
         val transactionWithDueInfo = transactions.mapIndexed { index, txn ->
@@ -313,7 +329,8 @@ class GetSupplierLedgerData(
             }
             TransactionDueInfo(
                 transaction = txn,
-                currentDue = currentDue
+                currentDue = currentDue,
+                onlinePayment = collectionMap[txn.collectionId]
             )
         }
 

@@ -20,6 +20,7 @@ kotlin {
             implementation(project(":features:ledger:contract"))
             implementation(project(":features:ledger:core"))
             implementation(project(":platform:design_system"))
+            implementation(project(":features:online_payments:collection"))
 
             implementation(compose.ui)
             implementation(compose.foundation)

@@ -173,10 +173,6 @@ interface HomeContract {
 
     sealed class ViewEvent : BaseViewEvent {
         data class ShowError(val errorRes: String) : ViewEvent()
-        data class ShowAutoReminderSummarySnackBar(
-            val message: String,
-            val customerCount: Int
-        ) : ViewEvent()
 
         data class GoToCustomerLedgerScreen(val customerId: String) : ViewEvent()
 
