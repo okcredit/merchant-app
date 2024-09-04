@@ -63,7 +63,7 @@ class GetCustomerLedgerData(
                 processTransactionsData(
                     customer = customer,
                     onlinePayments = onlinePayments,
-                    transactions = transactions.sortedBy { txn -> txn.billDate.epochMillis },
+                    transactions = transactions,
                     showOldClicked = showOldClicked
                 )
             }
