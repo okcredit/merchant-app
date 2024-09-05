@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.dp
 import com.dokar.sonner.Toast
 import com.dokar.sonner.Toaster
 import com.dokar.sonner.ToasterState
-import com.dokar.sonner.rememberToasterState
 
 fun ToasterState.shortToast(message: String) {
     show(Toast(message))
@@ -25,7 +24,7 @@ fun ErrorToast(state: ToasterState) {
             Brush.sweepGradient(
                 colors = listOf(
                     MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
-                )
+                ),
             )
         },
     )

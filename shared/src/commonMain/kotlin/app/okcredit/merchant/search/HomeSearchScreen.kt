@@ -31,14 +31,14 @@ data class HomeSearchScreen(val currentTab: String) : Screen {
             onContactItemClicked = {},
             onCustomerItemClicked = { customerId ->
                 navigator.moveTo(
-                    LedgerScreenRegistry.CustomerLedger(customerId)
+                    LedgerScreenRegistry.CustomerLedger(customerId),
                 )
             },
             onCustomerProfileClicked = {},
             onCustomerWhatsAppClicked = {},
             onSupplierItemClicked = { supplierId ->
                 navigator.moveTo(
-                    LedgerScreenRegistry.SupplierLedger(supplierId)
+                    LedgerScreenRegistry.SupplierLedger(supplierId),
                 )
             },
             onSupplierProfileClicked = {},

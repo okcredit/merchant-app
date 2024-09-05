@@ -55,11 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.okcredit.ledger.ui.advance
 import app.okcredit.ledger.ui.credit_deleted
-import app.okcredit.ledger.ui.credit_failed
 import app.okcredit.ledger.ui.due
 import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.payment_deleted
-import app.okcredit.ledger.ui.payment_failed
 import app.okcredit.ledger.ui.placeholder_bill_images
 import app.okcredit.ledger.ui.transaction_share
 import app.okcredit.ui.Res
@@ -70,7 +68,6 @@ import app.okcredit.ui.icon_refresh_outline
 import app.okcredit.ui.icon_share
 import app.okcredit.ui.icon_single_check
 import app.okcredit.ui.icon_sync
-import app.okcredit.ui.icon_sync_problem
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
@@ -122,7 +119,6 @@ sealed class UiTxnStatus {
         NONE, HELP, KYC, ADD_BANK;
     }
 }
-
 
 @Composable
 fun LedgerTransactionView(
@@ -379,11 +375,8 @@ fun TransactionBillImages(
     ) {
         val painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalPlatformContext.current)
-                .data(if (loadKey > 0) image else null).apply(
-                    block = fun ImageRequest.Builder.() {
-                        // transformations(RoundedCornersTransformation(12f))
-                    },
-                ).listener(
+                .data(if (loadKey > 0) image else null)
+                .listener(
                     onError = { _, error ->
                         showRetry = true
                         showLoader = false

@@ -57,7 +57,7 @@ object HomeLedgerTab : Tab {
             onPrimaryVpaClicked = {},
             onSearchClicked = {
                 parentNavigator?.moveTo(
-                    SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name)
+                    SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name),
                 )
             },
             onSortAndFilterClicked = {
@@ -78,8 +78,8 @@ object HomeLedgerTab : Tab {
                             AccountType.CUSTOMER
                         } else {
                             AccountType.SUPPLIER
-                        }
-                    )
+                        },
+                    ),
                 )
             },
             onDynamicItemClicked = { _, _ -> },
@@ -89,8 +89,8 @@ object HomeLedgerTab : Tab {
                 screenModel.pushIntent(
                     HomeContract.Intent.OnSortAndFilterApplied(
                         SortOption.LAST_ACTIVITY,
-                        emptySet()
-                    )
+                        emptySet(),
+                    ),
                 )
             },
             onUserAlertClicked = {
@@ -103,8 +103,8 @@ object HomeLedgerTab : Tab {
                 screenModel.pushIntent(
                     HomeContract.Intent.OnSortAndFilterApplied(
                         sortOption,
-                        reminderFilters
-                    )
+                        reminderFilters,
+                    ),
                 )
             },
         )
@@ -118,12 +118,12 @@ object HomeLedgerTab : Tab {
             is ViewEvent.ShowError -> {}
             is ViewEvent.GoToCustomerLedgerScreen -> goToCustomerLedgerScreen(
                 customerId = viewEvent.customerId,
-                navigator = navigator
+                navigator = navigator,
             )
 
             is ViewEvent.GoToSupplierLedgerScreen -> goToSupplierLedgerScreen(
                 supplierId = viewEvent.supplierId,
-                navigator = navigator
+                navigator = navigator,
             )
         }
     }
