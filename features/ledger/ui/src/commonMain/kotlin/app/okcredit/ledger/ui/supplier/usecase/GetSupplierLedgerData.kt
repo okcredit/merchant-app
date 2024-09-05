@@ -164,7 +164,8 @@ class GetSupplierLedgerData(
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
-            )
+            ),
+            collectionId = "",
         )
     }
 
@@ -199,7 +200,8 @@ class GetSupplierLedgerData(
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
-            )
+            ),
+            collectionId = "",
         )
     }
 
@@ -240,6 +242,7 @@ class GetSupplierLedgerData(
                 deletedByCustomer = transaction.deletedByCustomer
             ),
             accountType = AccountType.Supplier,
+            collectionId = "",
         )
     }
 

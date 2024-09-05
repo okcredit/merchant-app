@@ -6,9 +6,11 @@ import app.okcredit.ledger.ui.model.ToolbarData
 import app.okcredit.ledger.ui.utils.DateTimeUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Timestamp
 import okcredit.base.units.ZERO_TIMESTAMP
+import okcredit.base.units.timestamp
 
 @Inject
 class GetCustomerToolbarData(
@@ -57,7 +59,7 @@ class GetCustomerToolbarData(
         return getAccountStatement.execute(
             accountId = customerId,
             startTime = ZERO_TIMESTAMP,
-            endTime = Timestamp(DateTimeUtils.getCurrentTime().toEpochMilliseconds())
+            endTime = Clock.System.now().timestamp
         ).map { it.isEmpty() }
     }
 }

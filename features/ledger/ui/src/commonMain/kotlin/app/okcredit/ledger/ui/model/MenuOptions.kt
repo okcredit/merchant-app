@@ -3,9 +3,7 @@ package app.okcredit.ledger.ui.model
 import app.okcredit.ui.icon_call
 import app.okcredit.ui.icon_help_outline
 import app.okcredit.ui.icon_sms
-import app.okcredit.ui.icon_statement
 import app.okcredit.ui.icon_statement_2
-import app.okcredit.ui.icon_stats
 import app.okcredit.ui.icon_whatsapp
 import org.jetbrains.compose.resources.DrawableResource
 

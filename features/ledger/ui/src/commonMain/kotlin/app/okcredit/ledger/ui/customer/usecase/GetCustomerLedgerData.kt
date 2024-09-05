@@ -23,8 +23,10 @@ import kotlinx.coroutines.flow.flow
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Paisa
 import okcredit.base.units.Timestamp
+import okcredit.base.units.differenceInDays
 import okcredit.base.units.instant
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
+import kotlin.math.absoluteValue
 
 
 @Inject
@@ -230,7 +232,7 @@ class GetCustomerLedgerData(
         customerId: String,
         closingBalance: Paisa
     ): LedgerItem {
-        val action = if (isSevenDaysPassed(transaction.billDate.instant)) {
+        val action = if (transaction.billDate.differenceInDays().absoluteValue > 7) {
             UiTxnStatus.ProcessingTransactionAction.NONE
         } else {
             UiTxnStatus.ProcessingTransactionAction.HELP
