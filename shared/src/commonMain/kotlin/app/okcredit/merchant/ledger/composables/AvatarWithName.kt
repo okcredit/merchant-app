@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.okcredit.ui.defaulter_badge_red
 import app.okcredit.ui.ic_ok_credit_tag
+import app.okcredit.ui.ic_okcredit_logo
+import app.okcredit.ui.icon_okc
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.abs
@@ -85,13 +88,13 @@ fun DefaultAvatar(
 
 @Composable
 fun CommonLedgerTag(modifier: Modifier) {
-    Image(
-        painter = painterResource(resource = app.okcredit.ui.Res.drawable.ic_ok_credit_tag),
+    Icon(
+        painter = painterResource(resource = app.okcredit.ui.Res.drawable.icon_okc),
         contentDescription = "",
         modifier = modifier
             .size(20.dp)
-            .background(MaterialTheme.colorScheme.primary, CircleShape),
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+            .background(MaterialTheme.colorScheme.onPrimary, CircleShape),
+        tint = MaterialTheme.colorScheme.primary,
     )
 }
 

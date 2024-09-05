@@ -136,7 +136,7 @@ WHERE accountId = :accountId AND billDate >= :startTime AND billDate <= :endTime
 allTransactionsForAccount:
 SELECT *
 FROM `Transaction`
-WHERE accountId = ?;
+WHERE accountId = ? ORDER BY billDate ASC;
 
 transactionCommands:
 SELECT *

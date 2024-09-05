@@ -14,7 +14,7 @@ sealed class LedgerItem {
 
     data class TransactionItem(
         val txnId: String,
-        val collectionId: String,
+        val collectionId: String?,
         val relationshipId: String,
         val createdBySelf: Boolean = true,
         val imageCount: Int = 0,

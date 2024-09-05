@@ -82,7 +82,7 @@ fun SupplierLedgerList(
                         imageCount = item.imageCount,
                         image = item.image,
                         accountType = item.accountType,
-                        collectionId = ""
+                        collectionId = item.collectionId,
                     ),
                     isLastItem = index == ledgerItems.lastIndex,
                     onTransactionClicked = onTransactionClicked,
