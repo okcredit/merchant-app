@@ -7,7 +7,6 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.ScreenModelPair
 
-
 interface LedgerUiComponent {
 
     @Provides
@@ -27,5 +26,4 @@ interface LedgerUiComponent {
     fun addRelationScreenModel(screenModel: AddRelationScreenModel): ScreenModelPair {
         return AddRelationScreenModel::class to screenModel
     }
-
 }

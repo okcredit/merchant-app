@@ -30,7 +30,7 @@ interface AddRelationContract {
         data class OnSubmitClicked(
             val name: String,
             val mobile: String?,
-            val accountType: AccountType
+            val accountType: AccountType,
         ) : Intent
     }
 

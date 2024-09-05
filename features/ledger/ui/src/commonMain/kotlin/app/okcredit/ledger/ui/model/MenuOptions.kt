@@ -11,26 +11,26 @@ sealed class MenuOptions(val icon: DrawableResource, val name: String) {
 
     data object RelationshipStatements : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_statement_2,
-        name = "Customer Statements"
+        name = "Customer Statements",
     )
 
     data object Call : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_call,
-        name = "Call"
+        name = "Call",
     )
 
     data object Help : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_help_outline,
-        name = "Help"
+        name = "Help",
     )
 
-    data object RemindWithSms: MenuOptions(
+    data object RemindWithSms : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_sms,
-        name = "SMS"
+        name = "SMS",
     )
 
-    data object RemindWithWhatsapp: MenuOptions(
+    data object RemindWithWhatsapp : MenuOptions(
         icon = app.okcredit.ui.Res.drawable.icon_whatsapp,
-        name = "Whatsapp"
+        name = "Whatsapp",
     )
 }

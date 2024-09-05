@@ -4,13 +4,13 @@ import app.okcredit.ledger.contract.usecase.CyclicAccountError
 import app.okcredit.ledger.contract.usecase.DeletedCustomerError
 import app.okcredit.ledger.contract.usecase.MobileConflictError
 import app.okcredit.ledger.core.usecase.AddAccount
-import okcredit.base.ui.BaseCoroutineScreenModel
 import app.okcredit.ledger.ui.add.AddRelationContract.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
+import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.Result
 
 @Inject
@@ -39,7 +39,7 @@ class AddRelationScreenModel(
                                 ErrorDialog.CyclicAccountError(
                                     accountId = error.accountId,
                                     name = error.name,
-                                )
+                                ),
                             )
                         }
 
@@ -53,7 +53,7 @@ class AddRelationScreenModel(
                                 ErrorDialog.CyclicAccountError(
                                     accountId = error.accountId,
                                     name = error.name,
-                                )
+                                ),
                             )
                         }
                     }
@@ -80,7 +80,7 @@ class AddRelationScreenModel(
         return when (partialState) {
             is PartialState.SetLoading -> currentState.copy(loading = partialState.loading)
             is PartialState.SetErrorDialog -> currentState.copy(
-                errorDialog = partialState.errorDialog
+                errorDialog = partialState.errorDialog,
             )
         }
     }

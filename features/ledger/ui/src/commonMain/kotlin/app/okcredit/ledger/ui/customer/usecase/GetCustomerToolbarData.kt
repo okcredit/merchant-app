@@ -3,31 +3,27 @@ package app.okcredit.ledger.ui.customer.usecase
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.ui.model.MenuOptions
 import app.okcredit.ledger.ui.model.ToolbarData
-import app.okcredit.ledger.ui.utils.DateTimeUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.units.Timestamp
 import okcredit.base.units.ZERO_TIMESTAMP
 import okcredit.base.units.timestamp
 
 @Inject
 class GetCustomerToolbarData(
-    getAccountStatement: Lazy<GetAccountStatementImpl>
+    getAccountStatement: Lazy<GetAccountStatementImpl>,
 ) {
     private val getAccountStatement by lazy { getAccountStatement.value }
-
 
     fun execute(customerId: String): Flow<ToolbarData> {
         return getToolbarOptions(customerId)
             .map { toolbarOptions ->
                 ToolbarData(
                     moreMenuOptions = getMenuOptions(),
-                    toolbarOptions = toolbarOptions
+                    toolbarOptions = toolbarOptions,
                 )
             }
-
     }
 
     private fun getMenuOptions(): List<MenuOptions> {
@@ -36,7 +32,7 @@ class GetCustomerToolbarData(
             MenuOptions.RelationshipStatements,
             MenuOptions.Help,
             MenuOptions.RemindWithSms,
-            MenuOptions.RemindWithWhatsapp
+            MenuOptions.RemindWithWhatsapp,
         )
     }
 
@@ -52,14 +48,13 @@ class GetCustomerToolbarData(
                 toolbarOptions.add(MenuOptions.RelationshipStatements)
                 return@map toolbarOptions
             }
-
     }
 
     private fun checkForEmptyLedger(customerId: String): Flow<Boolean> {
         return getAccountStatement.execute(
             accountId = customerId,
             startTime = ZERO_TIMESTAMP,
-            endTime = Clock.System.now().timestamp
+            endTime = Clock.System.now().timestamp,
         ).map { it.isEmpty() }
     }
 }

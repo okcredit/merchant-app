@@ -34,7 +34,7 @@ fun SupplierLedgerUi(
     onShareReportClicked: () -> Unit,
     onPayOnlineClicked: () -> Unit,
     onCallClicked: () -> Unit,
-    onErrorToastDismissed: () -> Unit
+    onErrorToastDismissed: () -> Unit,
 ) {
     val toastState = rememberToasterState { onErrorToastDismissed() }
     LaunchedEffect(state.errorMessage) {
@@ -51,22 +51,24 @@ fun SupplierLedgerUi(
             val customer = state.supplierDetails
             val toolbar = state.toolbarData
             LedgerToolBar(
-                state = if (customer == null && toolbar == null)
+                state = if (customer == null && toolbar == null) {
                     null
-                else LedgerToolBarState(
-                    id = customer!!.id,
-                    name = customer.name,
-                    mobile = customer.mobile ?: "",
-                    profileImage = customer.profileImage,
-                    registered = customer.registered,
-                    blocked = customer.blocked,
-                    toolbarOptions = toolbar!!.toolbarOptions,
-                    moreMenuOptions = toolbar.moreMenuOptions
-                ),
+                } else {
+                    LedgerToolBarState(
+                        id = customer!!.id,
+                        name = customer.name,
+                        mobile = customer.mobile ?: "",
+                        profileImage = customer.profileImage,
+                        registered = customer.registered,
+                        blocked = customer.blocked,
+                        toolbarOptions = toolbar!!.toolbarOptions,
+                        moreMenuOptions = toolbar.moreMenuOptions,
+                    )
+                },
                 onProfileClicked = onProfileClicked,
                 openMoreBottomSheet = {},
                 onMenuOptionClicked = onMenuOptionClicked,
-                onBackClicked = onBackClicked
+                onBackClicked = onBackClicked,
             )
         },
         content = { paddingValues ->
@@ -100,6 +102,6 @@ fun SupplierLedgerUi(
 
                 ErrorToast(state = toastState)
             }
-        }
+        },
     )
 }

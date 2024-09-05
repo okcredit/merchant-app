@@ -1,12 +1,10 @@
 package app.okcredit.ledger.ui.customer.usecase
 
 import app.okcredit.ledger.core.CustomerRepository
-import app.okcredit.ledger.ui.customer.CustomerLedgerContract
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.CustomerDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.units.Paisa
 
 @Inject
 class GetCustomerDetails(

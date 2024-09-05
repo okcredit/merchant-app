@@ -37,7 +37,7 @@ fun CustomerLedgerUi(
     onBalanceClicked: () -> Unit,
     onCallClicked: () -> Unit,
     onWhatsappClicked: () -> Unit,
-    onErrorToastDismissed: () -> Unit
+    onErrorToastDismissed: () -> Unit,
 ) {
     val toastState = rememberToasterState { onErrorToastDismissed() }
     LaunchedEffect(state.errorMessage) {
@@ -55,22 +55,24 @@ fun CustomerLedgerUi(
             val customer = state.customerDetails
             val toolbar = state.toolbarData
             LedgerToolBar(
-                state = if (customer == null || toolbar == null)
+                state = if (customer == null || toolbar == null) {
                     null
-                else LedgerToolBarState(
-                    id = customer.id,
-                    name = customer.name,
-                    mobile = customer.mobile ?: "",
-                    profileImage = customer.profileImage,
-                    registered = customer.registered,
-                    blocked = customer.blocked,
-                    toolbarOptions = toolbar.toolbarOptions,
-                    moreMenuOptions = toolbar.moreMenuOptions
-                ),
+                } else {
+                    LedgerToolBarState(
+                        id = customer.id,
+                        name = customer.name,
+                        mobile = customer.mobile ?: "",
+                        profileImage = customer.profileImage,
+                        registered = customer.registered,
+                        blocked = customer.blocked,
+                        toolbarOptions = toolbar.toolbarOptions,
+                        moreMenuOptions = toolbar.moreMenuOptions,
+                    )
+                },
                 onProfileClicked = onProfileClicked,
                 openMoreBottomSheet = openMoreBottomSheet,
                 onMenuOptionClicked = onMenuOptionClicked,
-                onBackClicked = onBackClicked
+                onBackClicked = onBackClicked,
             )
         },
         content = { paddingValues ->
@@ -90,7 +92,7 @@ fun CustomerLedgerUi(
         },
         bottomBar = {
             Box(
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 CustomerBottomUi(
                     modifier = Modifier.align(Alignment.BottomCenter),
@@ -101,11 +103,11 @@ fun CustomerLedgerUi(
                     onReceivedClicked = onReceivedClicked,
                     onBalanceClicked = onBalanceClicked,
                     onWhatsappClicked = onWhatsappClicked,
-                    onCallClicked = onCallClicked
+                    onCallClicked = onCallClicked,
                 )
 
                 ErrorToast(state = toastState)
             }
-        }
+        },
     )
 }

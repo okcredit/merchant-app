@@ -46,7 +46,7 @@ fun AddRelationScreenUi(
 ) {
     Scaffold(
         topBar = { AddRelationTopBar(onBackClicked) },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         AddRelationContent(modifier = Modifier.padding(it), state, onSubmitted)
     }
@@ -58,7 +58,7 @@ fun AddRelationScreenUi(
                     accountId = state.errorDialog.accountId,
                     accountType = accountType,
                     onDismissRequest = onDismissDialog,
-                    onViewLedgerClicked = onViewLedgerClicked
+                    onViewLedgerClicked = onViewLedgerClicked,
                 )
             }
 
@@ -67,7 +67,7 @@ fun AddRelationScreenUi(
                     accountId = state.errorDialog.accountId,
                     accountType = accountType,
                     onDismissRequest = onDismissDialog,
-                    onViewLedgerClicked = onViewLedgerClicked
+                    onViewLedgerClicked = onViewLedgerClicked,
                 )
             }
         }
@@ -79,7 +79,7 @@ fun MobileConflictErrorDialog(
     accountId: String,
     accountType: AccountType,
     onDismissRequest: () -> Unit,
-    onViewLedgerClicked: (String, AccountType) -> Unit
+    onViewLedgerClicked: (String, AccountType) -> Unit,
 ) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         Column {
@@ -112,7 +112,7 @@ fun CyclicAccountErrorDialog(
     accountId: String,
     accountType: AccountType,
     onDismissRequest: () -> Unit,
-    onViewLedgerClicked: (String, AccountType) -> Unit
+    onViewLedgerClicked: (String, AccountType) -> Unit,
 ) {
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         Column {
@@ -136,7 +136,7 @@ fun CyclicAccountErrorDialog(
                 onPrimaryClick = {
                     onViewLedgerClicked(
                         accountId,
-                        if (accountType == AccountType.CUSTOMER) AccountType.SUPPLIER else AccountType.CUSTOMER
+                        if (accountType == AccountType.CUSTOMER) AccountType.SUPPLIER else AccountType.CUSTOMER,
                     )
                 },
                 onSecondaryClick = onDismissRequest,
@@ -153,7 +153,7 @@ fun AddRelationTopBar(onBackClicked: () -> Unit) {
             IconButton(onClick = onBackClicked) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
             }
-        }
+        },
     )
 }
 

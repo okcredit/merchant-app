@@ -1,6 +1,5 @@
 package app.okcredit.ledger.ui.supplier
 
-import app.okcredit.ledger.ui.customer.CustomerLedgerContract.CustomerDetails
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.ToolbarData
 import okcredit.base.ui.BaseViewEvent
@@ -9,7 +8,6 @@ import okcredit.base.ui.UserIntent
 import okcredit.base.units.Paisa
 import org.jetbrains.compose.resources.StringResource
 
-
 interface SupplierLedgerContract {
     data class State(
         val loading: Boolean = false,
@@ -17,7 +15,7 @@ interface SupplierLedgerContract {
         val supplierDetails: SupplierDetails? = null,
         val toolbarData: ToolbarData? = null,
         val transactionScrollPosition: Int? = null,
-        val errorMessage: String? = null
+        val errorMessage: String? = null,
     ) : UiState
 
     data class SupplierDetails(
@@ -37,7 +35,7 @@ interface SupplierLedgerContract {
         data object NoChange : PartialState()
         data class SetSupplierData(
             val supplierDetails: SupplierDetails,
-            val toolbarData: ToolbarData
+            val toolbarData: ToolbarData,
         ) : PartialState()
 
         data class SetLoading(val loading: Boolean) : PartialState()
@@ -53,5 +51,4 @@ interface SupplierLedgerContract {
     sealed class ViewEvent : BaseViewEvent {
         data class ShowError(val message: StringResource) : ViewEvent()
     }
-
 }

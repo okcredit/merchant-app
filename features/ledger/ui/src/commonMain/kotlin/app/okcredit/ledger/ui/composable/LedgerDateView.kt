@@ -16,13 +16,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LedgerDateView(
-    date: String
+    date: String,
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp)
+            .padding(top = 12.dp),
     ) {
         Text(
             text = date.ifEmpty { "Today" },
@@ -31,13 +31,13 @@ fun LedgerDateView(
             modifier = Modifier
                 .background(
                     color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(16.dp),
                 )
                 .padding(
                     vertical = 6.dp,
-                    horizontal = 16.dp
+                    horizontal = 16.dp,
                 )
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
         )
     }
 }

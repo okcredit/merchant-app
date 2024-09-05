@@ -44,7 +44,6 @@ import app.okcredit.ui.theme.grey800
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 data class LedgerToolBarState(
     val id: String,
     val name: String,
@@ -75,7 +74,7 @@ fun LedgerToolBar(
         }
         Card(
             shape = RoundedCornerShape(0.dp),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
         ) {
             TopAppBar(
                 modifier = Modifier,
@@ -83,7 +82,7 @@ fun LedgerToolBar(
                     Row(
                         modifier = Modifier
                             .fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         ArrowBack(onBackClicked)
                         if (state.toolbarOptions.size < 3) {
@@ -100,7 +99,7 @@ fun LedgerToolBar(
                                         if (state.blocked) {
                                             onProfileClicked(state.id)
                                         }
-                                    }
+                                    },
                             )
                         }
                         Spacer(modifier = Modifier.size(8.dp))
@@ -113,12 +112,12 @@ fun LedgerToolBar(
                                     .clickable {
                                         if (state.blocked) {
                                             onProfileClicked(
-                                                state.id
+                                                state.id,
                                             )
                                         }
                                     }
                                     .padding(vertical = 8.dp),
-                                verticalArrangement = Arrangement.SpaceAround
+                                verticalArrangement = Arrangement.SpaceAround,
                             ) {
                                 Text(
                                     modifier = Modifier,
@@ -126,14 +125,14 @@ fun LedgerToolBar(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     textAlign = TextAlign.Start,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                                 Text(
                                     modifier = Modifier,
                                     text = "View Profile",
                                     textAlign = TextAlign.Start,
                                     style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.primary
+                                    color = MaterialTheme.colorScheme.primary,
                                 )
                             }
                             if (state.registered) {
@@ -142,7 +141,7 @@ fun LedgerToolBar(
                                     modifier = Modifier.size(16.dp),
                                     painter = painterResource(app.okcredit.ui.Res.drawable.icon_okc),
                                     contentDescription = "okcredit_logo",
-                                    tint = MaterialTheme.colorScheme.primary
+                                    tint = MaterialTheme.colorScheme.primary,
                                 )
                             }
                             Spacer(modifier = Modifier.size(12.dp))
@@ -162,7 +161,7 @@ fun LedgerToolBar(
                                     },
                                 painter = painterResource(it.icon),
                                 contentDescription = it.name,
-                                tint = grey800
+                                tint = grey800,
                             )
                             Spacer(modifier = Modifier.size(16.dp))
                         }
@@ -176,7 +175,7 @@ fun LedgerToolBar(
                                     .clickable {
                                         if (state.blocked) openMoreBottomSheet(true)
                                     },
-                                tint = grey800
+                                tint = grey800,
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                         }
@@ -189,10 +188,10 @@ fun LedgerToolBar(
                                 .clickable {
                                     onMenuOptionClicked(MenuOptions.Help)
                                 },
-                            tint = grey800
+                            tint = grey800,
                         )
                     }
-                }
+                },
             )
         }
     }
@@ -203,7 +202,7 @@ fun LoadingShimmerForToolBar(onBackClick: () -> Unit) {
     val gradient = listOf(
         Color.LightGray.copy(alpha = 0.9f),
         Color.LightGray.copy(alpha = 0.3f),
-        Color.LightGray.copy(alpha = 0.9f)
+        Color.LightGray.copy(alpha = 0.9f),
     )
 
     val transition = rememberInfiniteTransition(label = "")
@@ -214,8 +213,8 @@ fun LoadingShimmerForToolBar(onBackClick: () -> Unit) {
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
-                easing = FastOutLinearInEasing
-            )
+                easing = FastOutLinearInEasing,
+            ),
         ),
         label = "",
     )
@@ -224,14 +223,14 @@ fun LoadingShimmerForToolBar(onBackClick: () -> Unit) {
         start = Offset(200f, 200f),
         end = Offset(
             x = translateAnimation.value,
-            y = translateAnimation.value
-        )
+            y = translateAnimation.value,
+        ),
     )
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(max = 112.dp)
-            .background(color = Color.White)
+            .background(color = Color.White),
     ) {
         ShimmerGridItem(brush, onBackClick = onBackClick)
     }
@@ -243,7 +242,7 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         ArrowBack(onBackClick)
         Spacer(modifier = Modifier.size(8.dp))
@@ -251,18 +250,18 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
             modifier = Modifier
                 .size(44.dp)
                 .clip(CircleShape)
-                .background(brush)
+                .background(brush),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(
-            modifier = Modifier.weight(1.0f)
+            modifier = Modifier.weight(1.0f),
         ) {
             Spacer(
                 modifier = Modifier
                     .height(16.dp)
                     .clip(RoundedCornerShape(2.dp))
                     .fillMaxWidth(fraction = 0.5f)
-                    .background(brush)
+                    .background(brush),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Spacer(
@@ -270,12 +269,11 @@ fun ShimmerGridItem(brush: Brush, onBackClick: () -> Unit) {
                     .height(12.dp)
                     .clip(RoundedCornerShape(2.dp))
                     .fillMaxWidth(fraction = 0.7f)
-                    .background(brush)
+                    .background(brush),
             )
         }
     }
 }
-
 
 @Preview
 @Composable
@@ -287,14 +285,14 @@ fun CustomerLedgerToolBarPreview() {
         ),
         moreMenuOptions = listOf(
             MenuOptions.RelationshipStatements,
-            MenuOptions.Help
+            MenuOptions.Help,
         ),
         name = "John Doe",
         profileImage = null,
         id = "customerI12",
         mobile = "",
         registered = true,
-        blocked = false
+        blocked = false,
     )
     OkCreditTheme(darkTheme = false) {
         LedgerToolBar(

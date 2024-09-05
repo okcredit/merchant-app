@@ -10,7 +10,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import cafe.adriel.voyager.navigator.internal.BackHandler
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
@@ -36,7 +35,7 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
     private fun render(
         screenModel: CustomerLedgerModel,
         state: State,
-        navigator: Navigator
+        navigator: Navigator,
     ) {
         CustomerLedgerUi(
             state = state,
@@ -44,8 +43,8 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
                         showOldClicked = false,
-                        customerId = customerId
-                    )
+                        customerId = customerId,
+                    ),
                 )
             },
             onProfileClicked = { },
@@ -57,8 +56,8 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
                         showOldClicked = true,
-                        customerId = customerId
-                    )
+                        customerId = customerId,
+                    ),
                 )
             },
             onTransactionClicked = { _, _, _ -> },
@@ -71,10 +70,9 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             onBalanceClicked = { },
             onWhatsappClicked = { },
             onCallClicked = { screenModel.pushIntent(Intent.OnCallClicked) },
-            onErrorToastDismissed = { screenModel.pushIntent(Intent.OnErrorToastDismissed) }
+            onErrorToastDismissed = { screenModel.pushIntent(Intent.OnErrorToastDismissed) },
         )
     }
 
     private fun handleViewEvent(event: ViewEvent, navigator: Navigator) {}
-
 }

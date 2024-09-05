@@ -15,7 +15,7 @@ interface CustomerLedgerContract {
         val customerDetails: CustomerDetails? = null,
         val toolbarData: ToolbarData? = null,
         val transactionScrollPosition: Int? = null,
-        val errorMessage: String? = null
+        val errorMessage: String? = null,
     ) : UiState
 
     data class CustomerDetails(
@@ -29,7 +29,7 @@ interface CustomerLedgerContract {
         val blockerByCustomer: Boolean,
         val blocked: Boolean,
         val reminderMode: String,
-        val registered: Boolean
+        val registered: Boolean,
     )
 
     sealed class PartialState : UiState.Partial {

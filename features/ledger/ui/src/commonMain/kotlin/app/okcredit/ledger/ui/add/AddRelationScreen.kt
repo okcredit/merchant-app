@@ -33,7 +33,7 @@ data class AddRelationScreen(val accountType: AccountType) : Screen {
                         name = name,
                         mobile = mobile,
                         accountType = accountType,
-                    )
+                    ),
                 )
             },
             onViewLedgerClicked = { accountId, accountType ->
@@ -43,12 +43,12 @@ data class AddRelationScreen(val accountType: AccountType) : Screen {
                         LedgerScreenRegistry.CustomerLedger(customerId = accountId)
                     } else {
                         LedgerScreenRegistry.SupplierLedger(supplierId = accountId)
-                    }
+                    },
                 )
             },
             onDismissDialog = {
                 screenModel.pushIntent(AddRelationContract.Intent.OnDismissDialog)
-            }
+            },
         )
 
         screenModel.observeViewEvents {
@@ -60,7 +60,7 @@ data class AddRelationScreen(val accountType: AccountType) : Screen {
                             LedgerScreenRegistry.CustomerLedger(customerId = it.accountId)
                         } else {
                             LedgerScreenRegistry.SupplierLedger(supplierId = it.accountId)
-                        }
+                        },
                     )
                 }
             }

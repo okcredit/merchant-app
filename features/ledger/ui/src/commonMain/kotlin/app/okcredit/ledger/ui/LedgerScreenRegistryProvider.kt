@@ -26,7 +26,6 @@ class LedgerScreenRegistryProvider {
     }
 }
 
-
 sealed class LedgerScreenRegistry : ScreenProvider {
     data class CustomerLedger(val customerId: String) : LedgerScreenRegistry()
 
