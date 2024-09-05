@@ -7,6 +7,7 @@ import okcredit.base.syncer.SignOutListener
 import tech.okcredit.identity.IdentitySignOutListener
 import tech.okcredit.identity.contract.usecase.GetActiveBusiness
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
+import tech.okcredit.identity.contract.usecase.GetAllBusinesses
 import tech.okcredit.identity.contract.usecase.GetIndividual
 import tech.okcredit.identity.contract.usecase.GetIndividualPreference
 import tech.okcredit.identity.contract.usecase.SetActiveBusinessId
@@ -19,6 +20,7 @@ import tech.okcredit.identity.local.IdentityDatabase
 import tech.okcredit.identity.local.IdentityDatabaseQueries
 import tech.okcredit.identity.usecase.GetActiveBusinessIdImpl
 import tech.okcredit.identity.usecase.GetActiveBusinessImpl
+import tech.okcredit.identity.usecase.GetAllBusinessesImpl
 import tech.okcredit.identity.usecase.GetIndividualImpl
 import tech.okcredit.identity.usecase.GetIndividualPreferenceImpl
 import tech.okcredit.identity.usecase.SetActiveBusinessIdImpl
@@ -86,6 +88,11 @@ interface IdentityComponent {
     @Provides
     fun getIndividualPreference(getIndividualPreference: GetIndividualPreferenceImpl): GetIndividualPreference {
         return getIndividualPreference
+    }
+
+    @Provides
+    fun GetAllBusinessesImpl.binds(): GetAllBusinesses {
+        return this
     }
 
     @Provides

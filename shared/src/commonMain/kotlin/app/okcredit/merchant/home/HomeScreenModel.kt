@@ -1,48 +1,42 @@
 package app.okcredit.merchant.home
 
-import app.okcredit.merchant.home.HomeContract.Intent
-import app.okcredit.merchant.home.HomeContract.PartialState
-import app.okcredit.merchant.home.HomeContract.State
-import app.okcredit.merchant.home.HomeContract.ViewEvent
-import app.okcredit.merchant.usecase.HomeDataSyncer
+import app.okcredit.merchant.home.HomeContract.*
+import app.okcredit.merchant.home.usecase.GetHomeMoreOptionItems
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.Result
-import tech.okcredit.identity.contract.usecase.GetActiveBusiness
 
 @Inject
 class HomeScreenModel(
-    private val getActiveBusiness: GetActiveBusiness,
-    private val homeDataSyncer: HomeDataSyncer,
-) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(initialState = State()) {
+    private val getHomeMoreOptionItems: GetHomeMoreOptionItems,
+) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(State()) {
 
     override fun partialStates(): Flow<PartialState> {
         return merge(
-            syncHomeData(),
-            loadActiveBusiness(),
+            loadHomeMoreOptions(),
         )
     }
 
-    private fun loadActiveBusiness() = wrap(getActiveBusiness.execute())
-        .map {
-            if (it is Result.Success) {
-                PartialState.SetBusiness(business = it.value)
-            } else {
-                PartialState.NoChange
+    private fun loadHomeMoreOptions() = wrap(getHomeMoreOptionItems.execute()).map {
+        when (it) {
+            is Result.Failure -> PartialState.NoChange
+            is Result.Progress -> PartialState.NoChange
+            is Result.Success -> {
+                println("More Option result - ${it.value.size}")
+                PartialState.SetHomeMoreOptionItems(it.value)
             }
         }
-
-    private fun syncHomeData() = wrap {
-        homeDataSyncer.execute()
-    }.dropAll()
+    }
 
     override fun reduce(currentState: State, partialState: PartialState): State {
         return when (partialState) {
             PartialState.NoChange -> currentState
-            is PartialState.SetBusiness -> currentState.copy(business = partialState.business)
+            is PartialState.SetHomeMoreOptionItems -> currentState.copy(
+                moreOptions = partialState.items,
+            )
         }
     }
 }

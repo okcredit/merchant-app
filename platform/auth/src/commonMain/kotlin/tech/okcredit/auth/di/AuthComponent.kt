@@ -4,7 +4,6 @@ import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.Singleton
 import okcredit.base.network.AuthorizedHttpClient
-import okcredit.base.network.ClientConfig
 import okcredit.base.syncer.SignOutListener
 import tech.okcredit.auth.AuthService
 import tech.okcredit.auth.AuthServiceImpl
@@ -16,12 +15,6 @@ interface AuthComponent {
     @Provides
     fun AuthServiceImpl.service(): AuthService {
         return this
-    }
-
-    @Provides
-    @IntoSet
-    fun authClientConfig(authClientConfig: AuthClientConfig): ClientConfig {
-        return authClientConfig
     }
 
     @Provides

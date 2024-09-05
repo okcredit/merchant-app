@@ -15,6 +15,8 @@ interface SyncContract {
     sealed class Intent : UserIntent
 
     sealed class ViewEvent : BaseViewEvent {
-        object GoToHome : ViewEvent()
+        data object GoToHome : ViewEvent()
+
+        data object GoToSelectBusiness : ViewEvent()
     }
 }

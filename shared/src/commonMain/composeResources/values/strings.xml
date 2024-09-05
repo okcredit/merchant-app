@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_customer_found">No Customer found</string>
+    <string name="no_supplier_found">No Supplier found</string>
+
+    <string name="alert_transactions_not_synced">Some of your transactions are not synced</string>
+
+    <string name="statement">Statement</string>
+    <string name="my_plan">My Plan</string>
+    <string name="okscore">OkScore</string>
+    <string name="net_balance">Net Balance</string>
+    <string name="you_pay">You Pay</string>
+    <string name="you_get">You Get</string>
+
+    <string name="retry">Retry</string>
+
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="pending">Pending</string>
+    <string name="upcoming">Upcoming</string>
+
+    <string name="clear">Clear</string>
+    <string name="cta_apply">Apply</string>
+    <string name="filter">Filter</string>
+    <string name="sort_by">Sort By</string>
+    <string name="no_results_found">No Results Found</string>
+    <string name="clear_filter">Clear Filter</string>
+    <string name="latest">Latest</string>
+    <string name="last_payment">Last Payment</string>
+    <string name="amount_due">Amount Due</string>
+    <string name="name">Name</string>
+    <string name="reminder_date">Reminder date</string>
+
+    <string name="need_help">Need help?</string>
+    <string name="share">Share</string>
+
+    <string name="add_supplier">Add Supplier</string>
+    <string name="add_customer">Add Customer</string>
+
+    <string name="t_001_addrel_first_time_txt">Start your digital ledger by adding a customer</string>
+    <string name="t_001_addrel_cta_add_manually">Add By Yourself</string>
+    <string name="t_001_addrel_cta_add_from_contacts">Add from contacts</string>
+
+    <string name="supplier_learn_more_title">Add all your supplier here and save time by easily recording sale/ purchase done with them.</string>
+    <string name="balance">Balance</string>
+
+    <string name="customers">Customers</string>
+    <string name="suppliers">Suppliers</string>
+    <string name="contacts">Contacts</string>
+</resources>

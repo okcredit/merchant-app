@@ -2,10 +2,12 @@ package app.okcredit.merchant.android
 
 import android.content.Context
 import app.okcredit.ledger.core.di.AndroidLedgerComponent
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.di.LedgerUiComponent
 import app.okcredit.merchant.AndroidSharedComponent
 import app.okcredit.merchant.SharedScreenRegistryProvider
+import app.okcredit.onboarding.OnboardingComponent
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
-import app.okcredit.onboarding.di.OnboardingComponent
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -47,6 +49,7 @@ abstract class ApplicationComponent(
     AndroidSharedComponent,
     AndroidLedgerComponent,
     OnboardingComponent,
+    LedgerUiComponent,
     AndroidCustomizationComponent,
     AndroidCollectionComponent {
 
@@ -59,6 +62,8 @@ abstract class ApplicationComponent(
     abstract val sharedScreenRegistryProvider: SharedScreenRegistryProvider
 
     abstract val onboardingScreenRegistryProvider: OnboardingScreenRegistryProvider
+
+    abstract val ledgerScreenRegistryProvider: LedgerScreenRegistryProvider
 
     @Singleton
     @Provides

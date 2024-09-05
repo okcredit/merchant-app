@@ -9,7 +9,7 @@ import tech.okcredit.identity.contract.usecase.SetActiveBusinessId
 import tech.okcredit.identity.contract.usecase.SyncIndividual
 
 @Inject
-class SignIn(
+class LoginUser(
     private val authService: AuthService,
     private val syncIndividual: SyncIndividual,
     private val analyticsProvider: AnalyticsProvider,
@@ -19,13 +19,17 @@ class SignIn(
     suspend fun execute(credential: Credential, flowId: String, flowType: String): Pair<Boolean, Boolean> {
         val (newUser, appLockEnabled) = authService.authenticate(credential, flowId, flowType)
         val individual = syncIndividual.execute(flowId)
-        setupAnalyticsData(isSignup = newUser, individualId = individual.individualId, businessId = individual.businessIdList.first())
+        setupAnalyticsData(
+            newUser = newUser,
+            individualId = individual.individualId,
+            businessId = individual.businessIdList.first(),
+        )
         setActiveBusinessId.execute(individual.businessIdList.first())
         return newUser to appLockEnabled
     }
 
     private fun setupAnalyticsData(
-        isSignup: Boolean,
+        newUser: Boolean,
         individualId: String,
         businessId: String,
     ) {
@@ -36,7 +40,7 @@ class SignIn(
         analyticsProvider.setUserProperty(properties)
 
         analyticsProvider.setUserProperty(UserProperties.INDIVIDUAL_ID, individualId)
-        if (isSignup) {
+        if (newUser) {
             analyticsProvider.setUserProperty(UserProperties.BUSINESS_CREATION_RANK, "1")
         }
     }

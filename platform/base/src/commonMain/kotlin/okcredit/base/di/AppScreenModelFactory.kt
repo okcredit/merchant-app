@@ -33,13 +33,13 @@ class AppScreenModelFactory(
 val LocalScreenModelFactory = compositionLocalOf { AppScreenModelFactory(emptyMap()) }
 
 @Composable
-fun <VM> Screen.rememberScreenModel(clazz: KClass<out CoroutineScreenModel<*, *, *>>): VM where VM : CoroutineScreenModel<*, *, *> {
+inline fun <reified VM> Screen.rememberScreenModel(): VM where VM : CoroutineScreenModel<*, *, *> {
     val screenModelFactory = LocalScreenModelFactory.current
-    return rememberScreenModel { screenModelFactory.create(clazz) } as VM
+    return rememberScreenModel { screenModelFactory.create(VM::class) } as VM
 }
 
 @Composable
-fun <E : BaseViewEvent> CoroutineScreenModel<*, E, *>.observeViewEvents(block: (viewEvent: E) -> Unit) {
+inline fun <E : BaseViewEvent> CoroutineScreenModel<*, E, *>.observeViewEvents(crossinline block: (viewEvent: E) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     viewEvents.onEach {
         block(it)

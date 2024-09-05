@@ -11,6 +11,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.bundles.sqldelight.common)
             api(project(":platform:base"))
+            implementation(project(":platform:identity:contract"))
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

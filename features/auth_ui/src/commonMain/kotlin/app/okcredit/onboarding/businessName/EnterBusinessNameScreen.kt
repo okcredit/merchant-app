@@ -18,7 +18,7 @@ class EnterBusinessNameScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<EnterBusinessNameScreenModel>(EnterBusinessNameScreenModel::class)
+        val screenModel = rememberScreenModel<EnterBusinessNameScreenModel>()
         val state by screenModel.states.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         screenModel.observeViewEvents {

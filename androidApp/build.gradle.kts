@@ -128,6 +128,7 @@ dependencies {
     implementation(project(":features:growth:customization"))
     implementation(project(":features:ledger:contract"))
     implementation(project(":features:ledger:core"))
+    implementation(project(":features:ledger:ui"))
 
     implementation(project(":features:online_payments:collection"))
 

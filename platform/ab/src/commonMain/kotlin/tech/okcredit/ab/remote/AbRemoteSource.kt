@@ -29,7 +29,7 @@ class AbRemoteSource(
             headers = mapOf(
                 "X-App-Source" to "sync",
                 "X-App-Source-Type" to sourceType,
-                "X-Business-Id" to businessId,
+                HEADER_BUSINESS_ID to businessId,
             ),
         ).getOrThrow().profile.toProfile()
     }

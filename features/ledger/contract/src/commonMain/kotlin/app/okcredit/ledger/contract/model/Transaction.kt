@@ -29,6 +29,9 @@ data class Transaction(
     val createdByMerchant: Boolean
         get() = !createdByCustomer && referenceId.isNullOrEmpty()
 
+    val collectionId: String?
+        get() = if (referenceSource == 1 || referenceSource == 3 || referenceSource == 4) referenceId else null
+
     enum class State(val code: Int) {
         PROCESSING(0),
         CREATED(1),
@@ -99,12 +102,14 @@ fun Transaction.lastActivityMetaInfo() = when {
             else -> 1
         }
     }
+
     this.amountUpdated -> {
         when (this.type) {
             Transaction.Type.CREDIT -> 8
             else -> 9
         }
     }
+
     this.state == Transaction.State.PROCESSING -> 5
     this.type == Transaction.Type.CREDIT -> 2
     this.category == Transaction.Category.DISCOUNT -> 7

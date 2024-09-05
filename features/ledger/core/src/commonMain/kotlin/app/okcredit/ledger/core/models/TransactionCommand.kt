@@ -53,3 +53,9 @@ data class DeleteTransaction(
     override val accountType: AccountType,
     override val createTime: Timestamp,
 ) : TransactionCommand()
+
+
+data class TransactionSummary(
+    val currentDue: Long,
+    val lastIndexOfZeroBalanceDue: Int?
+)

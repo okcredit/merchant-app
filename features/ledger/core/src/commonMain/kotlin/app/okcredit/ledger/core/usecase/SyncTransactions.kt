@@ -78,7 +78,7 @@ private fun List<ApiTransaction>.toDomainTransactions(businessId: String): List<
             deletedByCustomer = it.deleterRole == ROLE_BUYER,
             createdAt = it.createTimeMs!!.timestamp,
             note = it.note,
-            billDate = it.billDate?.timestamp ?: 0L.timestamp,
+            billDate = ((it.billDate ?: 0L) * 1000).timestamp,
             state = Transaction.State.getTransactionState(it.transactionState!!),
             category = Transaction.Category.getTransactionCategory(it.txCategory!!),
             dirty = false,

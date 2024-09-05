@@ -2,7 +2,7 @@ package app.okcredit.onboarding.login
 
 import app.okcredit.onboarding.login.LoginContract.*
 import app.okcredit.onboarding.usecase.FetchFallbackOptionsOtp
-import app.okcredit.onboarding.usecase.SignIn
+import app.okcredit.onboarding.usecase.LoginUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -21,7 +21,7 @@ import tech.okcredit.auth.remote.AuthApiClient
 @Inject
 class LoginScreenModel(
     private val authService: AuthService,
-    private val signIn: SignIn,
+    private val loginUser: LoginUser,
     private val fetchFallbackOptionsOtp: FetchFallbackOptionsOtp,
 ) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(State()) {
 
@@ -125,7 +125,7 @@ class LoginScreenModel(
     private fun observeOtpEntered() = intent<Intent.OtpEntered>()
         .flatMapLatest {
             wrap {
-                signIn.execute(
+                loginUser.execute(
                     credential = Credential.Otp(currentState.otpToken!!, code = it.otp),
                     flowId = flowId,
                     flowType = "Login",

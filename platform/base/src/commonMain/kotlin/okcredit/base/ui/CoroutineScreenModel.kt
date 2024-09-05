@@ -1,7 +1,6 @@
 package okcredit.base.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -21,7 +20,7 @@ interface CoroutineScreenModel<S : UiState, E : BaseViewEvent, I : UserIntent> :
      * Call this method to push any new Intent from the screen or view.
      * @param - intent - The intent to be pushed to the ViewModel
      */
-    fun pushIntent(intent: I): Job
+    fun pushIntent(intent: I)
 
     /**
      * This method returns a [StateFlow] of the current state of the screen.

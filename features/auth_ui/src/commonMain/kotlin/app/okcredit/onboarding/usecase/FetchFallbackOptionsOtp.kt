@@ -5,7 +5,7 @@ import tech.okcredit.auth.AuthService
 import tech.okcredit.auth.remote.AuthApiClient
 
 @Inject
-class FetchFallbackOptionsOtp constructor(
+class FetchFallbackOptionsOtp(
     private val authService: Lazy<AuthService>,
 ) {
 

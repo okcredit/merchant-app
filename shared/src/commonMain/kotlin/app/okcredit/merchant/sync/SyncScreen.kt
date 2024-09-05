@@ -18,16 +18,14 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
-@Inject
 class SyncScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel<SyncScreenModel>(SyncScreenModel::class)
+        val screenModel = rememberScreenModel<SyncScreenModel>()
 
         val navigator = LocalNavigator.currentOrThrow
         screenModel.observeViewEvents { handleViewEvent(it, navigator) }
@@ -39,6 +37,10 @@ class SyncScreen : Screen {
         when (viewEvent) {
             SyncContract.ViewEvent.GoToHome -> {
                 navigator.replaceAll(ScreenRegistry.get(SharedScreenRegistry.Home))
+            }
+
+            SyncContract.ViewEvent.GoToSelectBusiness -> {
+                navigator.replaceAll(ScreenRegistry.get(SharedScreenRegistry.SelectBusiness))
             }
         }
     }

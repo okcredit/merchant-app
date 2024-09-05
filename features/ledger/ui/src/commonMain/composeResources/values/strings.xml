@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_placeholder_supplier_ledger">Go stress free by recording sale/purchase done with your suppliers.</string>
+    <string name="empty_placeholder_customer_ledger"><![CDATA[All transactions between you and customers are totally private & secure.]]></string>
+    <string name="learn_more">Learn More</string>
+    <string name="load_settled_entries">Show Old</string>
+    <string name="transaction_share">Share</string>
+    <string name="due">Due</string>
+    <string name="advance">Advance</string>
+    <string name="credit_failed">Credit Failed</string>
+    <string name ="payment_failed">Payment Failed</string>
+    <string name="credit_deleted">Credit Deleted</string>
+    <string name="payment_deleted">Payment Deleted</string>
+    <string name="something_went_wrong">Something went wrong</string>
+</resources>

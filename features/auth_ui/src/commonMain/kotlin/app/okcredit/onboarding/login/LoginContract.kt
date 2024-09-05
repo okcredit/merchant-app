@@ -22,13 +22,13 @@ interface LoginContract {
         data class FetchOtpToken(val mobile: String) : Intent()
         data class FetchFallbackOptions(val mobile: String) : Intent()
         data class OtpEntered(val otp: String) : Intent()
-        object ResendOtpOnSms : Intent()
-        object ResendOtpOnWhatsApp : Intent()
-        object ResendOtpOnRecoveryNumber : Intent()
+        data object ResendOtpOnSms : Intent()
+        data object ResendOtpOnWhatsApp : Intent()
+        data object ResendOtpOnRecoveryNumber : Intent()
     }
 
     sealed class PartialState : UiState.Partial {
-        object NoChange : PartialState()
+        data object NoChange : PartialState()
         data class SetValidMobile(val mobile: String) : PartialState()
         data class SetOtpToken(val otpToken: OtpToken) : PartialState()
         data class SetVerified(val newUser: Boolean, val appLockEnabled: Boolean) : PartialState()
@@ -40,7 +40,7 @@ interface LoginContract {
     }
 
     sealed class ViewEvent : BaseViewEvent {
-        object GoToEnterBusinessName : ViewEvent()
-        object GoToSyncScreen : ViewEvent()
+        data object GoToEnterBusinessName : ViewEvent()
+        data object GoToSyncScreen : ViewEvent()
     }
 }

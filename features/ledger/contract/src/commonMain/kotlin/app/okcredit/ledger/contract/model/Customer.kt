@@ -33,11 +33,24 @@ data class Customer(
         val language: String? = null,
     )
 
+    /**
+     * Possible values for lastActivityMetaInfo -
+     * 0 - deleted credit txn
+     * 1 - deleted payment txn
+     * 2 - normal credit txn
+     * 3 - normal payment txn
+     * 4 - customer just added, no txn present
+     * 5 - processing transaction
+     * 6 - deleted discount txn
+     * 7 - normal discount txn
+     * 8 - updated credit txn
+     * 9 - updated payment txn
+     **/
     data class CustomerSummary(
         val balance: Paisa = 0.paisa,
         val transactionCount: Long = 0,
         val lastActivity: Timestamp = Timestamp(0L),
-        val lastActivityMetaInfo: Long = 4,
+        val lastActivityMetaInfo: Int = 4,
         val lastPayment: Timestamp? = null,
         val lastAmount: Paisa? = null,
         val lastReminderSendTime: Timestamp? = null,

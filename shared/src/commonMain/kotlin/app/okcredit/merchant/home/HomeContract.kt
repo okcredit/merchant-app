@@ -3,29 +3,20 @@ package app.okcredit.merchant.home
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
 import okcredit.base.ui.UserIntent
-import tech.okcredit.identity.contract.model.Business
 
 interface HomeContract {
 
     data class State(
-        val isLoading: Boolean = true,
-        val business: Business? = null,
+        val loading: Boolean = false,
+        val moreOptions: List<MoreOptionItem> = emptyList(),
     ) : UiState
 
-    sealed class PartialState : UiState.Partial {
-        object NoChange : PartialState()
-
-        data class SetBusiness(val business: Business) : PartialState()
+    sealed interface PartialState : UiState.Partial {
+        data object NoChange : PartialState
+        data class SetHomeMoreOptionItems(val items: List<MoreOptionItem>) : PartialState
     }
 
-    sealed class ViewEvent : BaseViewEvent {
-        object GoToLogin : ViewEvent()
-        data class ShowToast(val message: String) : ViewEvent()
-    }
+    sealed interface Intent : UserIntent
 
-    sealed class Intent : UserIntent {
-        object OnResume : Intent()
-    }
+    sealed interface ViewEvent : BaseViewEvent
 }
-
-const val SCREEN_NAME = "home_screen"
