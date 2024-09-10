@@ -6,3 +6,5 @@ enum class AccountType {
 }
 
 fun AccountType.isCustomer() = this == AccountType.CUSTOMER
+
+fun AccountType.isSupplier() = this == AccountType.SUPPLIER

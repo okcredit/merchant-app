@@ -49,3 +49,32 @@ const val ROLE_BUYER = 2 // Customers
 
 const val FILE_CREATION_IN_PROGRESS = 0
 const val FILE_CREATION_COMPLETED = 1
+
+//
+//@kotlinx.serialization.Serializable
+//data class SupplierTransactionResponse(
+//    @SerialName("transactions")
+//    val transactions: List<SupplierApiTransaction>
+//)
+//
+//@kotlinx.serialization.Serializable
+//data class SupplierApiTransaction(
+//    val id: String,
+//    val supplier_id: String,
+//    val collection_id: String?,
+//    val payment: Boolean,
+//    val amount: Long,
+//    val note: String?,
+//    val receipt_url: String?,
+//    val bill_date: DateTime,
+//    val create_time: DateTime,
+//    val created_by_supplier: Boolean,
+//    val deleted: Boolean,
+//    val delete_time: DateTime?,
+//    val deleted_by_supplier: Boolean,
+//    val update_time: DateTime,
+//    val transaction_state: Int,
+//    val tx_category: Int?,
+//    val reference_id: String?,
+//    val reference_source: Int?,
+//)

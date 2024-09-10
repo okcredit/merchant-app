@@ -17,10 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.contract.model.isSupplier
 import app.okcredit.ledger.ui.empty_placeholder_customer_ledger
 import app.okcredit.ledger.ui.empty_placeholder_supplier_ledger
 import app.okcredit.ledger.ui.learn_more
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.placeholder_empty_customer_ledger
 import app.okcredit.ledger.ui.placeholder_empty_supplier_ledger
 import app.okcredit.ui.icon_help_outline
@@ -90,7 +91,7 @@ fun LedgerEmptyPlaceHolder(
 @Composable
 fun LedgerEmptyPlaceHolderCustomer() {
     LedgerEmptyPlaceHolder(
-        accountType = AccountType.Customer,
+        accountType = AccountType.CUSTOMER,
         onLearnMoreClicked = {}
     )
 }
@@ -99,7 +100,7 @@ fun LedgerEmptyPlaceHolderCustomer() {
 @Composable
 fun LedgerEmptyPlaceHolderSupplier() {
     LedgerEmptyPlaceHolder(
-        accountType = AccountType.Customer,
+        accountType = AccountType.CUSTOMER,
         onLearnMoreClicked = {}
     )
 }

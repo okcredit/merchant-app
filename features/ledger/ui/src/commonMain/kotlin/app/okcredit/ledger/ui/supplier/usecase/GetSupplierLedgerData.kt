@@ -2,13 +2,13 @@
 
 package app.okcredit.ledger.ui.supplier.usecase
 
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.SupplierRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.ui.composable.TxnGravity
 import app.okcredit.ledger.ui.composable.UiTxnStatus
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
 import app.okcredit.ledger.ui.model.TransactionDueInfo
@@ -152,7 +152,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -167,7 +167,7 @@ class GetSupplierLedgerData(
                 action = UiTxnStatus.ProcessingTransactionAction.NONE,
                 paymentId = item.onlinePayment?.paymentId ?: ""
             ),
-            accountType = AccountType.Supplier,
+            accountType = AccountType.SUPPLIER,
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
@@ -192,7 +192,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -204,7 +204,7 @@ class GetSupplierLedgerData(
             note = transaction.note,
             closingBalance = closingBalance,
             txnType = UiTxnStatus.Transaction,
-            accountType = AccountType.Supplier,
+            accountType = AccountType.SUPPLIER,
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
                 name = supplierName
@@ -232,7 +232,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -251,7 +251,7 @@ class GetSupplierLedgerData(
                 customerName = supplierName,
                 deletedByCustomer = transaction.deletedByCustomer
             ),
-            accountType = AccountType.Supplier,
+            accountType = AccountType.SUPPLIER,
             collectionId = transaction.collectionId
         )
     }
@@ -285,9 +285,9 @@ class GetSupplierLedgerData(
 
     private fun findUiTxnGravity(isPayment: Boolean, accountType: AccountType): TxnGravity {
         return if (isPayment) {
-            if (accountType == AccountType.Customer) TxnGravity.LEFT else TxnGravity.RIGHT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.LEFT else TxnGravity.RIGHT
         } else {
-            if (accountType == AccountType.Customer) TxnGravity.RIGHT else TxnGravity.LEFT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.RIGHT else TxnGravity.LEFT
         }
     }
 

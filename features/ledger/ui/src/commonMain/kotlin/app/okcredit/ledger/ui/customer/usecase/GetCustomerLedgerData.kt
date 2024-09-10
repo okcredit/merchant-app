@@ -2,13 +2,13 @@
 
 package app.okcredit.ledger.ui.customer.usecase
 
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.ui.composable.TxnGravity
 import app.okcredit.ledger.ui.composable.UiTxnStatus
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
 import app.okcredit.ledger.ui.model.TransactionDueInfo
@@ -229,7 +229,7 @@ class GetCustomerLedgerData(
             txnId = transaction.id,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Customer
+                accountType = AccountType.CUSTOMER
             ),
             amount = transaction.amount,
             date = transaction.billDate.relativeTime(),
@@ -310,7 +310,7 @@ class GetCustomerLedgerData(
             txnId = transaction.id,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Customer
+                accountType = AccountType.CUSTOMER
             ),
             amount = transaction.amount,
             date = transaction.billDate.relativeTime(),
@@ -388,9 +388,9 @@ class GetCustomerLedgerData(
 
     private fun findUiTxnGravity(isPayment: Boolean, accountType: AccountType): TxnGravity {
         return if (isPayment) {
-            if (accountType == AccountType.Customer) TxnGravity.LEFT else TxnGravity.RIGHT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.LEFT else TxnGravity.RIGHT
         } else {
-            if (accountType == AccountType.Customer) TxnGravity.RIGHT else TxnGravity.LEFT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.RIGHT else TxnGravity.LEFT
         }
     }
 

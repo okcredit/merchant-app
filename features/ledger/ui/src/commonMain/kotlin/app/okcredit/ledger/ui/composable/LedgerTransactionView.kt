@@ -53,13 +53,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.ui.advance
 import app.okcredit.ledger.ui.credit_deleted
-import app.okcredit.ledger.ui.credit_failed
 import app.okcredit.ledger.ui.due
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.payment_deleted
-import app.okcredit.ledger.ui.payment_failed
 import app.okcredit.ledger.ui.placeholder_bill_images
 import app.okcredit.ledger.ui.transaction_share
 import app.okcredit.ui.Res
@@ -70,7 +68,6 @@ import app.okcredit.ui.icon_refresh_outline
 import app.okcredit.ui.icon_share
 import app.okcredit.ui.icon_single_check
 import app.okcredit.ui.icon_sync
-import app.okcredit.ui.icon_sync_problem
 import coil3.compose.LocalPlatformContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
@@ -99,7 +96,7 @@ data class TransactionViewState(
     val txnTag: String?,
     val note: String?,
     val txnType: UiTxnStatus = UiTxnStatus.Transaction,
-    val accountType: AccountType = AccountType.Customer,
+    val accountType: AccountType = AccountType.CUSTOMER,
 )
 
 enum class TxnGravity {

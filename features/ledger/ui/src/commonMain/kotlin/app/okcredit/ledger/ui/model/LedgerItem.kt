@@ -1,5 +1,6 @@
 package app.okcredit.ledger.ui.model
 
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.ui.composable.TxnGravity
 import app.okcredit.ledger.ui.composable.UiTxnStatus
 import okcredit.base.units.Paisa
@@ -28,6 +29,6 @@ sealed class LedgerItem {
         val txnTag: String?,
         val note: String?,
         val txnType: UiTxnStatus = UiTxnStatus.Transaction,
-        val accountType: AccountType = AccountType.Customer,
+        val accountType: AccountType = AccountType.CUSTOMER,
     ) : LedgerItem()
 }
