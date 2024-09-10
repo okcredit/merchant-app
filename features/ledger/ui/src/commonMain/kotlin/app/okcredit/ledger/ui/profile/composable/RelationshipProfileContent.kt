@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.isSupplier
@@ -219,15 +220,17 @@ fun CustomerPermissions(
             modifier = modifier.padding(start = 16.dp, top = 8.dp),
             title = stringResource(app.okcredit.ledger.ui.Res.string.customer_permission)
         )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp)
-                .background(
-                    MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(16.dp)
-                ),
-        ) {
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .background(
+                MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(16.dp)
+            ),
+    ) {
+        if (registered && !accountType.isSupplier()) {
             Row(
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
@@ -269,51 +272,51 @@ fun CustomerPermissions(
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface)
             )
-            Row(
-                modifier = Modifier
-                    .clip(
-                        shape = RoundedCornerShape(
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp
-                        )
+        }
+        Row(
+            modifier = Modifier
+                .clip(
+                    shape = RoundedCornerShape(
+                        bottomStart = 16.dp,
+                        bottomEnd = 16.dp
                     )
-                    .clickable { onMoveRelationshipClicked() },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(app.okcredit.ledger.ui.Res.drawable.icon_move_to_supplier),
-                    contentDescription = "icon",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .graphicsLayer { if (accountType.isSupplier()) rotationY = 180f }
-                        .padding(
-                            start = 16.dp,
-                            top = 16.dp,
-                            bottom = 16.dp,
-                            end = 12.dp
-                        )
                 )
-                Text(
-                    text = stringResource(
-                        if (accountType.isSupplier()) {
-                            app.okcredit.ledger.ui.Res.string.move_to_customer
-                        } else {
-                            app.okcredit.ledger.ui.Res.string.move_to_supplier
-                        }
-                    ),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .weight(1f)
-                )
-                Icon(
-                    painter = painterResource(Res.drawable.icon_chevron_right),
-                    contentDescription = "edit",
-                    tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(end = 16.dp)
-                )
-            }
+                .clickable { onMoveRelationshipClicked() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(app.okcredit.ledger.ui.Res.drawable.icon_move_to_supplier),
+                contentDescription = "icon",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .graphicsLayer { if (accountType.isSupplier()) rotationY = 180f }
+                    .padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                        bottom = 16.dp,
+                        end = 12.dp
+                    )
+            )
+            Text(
+                text = stringResource(
+                    if (accountType.isSupplier()) {
+                        app.okcredit.ledger.ui.Res.string.move_to_customer
+                    } else {
+                        app.okcredit.ledger.ui.Res.string.move_to_supplier
+                    }
+                ),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .weight(1f)
+            )
+            Icon(
+                painter = painterResource(Res.drawable.icon_chevron_right),
+                contentDescription = "edit",
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(end = 16.dp)
+            )
         }
     }
 }
@@ -484,6 +487,9 @@ fun ProfileName(
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
+                .weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
