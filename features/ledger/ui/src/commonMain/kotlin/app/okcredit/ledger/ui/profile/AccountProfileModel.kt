@@ -2,7 +2,7 @@ package app.okcredit.ledger.ui.profile
 
 import app.okcredit.ledger.core.usecase.UpdateAccount
 import app.okcredit.ledger.ui.profile.AccountProfileContract.*
-import app.okcredit.ledger.ui.profile.usecase.GetRelationshipDetails
+import app.okcredit.ledger.ui.profile.usecase.GetAccountDetails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -16,18 +16,30 @@ import okcredit.base.ui.Result
 @OptIn(ExperimentalCoroutinesApi::class)
 class AccountProfileModel(
     private val updateAccount: UpdateAccount,
-    private val getRelationshipDetails: GetRelationshipDetails,
+    private val getAccountDetails: GetAccountDetails,
 ) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(State()) {
 
     override fun partialStates(): Flow<PartialState> {
         return merge(
-            observeRelationshipDetails(),
+            observeAccountDetails(),
+            observeInfoDialogType(),
+            observeBottomSheetType(),
         )
     }
 
-    private fun observeRelationshipDetails() = intent<Intent.LoadDetails>()
+    private fun observeBottomSheetType() = intent<Intent.SetBottomSheetType>()
+        .map {
+            PartialState.SetBottomSheetType(it.type)
+        }
+
+    private fun observeInfoDialogType() = intent<Intent.SetInfoDialogType>()
+        .map {
+            PartialState.SetInfoDialogType(it.type)
+        }
+
+    private fun observeAccountDetails() = intent<Intent.LoadDetails>()
         .flatMapLatest {
-            wrap(getRelationshipDetails.execute(it.accountId, it.accountType))
+            wrap(getAccountDetails.execute(it.accountId, it.accountType))
         }.map {
             when (it) {
                 is Result.Progress -> PartialState.SetLoading(true)
@@ -55,8 +67,8 @@ class AccountProfileModel(
                 mobile = partialState.mobileNumber
             )
 
-            is PartialState.SetBottomSheetType -> currentState.copy(
-                bottomSheetType = partialState.type
+            is PartialState.SetInfoDialogType -> currentState.copy(
+                infoDialogType = partialState.type
             )
 
             is PartialState.RelationshipDetails -> currentState.copy(
@@ -72,6 +84,10 @@ class AccountProfileModel(
             is PartialState.SetError -> currentState.copy(
                 errorMessage = partialState.errorMessage,
                 loading = false
+            )
+
+            is PartialState.SetBottomSheetType -> currentState.copy(
+                bottomSheetType = partialState.type
             )
         }
     }

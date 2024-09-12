@@ -13,7 +13,7 @@ import okcredit.base.units.Paisa
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Inject
-class GetRelationshipDetails(
+class GetAccountDetails(
     customerRepository: Lazy<CustomerRepository>,
     supplierRepository: Lazy<SupplierRepository>
 ) {
