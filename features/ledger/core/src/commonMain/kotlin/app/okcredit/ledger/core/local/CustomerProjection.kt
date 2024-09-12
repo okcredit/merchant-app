@@ -4,7 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
-import app.okcredit.ledger.contract.model.CustomerStatus
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
@@ -252,6 +252,31 @@ class CustomerProjection(
         }
     }
 
+    suspend fun resetCustomer(customer: Customer) {
+        withContext(appDispatchers.io) {
+            database.transaction {
+                accountQueries.insertOrReplaceAccount(
+                    Account(
+                        id = customer.id,
+                        businessId = customer.businessId,
+                        type = AccountType.CUSTOMER,
+                        status = customer.status,
+                        name = customer.name,
+                        mobile = customer.mobile,
+                        profileImage = customer.profileImage,
+                        accountUrl = customer.accountUrl,
+                        createdAt = customer.createdAt,
+                        updatedAt = customer.updatedAt,
+                        gstNumber = customer.gstNumber,
+                        registered = customer.registered,
+                    ),
+                )
+                addOrUpdateCustomerSettings(customer.id, customer.settings)
+                addCustomerSummaryOrIgnore(customer.id, customer.summary)
+            }
+        }
+    }
+
     fun addCustomer(customer: Customer) {
         database.transaction {
             accountQueries.insertOrReplaceAccount(
@@ -379,7 +404,7 @@ class CustomerProjection(
     suspend fun markCustomerAsDeleted(customerId: String) {
         withContext(appDispatchers.io) {
             accountQueries.updateAccountStatus(
-                status = CustomerStatus.DELETED,
+                status = AccountStatus.DELETED,
                 accountId = customerId,
             )
         }

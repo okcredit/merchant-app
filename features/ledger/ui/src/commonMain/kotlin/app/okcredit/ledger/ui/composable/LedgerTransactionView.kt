@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.contract.model.isSupplier
 import app.okcredit.ledger.ui.advance
 import app.okcredit.ledger.ui.credit_deleted
 import app.okcredit.ledger.ui.due

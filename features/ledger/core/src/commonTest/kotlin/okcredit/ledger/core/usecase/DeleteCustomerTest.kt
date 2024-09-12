@@ -1,7 +1,7 @@
 package okcredit.ledger.core.usecase
 
 import app.cash.turbine.test
-import app.okcredit.ledger.contract.model.CustomerStatus
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.usecase.BalanceNonZeroError
 import app.okcredit.ledger.contract.usecase.CustomerNotFoundError
 import app.okcredit.ledger.core.usecase.DeleteCustomer
@@ -58,7 +58,7 @@ class DeleteCustomerTest {
 
             // Then
             ledgerTestHelper.customerRepository.getCustomerDetails(relationId).test {
-                assertEquals(awaitItem()?.status, CustomerStatus.DELETED)
+                assertEquals(awaitItem()?.status, AccountStatus.DELETED)
             }
         }
 

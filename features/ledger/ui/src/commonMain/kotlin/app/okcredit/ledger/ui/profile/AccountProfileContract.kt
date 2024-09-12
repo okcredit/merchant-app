@@ -1,6 +1,7 @@
 package app.okcredit.ledger.ui.profile
 
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.profile.usecase.GetRelationshipDetails
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
 import okcredit.base.ui.UserIntent
@@ -13,12 +14,12 @@ interface AccountProfileContract {
         val profileImage: String = "",
         val name: String = "",
         val mobile: String = "",
-        val address: String = "",
         val blocked: Boolean = false,
         val transactionRestricted: Boolean = false,
         val accountType: AccountType = AccountType.CUSTOMER,
         val registered: Boolean = false,
         val bottomSheetType: BottomSheetType? = null,
+        val errorMessage: String? = null,
     ) : UiState
 
     sealed class BottomSheetType {
@@ -40,7 +41,7 @@ interface AccountProfileContract {
 
         data class SubmitPhoneNumber(val mobileNumber: String) : Intent()
 
-        data object Load : Intent()
+        data class LoadDetails(val accountId: String, val accountType: AccountType) : Intent()
 
         data object HelpClicked : Intent()
 
@@ -51,13 +52,14 @@ interface AccountProfileContract {
         data class UpdateAddTransactionPermission(val switch: Boolean) : Intent()
 
         data class SubmitName(val name: String) : Intent()
+
+        data object OnMobileClicked : Intent()
     }
 
     sealed class PartialState : UiState.Partial {
 
-       // data class RelationshipDetails(val res: GetRelationshipDetails.Response) : PartialState()
+        data class RelationshipDetails(val res: GetRelationshipDetails.Response) : PartialState()
 
-        data class SetRelationshipAddress(val address: String) : PartialState()
 
         data class SetMobileNumber(val mobileNumber: String) : PartialState()
 
@@ -66,6 +68,8 @@ interface AccountProfileContract {
         data class SetBottomSheetType(val type: BottomSheetType?) : PartialState()
 
         data object NoChange : PartialState()
+
+        data class SetError(val errorMessage: String): PartialState()
     }
 
     sealed class ViewEvent : BaseViewEvent {

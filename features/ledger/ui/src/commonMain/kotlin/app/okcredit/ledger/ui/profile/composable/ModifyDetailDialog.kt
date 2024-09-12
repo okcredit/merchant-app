@@ -41,15 +41,16 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ModifyNameDialog(
-    name: String,
+fun ModifyDetailDialog(
+    title: String,
+    prefillText: String,
     onSubmitClicked: (String) -> Unit,
     onCloseClicked: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalFocusManager.current
 
-    val text = remember { mutableStateOf(TextFieldValue(name, selection = TextRange(name.length))) }
+    val text = remember { mutableStateOf(TextFieldValue(prefillText, selection = TextRange(prefillText.length))) }
     LaunchedEffect(true) {
         focusRequester.requestFocus()
     }
@@ -67,11 +68,7 @@ fun ModifyNameDialog(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = if (name.isEmpty()) {
-                    stringResource(Res.string.enter_name)
-                } else {
-                    stringResource(Res.string.edit_name)
-                },
+                text = title,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
                 style = MaterialTheme.typography.titleSmall
@@ -145,5 +142,5 @@ fun ModifyNameDialog(
 @Preview
 @Composable
 fun ModifyNameDialogPreview() {
-    ModifyNameDialog(name = "Karan", onSubmitClicked = {}, onCloseClicked = {})
+    ModifyDetailDialog(prefillText = "Karan", onSubmitClicked = {}, onCloseClicked = {}, title = "Enter Name")
 }

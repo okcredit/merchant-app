@@ -19,7 +19,6 @@ fun RelationshipProfileScreen(
     onHelpClicked: () -> Unit,
     onProfileImageClicked: () -> Unit,
     onMobileClicked: () -> Unit,
-    onAddressClicked: () -> Unit,
     onSmsSettingsClicked: () -> Unit,
     onMoveRelationshipClicked: () -> Unit,
     onBlockRelationshipClicked: () -> Unit,
@@ -32,7 +31,7 @@ fun RelationshipProfileScreen(
 ) {
     Scaffold(
         topBar = {
-            RelationshipProfileToolbar(
+            AccountProfileToolbar(
                 onBackClicked = onBackClicked,
                 onHelpClicked = onHelpClicked
             )
@@ -85,7 +84,6 @@ fun RelationshipProfileScreen(
                     profileImage = state.profileImage,
                     name = state.name,
                     mobile = state.mobile,
-                    address = state.address,
                     blocked = state.blocked,
                     transactionRestricted = state.transactionRestricted,
                     accountType = state.accountType,
@@ -94,7 +92,6 @@ fun RelationshipProfileScreen(
                 contentPadding = contentPadding,
                 onProfileClicked = onProfileImageClicked,
                 onMobileClicked = onMobileClicked,
-                onAddressClicked = onAddressClicked,
                 onSmsSettingsClicked = onSmsSettingsClicked,
                 onMoveRelationshipClicked = onMoveRelationshipClicked,
                 onBlockRelationshipClicked = onBlockRelationshipClicked,
@@ -118,7 +115,6 @@ fun RelationshipProfileScreenPreview() {
         onHelpClicked = {},
         onProfileImageClicked = {},
         onMobileClicked = {},
-        onAddressClicked = {},
         onSmsSettingsClicked = {},
         onMoveRelationshipClicked = {},
         onBlockRelationshipClicked = {},

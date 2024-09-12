@@ -5,6 +5,7 @@ import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.core.local.LedgerLocalSource
 import app.okcredit.ledger.core.remote.LedgerRemoteSource
+import app.okcredit.ledger.core.remote.models.UpdateCustomerRequest
 import kotlinx.coroutines.flow.Flow
 import me.tatarka.inject.annotations.Inject
 
@@ -64,5 +65,19 @@ class CustomerRepository(
     suspend fun deleteCustomer(customerId: String, businessId: String) {
         remoteSource.deleteCustomer(customerId, businessId)
         localSource.markCustomerAsDeleted(customerId)
+    }
+
+    suspend fun updateCustomer(
+        businessId: String,
+        customerId: String,
+        request: UpdateCustomerRequest
+    ) {
+        remoteSource.updateCustomer(
+            customerId = customerId,
+            request = request,
+            businessId = businessId
+        ).let { updatedCustomer ->
+            localSource.resetCustomer(updatedCustomer)
+        }
     }
 }

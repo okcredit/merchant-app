@@ -15,10 +15,14 @@ data class Supplier(
     val updatedAt: Timestamp,
     val settings: SupplierSettings,
     val summary: SupplierSummary,
+    val status: AccountStatus
 ) : Account(AccountType.SUPPLIER) {
 
     override val balance: Paisa
         get() = summary.balance
+
+    val blockedBySelf: Boolean
+        get() = status == AccountStatus.BLOCKED
 
     data class SupplierSettings(
         val lang: String,

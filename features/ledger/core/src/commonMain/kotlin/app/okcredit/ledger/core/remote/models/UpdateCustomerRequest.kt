@@ -1,5 +1,7 @@
 package app.okcredit.ledger.core.remote.models
 
+import app.okcredit.ledger.contract.model.Customer
+import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -44,3 +46,28 @@ data class UpdateCustomerRequest(
     @SerialName("updated_at")
     val updatedAt: Long,
 )
+
+
+fun Customer.createUpdateCustomerRequest(): UpdateCustomerRequest {
+    return UpdateCustomerRequest(
+        mobile = this.mobile,
+        description = this.name,
+        address = "",
+        gstNumber = this.gstNumber,
+        profileImage = this.profileImage,
+        lang = this.settings.language,
+        reminderMode = this.settings.reminderMode,
+        txnAlertEnabled = this.settings.txnAlertEnabled,
+        updateTxnAlertEnabled = this.settings.txnAlertEnabled,
+        displayTxnAlertSetting = this.settings.txnAlertEnabled,
+        updateDisplayTxnAlertSetting = false,
+        dueCustomDate = this.dueDate?.epochMillis ?: 0L,
+        updateDueCustomDate = false,
+        deleteDueCustomDate = false,
+        updateAddTransactionRestricted = false,
+        addTransactionRestricted = this.settings.addTransactionRestricted,
+        state = if (this.settings.blockedByCustomer) 3 else 1,
+        updateState = false,
+        updatedAt = Clock.System.now().toEpochMilliseconds()
+    )
+}

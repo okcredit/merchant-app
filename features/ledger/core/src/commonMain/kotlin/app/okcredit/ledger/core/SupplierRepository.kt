@@ -4,6 +4,8 @@ import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.core.local.LedgerLocalSource
 import app.okcredit.ledger.core.remote.LedgerRemoteSource
+import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
+import app.okcredit.ledger.core.usecase.RequestUpdateAccount
 import kotlinx.coroutines.flow.Flow
 import me.tatarka.inject.annotations.Inject
 
@@ -44,7 +46,26 @@ class SupplierRepository(
         return supplier
     }
 
-    fun listAllSuppliers(businessId: String, sortBy: SortBy, limit: Int, offset: Int): Flow<List<Supplier>> {
+    fun listAllSuppliers(
+        businessId: String,
+        sortBy: SortBy,
+        limit: Int,
+        offset: Int
+    ): Flow<List<Supplier>> {
         return localSource.listAllSuppliers(businessId, sortBy, limit, offset)
+    }
+
+    suspend fun updateSupplier(
+        businessId: String,
+        accountId: String,
+        request: UpdateSupplierRequest
+    ) {
+        remoteSource.updateSupplier(
+            supplierId = accountId,
+            businessId = businessId,
+            request = request
+        ).let {
+            localSource.resetSupplier(it)
+        }
     }
 }

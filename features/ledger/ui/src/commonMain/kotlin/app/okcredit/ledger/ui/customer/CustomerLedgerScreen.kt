@@ -3,9 +3,12 @@ package app.okcredit.ledger.ui.customer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.LedgerScreenRegistry
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.*
 import app.okcredit.ledger.ui.customer.composable.CustomerLedgerUi
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -31,24 +34,28 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
         render(screenModel, state, navigator)
     }
 
-    @OptIn(InternalVoyagerApi::class)
     @Composable
     private fun render(
-        screenModel: CustomerLedgerModel,
-        state: State,
-        navigator: Navigator
+        screenModel: CustomerLedgerModel, state: State, navigator: Navigator
     ) {
-        CustomerLedgerUi(
-            state = state,
+        CustomerLedgerUi(state = state,
             loadTransactions = {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
-                        showOldClicked = false,
-                        customerId = customerId
+                        showOldClicked = false, customerId = customerId
                     )
                 )
             },
-            onProfileClicked = { },
+            onProfileClicked = {
+                val customerId = state.customerDetails?.id
+                if (customerId != null) navigator.push(
+                    ScreenRegistry.get(
+                        LedgerScreenRegistry.AccountProfile(
+                            accountId = customerId, accountType = AccountType.CUSTOMER
+                        )
+                    )
+                )
+            },
             onBackClicked = { navigator.pop() },
             openMoreBottomSheet = { },
             onMenuOptionClicked = { },
@@ -56,8 +63,7 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             onLoadMoreTransactionsClicked = {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
-                        showOldClicked = true,
-                        customerId = customerId
+                        showOldClicked = true, customerId = customerId
                     )
                 )
             },
@@ -71,8 +77,7 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             onBalanceClicked = { },
             onWhatsappClicked = { },
             onCallClicked = { screenModel.pushIntent(Intent.OnCallClicked) },
-            onErrorToastDismissed = { screenModel.pushIntent(Intent.OnErrorToastDismissed) }
-        )
+            onErrorToastDismissed = { screenModel.pushIntent(Intent.OnErrorToastDismissed) })
     }
 
     private fun handleViewEvent(event: ViewEvent, navigator: Navigator) {}

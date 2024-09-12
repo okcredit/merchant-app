@@ -1,5 +1,7 @@
 package app.okcredit.ledger.core.remote.models
 
+import app.okcredit.ledger.contract.model.Supplier
+import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,3 +42,33 @@ data class SupplierRequestForUpdate(
     @SerialName("display_txn_alert_setting")
     val displayTxnAlertSetting: Boolean,
 )
+
+
+fun Supplier.createUpdateSupplierRequest(
+    id: String,
+    name: String,
+    mobile: String?,
+    profileImage: String?,
+    lang: String?,
+    txnAlertEnabled: Boolean,
+    state: Int,
+): UpdateSupplierRequest {
+    return UpdateSupplierRequest(
+        supplier = SupplierRequestForUpdate(
+            id = id,
+            name = name,
+            mobile = mobile,
+            profileImage = profileImage,
+            lang = lang,
+            txnAlertEnabled = txnAlertEnabled,
+            state = state,
+            displayTxnAlertSetting = false,
+            address = ""
+        ),
+        updateTxnAlertEnabled = this.settings.txnAlertEnabled,
+        updateDisplayTxnAlertSetting = false,
+        state = if (this.settings.blockedBySupplier) 3 else 1,
+        updateState = true,
+        updateTime = Clock.System.now().toEpochMilliseconds()
+    )
+}

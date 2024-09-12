@@ -1,7 +1,7 @@
 package app.okcredit.ledger.core.remote
 
 import app.okcredit.ledger.contract.model.Customer
-import app.okcredit.ledger.contract.model.CustomerStatus
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.core.remote.models.AddCustomerRequest
 import app.okcredit.ledger.core.remote.models.AddSupplierRequest
@@ -13,13 +13,13 @@ import app.okcredit.ledger.core.remote.models.GetTransactionFileRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionFileResponse
 import app.okcredit.ledger.core.remote.models.GetTransactionsRequest
 import app.okcredit.ledger.core.remote.models.GetTransactionsResponse
-import app.okcredit.ledger.core.remote.models.SupplierRequestForUpdate
 import app.okcredit.ledger.core.remote.models.SuppliersResponse
 import app.okcredit.ledger.core.remote.models.SyncTransactionRequest
 import app.okcredit.ledger.core.remote.models.SyncTransactionResponse
 import app.okcredit.ledger.core.remote.models.TransactionAmountHistory
 import app.okcredit.ledger.core.remote.models.TransactionFile
 import app.okcredit.ledger.core.remote.models.TransactionsRequest
+import app.okcredit.ledger.core.remote.models.UpdateCustomerRequest
 import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
 import app.okcredit.ledger.core.remote.models.UpdateSupplierResponse
 import me.tatarka.inject.annotations.Inject
@@ -32,6 +32,7 @@ import okcredit.base.network.get
 import okcredit.base.network.getOrThrow
 import okcredit.base.network.patch
 import okcredit.base.network.post
+import okcredit.base.network.put
 import okcredit.base.units.paisa
 import okcredit.base.units.timestamp
 
@@ -198,47 +199,33 @@ class LedgerRemoteSource(
 
     suspend fun updateSupplier(
         supplierId: String,
-        name: String,
-        mobile: String?,
-        address: String?,
-        profileImage: String?,
-        lang: String?,
-        txnAlertEnabled: Boolean,
-        state: Int,
-        updateTxnAlertEnabled: Boolean,
-        displayTxnAlertSetting: Boolean,
-        updateDisplayTxnAlertSetting: Boolean,
-        isForUpdateState: Boolean,
-        updatedAt: Long,
         businessId: String,
+        request: UpdateSupplierRequest
     ): Supplier {
-        val request = SupplierRequestForUpdate(
-            id = supplierId,
-            name = name,
-            mobile = mobile,
-            address = address,
-            profileImage = profileImage,
-            lang = lang,
-            txnAlertEnabled = txnAlertEnabled,
-            state = state,
-            displayTxnAlertSetting = displayTxnAlertSetting,
-        )
 
         val response = authorizedHttpClient.patch<UpdateSupplierRequest, UpdateSupplierResponse>(
             baseUrl = baseUrl,
             endPoint = "ledger/v1.0/sc/suppliers/$supplierId",
-            requestBody = UpdateSupplierRequest(
-                supplier = request,
-                updateTxnAlertEnabled = updateTxnAlertEnabled,
-                updateDisplayTxnAlertSetting = updateDisplayTxnAlertSetting,
-                state = state,
-                updateState = isForUpdateState,
-                updateTime = updatedAt,
-            ),
+            requestBody = request,
             headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()
 
         return response.supplier.toDomainSupplier(businessId)
+    }
+
+    suspend fun updateCustomer(
+        businessId: String,
+        customerId: String,
+        request: UpdateCustomerRequest
+    ): Customer {
+        val response = authorizedHttpClient.put<UpdateCustomerRequest, ApiCustomer>(
+            baseUrl = baseUrl,
+            endPoint = "ledger/v1.0/customer/$customerId",
+            requestBody = request,
+            headers = mapOf(HEADER_BUSINESS_ID to request.updatedAt.toString()),
+        ).getOrThrow()
+
+        return response.toDomainCustomer(businessId)
     }
 }
 
@@ -246,7 +233,7 @@ private fun ApiCustomer.toDomainCustomer(businessId: String): Customer {
     return Customer(
         businessId = businessId,
         id = this.id,
-        status = CustomerStatus.from(this.status),
+        status = AccountStatus.from(this.status),
         accountUrl = this.accountUrl,
         name = this.description,
         createdAt = this.createdAt.timestamp,

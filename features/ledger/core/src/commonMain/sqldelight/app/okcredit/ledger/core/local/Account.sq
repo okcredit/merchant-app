@@ -1,4 +1,4 @@
-import app.okcredit.ledger.contract.model.CustomerStatus;
+import app.okcredit.ledger.contract.model.AccountStatus;
 import app.okcredit.ledger.contract.model.AccountType;
 import kotlin.Boolean;
 import okcredit.base.units.Paisa;
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Account (
     id TEXT NOT NULL UNIQUE PRIMARY KEY ,
     businessId TEXT NOT NULL,
     type TEXT AS AccountType NOT NULL,
-    status TEXT AS CustomerStatus NOT NULL,
+    status TEXT AS CustomerStatus.AccountStatus NOT NULL,
     name TEXT NOT NULL,
     mobile TEXT,
     profileImage TEXT,

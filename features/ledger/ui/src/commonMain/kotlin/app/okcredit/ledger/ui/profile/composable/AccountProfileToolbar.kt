@@ -21,7 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RelationshipProfileToolbar(
+fun AccountProfileToolbar(
     onBackClicked: () -> Unit,
     onHelpClicked: () -> Unit,
 ) {
@@ -55,7 +55,7 @@ fun RelationshipProfileToolbar(
 @Preview
 @Composable
 fun RelationshipProfileToolbarPreview() {
-    RelationshipProfileToolbar(
+    AccountProfileToolbar(
         onBackClicked = {},
         onHelpClicked = {}
     )

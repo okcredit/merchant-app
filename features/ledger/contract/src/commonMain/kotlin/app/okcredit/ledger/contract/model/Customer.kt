@@ -11,7 +11,7 @@ data class Customer(
     override val businessId: String,
     override val profileImage: String?,
     override val registered: Boolean,
-    val status: CustomerStatus,
+    val status: AccountStatus,
     val gstNumber: String?,
     val accountUrl: String?,
     val createdAt: Timestamp,
@@ -23,6 +23,9 @@ data class Customer(
 
     override val balance: Paisa
         get() = summary.balance
+
+    val blockedBySelf: Boolean
+        get() = status == AccountStatus.BLOCKED
 
     data class CustomerSettings(
         val txnAlertEnabled: Boolean = false,
@@ -57,14 +60,13 @@ data class Customer(
     )
 }
 
-enum class CustomerStatus {
+enum class AccountStatus {
     ACTIVE,
     BLOCKED,
-    DELETED,
-    ;
+    DELETED;
 
     companion object {
-        fun from(status: Int): CustomerStatus {
+        fun from(status: Int): AccountStatus {
             return when (status) {
                 1 -> ACTIVE
                 2 -> BLOCKED

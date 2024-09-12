@@ -359,7 +359,7 @@ class GetCustomerLedgerData(
             ),
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Customer
+                accountType = AccountType.CUSTOMER
             ),
             dirty = transaction.dirty,
             amount = transaction.amount,
