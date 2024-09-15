@@ -11,6 +11,7 @@ data class Customer(
     override val businessId: String,
     override val profileImage: String?,
     override val registered: Boolean,
+    override val address: String?,
     val status: AccountStatus,
     val gstNumber: String?,
     val accountUrl: String?,

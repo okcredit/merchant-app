@@ -11,6 +11,7 @@ data class Supplier(
     override val mobile: String?,
     override val profileImage: String?,
     override val registered: Boolean,
+    override val address: String?,
     val createdAt: Timestamp,
     val updatedAt: Timestamp,
     val settings: SupplierSettings,

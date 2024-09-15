@@ -37,4 +37,6 @@
     <string name="verified_user">Verified User</string>
     <string name="verified_user_caption">The Merchant is registered on OkCredit. You’re only allowed to change his Name and Profile Picture.</string>
     <string name="got_it">Got It</string>
+    <string name="edit_mobile_number">Edit mobile number</string>
+    <string name="enter_mobile_number">Enter mobile number</string>
 </resources>

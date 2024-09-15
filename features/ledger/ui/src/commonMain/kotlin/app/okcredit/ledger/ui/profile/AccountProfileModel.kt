@@ -1,5 +1,6 @@
 package app.okcredit.ledger.ui.profile
 
+import app.okcredit.ledger.core.usecase.RequestUpdateAccount
 import app.okcredit.ledger.core.usecase.UpdateAccount
 import app.okcredit.ledger.ui.profile.AccountProfileContract.*
 import app.okcredit.ledger.ui.profile.usecase.GetAccountDetails
@@ -24,8 +25,66 @@ class AccountProfileModel(
             observeAccountDetails(),
             observeInfoDialogType(),
             observeBottomSheetType(),
+            observeSubmitPhoneNumber(),
+            observeSubmitName(),
+            observeAddTransactionPermissionChange(),
+            observeModifyState(),
         )
     }
+
+    private fun observeModifyState() = intent<Intent.ModifyState>()
+        .flatMapWrapped {
+            updateAccount.execute(
+                accountId = currentState.accountId,
+                request = RequestUpdateAccount.UpdateAccountState(it.block),
+                accountType = currentState.accountType
+            )
+        }.dropAll()
+
+    private fun observeAddTransactionPermissionChange() = intent<Intent.UpdateAddTransactionPermission>()
+        .flatMapLatest {
+            wrap {
+                updateAccount.execute(
+                    accountId = currentState.accountId,
+                    request = RequestUpdateAccount.UpdateAddTransactionRestrictedStatus(it.switch),
+                    accountType = currentState.accountType
+                )
+            }
+        }.dropAll()
+
+    private fun observeSubmitName() = intent<Intent.SubmitName>()
+        .flatMapLatest {
+            wrap {
+                updateAccount.execute(
+                    accountId = currentState.accountId,
+                    request = RequestUpdateAccount.UpdateName(it.name),
+                    accountType = currentState.accountType
+                )
+            }
+        }.map {
+            if (it is Result.Success) {
+                PartialState.SetBottomSheetType(null)
+            } else {
+                PartialState.NoChange
+            }
+        }
+
+    private fun observeSubmitPhoneNumber() = intent<Intent.SubmitPhoneNumber>()
+        .flatMapLatest {
+            wrap {
+                updateAccount.execute(
+                    accountId = currentState.accountId,
+                    request = RequestUpdateAccount.UpdateMobile(it.mobileNumber),
+                    accountType = currentState.accountType
+                )
+            }
+        }.map {
+            if (it is Result.Success) {
+                PartialState.SetBottomSheetType(null)
+            } else {
+                PartialState.NoChange
+            }
+        }
 
     private fun observeBottomSheetType() = intent<Intent.SetBottomSheetType>()
         .map {

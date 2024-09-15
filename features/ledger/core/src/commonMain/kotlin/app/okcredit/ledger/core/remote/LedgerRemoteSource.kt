@@ -255,6 +255,7 @@ private fun ApiCustomer.toDomainCustomer(businessId: String): Customer {
             lastActivity = createdAt.timestamp,
             lastActivityMetaInfo = 4,
         ),
+        address = this.address
     )
 }
 
@@ -280,5 +281,7 @@ private fun ApiSupplier.toDomainSupplier(businessId: String): Supplier {
             lastActivity = 0L.timestamp,
             lastActivityMetaInfo = 4,
         ),
+        status = AccountStatus.from(this.state),
+        address = this.address
     )
 }

@@ -52,6 +52,7 @@ fun Supplier.createUpdateSupplierRequest(
     lang: String?,
     txnAlertEnabled: Boolean,
     state: Int,
+    address: String?
 ): UpdateSupplierRequest {
     return UpdateSupplierRequest(
         supplier = SupplierRequestForUpdate(
@@ -63,7 +64,7 @@ fun Supplier.createUpdateSupplierRequest(
             txnAlertEnabled = txnAlertEnabled,
             state = state,
             displayTxnAlertSetting = false,
-            address = ""
+            address = address
         ),
         updateTxnAlertEnabled = this.settings.txnAlertEnabled,
         updateDisplayTxnAlertSetting = false,

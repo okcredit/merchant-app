@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyName
+import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyPhoneNumber
 import app.okcredit.ledger.ui.profile.AccountProfileContract.Intent
 import app.okcredit.ledger.ui.profile.AccountProfileContract.State
 import app.okcredit.ledger.ui.profile.AccountProfileContract.ViewEvent
@@ -43,19 +45,26 @@ data class AccountProfileScreen(
     ) {
         RelationshipProfileScreen(
             state = state,
-            onBackClicked = {},
-            onProfileImageClicked = {},
-            onMobileClicked = { screenModel.pushIntent(Intent.OnMobileClicked) },
-            onHelpClicked = {},
-            onSmsSettingsClicked = {},
-            onNameClicked = {},
-            onDeniedTransactionSwitchClicked = {},
-            onDismissBottomSheet = {},
-            onCyclicAccountCtaClicked = {},
-            onVerifiedButtonClicked = {},
-            onMoveRelationshipClicked = {},
-            onBlockRelationshipClicked = {},
+            onBackClicked = { navigator.pop() },
+            onMobileClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyPhoneNumber)) },
+            onNameClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyName)) },
+            onDeniedTransactionSwitchClicked = {
+                screenModel.pushIntent(
+                    Intent.UpdateAddTransactionPermission(
+                        it
+                    )
+                )
+            },
+            onDismissInfoDialog = { screenModel.pushIntent(Intent.SetInfoDialogType(null)) },
+            onCyclicAccountCtaClicked = { screenModel.pushIntent(Intent.SetInfoDialogType(null)) },
+            onVerifiedButtonClicked = { screenModel.pushIntent(Intent.SetInfoDialogType(null)) },
+            onSubmitMobile = { screenModel.pushIntent(Intent.SubmitPhoneNumber(it)) },
+            onSubmitName = { screenModel.pushIntent(Intent.SubmitName(it)) },
+            onBlockRelationshipClicked = { screenModel.pushIntent(Intent.ModifyState(!state.blocked)) },
+            onHelpClicked = { },
             onDeleteRelationshipClicked = {},
+            onSmsSettingsClicked = {},
+            onProfileImageClicked = {},
         )
     }
 

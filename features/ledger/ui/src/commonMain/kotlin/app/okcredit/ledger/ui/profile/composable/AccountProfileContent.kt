@@ -35,9 +35,6 @@ import app.okcredit.ledger.ui.delete
 import app.okcredit.ledger.ui.deny_to_add_transaction
 import app.okcredit.ledger.ui.enter_name
 import app.okcredit.ledger.ui.icon_add_txn_permission
-import app.okcredit.ledger.ui.icon_move_to_supplier
-import app.okcredit.ledger.ui.move_to_customer
-import app.okcredit.ledger.ui.move_to_supplier
 import app.okcredit.ledger.ui.sms_settings
 import app.okcredit.ledger.ui.sms_settings_info
 import app.okcredit.ledger.ui.unblock
@@ -70,7 +67,6 @@ fun AccountProfileContent(
     onProfileClicked: () -> Unit,
     onMobileClicked: () -> Unit,
     onSmsSettingsClicked: () -> Unit,
-    onMoveRelationshipClicked: () -> Unit,
     onBlockRelationshipClicked: () -> Unit,
     onDeleteRelationshipClicked: () -> Unit,
     onDeniedTransactionSwitchClicked: (Boolean) -> Unit,
@@ -97,18 +93,18 @@ fun AccountProfileContent(
                 mobile = state.mobile,
                 onMobileClicked = onMobileClicked,
             )
-            Communications(
-                modifier = Modifier,
-                mobile = state.mobile,
-                onSmsSettingsClicked = onSmsSettingsClicked
-            )
+// todo add later when sms sent from phone setup
+//            Communications(
+//                modifier = Modifier,
+//                mobile = state.mobile,
+//                onSmsSettingsClicked = onSmsSettingsClicked
+//            )
             CustomerPermissions(
                 modifier = Modifier,
                 registered = state.registered,
                 accountType = state.accountType,
                 transactionRestricted = state.transactionRestricted,
                 onDeniedTransactionSwitchClicked = onDeniedTransactionSwitchClicked,
-                onMoveRelationshipClicked = onMoveRelationshipClicked
             )
             Footer(
                 mobile = state.mobile,
@@ -207,7 +203,6 @@ fun CustomerPermissions(
     accountType: AccountType,
     transactionRestricted: Boolean,
     onDeniedTransactionSwitchClicked: (Boolean) -> Unit,
-    onMoveRelationshipClicked: () -> Unit,
 ) {
     if (registered && !accountType.isSupplier()) {
         HeadingItem(
@@ -267,51 +262,51 @@ fun CustomerPermissions(
                     .background(MaterialTheme.colorScheme.surface)
             )
         }
-        Row(
-            modifier = Modifier
-                .clip(
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                )
-                .clickable { onMoveRelationshipClicked() },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(app.okcredit.ledger.ui.Res.drawable.icon_move_to_supplier),
-                contentDescription = "icon",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .graphicsLayer { if (accountType.isSupplier()) rotationY = 180f }
-                    .padding(
-                        start = 16.dp,
-                        top = 16.dp,
-                        bottom = 16.dp,
-                        end = 12.dp
-                    )
-            )
-            Text(
-                text = stringResource(
-                    if (accountType.isSupplier()) {
-                        app.okcredit.ledger.ui.Res.string.move_to_customer
-                    } else {
-                        app.okcredit.ledger.ui.Res.string.move_to_supplier
-                    }
-                ),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .weight(1f)
-            )
-            Icon(
-                painter = painterResource(Res.drawable.icon_chevron_right),
-                contentDescription = "edit",
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-        }
+//        Row(
+//            modifier = Modifier
+//                .clip(
+//                    shape = RoundedCornerShape(
+//                        bottomStart = 16.dp,
+//                        bottomEnd = 16.dp
+//                    )
+//                )
+//                .clickable { onMoveRelationshipClicked() },
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Icon(
+//                painter = painterResource(app.okcredit.ledger.ui.Res.drawable.icon_move_to_supplier),
+//                contentDescription = "icon",
+//                tint = MaterialTheme.colorScheme.primary,
+//                modifier = Modifier
+//                    .graphicsLayer { if (accountType.isSupplier()) rotationY = 180f }
+//                    .padding(
+//                        start = 16.dp,
+//                        top = 16.dp,
+//                        bottom = 16.dp,
+//                        end = 12.dp
+//                    )
+//            )
+//            Text(
+//                text = stringResource(
+//                    if (accountType.isSupplier()) {
+//                        app.okcredit.ledger.ui.Res.string.move_to_customer
+//                    } else {
+//                        app.okcredit.ledger.ui.Res.string.move_to_supplier
+//                    }
+//                ),
+//                style = MaterialTheme.typography.titleSmall,
+//                color = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier
+//                    .padding(vertical = 12.dp)
+//                    .weight(1f)
+//            )
+//            Icon(
+//                painter = painterResource(Res.drawable.icon_chevron_right),
+//                contentDescription = "edit",
+//                tint = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier.padding(end = 16.dp)
+//            )
+//        }
     }
 }
 
@@ -528,7 +523,6 @@ fun RelationshipProfileContentPreview() {
         contentPadding = PaddingValues(0.dp), onProfileClicked = {},
         onMobileClicked = {},
         onSmsSettingsClicked = {},
-        onMoveRelationshipClicked = {},
         onBlockRelationshipClicked = {},
         onDeleteRelationshipClicked = {},
         onDeniedTransactionSwitchClicked = {},

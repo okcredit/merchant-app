@@ -60,8 +60,6 @@ interface AccountProfileContract {
         data class UpdateAddTransactionPermission(val switch: Boolean) : Intent()
 
         data class SubmitName(val name: String) : Intent()
-
-        data object OnMobileClicked : Intent()
     }
 
     sealed class PartialState : UiState.Partial {

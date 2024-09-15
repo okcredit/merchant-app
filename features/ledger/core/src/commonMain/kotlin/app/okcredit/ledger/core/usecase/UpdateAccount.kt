@@ -13,6 +13,10 @@ import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 sealed class RequestUpdateAccount {
 
+    data class UpdateAddress(
+        val address: String?
+    ) : RequestUpdateAccount()
+
     data class UpdateMobile(
         val mobile: String,
     ) : RequestUpdateAccount()
@@ -106,7 +110,8 @@ class UpdateAccount(
                     profileImage = supplier.profileImage,
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 )
             }
 
@@ -119,10 +124,12 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (request.blocked) 3 else 1,
+                    address = supplier.address
                 ).copy(
                     updateState = true
                 )
             }
+
             is RequestUpdateAccount.UpdateLanguage -> {
                 supplier.createUpdateSupplierRequest(
                     id = accountId,
@@ -131,9 +138,11 @@ class UpdateAccount(
                     profileImage = supplier.profileImage,
                     lang = request.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 )
             }
+
             is RequestUpdateAccount.UpdateName -> {
                 supplier.createUpdateSupplierRequest(
                     id = accountId,
@@ -142,9 +151,11 @@ class UpdateAccount(
                     profileImage = supplier.profileImage,
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 )
             }
+
             is RequestUpdateAccount.UpdateProfileImage -> {
                 supplier.createUpdateSupplierRequest(
                     id = accountId,
@@ -153,9 +164,11 @@ class UpdateAccount(
                     profileImage = request.profileImage,
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 )
             }
+
             is RequestUpdateAccount.UpdateTransactionAlertStatus -> {
                 supplier.createUpdateSupplierRequest(
                     id = accountId,
@@ -164,11 +177,13 @@ class UpdateAccount(
                     profileImage = supplier.profileImage,
                     lang = supplier.settings.lang,
                     txnAlertEnabled = request.isEnable,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 ).copy(
                     updateTxnAlertEnabled = true
                 )
             }
+
             is RequestUpdateAccount.UpdateTransactionAlertStatusAndLanguage -> {
                 supplier.createUpdateSupplierRequest(
                     id = accountId,
@@ -177,11 +192,26 @@ class UpdateAccount(
                     profileImage = supplier.profileImage,
                     lang = request.lang,
                     txnAlertEnabled = request.isEnable,
-                    state = if (supplier.settings.blockedBySupplier) 3 else 1,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = supplier.address
                 ).copy(
                     updateTxnAlertEnabled = true
                 )
             }
+
+            is RequestUpdateAccount.UpdateAddress -> {
+                supplier.createUpdateSupplierRequest(
+                    id = accountId,
+                    name = supplier.name,
+                    mobile = supplier.mobile,
+                    profileImage = supplier.profileImage,
+                    lang = supplier.settings.lang,
+                    txnAlertEnabled = supplier.settings.txnAlertEnabled,
+                    state = if (supplier.blockedBySelf) 3 else 1,
+                    address = request.address
+                )
+            }
+
             else -> null
         }
     }
@@ -255,6 +285,12 @@ class UpdateAccount(
                     txnAlertEnabled = request.isEnable,
                     updateTxnAlertEnabled = true,
                     lang = request.lang
+                )
+            }
+
+            is RequestUpdateAccount.UpdateAddress -> {
+                customer.createUpdateCustomerRequest().copy(
+                    address = request.address
                 )
             }
         }
