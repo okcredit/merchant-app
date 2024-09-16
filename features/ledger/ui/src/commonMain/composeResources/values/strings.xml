@@ -39,4 +39,6 @@
     <string name="got_it">Got It</string>
     <string name="edit_mobile_number">Edit mobile number</string>
     <string name="enter_mobile_number">Enter mobile number</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="edit_address">Edit Address</string>
 </resources>

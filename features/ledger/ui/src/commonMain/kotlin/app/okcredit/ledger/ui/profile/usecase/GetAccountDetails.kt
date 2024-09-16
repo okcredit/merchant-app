@@ -39,6 +39,7 @@ class GetAccountDetails(
                         registered = customer.registered,
                         blocked = customer.blockedBySelf,
                         transactionRestricted = customer.settings.addTransactionRestricted,
+                        address = customer.address ?: ""
                     )
                 }
             } else {
@@ -52,6 +53,7 @@ class GetAccountDetails(
                         registered = supplier.registered,
                         blocked = supplier.settings.blockedBySupplier,
                         transactionRestricted = supplier.settings.addTransactionRestricted,
+                        address = supplier.address ?: ""
                     )
                 }
             }
@@ -63,6 +65,7 @@ class GetAccountDetails(
         val mobile: String,
         val balance: Paisa,
         val profileImage: String,
+        val address: String,
         val registered: Boolean,
         val blocked: Boolean,
         val transactionRestricted: Boolean,

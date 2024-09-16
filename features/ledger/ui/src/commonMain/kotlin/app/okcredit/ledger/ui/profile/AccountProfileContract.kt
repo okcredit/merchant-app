@@ -14,6 +14,7 @@ interface AccountProfileContract {
         val profileImage: String = "",
         val name: String = "",
         val mobile: String = "",
+        val address: String = "",
         val blocked: Boolean = false,
         val transactionRestricted: Boolean = false,
         val accountType: AccountType = AccountType.CUSTOMER,
@@ -38,6 +39,7 @@ interface AccountProfileContract {
     sealed class BottomSheetType {
         data object ModifyName : BottomSheetType()
         data object ModifyPhoneNumber : BottomSheetType()
+        data object ModifyAddress: BottomSheetType()
     }
 
     sealed class Intent : UserIntent {
@@ -51,15 +53,16 @@ interface AccountProfileContract {
 
         data class LoadDetails(val accountId: String, val accountType: AccountType) : Intent()
 
-        data object HelpClicked : Intent()
-
         data class ModifyState(val block: Boolean) : Intent()
-
-        data class ChangeProfileImage(val imagePath: String?) : Intent()
 
         data class UpdateAddTransactionPermission(val switch: Boolean) : Intent()
 
         data class SubmitName(val name: String) : Intent()
+
+        data object HelpClicked : Intent()
+
+        data class ChangeProfileImage(val imagePath: String?) : Intent()
+
     }
 
     sealed class PartialState : UiState.Partial {

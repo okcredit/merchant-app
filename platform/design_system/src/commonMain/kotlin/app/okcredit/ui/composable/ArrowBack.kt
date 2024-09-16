@@ -9,9 +9,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ArrowBack(onBackClicked: () -> Unit) {
+fun ArrowBack(onBackClicked: () -> Unit, modifier: Modifier = Modifier) {
     Icon(
-        modifier = Modifier.clickable(onClick = onBackClicked),
+        modifier = modifier.clickable(onClick = onBackClicked),
         painter = painterResource(app.okcredit.ui.Res.drawable.icon_back),
         contentDescription = "arrow_back",
     )
@@ -20,5 +20,5 @@ fun ArrowBack(onBackClicked: () -> Unit) {
 @Preview
 @Composable
 fun ArrowBackPreview() {
-    ArrowBack {}
+    ArrowBack({})
 }

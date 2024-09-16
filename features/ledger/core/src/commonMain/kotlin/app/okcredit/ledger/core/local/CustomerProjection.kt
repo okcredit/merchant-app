@@ -95,6 +95,7 @@ class CustomerProjection(
                 lastReminderSendTime = customer.lastReminderSendTime,
                 transactionCount = customer.transactionCount,
             ),
+            address = ""
         )
     }
 
@@ -137,6 +138,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
+                address = customer.address
             )
         }
 
@@ -179,6 +181,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
+                address = customer.address
             )
         }
 
@@ -221,6 +224,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
+                address = customer.address
             )
         }
 
@@ -243,6 +247,7 @@ class CustomerProjection(
                             updatedAt = customer.updatedAt,
                             gstNumber = customer.gstNumber,
                             registered = customer.registered,
+                            address = customer.address
                         ),
                     )
                     addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -269,6 +274,7 @@ class CustomerProjection(
                         updatedAt = customer.updatedAt,
                         gstNumber = customer.gstNumber,
                         registered = customer.registered,
+                        address = customer.address
                     ),
                 )
                 addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -293,6 +299,7 @@ class CustomerProjection(
                     updatedAt = customer.updatedAt,
                     gstNumber = customer.gstNumber,
                     registered = customer.registered,
+                    address = customer.address
                 ),
             )
             addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -379,6 +386,7 @@ class CustomerProjection(
                     } else {
                         Customer.CustomerSummary()
                     },
+                    address = account.address
                 )
             }
         }

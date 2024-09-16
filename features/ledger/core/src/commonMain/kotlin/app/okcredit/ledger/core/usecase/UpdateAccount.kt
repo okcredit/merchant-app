@@ -9,6 +9,7 @@ import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
 import app.okcredit.ledger.core.remote.models.createUpdateCustomerRequest
 import app.okcredit.ledger.core.remote.models.createUpdateSupplierRequest
 import kotlinx.coroutines.flow.first
+import me.tatarka.inject.annotations.Inject
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 sealed class RequestUpdateAccount {
@@ -59,6 +60,7 @@ sealed class RequestUpdateAccount {
     data class UpdateDueCustomDate(val dueCustomDate: Long) : RequestUpdateAccount()
 }
 
+@Inject
 class UpdateAccount(
     customerRepository: Lazy<CustomerRepository>,
     supplierRepository: Lazy<SupplierRepository>,

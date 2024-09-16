@@ -29,8 +29,24 @@ class AccountProfileModel(
             observeSubmitName(),
             observeAddTransactionPermissionChange(),
             observeModifyState(),
+            observeSubmitAddress(),
         )
     }
+
+    private fun observeSubmitAddress() = intent<Intent.SubmitAddress>()
+        .flatMapWrapped {
+            updateAccount.execute(
+                accountId = currentState.accountId,
+                request = RequestUpdateAccount.UpdateAddress(it.newAddress),
+                accountType = currentState.accountType
+            )
+        }.map {
+            if (it is Result.Success) {
+                PartialState.SetBottomSheetType(null)
+            } else {
+                PartialState.NoChange
+            }
+        }
 
     private fun observeModifyState() = intent<Intent.ModifyState>()
         .flatMapWrapped {
@@ -39,7 +55,13 @@ class AccountProfileModel(
                 request = RequestUpdateAccount.UpdateAccountState(it.block),
                 accountType = currentState.accountType
             )
-        }.dropAll()
+        }.map {
+            if (it is Result.Success) {
+                PartialState.SetBottomSheetType(null)
+            } else {
+                PartialState.NoChange
+            }
+        }
 
     private fun observeAddTransactionPermissionChange() = intent<Intent.UpdateAddTransactionPermission>()
         .flatMapLatest {
@@ -50,7 +72,13 @@ class AccountProfileModel(
                     accountType = currentState.accountType
                 )
             }
-        }.dropAll()
+        }.map {
+            if (it is Result.Success) {
+                PartialState.SetBottomSheetType(null)
+            } else {
+                PartialState.NoChange
+            }
+        }
 
     private fun observeSubmitName() = intent<Intent.SubmitName>()
         .flatMapLatest {

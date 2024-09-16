@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.isSupplier
+import app.okcredit.ledger.ui.add_address
 import app.okcredit.ledger.ui.add_mobile_number
 import app.okcredit.ledger.ui.block
 import app.okcredit.ledger.ui.communication
@@ -35,6 +36,7 @@ import app.okcredit.ledger.ui.delete
 import app.okcredit.ledger.ui.deny_to_add_transaction
 import app.okcredit.ledger.ui.enter_name
 import app.okcredit.ledger.ui.icon_add_txn_permission
+import app.okcredit.ledger.ui.icon_address
 import app.okcredit.ledger.ui.sms_settings
 import app.okcredit.ledger.ui.sms_settings_info
 import app.okcredit.ledger.ui.unblock
@@ -54,6 +56,7 @@ data class ProfileContentState(
     val name: String,
     val profileImage: String,
     val mobile: String,
+    val address: String,
     val registered: Boolean,
     val accountType: AccountType,
     val transactionRestricted: Boolean,
@@ -70,15 +73,17 @@ fun AccountProfileContent(
     onBlockRelationshipClicked: () -> Unit,
     onDeleteRelationshipClicked: () -> Unit,
     onDeniedTransactionSwitchClicked: (Boolean) -> Unit,
-    onNameClicked: () -> Unit
+    onNameClicked: () -> Unit,
+    onAddressClicked: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
-            .padding(vertical = 16.dp)
+            .padding(contentPadding)
     ) {
         item {
+            Spacer(modifier = Modifier.height(16.dp))
             ProfileHeader(
                 profileImgUrl = state.profileImage,
                 onProfileImageClicked = onProfileClicked,
@@ -91,7 +96,9 @@ fun AccountProfileContent(
             ContactInformation(
                 modifier = Modifier,
                 mobile = state.mobile,
+                address = state.address,
                 onMobileClicked = onMobileClicked,
+                onAddressClicked = onAddressClicked
             )
 // todo add later when sms sent from phone setup
 //            Communications(
@@ -365,6 +372,8 @@ fun Communications(
 fun ContactInformation(
     modifier: Modifier,
     mobile: String,
+    address: String,
+    onAddressClicked: () -> Unit,
     onMobileClicked: () -> Unit,
 ) {
     HeadingItem(
@@ -406,44 +415,44 @@ fun ContactInformation(
                 modifier = Modifier.padding(end = 16.dp)
             )
         }
-//        Spacer(
-//            modifier = Modifier
-//                .height(1.dp)
-//                .fillMaxWidth()
-//                .background(MaterialTheme.colorScheme.surface)
-//        )
-//        Row(
-//            modifier = Modifier
-//                .clip(
-//                    shape = RoundedCornerShape(
-//                        bottomStart = 16.dp,
-//                        bottomEnd = 16.dp
-//                    )
-//                )
-//                .clickable { onAddressClicked() },
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Icon(
-//                painter = painterResource(ledgerRes.drawable.icon_address),
-//                contentDescription = "icon",
-//                tint = MaterialTheme.colorScheme.primary,
-//                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
-//            )
-//            Text(
-//                text = address.ifBlank { stringResource(ledgerRes.string.add_address) },
-//                style = MaterialTheme.typography.titleSmall,
-//                color = MaterialTheme.colorScheme.onSurface,
-//                modifier = Modifier
-//                    .padding(vertical = 12.dp)
-//                    .weight(1f)
-//            )
-//            Icon(
-//                painter = painterResource(Res.drawable.icon_chevron_right),
-//                contentDescription = "edit",
-//                tint = MaterialTheme.colorScheme.onSurface,
-//                modifier = Modifier.padding(end = 16.dp)
-//            )
-//        }
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+        )
+        Row(
+            modifier = Modifier
+                .clip(
+                    shape = RoundedCornerShape(
+                        bottomStart = 16.dp,
+                        bottomEnd = 16.dp
+                    )
+                )
+                .clickable { onAddressClicked() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(ledgerRes.drawable.icon_address),
+                contentDescription = "icon",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+            )
+            Text(
+                text = address.ifBlank { stringResource(ledgerRes.string.add_address) },
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .weight(1f)
+            )
+            Icon(
+                painter = painterResource(Res.drawable.icon_chevron_right),
+                contentDescription = "edit",
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+        }
     }
 }
 
@@ -518,7 +527,8 @@ fun RelationshipProfileContentPreview() {
             registered = true,
             accountType = AccountType.CUSTOMER,
             transactionRestricted = false,
-            blocked = false
+            blocked = false,
+            address = ""
         ),
         contentPadding = PaddingValues(0.dp), onProfileClicked = {},
         onMobileClicked = {},
@@ -526,6 +536,7 @@ fun RelationshipProfileContentPreview() {
         onBlockRelationshipClicked = {},
         onDeleteRelationshipClicked = {},
         onDeniedTransactionSwitchClicked = {},
-        onNameClicked = {}
+        onNameClicked = {},
+        onAddressClicked = {}
     )
 }

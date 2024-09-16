@@ -1,6 +1,7 @@
 package app.okcredit.ledger.ui.di
 
 import app.okcredit.ledger.ui.customer.CustomerLedgerModel
+import app.okcredit.ledger.ui.profile.AccountProfileModel
 import app.okcredit.ledger.ui.supplier.SupplierLedgerModel
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
@@ -19,6 +20,12 @@ interface LedgerUiComponent {
     @IntoMap
     fun supplierScreenModel(supplierScreenModel: SupplierLedgerModel): ScreenModelPair {
         return SupplierLedgerModel::class to supplierScreenModel
+    }
+
+    @Provides
+    @IntoMap
+    fun accountProfileMode(accountProfileModel: AccountProfileModel): ScreenModelPair {
+        return AccountProfileModel::class to accountProfileModel
     }
 
 }

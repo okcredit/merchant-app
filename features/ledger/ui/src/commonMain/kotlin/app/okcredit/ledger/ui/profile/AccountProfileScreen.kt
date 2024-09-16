@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyAddress
 import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyName
 import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyPhoneNumber
 import app.okcredit.ledger.ui.profile.AccountProfileContract.Intent
@@ -45,7 +46,15 @@ data class AccountProfileScreen(
     ) {
         RelationshipProfileScreen(
             state = state,
-            onBackClicked = { navigator.pop() },
+            onBackClicked = { navigator.parent?.pop() },
+            loadDetails = {
+                screenModel.pushIntent(
+                    Intent.LoadDetails(
+                        accountId = accountId,
+                        accountType = accountType
+                    )
+                )
+            },
             onMobileClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyPhoneNumber)) },
             onNameClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyName)) },
             onDeniedTransactionSwitchClicked = {
@@ -61,6 +70,8 @@ data class AccountProfileScreen(
             onSubmitMobile = { screenModel.pushIntent(Intent.SubmitPhoneNumber(it)) },
             onSubmitName = { screenModel.pushIntent(Intent.SubmitName(it)) },
             onBlockRelationshipClicked = { screenModel.pushIntent(Intent.ModifyState(!state.blocked)) },
+            onAddressClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyAddress)) },
+            onSubmitAddress = { screenModel.pushIntent(Intent.SubmitAddress(it)) },
             onHelpClicked = { },
             onDeleteRelationshipClicked = {},
             onSmsSettingsClicked = {},

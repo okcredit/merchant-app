@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import app.okcredit.ledger.ui.edit_address
 import app.okcredit.ledger.ui.edit_mobile_number
 import app.okcredit.ledger.ui.edit_name
+import app.okcredit.ledger.ui.enter_address
 import app.okcredit.ledger.ui.enter_mobile_number
 import app.okcredit.ledger.ui.enter_name
 import app.okcredit.ledger.ui.profile.AccountProfileContract
@@ -38,10 +40,17 @@ fun RelationshipProfileScreen(
     onCyclicAccountCtaClicked: (Boolean) -> Unit,
     onDeniedTransactionSwitchClicked: (Boolean) -> Unit,
     onNameClicked: () -> Unit,
+    onAddressClicked: () -> Unit,
     onSubmitName: (String) -> Unit,
     onSubmitMobile: (String) -> Unit,
+    onSubmitAddress: (String) -> Unit,
+    loadDetails: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
+
+    LaunchedEffect(true) {
+        loadDetails()
+    }
 
     LaunchedEffect(state.bottomSheetType) {
         if (state.bottomSheetType != null) {
@@ -50,6 +59,7 @@ fun RelationshipProfileScreen(
             bottomSheetState.hide()
         }
     }
+
     Scaffold(
         topBar = {
             AccountProfileToolbar(
@@ -100,66 +110,84 @@ fun RelationshipProfileScreen(
             }
         },
         content = { contentPadding ->
-            ModalBottomSheet(
-                sheetState = bottomSheetState,
-                onDismissRequest = {},
-                content = {
-                    when (state.bottomSheetType) {
-                        is AccountProfileContract.BottomSheetType.ModifyName -> {
-                            ModifyDetailDialog(
-                                title = if (state.name.isEmpty())
-                                    stringResource(app.okcredit.ledger.ui.Res.string.enter_name)
-                                else
-                                    stringResource(app.okcredit.ledger.ui.Res.string.edit_name),
-                                prefillText = state.name,
-                                onSubmitClicked = { onSubmitName(it) },
-                                onCloseClicked = { onDismissInfoDialog() }
-                            )
-                        }
+            Box {
+                if (state.bottomSheetType != null) {
+                    ModalBottomSheet(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        sheetState = bottomSheetState,
+                        onDismissRequest = {},
+                        content = {
+                            when (state.bottomSheetType) {
+                                is AccountProfileContract.BottomSheetType.ModifyName -> {
+                                    ModifyDetailDialog(
+                                        title = if (state.name.isEmpty())
+                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_name)
+                                        else
+                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_name),
+                                        prefillText = state.name,
+                                        onSubmitClicked = onSubmitName,
+                                        onCloseClicked = { onDismissInfoDialog() }
+                                    )
+                                }
 
-                        is AccountProfileContract.BottomSheetType.ModifyPhoneNumber -> {
-                            ModifyDetailDialog(
-                                title = if (state.name.isEmpty())
-                                    stringResource(app.okcredit.ledger.ui.Res.string.enter_mobile_number)
-                                else
-                                    stringResource(app.okcredit.ledger.ui.Res.string.edit_mobile_number),
-                                prefillText = state.mobile,
-                                onSubmitClicked = { onSubmitMobile(it) },
-                                onCloseClicked = { onDismissInfoDialog() }
-                            )
-                        }
+                                is AccountProfileContract.BottomSheetType.ModifyPhoneNumber -> {
+                                    ModifyDetailDialog(
+                                        title = if (state.name.isEmpty())
+                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_mobile_number)
+                                        else
+                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_mobile_number),
+                                        prefillText = state.mobile,
+                                        onSubmitClicked = onSubmitMobile,
+                                        onCloseClicked = { onDismissInfoDialog() }
+                                    )
+                                }
 
-                        null -> {
-                            // Do nothing
-                        }
-                    }
-                },
-                dragHandle = { BottomSheetDefaults.DragHandle() }
-            )
-            AccountProfileContent(
-                state = ProfileContentState(
-                    profileImage = state.profileImage,
-                    name = state.name,
-                    mobile = state.mobile,
-                    blocked = state.blocked,
-                    transactionRestricted = state.transactionRestricted,
-                    accountType = state.accountType,
-                    registered = state.registered,
-                ),
-                contentPadding = contentPadding,
-                onProfileClicked = onProfileImageClicked,
-                onMobileClicked = onMobileClicked,
-                onSmsSettingsClicked = onSmsSettingsClicked,
-                onBlockRelationshipClicked = onBlockRelationshipClicked,
-                onDeleteRelationshipClicked = onDeleteRelationshipClicked,
-                onDeniedTransactionSwitchClicked = onDeniedTransactionSwitchClicked,
-                onNameClicked = onNameClicked,
-            )
+                                is AccountProfileContract.BottomSheetType.ModifyAddress -> {
+                                    ModifyDetailDialog(
+                                        title = if (state.address.isEmpty()) {
+                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_address)
+                                        } else {
+                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_address)
+                                        },
+                                        prefillText = state.address,
+                                        onCloseClicked = {},
+                                        onSubmitClicked = onSubmitAddress
+                                    )
+                                }
 
+                                null -> {
+                                    // Do nothing
+                                }
+                            }
+                        },
+                        dragHandle = { BottomSheetDefaults.DragHandle() }
+                    )
+                }
+                AccountProfileContent(
+                    state = ProfileContentState(
+                        profileImage = state.profileImage,
+                        name = state.name,
+                        mobile = state.mobile,
+                        blocked = state.blocked,
+                        transactionRestricted = state.transactionRestricted,
+                        accountType = state.accountType,
+                        registered = state.registered,
+                        address = state.address
+                    ),
+                    contentPadding = contentPadding,
+                    onProfileClicked = onProfileImageClicked,
+                    onMobileClicked = onMobileClicked,
+                    onSmsSettingsClicked = onSmsSettingsClicked,
+                    onBlockRelationshipClicked = onBlockRelationshipClicked,
+                    onDeleteRelationshipClicked = onDeleteRelationshipClicked,
+                    onDeniedTransactionSwitchClicked = onDeniedTransactionSwitchClicked,
+                    onNameClicked = onNameClicked,
+                    onAddressClicked = onAddressClicked,
+                )
+            }
         }
     )
 }
-
 
 @Preview
 @Composable
@@ -182,5 +210,8 @@ fun RelationshipProfileScreenPreview() {
         onNameClicked = {},
         onSubmitName = {},
         onSubmitMobile = {},
+        onAddressClicked = {},
+        onSubmitAddress = {},
+        loadDetails = {}
     )
 }

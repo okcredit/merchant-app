@@ -54,7 +54,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
-                status = supplier.status
+                status = supplier.status,
+                address = supplier.address
             )
         }
     }
@@ -92,7 +93,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
-                status = supplier.status
+                status = supplier.status,
+                address = supplier.address
             )
         }
     }
@@ -130,7 +132,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
-                status = supplier.status
+                status = supplier.status,
+                address = supplier.address
             )
         }
     }
@@ -174,7 +177,8 @@ class SupplierProjection(
                     } else {
                         Supplier.SupplierSummary()
                     },
-                    status = account.status
+                    status = account.status,
+                    address = account.address
                 )
             }
         }
@@ -213,6 +217,7 @@ class SupplierProjection(
                     accountUrl = null,
                     gstNumber = null,
                     status = AccountStatus.ACTIVE,
+                    address = supplier.address
                 ),
             )
             addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
@@ -292,6 +297,7 @@ class SupplierProjection(
                         accountUrl = null,
                         gstNumber = null,
                         status = AccountStatus.ACTIVE,
+                        address = supplier.address
                     ),
                 )
                 addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
