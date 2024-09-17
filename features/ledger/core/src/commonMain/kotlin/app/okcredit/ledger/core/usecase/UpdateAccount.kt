@@ -1,6 +1,8 @@
 package app.okcredit.ledger.core.usecase
 
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.contract.model.Customer
+import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.model.isCustomer
 import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.SupplierRepository
@@ -10,6 +12,8 @@ import app.okcredit.ledger.core.remote.models.createUpdateCustomerRequest
 import app.okcredit.ledger.core.remote.models.createUpdateSupplierRequest
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
+import okcredit.base.network.Response
+import okcredit.base.units.Paisa
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 sealed class RequestUpdateAccount {
@@ -75,28 +79,69 @@ class UpdateAccount(
         accountId: String,
         accountType: AccountType,
         request: RequestUpdateAccount
-    ) {
+    ): Response? {
         val businessId = getActiveBusinessId.execute()
         if (request is RequestUpdateAccount.UpdateProfileImage) {
             //TODO file upload for profile image
         }
-        if (accountType.isCustomer()) {
+        return if (accountType.isCustomer()) {
             val updateRequest =
-                createUpdateRequestForCustomer(accountId = accountId, request = request) ?: return
-            customerRepository.updateCustomer(
+                createUpdateRequestForCustomer(accountId = accountId, request = request) ?: return null
+            val customer = customerRepository.updateCustomer(
                 businessId = businessId,
                 customerId = accountId,
                 request = updateRequest
             )
+            customer.toResponse()
         } else {
-            val updateRequest = createUpdateRequestForSupplier(accountId, request) ?: return
-            supplierRepository.updateSupplier(
+            val updateRequest = createUpdateRequestForSupplier(accountId, request) ?: return null
+            val updateSupplier = supplierRepository.updateSupplier(
                 businessId = businessId,
                 accountId = accountId,
                 request = updateRequest
             )
+            updateSupplier.toResponse()
         }
     }
+
+    private fun Customer.toResponse(): Response = Response(
+        id = id,
+        accountType = AccountType.CUSTOMER,
+        profileImage = profileImage ?: "",
+        name = name,
+        mobile = mobile ?: "",
+        address = address ?: "",
+        blocked = blockedBySelf,
+        transactionRestricted = settings.addTransactionRestricted,
+        registered = registered,
+        balance = balance,
+    )
+
+    private fun Supplier.toResponse(): Response = Response(
+        id = id,
+        accountType = AccountType.SUPPLIER,
+        profileImage = profileImage ?: "",
+        name = name,
+        mobile = mobile ?: "",
+        address = address ?: "",
+        blocked = blockedBySelf,
+        transactionRestricted = settings.addTransactionRestricted,
+        registered = registered,
+        balance = balance,
+    )
+
+    data class Response(
+        val id: String,
+        val accountType: AccountType,
+        val profileImage: String = "",
+        val name: String = "",
+        val mobile: String = "",
+        val address: String = "",
+        val balance: Paisa = Paisa.ZERO,
+        val blocked: Boolean = false,
+        val transactionRestricted: Boolean = false,
+        val registered: Boolean = false,
+    )
 
     private suspend fun createUpdateRequestForSupplier(
         accountId: String,
@@ -262,7 +307,7 @@ class UpdateAccount(
             }
 
             is RequestUpdateAccount.UpdateName -> {
-                customer.createUpdateCustomerRequest().copy(mobile = request.desc)
+                customer.createUpdateCustomerRequest().copy(description = request.desc)
             }
 
             is RequestUpdateAccount.UpdateProfileImage -> {

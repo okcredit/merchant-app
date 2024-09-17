@@ -42,7 +42,25 @@ class AccountProfileModel(
             )
         }.map {
             if (it is Result.Success) {
-                PartialState.SetBottomSheetType(null)
+                val res = it.value
+                if (res == null) {
+                    PartialState.SetBottomSheetType(null)
+                } else {
+                    PartialState.RelationshipDetails(
+                        GetAccountDetails.Response(
+                            id = res.id,
+                            name = res.name,
+                            accountType = currentState.accountType,
+                            mobile = res.mobile,
+                            balance = res.balance,
+                            profileImage = res.profileImage,
+                            registered = res.registered,
+                            blocked = res.blocked,
+                            transactionRestricted = res.transactionRestricted,
+                            address = res.address
+                        )
+                    )
+                }
             } else {
                 PartialState.NoChange
             }
@@ -57,28 +75,65 @@ class AccountProfileModel(
             )
         }.map {
             if (it is Result.Success) {
-                PartialState.SetBottomSheetType(null)
+                val res = it.value
+                if (res == null) {
+                    PartialState.SetBottomSheetType(null)
+                } else {
+                    PartialState.RelationshipDetails(
+                        GetAccountDetails.Response(
+                            id = res.id,
+                            name = res.name,
+                            accountType = currentState.accountType,
+                            mobile = res.mobile,
+                            balance = res.balance,
+                            profileImage = res.profileImage,
+                            registered = res.registered,
+                            blocked = res.blocked,
+                            transactionRestricted = res.transactionRestricted,
+                            address = res.address
+                        )
+                    )
+                }
             } else {
                 PartialState.NoChange
             }
         }
 
-    private fun observeAddTransactionPermissionChange() = intent<Intent.UpdateAddTransactionPermission>()
-        .flatMapLatest {
-            wrap {
-                updateAccount.execute(
-                    accountId = currentState.accountId,
-                    request = RequestUpdateAccount.UpdateAddTransactionRestrictedStatus(it.switch),
-                    accountType = currentState.accountType
-                )
+    private fun observeAddTransactionPermissionChange() =
+        intent<Intent.UpdateAddTransactionPermission>()
+            .flatMapLatest {
+                wrap {
+                    updateAccount.execute(
+                        accountId = currentState.accountId,
+                        request = RequestUpdateAccount.UpdateAddTransactionRestrictedStatus(it.switch),
+                        accountType = currentState.accountType
+                    )
+                }
+            }.map {
+                if (it is Result.Success) {
+                    val res = it.value
+                    if (res == null) {
+                        PartialState.SetBottomSheetType(null)
+                    } else {
+                        PartialState.RelationshipDetails(
+                            GetAccountDetails.Response(
+                                id = res.id,
+                                name = res.name,
+                                accountType = currentState.accountType,
+                                mobile = res.mobile,
+                                balance = res.balance,
+                                profileImage = res.profileImage,
+                                registered = res.registered,
+                                blocked = res.blocked,
+                                transactionRestricted = res.transactionRestricted,
+                                address = res.address
+                            )
+                        )
+                    }
+                } else {
+                    PartialState.NoChange
+                }
             }
-        }.map {
-            if (it is Result.Success) {
-                PartialState.SetBottomSheetType(null)
-            } else {
-                PartialState.NoChange
-            }
-        }
 
     private fun observeSubmitName() = intent<Intent.SubmitName>()
         .flatMapLatest {
@@ -91,7 +146,25 @@ class AccountProfileModel(
             }
         }.map {
             if (it is Result.Success) {
-                PartialState.SetBottomSheetType(null)
+                val res = it.value
+                if (res == null) {
+                    PartialState.SetBottomSheetType(null)
+                } else {
+                    PartialState.RelationshipDetails(
+                        GetAccountDetails.Response(
+                            id = res.id,
+                            name = res.name,
+                            accountType = currentState.accountType,
+                            mobile = res.mobile,
+                            balance = res.balance,
+                            profileImage = res.profileImage,
+                            registered = res.registered,
+                            blocked = res.blocked,
+                            transactionRestricted = res.transactionRestricted,
+                            address = res.address
+                        )
+                    )
+                }
             } else {
                 PartialState.NoChange
             }
@@ -108,7 +181,25 @@ class AccountProfileModel(
             }
         }.map {
             if (it is Result.Success) {
-                PartialState.SetBottomSheetType(null)
+                val res = it.value
+                if (res == null) {
+                    PartialState.SetBottomSheetType(null)
+                } else {
+                    PartialState.RelationshipDetails(
+                        GetAccountDetails.Response(
+                            id = res.id,
+                            name = res.name,
+                            accountType = currentState.accountType,
+                            mobile = res.mobile,
+                            balance = res.balance,
+                            profileImage = res.profileImage,
+                            registered = res.registered,
+                            blocked = res.blocked,
+                            transactionRestricted = res.transactionRestricted,
+                            address = res.address
+                        )
+                    )
+                }
             } else {
                 PartialState.NoChange
             }
@@ -160,6 +251,10 @@ class AccountProfileModel(
 
             is PartialState.RelationshipDetails -> currentState.copy(
                 loading = false,
+                bottomSheetType = null,
+                infoDialogType = null,
+                accountId = partialState.res.id,
+                accountType = partialState.res.accountType,
                 name = partialState.res.name,
                 mobile = partialState.res.mobile,
                 profileImage = partialState.res.profileImage,

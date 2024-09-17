@@ -32,7 +32,9 @@ class GetAccountDetails(
                 customerRepository.getCustomerDetails(accountId).map { customer ->
                     if (customer == null) return@map null
                     Response(
+                        id = customer.id,
                         name = customer.name,
+                        accountType = accountType,
                         mobile = customer.mobile ?: "",
                         balance = customer.balance,
                         profileImage = customer.profileImage ?: "",
@@ -46,6 +48,7 @@ class GetAccountDetails(
                 supplierRepository.getSupplierDetails(accountId).map { supplier ->
                     if (supplier == null) return@map null
                     Response(
+                        id = supplier.id,
                         name = supplier.name,
                         mobile = supplier.mobile ?: "",
                         balance = supplier.balance,
@@ -53,7 +56,8 @@ class GetAccountDetails(
                         registered = supplier.registered,
                         blocked = supplier.settings.blockedBySupplier,
                         transactionRestricted = supplier.settings.addTransactionRestricted,
-                        address = supplier.address ?: ""
+                        address = supplier.address ?: "",
+                        accountType = accountType,
                     )
                 }
             }
@@ -61,7 +65,9 @@ class GetAccountDetails(
     }
 
     data class Response(
+        val id: String,
         val name: String,
+        val accountType: AccountType,
         val mobile: String,
         val balance: Paisa,
         val profileImage: String,

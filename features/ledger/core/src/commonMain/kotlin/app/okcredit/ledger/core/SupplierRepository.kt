@@ -59,13 +59,14 @@ class SupplierRepository(
         businessId: String,
         accountId: String,
         request: UpdateSupplierRequest
-    ) {
-        remoteSource.updateSupplier(
+    ): Supplier {
+       val supplier = remoteSource.updateSupplier(
             supplierId = accountId,
             businessId = businessId,
             request = request
-        ).let {
+        ).also {
             localSource.resetSupplier(it)
         }
+        return supplier
     }
 }

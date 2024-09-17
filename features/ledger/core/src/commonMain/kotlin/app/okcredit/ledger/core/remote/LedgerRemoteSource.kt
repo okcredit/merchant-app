@@ -222,7 +222,7 @@ class LedgerRemoteSource(
             baseUrl = baseUrl,
             endPoint = "ledger/v1.0/customer/$customerId",
             requestBody = request,
-            headers = mapOf(HEADER_BUSINESS_ID to request.updatedAt.toString()),
+            headers = mapOf(HEADER_BUSINESS_ID to businessId),
         ).getOrThrow()
 
         return response.toDomainCustomer(businessId)

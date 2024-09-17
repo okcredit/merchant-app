@@ -72,6 +72,7 @@ data class AccountProfileScreen(
             onBlockRelationshipClicked = { screenModel.pushIntent(Intent.ModifyState(!state.blocked)) },
             onAddressClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyAddress)) },
             onSubmitAddress = { screenModel.pushIntent(Intent.SubmitAddress(it)) },
+            onDismissBottomSheet = { screenModel.pushIntent(Intent.SetBottomSheetType(null))},
             onHelpClicked = { },
             onDeleteRelationshipClicked = {},
             onSmsSettingsClicked = {},

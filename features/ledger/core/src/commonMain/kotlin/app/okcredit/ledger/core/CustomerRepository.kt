@@ -71,13 +71,14 @@ class CustomerRepository(
         businessId: String,
         customerId: String,
         request: UpdateCustomerRequest
-    ) {
-        remoteSource.updateCustomer(
+    ): Customer {
+       val customer = remoteSource.updateCustomer(
             customerId = customerId,
             request = request,
             businessId = businessId
-        ).let { updatedCustomer ->
+        ).also { updatedCustomer ->
             localSource.resetCustomer(updatedCustomer)
         }
+        return customer
     }
 }

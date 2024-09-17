@@ -9,6 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,8 +46,10 @@ fun RelationshipProfileScreen(
     onSubmitMobile: (String) -> Unit,
     onSubmitAddress: (String) -> Unit,
     loadDetails: () -> Unit,
+    onDismissBottomSheet: () -> Unit,
 ) {
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState(
+    )
 
     LaunchedEffect(true) {
         loadDetails()
@@ -115,7 +118,7 @@ fun RelationshipProfileScreen(
                     ModalBottomSheet(
                         containerColor = MaterialTheme.colorScheme.surface,
                         sheetState = bottomSheetState,
-                        onDismissRequest = {},
+                        onDismissRequest = { onDismissBottomSheet() },
                         content = {
                             when (state.bottomSheetType) {
                                 is AccountProfileContract.BottomSheetType.ModifyName -> {
@@ -125,7 +128,7 @@ fun RelationshipProfileScreen(
                                         else
                                             stringResource(app.okcredit.ledger.ui.Res.string.edit_name),
                                         prefillText = state.name,
-                                        onSubmitClicked = onSubmitName,
+                                        onSubmitClicked = { onSubmitName(it) },
                                         onCloseClicked = { onDismissInfoDialog() }
                                     )
                                 }
@@ -212,6 +215,7 @@ fun RelationshipProfileScreenPreview() {
         onSubmitMobile = {},
         onAddressClicked = {},
         onSubmitAddress = {},
-        loadDetails = {}
+        loadDetails = {},
+        onDismissBottomSheet = {}
     )
 }

@@ -1,6 +1,7 @@
 package app.okcredit.ledger.ui.profile
 
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.core.usecase.UpdateAccount
 import app.okcredit.ledger.ui.profile.usecase.GetAccountDetails
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
