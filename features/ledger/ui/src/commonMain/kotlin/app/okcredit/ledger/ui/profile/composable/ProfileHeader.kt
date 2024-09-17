@@ -21,7 +21,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_account
+import app.okcredit.ui.icon_account_125dp
 import app.okcredit.ui.icon_camera
+import app.okcredit.ui.icon_camera_alt
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -43,7 +45,7 @@ fun ProfileHeader(
         ) {
             if (profileImgUrl.isEmpty()) {
                 Image(
-                    painter = painterResource(Res.drawable.icon_account),
+                    painter = painterResource(Res.drawable.icon_account_125dp),
                     contentDescription = "profile_image",
                     modifier = Modifier
                         .size(82.dp)
@@ -73,7 +75,7 @@ fun ProfileHeader(
                     .align(Alignment.BottomEnd),
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.icon_camera),
+                    painter = painterResource(Res.drawable.icon_camera_alt),
                     contentDescription = "camera",
                     tint = Color.White,
                     modifier = Modifier
