@@ -20,6 +20,13 @@ fun <T> Response<T>.getOrThrow(): T {
     throw this.asError()
 }
 
+fun <T> Response<T>.getOrNull(): T? {
+    if (this.isSuccessful) {
+        return this.body()
+    }
+    return null
+}
+
 fun Response<*>.asError(): ApiError {
     if (this.isSuccessful) throw IllegalStateException("cannot parse ApiError from a successful api call")
     return ApiError(code = code, error = message)

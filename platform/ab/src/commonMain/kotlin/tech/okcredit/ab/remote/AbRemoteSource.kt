@@ -5,6 +5,7 @@ import okcredit.base.di.BaseUrl
 import okcredit.base.network.AuthorizedHttpClient
 import okcredit.base.network.HEADER_BUSINESS_ID
 import okcredit.base.network.get
+import okcredit.base.network.getOrNull
 import okcredit.base.network.getOrThrow
 import okcredit.base.network.post
 import tech.okcredit.ab.Profile
@@ -19,7 +20,7 @@ class AbRemoteSource(
         deviceId: String,
         sourceType: String,
         businessId: String,
-    ): Profile {
+    ): Profile? {
         return authorizedHttpClient.get<GetProfileResponse>(
             baseUrl = baseUrl,
             endPoint = "ab/v2/GetProfile",
@@ -31,7 +32,7 @@ class AbRemoteSource(
                 "X-App-Source-Type" to sourceType,
                 HEADER_BUSINESS_ID to businessId,
             ),
-        ).getOrThrow().profile.toProfile()
+        ).getOrNull()?.profile?.toProfile()
     }
 
     suspend fun acknowledgeExperiment(

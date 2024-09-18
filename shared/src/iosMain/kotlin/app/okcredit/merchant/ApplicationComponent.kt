@@ -3,6 +3,7 @@ package app.okcredit.merchant
 import app.okcredit.ledger.core.di.IosLedgerComponent
 import app.okcredit.ledger.core.di.LedgerComponent
 import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.di.LedgerUiComponent
 import app.okcredit.onboarding.OnboardingComponent
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import me.tatarka.inject.annotations.Component
@@ -43,6 +44,7 @@ abstract class ApplicationComponent(
     IosSharedComponent,
     OnboardingComponent,
     LedgerComponent,
+    LedgerUiComponent,
     IosLedgerComponent,
     IosCustomizationComponent,
     IosCollectionComponent {
