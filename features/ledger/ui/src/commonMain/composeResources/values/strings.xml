@@ -41,4 +41,19 @@
     <string name="enter_mobile_number">Enter mobile number</string>
     <string name="enter_address">Enter Address</string>
     <string name="edit_address">Edit Address</string>
+    <string name="unable_to_delete_customer_balance_not_zero">Could not delete customer\nPlease try again</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="delete_supplier">Delete Supplier</string>
+    <string name="delete_customer">Delete Customer</string>
+    <string name="balance_due">Due</string>
+    <string name="balance_advance">Advance</string>
+    <string name="del_cst_settlement_label_payment">Accept Payment of %1$s</string>
+    <string name="del_cst_settlement_label_credit">Add Credit of %1$s</string>
+    <string name="del_cst_supplier_msg_no_mobile">"Supplier data will be deleted permanently"</string>
+    <string name="del_cst_msg_no_mobile">Customer data will be deleted permanently</string>
+    <string name="del_cst_supplier_msg">"Supplier will still be able to see all old SMS"</string>
+    <string name="del_cst_msg">Customer will still be able to see all old SMS</string>
+    <string name="del_cst_supplier_msg_settlement">Please make supplier balance 0 to delete</string>
+    <string name="del_cst_msg_settlement">Please make customer balance 0 to delete</string>
 </resources>

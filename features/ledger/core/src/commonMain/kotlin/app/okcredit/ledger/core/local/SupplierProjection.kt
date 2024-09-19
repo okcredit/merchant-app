@@ -305,4 +305,13 @@ class SupplierProjection(
             }
         }
     }
+
+    suspend fun markSupplierAsDeleted(supplierId: String) {
+        withContext(appDispatchers.io) {
+            accountQueries.updateAccountStatus(
+                status = AccountStatus.DELETED,
+                accountId = supplierId,
+            )
+        }
+    }
 }

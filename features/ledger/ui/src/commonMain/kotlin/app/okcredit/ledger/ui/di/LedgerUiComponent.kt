@@ -1,6 +1,7 @@
 package app.okcredit.ledger.ui.di
 
 import app.okcredit.ledger.ui.customer.CustomerLedgerModel
+import app.okcredit.ledger.ui.delete.DeleteAccountModel
 import app.okcredit.ledger.ui.profile.AccountProfileModel
 import app.okcredit.ledger.ui.supplier.SupplierLedgerModel
 import me.tatarka.inject.annotations.IntoMap
@@ -26,6 +27,12 @@ interface LedgerUiComponent {
     @IntoMap
     fun accountProfileMode(accountProfileModel: AccountProfileModel): ScreenModelPair {
         return AccountProfileModel::class to accountProfileModel
+    }
+
+    @Provides
+    @IntoMap
+    fun deleteAccountModel(deleteAccountModel: DeleteAccountModel): ScreenModelPair {
+        return DeleteAccountModel::class to deleteAccountModel
     }
 
 }
