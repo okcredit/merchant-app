@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.LedgerScreenRegistry
 import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyAddress
 import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyName
 import app.okcredit.ledger.ui.profile.AccountProfileContract.BottomSheetType.ModifyPhoneNumber
@@ -11,6 +12,7 @@ import app.okcredit.ledger.ui.profile.AccountProfileContract.Intent
 import app.okcredit.ledger.ui.profile.AccountProfileContract.State
 import app.okcredit.ledger.ui.profile.AccountProfileContract.ViewEvent
 import app.okcredit.ledger.ui.profile.composable.RelationshipProfileScreen
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -72,9 +74,17 @@ data class AccountProfileScreen(
             onBlockRelationshipClicked = { screenModel.pushIntent(Intent.ModifyState(!state.blocked)) },
             onAddressClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyAddress)) },
             onSubmitAddress = { screenModel.pushIntent(Intent.SubmitAddress(it)) },
-            onDismissBottomSheet = { screenModel.pushIntent(Intent.SetBottomSheetType(null))},
+            onDismissBottomSheet = { screenModel.pushIntent(Intent.SetBottomSheetType(null)) },
             onHelpClicked = { },
-            onDeleteRelationshipClicked = {},
+            onDeleteRelationshipClicked = {
+                navigator.push(
+                    ScreenRegistry.get(
+                        LedgerScreenRegistry.DeleteAccount(
+                            accountId = accountId, accountType = accountType
+                        )
+                    )
+                )
+            },
             onSmsSettingsClicked = {},
             onProfileImageClicked = {},
         )

@@ -25,7 +25,7 @@ class LedgerScreenRegistryProvider {
             AccountProfileScreen(it.accountId, it.accountType)
         }
 
-        register<LedgerScreenRegistry.DeleteAccountProfile> {
+        register<LedgerScreenRegistry.DeleteAccount> {
             DeleteAccountScreen(it.accountId, it.accountType)
         }
     }
@@ -40,6 +40,6 @@ sealed class LedgerScreenRegistry : ScreenProvider {
     data class AccountProfile(val accountId: String, val accountType: AccountType) :
         LedgerScreenRegistry()
 
-    data class DeleteAccountProfile(val accountId: String, val accountType: AccountType) :
+    data class DeleteAccount(val accountId: String, val accountType: AccountType) :
         LedgerScreenRegistry()
 }
