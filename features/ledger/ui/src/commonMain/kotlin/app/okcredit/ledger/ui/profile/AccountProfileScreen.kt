@@ -80,7 +80,8 @@ data class AccountProfileScreen(
                 navigator.push(
                     ScreenRegistry.get(
                         LedgerScreenRegistry.DeleteAccount(
-                            accountId = accountId, accountType = accountType
+                            accountId = accountId,
+                            accountType = accountType
                         )
                     )
                 )
