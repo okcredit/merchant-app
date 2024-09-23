@@ -257,6 +257,7 @@ class AccountProfileModel(
                 accountType = partialState.res.accountType,
                 name = partialState.res.name,
                 mobile = partialState.res.mobile,
+                address = partialState.res.address,
                 profileImage = partialState.res.profileImage,
                 registered = partialState.res.registered,
                 blocked = partialState.res.blocked,

@@ -48,7 +48,7 @@ data class AccountProfileScreen(
     ) {
         RelationshipProfileScreen(
             state = state,
-            onBackClicked = { navigator.parent?.pop() },
+            onBackClicked = { navigator.pop() },
             loadDetails = {
                 screenModel.pushIntent(
                     Intent.LoadDetails(

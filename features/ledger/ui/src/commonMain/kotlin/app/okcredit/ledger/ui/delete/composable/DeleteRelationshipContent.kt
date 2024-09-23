@@ -42,6 +42,7 @@ import app.okcredit.ledger.ui.del_cst_supplier_msg_settlement
 import app.okcredit.ledger.ui.delete
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_account
+import app.okcredit.ui.icon_account_125dp
 import app.okcredit.ui.icon_credit_up
 import app.okcredit.ui.icon_delete
 import app.okcredit.ui.icon_payments
@@ -73,6 +74,9 @@ fun DeleteRelationshipContent(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 2.dp
             ),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
             shape = RoundedCornerShape(0.dp)
         ) {
             Column(
@@ -92,12 +96,12 @@ fun DeleteRelationshipContent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            painter = painterResource(Res.drawable.icon_account),
+                            painter = painterResource(Res.drawable.icon_account_125dp),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                         )
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = name,
                             style = MaterialTheme.typography.bodyLarge,

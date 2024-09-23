@@ -9,6 +9,7 @@ import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
@@ -95,7 +96,7 @@ class CustomerProjection(
                 lastReminderSendTime = customer.lastReminderSendTime,
                 transactionCount = customer.transactionCount,
             ),
-            address = ""
+            address = customer.address
         )
     }
 

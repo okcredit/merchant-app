@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.isSupplier
-import app.okcredit.ledger.ui.delete.composable.DeleteRelationshipScreen
+import app.okcredit.ledger.ui.delete.composable.DeleteScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -39,7 +39,7 @@ data class DeleteAccountScreen(
         state: DeleteAccountContract.State,
         navigator: Navigator
     ) {
-        DeleteRelationshipScreen(
+        DeleteScreen(
             loadDetails = {
                 screenModel.pushIntent(
                     DeleteAccountContract.Intent.Load(
@@ -50,9 +50,9 @@ data class DeleteAccountScreen(
             },
             name = state.name,
             balance = state.balance.value,
-            onBackClicked = { navigator.parent?.pop() },
+            onBackClicked = { navigator.pop() },
             onDeleteClicked = {
-                screenModel.pushIntent(DeleteAccountContract.Intent.DeleteRelationshipClicked)
+                screenModel.pushIntent(DeleteAccountContract.Intent.DeleteRelationshipClicked(accountId, accountType))
             },
             isSupplier = accountType.isSupplier(),
             onSettlementClicked = {},
@@ -64,9 +64,10 @@ data class DeleteAccountScreen(
 
     private fun handleViewEvent(event: DeleteAccountContract.ViewEvent, navigator: Navigator) {
         when (event) {
-            DeleteAccountContract.ViewEvent.FinishActivity -> navigator.parent?.pop()
+            DeleteAccountContract.ViewEvent.FinishActivity -> {
+                navigator.popUntilRoot()
+            }
             is DeleteAccountContract.ViewEvent.GoToAddTransactionScreen -> {}
-            DeleteAccountContract.ViewEvent.GoToAppLockScreenForAuthentication -> {}
             DeleteAccountContract.ViewEvent.ShowRetryDialog -> {}
         }
     }

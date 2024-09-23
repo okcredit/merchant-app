@@ -91,12 +91,12 @@ class DeleteAccountModel(
                         error = it.error
                     )
                     val error = it.error
-                    when {
-                        error.message == API_ERROR_BALANCE_NOT_ZERO_API_MESSAGE -> {
+                    when (error.message) {
+                        API_ERROR_BALANCE_NOT_ZERO_API_MESSAGE -> {
                             emitViewEvent(ViewEvent.ShowRetryDialog)
                         }
 
-                        error.message == INCORRECT_PASSWORD -> {
+                        INCORRECT_PASSWORD -> {
                             tracker.trackIncorrectPassword()
                         }
 
@@ -122,10 +122,14 @@ class DeleteAccountModel(
         intent<Intent.DeleteRelationshipClicked>()
             .map {
                 tracker.trackDeleteRelationshipClicked(
-                    isSupplier = isSupplier(),
-                    accountId = currentState.accountId
+                    isSupplier = it.accountType.isSupplier(),
+                    accountId = it.accountId
                 )
-                emitViewEvent(ViewEvent.GoToAppLockScreenForAuthentication)
+                if (currentState.balance == Paisa.ZERO) {
+                    pushIntent(Intent.Delete)
+                } else {
+                    pushIntent(Intent.OnSettlementClicked)
+                }
                 PartialState.SetLoading(true)
             }
 
@@ -134,17 +138,14 @@ class DeleteAccountModel(
         .flatMapLatest {
             wrap(
                 getAccountDetails.execute(
-                    currentState.accountId,
-                    currentState.accountType,
+                    it.accountId,
+                    it.accountType,
                 )
             )
         }.map {
             when (it) {
                 is Result.Progress -> PartialState.NoChange
-                is Result.Failure -> {
-                    PartialState.SetError("Something went wrong")
-                }
-
+                is Result.Failure -> PartialState.SetError("Something went wrong")
                 is Result.Success -> {
                     val res = it.value
                     if (res != null) {
@@ -169,7 +170,10 @@ class DeleteAccountModel(
                 balance = partialState.res.balance,
                 shouldSettle = partialState.res.balance != Paisa.ZERO,
                 accountType = currentState.accountType,
-                mobile = partialState.res.mobile
+                mobile = partialState.res.mobile,
+                accountId = partialState.res.id,
+                isLoading = false,
+                errorMessage = null
             )
 
             is PartialState.SetLoading -> currentState.copy(isLoading = partialState.value)

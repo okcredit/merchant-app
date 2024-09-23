@@ -30,14 +30,13 @@ interface DeleteAccountContract {
 
     sealed class Intent : UserIntent {
         data class Load(val accountId: String, val accountType: AccountType) : Intent()
-        data object DeleteRelationshipClicked : Intent()
+        data class DeleteRelationshipClicked(val accountId: String, val accountType: AccountType) : Intent()
         data object Delete : Intent()
         data object OnSettlementClicked : Intent()
         data object SyncTransactionAndRetryDelete : Intent()
     }
 
     sealed class ViewEvent : BaseViewEvent {
-        data object GoToAppLockScreenForAuthentication : ViewEvent()
         data object FinishActivity : ViewEvent()
         data object ShowRetryDialog : ViewEvent()
         data class GoToAddTransactionScreen(val type: Transaction.Type, val balance: Paisa) :

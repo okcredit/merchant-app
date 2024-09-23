@@ -1,8 +1,12 @@
 package app.okcredit.ledger.ui.delete.composable
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,7 +25,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun DeleteRelationshipScreen(
+fun DeleteScreen(
     name: String,
     balance: Long,
     mobile: String,
@@ -36,15 +40,11 @@ fun DeleteRelationshipScreen(
     LaunchedEffect(true) {
         loadDetails()
     }
-    Scaffold(
-
-        topBar = {
-            DeleteRelationshipToolbar(
-                isSupplier = isSupplier,
-                onBackClicked = onBackClicked
-            )
-        }
-    ) { contentPadding ->
+    Scaffold(topBar = {
+        DeleteRelationshipToolbar(
+            isSupplier = isSupplier, onBackClicked = onBackClicked
+        )
+    }) { contentPadding ->
         DeleteRelationshipContent(
             isLoading = isLoading,
             contentPadding = contentPadding,
@@ -65,11 +65,18 @@ fun DeleteRelationshipToolbar(
     isSupplier: Boolean,
     onBackClicked: () -> Unit,
 ) {
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface
+    Card(
+        shape = RoundedCornerShape(0.dp),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 2.dp
         ),
-        title = {
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ), title = {
             Row {
                 ArrowBack(onBackClicked)
                 Spacer(modifier = Modifier.padding(6.dp))
@@ -81,15 +88,14 @@ fun DeleteRelationshipToolbar(
                     }
                 )
             }
-        }
-    )
+        })
+    }
 }
 
 @Preview
 @Composable
 fun DeleteCustomerScreenPreview() {
-    DeleteRelationshipScreen(
-        name = "John Doe",
+    DeleteScreen(name = "John Doe",
         balance = 1000,
         onDeleteClicked = {},
         onSettlementClicked = {},
@@ -98,6 +104,5 @@ fun DeleteCustomerScreenPreview() {
         mobile = "1234567890",
         isSupplier = false,
         onBackClicked = {},
-        loadDetails = {}
-    )
+        loadDetails = {})
 }
