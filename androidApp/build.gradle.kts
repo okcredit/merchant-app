@@ -123,6 +123,7 @@ dependencies {
     implementation(project(":platform:identity"))
     implementation(project(":platform:identity:contract"))
     implementation(project(":platform:okdoc"))
+    implementation(project(":platform:web"))
 
     implementation(project(":features:auth_ui"))
     implementation(project(":features:growth:customization"))

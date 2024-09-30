@@ -25,11 +25,12 @@ kotlin {
             implementation(project(":platform:analytics"))
             implementation(project(":platform:auth"))
             implementation(project(":platform:base"))
+            implementation(project(":platform:design_system"))
             implementation(project(":platform:device"))
             implementation(project(":platform:identity"))
             implementation(project(":platform:identity:contract"))
             implementation(project(":platform:okdoc"))
-            implementation(project(":platform:design_system"))
+            implementation(project(":platform:web"))
 
             implementation(project(":features:growth:customization"))
             implementation(project(":features:auth_ui"))

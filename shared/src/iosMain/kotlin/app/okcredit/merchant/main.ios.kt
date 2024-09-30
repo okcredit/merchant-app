@@ -21,5 +21,6 @@ private fun initScreenRegistry(component: ApplicationComponent) {
         component.onboardingScreenRegistryProvider.screenRegistry().invoke(this)
         component.sharedScreenRegistryProvider.screenRegistry().invoke(this)
         component.ledgerScreenRegistryProvider.screenRegistry().invoke(this)
+        component.webScreenRegistryProvider.screenRegistry().invoke(this)
     }
 }

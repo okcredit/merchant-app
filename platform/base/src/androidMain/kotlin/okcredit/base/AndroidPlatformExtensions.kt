@@ -1,4 +1,4 @@
-package app.okcredit.merchant
+package okcredit.base
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,6 @@ import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import me.tatarka.inject.annotations.Inject
-import org.jetbrains.compose.resources.StringResource
 
 @Inject
 class AndroidPlatformExtensions(private val context: Context) : PlatformExtensions {
@@ -44,46 +43,5 @@ class AndroidPlatformExtensions(private val context: Context) : PlatformExtensio
                 Uri.parse(urlWhats),
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         )
-    }
-
-    override fun openWebUrl(url: String) {
-        if (isThirdPartyUrl(url)) {
-            context.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(url),
-                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            )
-        } else {
-            val urlBuilder = URLBuilder(
-                protocol = URLProtocol("okcredit", 0),
-                host = "web",
-                pathSegments = listOf(),
-                parameters = Parameters.build { append("url", url) },
-            )
-            context.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(urlBuilder.build().toString()),
-                ).setPackage(context.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            )
-        }
-    }
-
-    override fun localized(stringResource: StringResource): String {
-        return ""
-    }
-
-    private fun isThirdPartyUrl(url: String): Boolean {
-        val uri = Uri.parse(Uri.decode(url))
-        val host = uri.host ?: ""
-
-        val domainsArray = DEFAULT_WHITELISTED_DOMAINS.split(",")
-        domainsArray.forEach {
-            if (host.contains(it, true)) {
-                return false
-            }
-        }
-        return true
     }
 }

@@ -1,15 +1,9 @@
-package app.okcredit.merchant
-
-import org.jetbrains.compose.resources.StringResource
+package okcredit.base
 
 interface PlatformExtensions {
     fun shareOnWhatsApp(text: String)
 
     fun shareOnWhatsApp(mobileNumber: String, text: String)
-
-    fun openWebUrl(url: String)
-
-    fun localized(stringResource: StringResource): String
 }
 
 const val DEFAULT_WHITELISTED_DOMAINS =
