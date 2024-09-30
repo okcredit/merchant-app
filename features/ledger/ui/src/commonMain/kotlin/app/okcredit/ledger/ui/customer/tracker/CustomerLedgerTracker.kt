@@ -3,10 +3,9 @@ package app.okcredit.ledger.ui.customer.tracker
 import me.tatarka.inject.annotations.Inject
 import tech.okcredit.analytics.AnalyticsProvider
 
-
 @Inject
 class CustomerLedgerTracker(
-    analyticsProvider: Lazy<AnalyticsProvider>
+    analyticsProvider: Lazy<AnalyticsProvider>,
 ) {
 
     private val tracker by lazy { analyticsProvider.value }
@@ -25,7 +24,7 @@ class CustomerLedgerTracker(
     fun trackRetryButtonClicked(txnId: String, imageUrl: String) {
         tracker.logProductEvent(
             RECEIPT_RETRY_BUTTON_CLICKED,
-            mapOf(TRANSACTION_ID to txnId, URL to imageUrl)
+            mapOf(TRANSACTION_ID to txnId, URL to imageUrl),
         )
     }
 
@@ -33,7 +32,7 @@ class CustomerLedgerTracker(
         transactionId: String,
         url: String,
         reason: String,
-        stacktrace: String
+        stacktrace: String,
     ) {
         val properties = mapOf(
             TRANSACTION_ID to transactionId,
@@ -47,7 +46,7 @@ class CustomerLedgerTracker(
     fun trackRetryButtonShown(txnId: String, imageUrl: String) {
         tracker.logProductEvent(
             RECEIPT_RETRY_BUTTON_SHOWN,
-            mapOf(TRANSACTION_ID to txnId, URL to imageUrl)
+            mapOf(TRANSACTION_ID to txnId, URL to imageUrl),
         )
     }
 }

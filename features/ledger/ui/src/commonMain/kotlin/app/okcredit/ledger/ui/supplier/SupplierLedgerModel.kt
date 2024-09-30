@@ -39,8 +39,8 @@ class SupplierLedgerModel(
             wrap(
                 getSupplierLedgerData.execute(
                     supplierId = it.supplierId,
-                    showOldClicked = it.showOldClicked
-                )
+                    showOldClicked = it.showOldClicked,
+                ),
             )
         }
         .map {
@@ -76,17 +76,16 @@ class SupplierLedgerModel(
             is PartialState.NoChange -> currentState
             is PartialState.SetLedgerItems -> currentState.copy(
                 ledgerItems = partialState.ledgerItems,
-                loading = false
+                loading = false,
             )
 
             is PartialState.SetLoading -> currentState.copy(loading = partialState.loading)
             is PartialState.SetSupplierData -> currentState.copy(
                 supplierDetails = partialState.supplierDetails,
-                toolbarData = partialState.toolbarData
+                toolbarData = partialState.toolbarData,
             )
 
             is PartialState.SetError -> currentState.copy(errorMessage = partialState.error)
         }
     }
-
 }

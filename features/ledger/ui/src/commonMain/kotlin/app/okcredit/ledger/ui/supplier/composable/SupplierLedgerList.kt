@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.ui.composable.LedgerDateView
 import app.okcredit.ledger.ui.composable.LedgerEmptyPlaceHolder
 import app.okcredit.ledger.ui.composable.LedgerLoadMoreView
 import app.okcredit.ledger.ui.composable.LedgerLoadingShimmerView
 import app.okcredit.ledger.ui.composable.LedgerTransactionView
 import app.okcredit.ledger.ui.composable.TransactionViewState
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import okcredit.base.units.Paisa
 
@@ -54,7 +54,7 @@ fun SupplierLedgerList(
         items(ledgerItems.size) { index ->
             when (val item = ledgerItems[index]) {
                 is LedgerItem.EmptyPlaceHolder -> LedgerEmptyPlaceHolder(
-                    accountType = AccountType.Customer,
+                    accountType = AccountType.CUSTOMER,
                     onLearnMoreClicked = onLearnMoreClicked,
                 )
 

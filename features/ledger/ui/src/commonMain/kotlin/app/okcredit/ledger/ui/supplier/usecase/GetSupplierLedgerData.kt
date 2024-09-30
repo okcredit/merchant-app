@@ -2,13 +2,13 @@
 
 package app.okcredit.ledger.ui.supplier.usecase
 
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.core.SupplierRepository
 import app.okcredit.ledger.core.usecase.GetAccountStatementImpl
 import app.okcredit.ledger.ui.composable.TxnGravity
 import app.okcredit.ledger.ui.composable.UiTxnStatus
-import app.okcredit.ledger.ui.model.AccountType
 import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
 import app.okcredit.ledger.ui.model.TransactionDueInfo
@@ -34,7 +34,7 @@ class GetSupplierLedgerData(
     getActiveBusinessId: Lazy<GetActiveBusinessId>,
     supplierRepository: Lazy<SupplierRepository>,
     getAccountStatement: Lazy<GetAccountStatementImpl>,
-    getCollectionsForAccount: Lazy<GetCollectionsForAccount>
+    getCollectionsForAccount: Lazy<GetCollectionsForAccount>,
 ) {
 
     private val getActiveBusinessId by lazy { getActiveBusinessId.value }
@@ -50,13 +50,13 @@ class GetSupplierLedgerData(
             combine(
                 getSupplierDetails(supplierId),
                 getSupplierTransactions(supplierId),
-                getSupplierCollections(supplierId, it)
+                getSupplierCollections(supplierId, it),
             ) { supplier, transactions, onlinePayments ->
                 processTransactionsData(
                     supplier = supplier,
                     transactions = transactions,
                     showOldClicked = showOldClicked,
-                    onlinePayments = onlinePayments
+                    onlinePayments = onlinePayments,
                 )
             }
         }
@@ -69,7 +69,7 @@ class GetSupplierLedgerData(
         supplier: Supplier?,
         transactions: List<Transaction>,
         showOldClicked: Boolean,
-        onlinePayments: List<OnlinePayment>
+        onlinePayments: List<OnlinePayment>,
     ): List<LedgerItem> {
         val ledgerItems = mutableListOf<LedgerItem>()
         if (supplier == null && transactions.isEmpty()) {
@@ -95,7 +95,7 @@ class GetSupplierLedgerData(
             lastTransactionDate = checkForDateItem(
                 ledgerItems = ledgerItems,
                 lastDate = lastTransactionDate,
-                currentDate = currentTransactionDate.epochMillis
+                currentDate = currentTransactionDate.epochMillis,
             )
             addTransactionItemInList(
                 ledgerItems = ledgerItems,
@@ -119,7 +119,7 @@ class GetSupplierLedgerData(
                     item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                )
+                ),
             )
 
             isProcessingTransaction(item.transaction) -> ledgerItems.add(
@@ -127,7 +127,7 @@ class GetSupplierLedgerData(
                     item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                )
+                ),
             )
 
             else -> ledgerItems.add(
@@ -135,7 +135,7 @@ class GetSupplierLedgerData(
                     item = item,
                     supplierId = supplierId,
                     supplierName = supplierName,
-                )
+                ),
             )
         }
     }
@@ -152,7 +152,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER,
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -165,14 +165,14 @@ class GetSupplierLedgerData(
             closingBalance = closingBalance,
             txnType = UiTxnStatus.ProcessingTransaction(
                 action = UiTxnStatus.ProcessingTransactionAction.NONE,
-                paymentId = item.onlinePayment?.paymentId ?: ""
+                paymentId = item.onlinePayment?.paymentId ?: "",
             ),
-            accountType = AccountType.Supplier,
+            accountType = AccountType.SUPPLIER,
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
-                name = supplierName
+                name = supplierName,
             ),
-            collectionId = transaction.collectionId
+            collectionId = transaction.collectionId,
         )
     }
 
@@ -183,7 +183,7 @@ class GetSupplierLedgerData(
     private fun createTransaction(
         supplierId: String,
         supplierName: String,
-        item: TransactionDueInfo
+        item: TransactionDueInfo,
     ): LedgerItem {
         val transaction = item.transaction
         val closingBalance = item.currentDue
@@ -192,7 +192,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER,
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -204,12 +204,12 @@ class GetSupplierLedgerData(
             note = transaction.note,
             closingBalance = closingBalance,
             txnType = UiTxnStatus.Transaction,
-            accountType = AccountType.Supplier,
+            accountType = AccountType.SUPPLIER,
             txnTag = getTransactionTag(
                 createdByMerchant = transaction.createdByMerchant,
-                name = supplierName
+                name = supplierName,
             ),
-            collectionId = transaction.collectionId
+            collectionId = transaction.collectionId,
         )
     }
 
@@ -232,7 +232,7 @@ class GetSupplierLedgerData(
             relationshipId = supplierId,
             txnGravity = findUiTxnGravity(
                 isPayment = transaction.type == Transaction.Type.PAYMENT,
-                accountType = AccountType.Supplier
+                accountType = AccountType.SUPPLIER,
             ),
             dirty = transaction.dirty,
             createdBySelf = transaction.createdByMerchant,
@@ -249,16 +249,16 @@ class GetSupplierLedgerData(
             ),
             txnTag = getDeletedTransactionTag(
                 customerName = supplierName,
-                deletedByCustomer = transaction.deletedByCustomer
+                deletedByCustomer = transaction.deletedByCustomer,
             ),
-            accountType = AccountType.Supplier,
-            collectionId = transaction.collectionId
+            accountType = AccountType.SUPPLIER,
+            collectionId = transaction.collectionId,
         )
     }
 
     private fun getDeletedTransactionTag(
         customerName: String,
-        deletedByCustomer: Boolean
+        deletedByCustomer: Boolean,
     ): String {
         return if (deletedByCustomer) {
             "Deleted by $customerName"
@@ -273,7 +273,7 @@ class GetSupplierLedgerData(
     ): String {
         return if (isSameDay(
                 lastDate = createdAt.epochMillis,
-                currentDate = billDate.epochMillis
+                currentDate = billDate.epochMillis,
             )
         ) {
             getTimeOnly(billDate.instant).trim()
@@ -282,12 +282,11 @@ class GetSupplierLedgerData(
         }
     }
 
-
     private fun findUiTxnGravity(isPayment: Boolean, accountType: AccountType): TxnGravity {
         return if (isPayment) {
-            if (accountType == AccountType.Customer) TxnGravity.LEFT else TxnGravity.RIGHT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.LEFT else TxnGravity.RIGHT
         } else {
-            if (accountType == AccountType.Customer) TxnGravity.RIGHT else TxnGravity.LEFT
+            if (accountType == AccountType.CUSTOMER) TxnGravity.RIGHT else TxnGravity.LEFT
         }
     }
 
@@ -296,13 +295,13 @@ class GetSupplierLedgerData(
     private fun checkForDateItem(
         ledgerItems: MutableList<LedgerItem>,
         lastDate: Long,
-        currentDate: Long
+        currentDate: Long,
     ): Long {
         return if (!isSameDay(lastDate, currentDate)) {
             ledgerItems.add(
                 LedgerItem.DateItem(
-                    ""
-                )
+                    "",
+                ),
             )
             currentDate
         } else {
@@ -312,7 +311,7 @@ class GetSupplierLedgerData(
 
     private fun processTransactionDueInfo(
         transactions: List<Transaction>,
-        collectionMap: Map<String, OnlinePayment>
+        collectionMap: Map<String, OnlinePayment>,
     ): TransactionData {
         var currentDue: Paisa = Paisa.ZERO
         var lastIndexOfZeroBalanceDue = 0
@@ -330,27 +329,25 @@ class GetSupplierLedgerData(
             TransactionDueInfo(
                 transaction = txn,
                 currentDue = currentDue,
-                onlinePayment = collectionMap[txn.collectionId]
+                onlinePayment = collectionMap[txn.collectionId],
             )
         }
 
         return TransactionData(
             transactions = transactionWithDueInfo,
-            lastIndexOfZeroBalanceDue = lastIndexOfZeroBalanceDue
+            lastIndexOfZeroBalanceDue = lastIndexOfZeroBalanceDue,
         )
     }
-
 
     private fun getSupplierTransactions(supplierId: String): Flow<List<Transaction>> {
         return getAccountStatement.execute(
             accountId = supplierId,
             startTime = null,
-            endTime = null
+            endTime = null,
         )
     }
 
     private fun getSupplierDetails(supplierId: String): Flow<Supplier?> {
         return supplierRepository.getSupplierDetails(supplierId)
     }
-
 }

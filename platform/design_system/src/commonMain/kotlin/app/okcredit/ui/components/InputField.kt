@@ -32,8 +32,7 @@ fun BoxInputField(
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -92,9 +91,7 @@ fun BoxInputField(
 ) {
     Column(modifier = modifier) {
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,

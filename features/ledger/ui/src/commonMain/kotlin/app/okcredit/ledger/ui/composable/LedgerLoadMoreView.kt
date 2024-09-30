@@ -28,12 +28,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LedgerLoadMoreView(
-    onClickLoadMore: () -> Unit
+    onClickLoadMore: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
+            .padding(top = 8.dp),
     ) {
         Row(
             modifier = Modifier
@@ -43,12 +43,12 @@ fun LedgerLoadMoreView(
                 .border(width = 1.dp, color = MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(16.dp))
                 .clickable { onClickLoadMore() }
                 .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_arrow_down),
                 contentDescription = "icon_arrow",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.padding(4.dp))
             Text(
@@ -56,7 +56,7 @@ fun LedgerLoadMoreView(
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                 maxLines = 1,
                 softWrap = false,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }

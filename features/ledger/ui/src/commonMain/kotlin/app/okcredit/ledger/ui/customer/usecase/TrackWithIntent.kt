@@ -5,7 +5,7 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class TrackWithIntent(
-    customerLedgerTracker: Lazy<CustomerLedgerTracker>
+    customerLedgerTracker: Lazy<CustomerLedgerTracker>,
 ) {
     private val tracker by lazy { customerLedgerTracker.value }
 
@@ -13,7 +13,7 @@ class TrackWithIntent(
         data class TrackReceiptLoadFailed(
             val txnId: String,
             val imageUrl: String,
-            val errorMessage: String
+            val errorMessage: String,
         ) : EventType()
 
         data class TrackRetryButtonClicked(val txnId: String, val imageUrl: String) : EventType()
@@ -26,17 +26,17 @@ class TrackWithIntent(
                 eventType.txnId,
                 eventType.imageUrl,
                 eventType.errorMessage,
-                ""
+                "",
             )
 
             is EventType.TrackRetryButtonClicked -> tracker.trackRetryButtonClicked(
                 eventType.txnId,
-                eventType.imageUrl
+                eventType.imageUrl,
             )
 
             is EventType.TrackRetryButtonShown -> tracker.trackRetryButtonShown(
                 eventType.txnId,
-                eventType.imageUrl
+                eventType.imageUrl,
             )
         }
     }

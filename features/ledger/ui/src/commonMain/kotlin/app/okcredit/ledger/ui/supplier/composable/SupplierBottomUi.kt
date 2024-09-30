@@ -52,9 +52,8 @@ fun SupplierBottomUi(
     onGivenClicked: () -> Unit,
     onReceivedClicked: () -> Unit,
 ) {
-
     Column(
-        modifier = modifier.background(color = MaterialTheme.colorScheme.surface)
+        modifier = modifier.background(color = MaterialTheme.colorScheme.surface),
     ) {
         if (ledgerNotEmpty) {
             BalanceDueContainer(
@@ -67,18 +66,17 @@ fun SupplierBottomUi(
         }
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.surface
+            color = MaterialTheme.colorScheme.surface,
         )
         PaymentAndCreditCta(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp),
             onReceivedClicked = onReceivedClicked,
-            onGivenClicked = onGivenClicked
+            onGivenClicked = onGivenClicked,
         )
     }
 }
-
 
 @Composable
 fun BalanceDueContainer(
@@ -91,20 +89,20 @@ fun BalanceDueContainer(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent)
+            .background(color = Color.Transparent),
     ) {
         ShareReportUi(
             modifier = Modifier,
             onCallClicked = onCallClicked,
             onPayOnlineClicked = onPayOnlineClicked,
             shareReportClicked = shareReportClicked,
-            canShowPayOnline = canShowPayOnline
+            canShowPayOnline = canShowPayOnline,
         )
         BalanceUi(
             modifier = Modifier,
             isBalanceAdvance = closingBalance > Paisa.ZERO,
             balance = formatPaisa(closingBalance.value, true),
-            onSupplierReportClicked = shareReportClicked
+            onSupplierReportClicked = shareReportClicked,
         )
     }
 }
@@ -115,27 +113,27 @@ fun ShareReportUi(
     onCallClicked: () -> Unit,
     onPayOnlineClicked: () -> Unit,
     shareReportClicked: () -> Unit,
-    canShowPayOnline: Boolean
+    canShowPayOnline: Boolean,
 ) {
     Column(
         modifier = Modifier
             .background(
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
-            )
+                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
+            ),
     ) {
         Spacer(Modifier.height(4.dp))
         Row(
             modifier = modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = modifier
                     .weight(0.6f)
                     .clickable { shareReportClicked() },
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
@@ -144,7 +142,7 @@ fun ShareReportUi(
                     modifier = Modifier
                         .width(16.dp)
                         .height(16.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
@@ -154,7 +152,7 @@ fun ShareReportUi(
                         fontWeight = FontWeight.SemiBold,
                     ),
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Icon(
                     modifier = Modifier
@@ -166,7 +164,7 @@ fun ShareReportUi(
                 )
             }
             Row(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Button(
                     onClick = { onCallClicked() },
@@ -181,7 +179,7 @@ fun ShareReportUi(
                         painter = painterResource(app.okcredit.ui.Res.drawable.icon_call),
                         contentDescription = "Smart collect icon",
                         modifier = Modifier.height(20.dp),
-                        tint = MaterialTheme.colorScheme.surface
+                        tint = MaterialTheme.colorScheme.surface,
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
@@ -208,7 +206,7 @@ fun ShareReportUi(
                             painter = painterResource(app.okcredit.ui.Res.drawable.icon_collections),
                             contentDescription = "Smart collect icon",
                             modifier = Modifier.height(20.dp),
-                            tint = MaterialTheme.colorScheme.surface
+                            tint = MaterialTheme.colorScheme.surface,
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         Text(
@@ -233,14 +231,14 @@ fun BalanceUi(
     modifier: Modifier,
     isBalanceAdvance: Boolean,
     balance: String,
-    onSupplierReportClicked: () -> Unit
+    onSupplierReportClicked: () -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .clickable { onSupplierReportClicked() },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(Modifier.width(16.dp))
 
@@ -249,14 +247,14 @@ fun BalanceUi(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 13.sp,
             style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(vertical = 10.dp)
+            modifier = Modifier.padding(vertical = 10.dp),
         )
 
         Spacer(Modifier.weight(1f))
         Row(
             modifier = Modifier,
             horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = balance,
@@ -272,7 +270,7 @@ fun BalanceUi(
         }
         Spacer(
             Modifier
-                .width(16.dp)
+                .width(16.dp),
         )
     }
 }
@@ -289,7 +287,7 @@ fun PaymentAndCreditCta(
             .semantics { contentDescription = "payment_buttons" }
             .testTag("payment_buttons"),
         horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(
             modifier = Modifier
@@ -305,7 +303,7 @@ fun PaymentAndCreditCta(
                 modifier = Modifier.padding(vertical = 4.dp),
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_payment_down),
                 contentDescription = "Received icon",
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -334,7 +332,7 @@ fun PaymentAndCreditCta(
                 modifier = Modifier.padding(vertical = 4.dp),
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_credit_up),
                 contentDescription = "Given icon",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -355,6 +353,6 @@ fun PaymentAndCreditCtaPreview() {
     PaymentAndCreditCta(
         onReceivedClicked = {},
         onGivenClicked = {},
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
     )
 }

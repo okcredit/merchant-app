@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -65,7 +64,7 @@ fun CustomerBottomUi(
     Column(
         modifier = modifier
             .wrapContentHeight(align = Alignment.Bottom)
-            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
     ) {
         TopBar(
             onMoreClicked = onMoreClicked,
@@ -79,22 +78,22 @@ fun CustomerBottomUi(
         )
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.surface
+            color = MaterialTheme.colorScheme.surface,
         )
         BalanceUi(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background),
             balance = balance ?: Paisa.ZERO,
-            onBalanceClicked = onBalanceClicked
+            onBalanceClicked = onBalanceClicked,
         )
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.surface
+            color = MaterialTheme.colorScheme.surface,
         )
         PaymentAndCreditCta(
             modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(16.dp),
             onReceivedClicked = onReceivedClicked,
-            onGivenClicked = onGivenClicked
+            onGivenClicked = onGivenClicked,
         )
     }
 }
@@ -111,13 +110,13 @@ fun DueDateUi(
             .padding(horizontal = 16.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier
                 .weight(0.5f),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (dueDate.isNullOrEmpty()) {
                 DueDateWhenNotSet()
@@ -128,7 +127,7 @@ fun DueDateUi(
         Row(
             modifier = Modifier
                 .weight(1f),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
             CTAs(
                 modifier = Modifier,
@@ -146,18 +145,18 @@ fun DueDateWhenSet(dueDate: String) {
         contentDescription = "Date icon",
         modifier = Modifier
             .width(16.dp)
-            .height(16.dp)
+            .height(16.dp),
     )
     Spacer(modifier = Modifier.height(5.dp))
     Row(
         modifier = Modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             modifier = Modifier,
             text = dueDate,
             style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
             ),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.primary,
@@ -178,16 +177,16 @@ fun DueDateWhenNotSet() {
         contentDescription = "Date icon",
         modifier = Modifier
             .width(16.dp)
-            .height(16.dp)
+            .height(16.dp),
     )
     Spacer(modifier = Modifier.width(2.dp))
     Text(
         text = "Set Due Date",
         style = MaterialTheme.typography.labelMedium.copy(
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         ),
         fontSize = 12.sp,
-        color = MaterialTheme.colorScheme.onSurface
+        color = MaterialTheme.colorScheme.onSurface,
     )
 }
 
@@ -200,7 +199,7 @@ fun CTAs(
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier
@@ -209,7 +208,7 @@ fun CTAs(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(12.dp))
             Icon(
@@ -226,20 +225,20 @@ fun CTAs(
                 fontSize = 12.sp,
                 maxLines = 1,
                 modifier = Modifier.padding(vertical = 10.dp),
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.width(12.dp))
         }
         Spacer(modifier = Modifier.width(12.dp))
-        Row (
+        Row(
             modifier = Modifier
                 .clickable { onWhatsappClicked() }
                 .padding(vertical = 8.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        )  {
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_whatsapp),
@@ -255,7 +254,7 @@ fun CTAs(
                 fontSize = 12.sp,
                 maxLines = 1,
                 modifier = Modifier.padding(vertical = 10.dp),
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.width(12.dp))
         }
@@ -274,20 +273,19 @@ fun BalanceUi(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { onBalanceClicked() },
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         Text(
             text = if (balance < Paisa.ZERO) "Balance Due" else "Balance Advance",
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
 
         Spacer(Modifier.height(2.dp))
         Row(
             modifier = Modifier,
             horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = formatPaisa(amount = balance.value, withRupeePrefix = true),
@@ -303,7 +301,6 @@ fun BalanceUi(
     }
 }
 
-
 @Composable
 fun PaymentAndCreditCta(
     modifier: Modifier,
@@ -314,7 +311,7 @@ fun PaymentAndCreditCta(
         modifier = modifier.fillMaxWidth().semantics { contentDescription = "payment_buttons" }
             .testTag("payment_buttons"),
         horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(
             modifier = Modifier.weight(1f).semantics { contentDescription = "received_button" }
@@ -322,7 +319,7 @@ fun PaymentAndCreditCta(
             onClick = { onReceivedClicked() },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = CircleShape,
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp),
         ) {
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_payment_down),
@@ -346,12 +343,12 @@ fun PaymentAndCreditCta(
             onClick = { onGivenClicked() },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
             shape = CircleShape,
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp),
         ) {
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_credit_up),
                 contentDescription = "Given icon",
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
@@ -363,7 +360,6 @@ fun PaymentAndCreditCta(
         }
     }
 }
-
 
 @Composable
 fun TopBar(
@@ -387,48 +383,48 @@ fun TopBar(
                 enabled = true,
                 role = Role.Button,
                 interactionSource = interactionSource,
-                indication = ripple(bounded = false)
+                indication = ripple(bounded = false),
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_statement_2),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
-                tint = MaterialTheme.colorScheme.surface
+                tint = MaterialTheme.colorScheme.surface,
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_sms_outline),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
-                tint = MaterialTheme.colorScheme.surface
+                tint = MaterialTheme.colorScheme.surface,
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_call),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
-                tint = MaterialTheme.colorScheme.surface
+                tint = MaterialTheme.colorScheme.surface,
             )
             Spacer(modifier = Modifier.width(10.dp))
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_whatsapp),
                 contentDescription = "Statement icon",
                 modifier = customIconModifier,
-                tint = MaterialTheme.colorScheme.surface
+                tint = MaterialTheme.colorScheme.surface,
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
         Row(
             modifier = Modifier,
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 modifier = Modifier,
@@ -437,14 +433,14 @@ fun TopBar(
                     fontWeight = FontWeight.SemiBold,
                 ),
                 color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 12.sp
+                fontSize = 12.sp,
             )
             Spacer(modifier = Modifier.width(5.dp))
 
             Icon(
                 painter = painterResource(app.okcredit.ui.Res.drawable.icon_more_horiz),
                 contentDescription = "More icon",
-                modifier = Modifier
+                modifier = Modifier,
             )
         }
     }

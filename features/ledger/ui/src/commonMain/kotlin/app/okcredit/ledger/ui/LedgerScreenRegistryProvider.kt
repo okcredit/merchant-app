@@ -1,5 +1,7 @@
 package app.okcredit.ledger.ui
 
+import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.add.AddRelationScreen
 import app.okcredit.ledger.ui.customer.CustomerLedgerScreen
 import app.okcredit.ledger.ui.supplier.SupplierLedgerScreen
 import cafe.adriel.voyager.core.registry.ScreenProvider
@@ -17,12 +19,17 @@ class LedgerScreenRegistryProvider {
         register<LedgerScreenRegistry.SupplierLedger> {
             SupplierLedgerScreen(it.supplierId)
         }
+
+        register<LedgerScreenRegistry.AddRelation> {
+            AddRelationScreen(it.accountType)
+        }
     }
 }
-
 
 sealed class LedgerScreenRegistry : ScreenProvider {
     data class CustomerLedger(val customerId: String) : LedgerScreenRegistry()
 
     data class SupplierLedger(val supplierId: String) : LedgerScreenRegistry()
+
+    data class AddRelation(val accountType: AccountType) : LedgerScreenRegistry()
 }

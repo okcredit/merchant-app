@@ -4,7 +4,6 @@ import app.okcredit.ledger.contract.model.Transaction
 import okcredit.base.units.Paisa
 import tech.okcredit.collection.model.OnlinePayment
 
-
 data class TransactionData(
     val transactions: List<TransactionDueInfo>,
     val lastIndexOfZeroBalanceDue: Int,

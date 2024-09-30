@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.okcredit.ui.theme.dark_primary_button_background
 import app.okcredit.ui.theme.dark_primary_button_content
@@ -75,6 +76,7 @@ fun PrimaryButton(
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -121,6 +123,7 @@ fun SecondaryButton(
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
