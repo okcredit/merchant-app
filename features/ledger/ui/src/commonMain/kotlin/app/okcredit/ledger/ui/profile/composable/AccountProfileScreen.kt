@@ -48,8 +48,7 @@ fun RelationshipProfileScreen(
     loadDetails: () -> Unit,
     onDismissBottomSheet: () -> Unit,
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(
-    )
+    val bottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(true) {
         loadDetails()
@@ -67,7 +66,7 @@ fun RelationshipProfileScreen(
         topBar = {
             AccountProfileToolbar(
                 onBackClicked = onBackClicked,
-                onHelpClicked = onHelpClicked
+                onHelpClicked = onHelpClicked,
             )
         },
         bottomBar = {
@@ -84,15 +83,15 @@ fun RelationshipProfileScreen(
                                     .fillMaxSize()
                                     .background(
                                         color = MaterialTheme.colorScheme.onBackground.copy(
-                                            alpha = 0.2f
-                                        )
+                                            alpha = 0.2f,
+                                        ),
                                     )
-                                    .align(Alignment.Center)
+                                    .align(Alignment.Center),
                             ) {
                                 VerifiedDialog(
                                     modifier = Modifier.align(Alignment.Center),
                                     profileImage = state.profileImage,
-                                    onPrimaryCtaClicked = onVerifiedButtonClicked
+                                    onPrimaryCtaClicked = onVerifiedButtonClicked,
                                 )
                             }
                         }
@@ -105,7 +104,7 @@ fun RelationshipProfileScreen(
                                 isCustomer = !type.isSupplier,
                                 onDismiss = onDismissInfoDialog,
                                 onViewClicked = onCyclicAccountCtaClicked,
-                                active = type.active
+                                active = type.active,
                             )
                         }
                     }
@@ -123,25 +122,27 @@ fun RelationshipProfileScreen(
                             when (state.bottomSheetType) {
                                 is AccountProfileContract.BottomSheetType.ModifyName -> {
                                     ModifyDetailDialog(
-                                        title = if (state.name.isEmpty())
+                                        title = if (state.name.isEmpty()) {
                                             stringResource(Res.string.enter_name)
-                                        else
-                                            stringResource(Res.string.edit_name),
+                                        } else {
+                                            stringResource(Res.string.edit_name)
+                                        },
                                         prefillText = state.name,
                                         onSubmitClicked = { onSubmitName(it) },
-                                        onCloseClicked = { onDismissInfoDialog() }
+                                        onCloseClicked = { onDismissInfoDialog() },
                                     )
                                 }
 
                                 is AccountProfileContract.BottomSheetType.ModifyPhoneNumber -> {
                                     ModifyDetailDialog(
-                                        title = if (state.name.isEmpty())
+                                        title = if (state.name.isEmpty()) {
                                             stringResource(Res.string.enter_mobile_number)
-                                        else
-                                            stringResource(Res.string.edit_mobile_number),
+                                        } else {
+                                            stringResource(Res.string.edit_mobile_number)
+                                        },
                                         prefillText = state.mobile,
                                         onSubmitClicked = onSubmitMobile,
-                                        onCloseClicked = { onDismissInfoDialog() }
+                                        onCloseClicked = { onDismissInfoDialog() },
                                     )
                                 }
 
@@ -154,7 +155,7 @@ fun RelationshipProfileScreen(
                                         },
                                         prefillText = state.address,
                                         onCloseClicked = {},
-                                        onSubmitClicked = onSubmitAddress
+                                        onSubmitClicked = onSubmitAddress,
                                     )
                                 }
 
@@ -163,7 +164,7 @@ fun RelationshipProfileScreen(
                                 }
                             }
                         },
-                        dragHandle = { BottomSheetDefaults.DragHandle() }
+                        dragHandle = { BottomSheetDefaults.DragHandle() },
                     )
                 }
                 AccountProfileContent(
@@ -175,7 +176,7 @@ fun RelationshipProfileScreen(
                         transactionRestricted = state.transactionRestricted,
                         accountType = state.accountType,
                         registered = state.registered,
-                        address = state.address
+                        address = state.address,
                     ),
                     contentPadding = contentPadding,
                     onProfileClicked = onProfileImageClicked,
@@ -188,7 +189,7 @@ fun RelationshipProfileScreen(
                     onAddressClicked = onAddressClicked,
                 )
             }
-        }
+        },
     )
 }
 
@@ -216,6 +217,6 @@ fun RelationshipProfileScreenPreview() {
         onAddressClicked = {},
         onSubmitAddress = {},
         loadDetails = {},
-        onDismissBottomSheet = {}
+        onDismissBottomSheet = {},
     )
 }

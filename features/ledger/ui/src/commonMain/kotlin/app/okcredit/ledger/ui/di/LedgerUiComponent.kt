@@ -28,6 +28,7 @@ interface LedgerUiComponent {
     fun addRelationScreenModel(screenModel: AddRelationScreenModel): ScreenModelPair {
         return AddRelationScreenModel::class to screenModel
     }
+
     @Provides
     @IntoMap
     fun accountProfileMode(accountProfileModel: AccountProfileModel): ScreenModelPair {
@@ -39,5 +40,4 @@ interface LedgerUiComponent {
     fun deleteAccountModel(deleteAccountModel: DeleteAccountModel): ScreenModelPair {
         return DeleteAccountModel::class to deleteAccountModel
     }
-
 }

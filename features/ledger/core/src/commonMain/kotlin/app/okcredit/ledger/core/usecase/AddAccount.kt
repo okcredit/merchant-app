@@ -1,8 +1,8 @@
 package app.okcredit.ledger.core.usecase
 
 import app.okcredit.ledger.contract.model.Account
-import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.AccountStatus
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.usecase.CyclicAccountError
 import app.okcredit.ledger.contract.usecase.DeletedCustomerError
 import app.okcredit.ledger.contract.usecase.InvalidNameError

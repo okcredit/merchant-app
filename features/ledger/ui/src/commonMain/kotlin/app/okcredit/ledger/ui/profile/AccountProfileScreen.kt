@@ -22,7 +22,7 @@ import okcredit.base.di.rememberScreenModel
 
 data class AccountProfileScreen(
     val accountId: String,
-    val accountType: AccountType
+    val accountType: AccountType,
 ) : Screen {
 
     @Composable
@@ -44,7 +44,7 @@ data class AccountProfileScreen(
     private fun render(
         screenModel: AccountProfileModel,
         state: State,
-        navigator: Navigator
+        navigator: Navigator,
     ) {
         RelationshipProfileScreen(
             state = state,
@@ -53,8 +53,8 @@ data class AccountProfileScreen(
                 screenModel.pushIntent(
                     Intent.LoadDetails(
                         accountId = accountId,
-                        accountType = accountType
-                    )
+                        accountType = accountType,
+                    ),
                 )
             },
             onMobileClicked = { screenModel.pushIntent(Intent.SetBottomSheetType(ModifyPhoneNumber)) },
@@ -62,8 +62,8 @@ data class AccountProfileScreen(
             onDeniedTransactionSwitchClicked = {
                 screenModel.pushIntent(
                     Intent.UpdateAddTransactionPermission(
-                        it
-                    )
+                        it,
+                    ),
                 )
             },
             onDismissInfoDialog = { screenModel.pushIntent(Intent.SetInfoDialogType(null)) },
@@ -81,9 +81,9 @@ data class AccountProfileScreen(
                     ScreenRegistry.get(
                         LedgerScreenRegistry.DeleteAccount(
                             accountId = accountId,
-                            accountType = accountType
-                        )
-                    )
+                            accountType = accountType,
+                        ),
+                    ),
                 )
             },
             onSmsSettingsClicked = {},

@@ -13,7 +13,7 @@ class SyncAccountAndTransactions(
     supplierRepository: Lazy<SupplierRepository>,
     customerRepository: Lazy<CustomerRepository>,
     getActiveBusinessId: Lazy<GetActiveBusinessId>,
-    syncTransactions: Lazy<SyncTransactions>
+    syncTransactions: Lazy<SyncTransactions>,
 ) {
     private val supplierRepository by lazy { supplierRepository.value }
     private val customerRepository by lazy { customerRepository.value }

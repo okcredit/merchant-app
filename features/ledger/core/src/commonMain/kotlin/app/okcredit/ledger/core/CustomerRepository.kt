@@ -73,12 +73,12 @@ class CustomerRepository(
     suspend fun updateCustomer(
         businessId: String,
         customerId: String,
-        request: UpdateCustomerRequest
+        request: UpdateCustomerRequest,
     ): Customer {
         val customer = remoteSource.updateCustomer(
             customerId = customerId,
             request = request,
-            businessId = businessId
+            businessId = businessId,
         ).also { updatedCustomer ->
             localSource.resetCustomer(updatedCustomer)
         }

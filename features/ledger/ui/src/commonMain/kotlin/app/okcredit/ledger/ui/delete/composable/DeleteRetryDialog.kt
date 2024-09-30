@@ -26,12 +26,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun DeleteRetryDialog(
     onCancel: () -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.White),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Icon(
@@ -40,7 +40,7 @@ fun DeleteRetryDialog(
             tint = Color.Red,
             modifier = Modifier
                 .size(24.dp)
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -50,7 +50,7 @@ fun DeleteRetryDialog(
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -58,14 +58,14 @@ fun DeleteRetryDialog(
         HorizontalDivider(
             color = Color.Gray,
             thickness = 1.dp,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 modifier = Modifier
@@ -74,13 +74,13 @@ fun DeleteRetryDialog(
                     .border(width = 1.dp, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.primary)
                     .padding(end = 8.dp),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = stringResource(app.okcredit.ledger.ui.Res.string.cancel),
                     modifier = Modifier.padding(vertical = 10.dp),
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
@@ -93,13 +93,13 @@ fun DeleteRetryDialog(
                     .border(width = 1.dp, shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.primary)
                     .padding(end = 8.dp),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = stringResource(app.okcredit.ledger.ui.Res.string.retry),
                     modifier = Modifier.padding(vertical = 10.dp),
                     color = MaterialTheme.colorScheme.surface,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
         }

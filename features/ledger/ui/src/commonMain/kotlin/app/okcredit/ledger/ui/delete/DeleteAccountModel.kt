@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.ui.*
+import okcredit.base.ui.BaseCoroutineScreenModel
 import okcredit.base.units.Paisa
 import kotlin.math.abs
 
@@ -57,16 +57,16 @@ class DeleteAccountModel(
                 emitViewEvent(
                     ViewEvent.GoToAddTransactionScreen(
                         Transaction.Type.PAYMENT,
-                        if (isSupplier()) currentState.balance else Paisa(abs(currentState.balance.value))
-                    )
+                        if (isSupplier()) currentState.balance else Paisa(abs(currentState.balance.value)),
+                    ),
                 )
                 PartialState.NoChange
             } else if (currentState.balance > Paisa.ZERO) {
                 emitViewEvent(
                     ViewEvent.GoToAddTransactionScreen(
                         Transaction.Type.CREDIT,
-                        currentState.balance
-                    )
+                        currentState.balance,
+                    ),
                 )
                 PartialState.NoChange
             } else {
@@ -88,7 +88,7 @@ class DeleteAccountModel(
                 is Result.Failure -> {
                     tracker.trackDeletionError(
                         isSupplier = isSupplier(),
-                        error = it.error
+                        error = it.error,
                     )
                     val error = it.error
                     when (error.message) {
@@ -110,7 +110,7 @@ class DeleteAccountModel(
                 is Result.Success -> {
                     tracker.trackDeleteRelationship(
                         isSupplier = isSupplier(),
-                        accountId = currentState.accountId
+                        accountId = currentState.accountId,
                     )
                     emitViewEvent(ViewEvent.FinishActivity)
                     PartialState.NoChange
@@ -123,7 +123,7 @@ class DeleteAccountModel(
             .map {
                 tracker.trackDeleteRelationshipClicked(
                     isSupplier = it.accountType.isSupplier(),
-                    accountId = it.accountId
+                    accountId = it.accountId,
                 )
                 if (currentState.balance == Paisa.ZERO) {
                     pushIntent(Intent.Delete)
@@ -140,7 +140,7 @@ class DeleteAccountModel(
                 getAccountDetails.execute(
                     it.accountId,
                     it.accountType,
-                )
+                ),
             )
         }.map {
             when (it) {
@@ -161,7 +161,7 @@ class DeleteAccountModel(
 
     override fun reduce(
         currentState: State,
-        partialState: PartialState
+        partialState: PartialState,
     ): State {
         return when (partialState) {
             is PartialState.NoChange -> currentState
@@ -173,7 +173,7 @@ class DeleteAccountModel(
                 mobile = partialState.res.mobile,
                 accountId = partialState.res.id,
                 isLoading = false,
-                errorMessage = null
+                errorMessage = null,
             )
 
             is PartialState.SetLoading -> currentState.copy(isLoading = partialState.value)

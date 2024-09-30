@@ -34,9 +34,9 @@ fun AccountProfileToolbar(
         modifier = Modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
-        shape = RoundedCornerShape(0.dp)
+        shape = RoundedCornerShape(0.dp),
     ) {
         TopAppBar(
             modifier = Modifier,
@@ -59,10 +59,10 @@ fun AccountProfileToolbar(
                 IconButton(onClick = onHelpClicked) {
                     Icon(
                         painter = painterResource(app.okcredit.ui.Res.drawable.icon_help_outline),
-                        contentDescription = "help_toolbar"
+                        contentDescription = "help_toolbar",
                     )
                 }
-            }
+            },
         )
     }
 }
@@ -72,6 +72,6 @@ fun AccountProfileToolbar(
 fun RelationshipProfileToolbarPreview() {
     AccountProfileToolbar(
         onBackClicked = {},
-        onHelpClicked = {}
+        onHelpClicked = {},
     )
 }

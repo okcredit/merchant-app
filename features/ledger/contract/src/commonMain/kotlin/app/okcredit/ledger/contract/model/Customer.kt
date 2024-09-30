@@ -64,7 +64,8 @@ data class Customer(
 enum class AccountStatus {
     ACTIVE,
     BLOCKED,
-    DELETED;
+    DELETED,
+    ;
 
     companion object {
         fun from(status: Int): AccountStatus {

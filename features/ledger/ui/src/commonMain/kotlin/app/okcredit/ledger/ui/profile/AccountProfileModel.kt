@@ -38,7 +38,7 @@ class AccountProfileModel(
             updateAccount.execute(
                 accountId = currentState.accountId,
                 request = RequestUpdateAccount.UpdateAddress(it.newAddress),
-                accountType = currentState.accountType
+                accountType = currentState.accountType,
             )
         }.map {
             if (it is Result.Success) {
@@ -57,8 +57,8 @@ class AccountProfileModel(
                             registered = res.registered,
                             blocked = res.blocked,
                             transactionRestricted = res.transactionRestricted,
-                            address = res.address
-                        )
+                            address = res.address,
+                        ),
                     )
                 }
             } else {
@@ -71,7 +71,7 @@ class AccountProfileModel(
             updateAccount.execute(
                 accountId = currentState.accountId,
                 request = RequestUpdateAccount.UpdateAccountState(it.block),
-                accountType = currentState.accountType
+                accountType = currentState.accountType,
             )
         }.map {
             if (it is Result.Success) {
@@ -90,8 +90,8 @@ class AccountProfileModel(
                             registered = res.registered,
                             blocked = res.blocked,
                             transactionRestricted = res.transactionRestricted,
-                            address = res.address
-                        )
+                            address = res.address,
+                        ),
                     )
                 }
             } else {
@@ -106,7 +106,7 @@ class AccountProfileModel(
                     updateAccount.execute(
                         accountId = currentState.accountId,
                         request = RequestUpdateAccount.UpdateAddTransactionRestrictedStatus(it.switch),
-                        accountType = currentState.accountType
+                        accountType = currentState.accountType,
                     )
                 }
             }.map {
@@ -126,8 +126,8 @@ class AccountProfileModel(
                                 registered = res.registered,
                                 blocked = res.blocked,
                                 transactionRestricted = res.transactionRestricted,
-                                address = res.address
-                            )
+                                address = res.address,
+                            ),
                         )
                     }
                 } else {
@@ -141,7 +141,7 @@ class AccountProfileModel(
                 updateAccount.execute(
                     accountId = currentState.accountId,
                     request = RequestUpdateAccount.UpdateName(it.name),
-                    accountType = currentState.accountType
+                    accountType = currentState.accountType,
                 )
             }
         }.map {
@@ -161,8 +161,8 @@ class AccountProfileModel(
                             registered = res.registered,
                             blocked = res.blocked,
                             transactionRestricted = res.transactionRestricted,
-                            address = res.address
-                        )
+                            address = res.address,
+                        ),
                     )
                 }
             } else {
@@ -176,7 +176,7 @@ class AccountProfileModel(
                 updateAccount.execute(
                     accountId = currentState.accountId,
                     request = RequestUpdateAccount.UpdateMobile(it.mobileNumber),
-                    accountType = currentState.accountType
+                    accountType = currentState.accountType,
                 )
             }
         }.map {
@@ -196,8 +196,8 @@ class AccountProfileModel(
                             registered = res.registered,
                             blocked = res.blocked,
                             transactionRestricted = res.transactionRestricted,
-                            address = res.address
-                        )
+                            address = res.address,
+                        ),
                     )
                 }
             } else {
@@ -240,13 +240,12 @@ class AccountProfileModel(
 
             is PartialState.SetLoading -> currentState.copy(loading = partialState.loading)
 
-
             is PartialState.SetMobileNumber -> currentState.copy(
-                mobile = partialState.mobileNumber
+                mobile = partialState.mobileNumber,
             )
 
             is PartialState.SetInfoDialogType -> currentState.copy(
-                infoDialogType = partialState.type
+                infoDialogType = partialState.type,
             )
 
             is PartialState.RelationshipDetails -> currentState.copy(
@@ -261,16 +260,16 @@ class AccountProfileModel(
                 profileImage = partialState.res.profileImage,
                 registered = partialState.res.registered,
                 blocked = partialState.res.blocked,
-                transactionRestricted = partialState.res.transactionRestricted
+                transactionRestricted = partialState.res.transactionRestricted,
             )
 
             is PartialState.SetError -> currentState.copy(
                 errorMessage = partialState.errorMessage,
-                loading = false
+                loading = false,
             )
 
             is PartialState.SetBottomSheetType -> currentState.copy(
-                bottomSheetType = partialState.type
+                bottomSheetType = partialState.type,
             )
         }
     }

@@ -1,7 +1,6 @@
 package app.okcredit.ledger.ui.profile
 
 import app.okcredit.ledger.contract.model.AccountType
-import app.okcredit.ledger.core.usecase.UpdateAccount
 import app.okcredit.ledger.ui.profile.usecase.GetAccountDetails
 import okcredit.base.ui.BaseViewEvent
 import okcredit.base.ui.UiState
@@ -40,7 +39,7 @@ interface AccountProfileContract {
     sealed class BottomSheetType {
         data object ModifyName : BottomSheetType()
         data object ModifyPhoneNumber : BottomSheetType()
-        data object ModifyAddress: BottomSheetType()
+        data object ModifyAddress : BottomSheetType()
     }
 
     sealed class Intent : UserIntent {
@@ -63,7 +62,6 @@ interface AccountProfileContract {
         data object HelpClicked : Intent()
 
         data class ChangeProfileImage(val imagePath: String?) : Intent()
-
     }
 
     sealed class PartialState : UiState.Partial {

@@ -16,7 +16,7 @@ data class Supplier(
     val updatedAt: Timestamp,
     val settings: SupplierSettings,
     val summary: SupplierSummary,
-    val status: AccountStatus
+    val status: AccountStatus,
 ) : Account(AccountType.SUPPLIER) {
 
     override val balance: Paisa

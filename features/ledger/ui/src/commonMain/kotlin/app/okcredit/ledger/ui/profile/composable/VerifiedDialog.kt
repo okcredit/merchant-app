@@ -34,7 +34,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 @Composable
 fun VerifiedDialog(
     modifier: Modifier,
@@ -45,7 +44,7 @@ fun VerifiedDialog(
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             )
             .width(260.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +58,7 @@ fun VerifiedDialog(
                     contentDescription = "profile_image",
                     modifier = Modifier
                         .size(110.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(20.dp))
+                        .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
                 )
             } else {
                 Image(
@@ -68,7 +67,7 @@ fun VerifiedDialog(
                     modifier = Modifier
                         .size(110.dp)
                         .padding(16.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(20.dp))
+                        .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
                 )
             }
             Image(
@@ -77,7 +76,7 @@ fun VerifiedDialog(
                 modifier = Modifier
                     .padding(end = 16.dp, bottom = 16.dp)
                     .size(24.dp)
-                    .align(Alignment.BottomEnd)
+                    .align(Alignment.BottomEnd),
             )
         }
         Text(
@@ -97,7 +96,7 @@ fun VerifiedDialog(
         HorizontalDivider(
             modifier = Modifier.padding(vertical = 16.dp),
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Row(
             modifier = Modifier
@@ -127,6 +126,6 @@ fun VerifiedDialogPreview() {
     VerifiedDialog(
         modifier = Modifier,
         profileImage = "",
-        onPrimaryCtaClicked = {}
+        onPrimaryCtaClicked = {},
     )
 }

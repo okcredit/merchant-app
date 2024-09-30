@@ -2,8 +2,8 @@ package app.okcredit.ledger.core.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.AccountStatus
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
@@ -55,7 +55,7 @@ class SupplierProjection(
                     transactionCount = supplier.transactionCount,
                 ),
                 status = supplier.status,
-                address = supplier.address
+                address = supplier.address,
             )
         }
     }
@@ -94,7 +94,7 @@ class SupplierProjection(
                     transactionCount = supplier.transactionCount,
                 ),
                 status = supplier.status,
-                address = supplier.address
+                address = supplier.address,
             )
         }
     }
@@ -133,7 +133,7 @@ class SupplierProjection(
                     transactionCount = supplier.transactionCount,
                 ),
                 status = supplier.status,
-                address = supplier.address
+                address = supplier.address,
             )
         }
     }
@@ -178,7 +178,7 @@ class SupplierProjection(
                         Supplier.SupplierSummary()
                     },
                     status = account.status,
-                    address = account.address
+                    address = account.address,
                 )
             }
         }
@@ -217,7 +217,7 @@ class SupplierProjection(
                     accountUrl = null,
                     gstNumber = null,
                     status = AccountStatus.ACTIVE,
-                    address = supplier.address
+                    address = supplier.address,
                 ),
             )
             addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
@@ -297,7 +297,7 @@ class SupplierProjection(
                         accountUrl = null,
                         gstNumber = null,
                         status = AccountStatus.ACTIVE,
-                        address = supplier.address
+                        address = supplier.address,
                     ),
                 )
                 addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)

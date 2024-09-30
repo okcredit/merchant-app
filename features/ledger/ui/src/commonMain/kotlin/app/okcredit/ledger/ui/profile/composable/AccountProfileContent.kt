@@ -41,7 +41,6 @@ import app.okcredit.ledger.ui.sms_settings_info
 import app.okcredit.ledger.ui.unblock
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_block
-import app.okcredit.ledger.ui.Res as ledgerRes
 import app.okcredit.ui.icon_chevron_right
 import app.okcredit.ui.icon_delete
 import app.okcredit.ui.icon_mobile
@@ -50,6 +49,7 @@ import app.okcredit.ui.icon_user_outline
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import app.okcredit.ledger.ui.Res as ledgerRes
 
 data class ProfileContentState(
     val name: String,
@@ -73,13 +73,13 @@ fun AccountProfileContent(
     onDeleteRelationshipClicked: () -> Unit,
     onDeniedTransactionSwitchClicked: (Boolean) -> Unit,
     onNameClicked: () -> Unit,
-    onAddressClicked: () -> Unit
+    onAddressClicked: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
-            .padding(contentPadding)
+            .padding(contentPadding),
     ) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -90,14 +90,14 @@ fun AccountProfileContent(
             ProfileName(
                 modifier = Modifier,
                 name = state.name.ifBlank { stringResource(ledgerRes.string.enter_name) },
-                onNameClicked = onNameClicked
+                onNameClicked = onNameClicked,
             )
             ContactInformation(
                 modifier = Modifier,
                 mobile = state.mobile,
                 address = state.address,
                 onMobileClicked = onMobileClicked,
-                onAddressClicked = onAddressClicked
+                onAddressClicked = onAddressClicked,
             )
 // todo add later when sms sent from phone setup
 //            Communications(
@@ -117,7 +117,7 @@ fun AccountProfileContent(
                 registered = state.registered,
                 blocked = state.blocked,
                 onBlockRelationshipClicked = onBlockRelationshipClicked,
-                onDeleteRelationshipClicked = onDeleteRelationshipClicked
+                onDeleteRelationshipClicked = onDeleteRelationshipClicked,
             )
         }
     }
@@ -129,7 +129,7 @@ fun Footer(
     registered: Boolean,
     blocked: Boolean,
     onBlockRelationshipClicked: () -> Unit,
-    onDeleteRelationshipClicked: () -> Unit
+    onDeleteRelationshipClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -144,7 +144,7 @@ fun Footer(
                     .clickable {
                         onBlockRelationshipClicked()
                     },
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
 
             ) {
                 Icon(
@@ -155,14 +155,14 @@ fun Footer(
                         start = 16.dp,
                         top = 16.dp,
                         bottom = 16.dp,
-                        end = 12.dp
-                    )
+                        end = 12.dp,
+                    ),
                 )
                 Text(
                     text = stringResource(if (blocked) ledgerRes.string.unblock else ledgerRes.string.block),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier
+                    modifier = Modifier,
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -170,7 +170,7 @@ fun Footer(
                 modifier = Modifier
                     .height(1.dp)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.surface),
             )
         }
         Row(
@@ -178,17 +178,17 @@ fun Footer(
                 .clip(
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
+                        bottomEnd = 16.dp,
+                    ),
                 )
                 .clickable { onDeleteRelationshipClicked() },
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(Res.drawable.icon_delete),
                 contentDescription = "icon",
                 tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
             )
             Text(
                 text = stringResource(app.okcredit.ledger.ui.Res.string.delete),
@@ -196,7 +196,7 @@ fun Footer(
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier
                     .padding(vertical = 12.dp)
-                    .weight(1f)
+                    .weight(1f),
             )
         }
     }
@@ -213,7 +213,7 @@ fun CustomerPermissions(
     if (registered && !accountType.isSupplier()) {
         HeadingItem(
             modifier = modifier.padding(start = 16.dp, top = 8.dp),
-            title = stringResource(app.okcredit.ledger.ui.Res.string.customer_permission)
+            title = stringResource(app.okcredit.ledger.ui.Res.string.customer_permission),
         )
     }
     Column(
@@ -222,7 +222,7 @@ fun CustomerPermissions(
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .background(
                 MaterialTheme.colorScheme.background,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
             ),
     ) {
         if (registered && !accountType.isSupplier()) {
@@ -232,7 +232,7 @@ fun CustomerPermissions(
                     .clickable {
                         onDeniedTransactionSwitchClicked(!transactionRestricted)
                     },
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
 
             ) {
                 Icon(
@@ -243,14 +243,14 @@ fun CustomerPermissions(
                         start = 16.dp,
                         top = 16.dp,
                         bottom = 16.dp,
-                        end = 12.dp
-                    )
+                        end = 12.dp,
+                    ),
                 )
                 Text(
                     text = stringResource(app.okcredit.ledger.ui.Res.string.deny_to_add_transaction),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier
+                    modifier = Modifier,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Switch(
@@ -265,7 +265,7 @@ fun CustomerPermissions(
                 modifier = Modifier
                     .height(1.dp)
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.surface),
             )
         }
 //        Row(
@@ -320,12 +320,12 @@ fun CustomerPermissions(
 fun Communications(
     modifier: Modifier,
     mobile: String?,
-    onSmsSettingsClicked: () -> Unit
+    onSmsSettingsClicked: () -> Unit,
 ) {
     if (mobile.isNullOrEmpty()) return
     HeadingItem(
         modifier = modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp),
-        title = stringResource(ledgerRes.string.communication)
+        title = stringResource(ledgerRes.string.communication),
     )
     Row(
         modifier = Modifier
@@ -336,25 +336,25 @@ fun Communications(
             .clickable {
                 onSmsSettingsClicked()
             },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(Res.drawable.icon_sms_outline),
             contentDescription = "icon",
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
         )
         Column {
             Text(
                 text = stringResource(app.okcredit.ledger.ui.Res.string.sms_settings),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(top = 12.dp)
+                modifier = Modifier.padding(top = 12.dp),
             )
             Text(
                 text = stringResource(ledgerRes.string.sms_settings_info),
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Normal),
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp),
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -362,7 +362,7 @@ fun Communications(
             painter = painterResource(Res.drawable.icon_chevron_right),
             contentDescription = "edit",
             tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(end = 16.dp)
+            modifier = Modifier.padding(end = 16.dp),
         )
     }
 }
@@ -377,7 +377,7 @@ fun ContactInformation(
 ) {
     HeadingItem(
         modifier = modifier.padding(horizontal = 16.dp),
-        title = stringResource(ledgerRes.string.contact_information)
+        title = stringResource(ledgerRes.string.contact_information),
     )
     Column(
         modifier = Modifier
@@ -391,51 +391,51 @@ fun ContactInformation(
                 .clickable {
                     onMobileClicked()
                 },
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
 
         ) {
             Icon(
                 painter = painterResource(Res.drawable.icon_mobile),
                 contentDescription = "icon",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
             )
             Text(
                 text = mobile.ifBlank { stringResource(ledgerRes.string.add_mobile_number) },
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
+                modifier = Modifier,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 painter = painterResource(Res.drawable.icon_chevron_right),
                 contentDescription = "edit",
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(end = 16.dp),
             )
         }
         Spacer(
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surface),
         )
         Row(
             modifier = Modifier
                 .clip(
                     shape = RoundedCornerShape(
                         bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
+                        bottomEnd = 16.dp,
+                    ),
                 )
                 .clickable { onAddressClicked() },
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(ledgerRes.drawable.icon_address),
                 contentDescription = "icon",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
             )
             Text(
                 text = address.ifBlank { stringResource(ledgerRes.string.add_address) },
@@ -443,13 +443,13 @@ fun ContactInformation(
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .padding(vertical = 12.dp)
-                    .weight(1f)
+                    .weight(1f),
             )
             Icon(
                 painter = painterResource(Res.drawable.icon_chevron_right),
                 contentDescription = "edit",
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(end = 16.dp),
             )
         }
     }
@@ -459,7 +459,7 @@ fun ContactInformation(
 fun ProfileName(
     modifier: Modifier,
     name: String,
-    onNameClicked: () -> Unit
+    onNameClicked: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -468,14 +468,14 @@ fun ProfileName(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.background, shape = RoundedCornerShape(16.dp))
             .clickable { onNameClicked() },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
 
     ) {
         Icon(
             painter = painterResource(Res.drawable.icon_user_outline),
             contentDescription = "icon",
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 12.dp),
         )
         Text(
             text = name,
@@ -484,14 +484,14 @@ fun ProfileName(
             modifier = Modifier
                 .weight(1f),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = painterResource(Res.drawable.icon_chevron_right),
             contentDescription = "edit",
             tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(end = 16.dp)
+            modifier = Modifier.padding(end = 16.dp),
         )
     }
 }
@@ -511,7 +511,7 @@ fun HeadingItemPreview() {
     HeadingItem(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.surface),
-        title = "Contact Info"
+        title = "Contact Info",
     )
 }
 
@@ -527,7 +527,7 @@ fun RelationshipProfileContentPreview() {
             accountType = AccountType.CUSTOMER,
             transactionRestricted = false,
             blocked = false,
-            address = ""
+            address = "",
         ),
         contentPadding = PaddingValues(0.dp), onProfileClicked = {},
         onMobileClicked = {},
@@ -536,6 +536,6 @@ fun RelationshipProfileContentPreview() {
         onDeleteRelationshipClicked = {},
         onDeniedTransactionSwitchClicked = {},
         onNameClicked = {},
-        onAddressClicked = {}
+        onAddressClicked = {},
     )
 }

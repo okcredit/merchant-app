@@ -1,7 +1,7 @@
 package app.okcredit.ledger.core.remote
 
-import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.model.AccountStatus
+import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.core.remote.models.AddCustomerRequest
 import app.okcredit.ledger.core.remote.models.AddSupplierRequest
@@ -200,9 +200,8 @@ class LedgerRemoteSource(
     suspend fun updateSupplier(
         supplierId: String,
         businessId: String,
-        request: UpdateSupplierRequest
+        request: UpdateSupplierRequest,
     ): Supplier {
-
         val response = authorizedHttpClient.patch<UpdateSupplierRequest, UpdateSupplierResponse>(
             baseUrl = baseUrl,
             endPoint = "ledger/v1.0/sc/suppliers/$supplierId",
@@ -216,7 +215,7 @@ class LedgerRemoteSource(
     suspend fun updateCustomer(
         businessId: String,
         customerId: String,
-        request: UpdateCustomerRequest
+        request: UpdateCustomerRequest,
     ): Customer {
         val response = authorizedHttpClient.put<UpdateCustomerRequest, ApiCustomer>(
             baseUrl = baseUrl,
@@ -255,7 +254,7 @@ private fun ApiCustomer.toDomainCustomer(businessId: String): Customer {
             lastActivity = createdAt.timestamp,
             lastActivityMetaInfo = 4,
         ),
-        address = this.address
+        address = this.address,
     )
 }
 
@@ -282,6 +281,6 @@ private fun ApiSupplier.toDomainSupplier(businessId: String): Supplier {
             lastActivityMetaInfo = 4,
         ),
         status = AccountStatus.from(this.state),
-        address = this.address
+        address = this.address,
     )
 }

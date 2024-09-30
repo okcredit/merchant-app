@@ -6,7 +6,6 @@ import okcredit.base.network.AuthorizedHttpClient
 import okcredit.base.network.HEADER_BUSINESS_ID
 import okcredit.base.network.get
 import okcredit.base.network.getOrNull
-import okcredit.base.network.getOrThrow
 import okcredit.base.network.post
 import tech.okcredit.ab.Profile
 

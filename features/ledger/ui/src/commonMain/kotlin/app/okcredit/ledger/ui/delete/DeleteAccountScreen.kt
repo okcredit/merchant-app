@@ -37,15 +37,15 @@ data class DeleteAccountScreen(
     private fun render(
         screenModel: DeleteAccountModel,
         state: DeleteAccountContract.State,
-        navigator: Navigator
+        navigator: Navigator,
     ) {
         DeleteScreen(
             loadDetails = {
                 screenModel.pushIntent(
                     DeleteAccountContract.Intent.Load(
                         accountId = accountId,
-                        accountType = accountType
-                    )
+                        accountType = accountType,
+                    ),
                 )
             },
             name = state.name,
@@ -58,7 +58,7 @@ data class DeleteAccountScreen(
             onSettlementClicked = {},
             mobile = state.mobile,
             isLoading = state.isLoading,
-            shouldSettle = state.shouldSettle
+            shouldSettle = state.shouldSettle,
         )
     }
 

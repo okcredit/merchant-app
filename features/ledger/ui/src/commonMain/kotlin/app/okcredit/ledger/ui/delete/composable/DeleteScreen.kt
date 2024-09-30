@@ -1,6 +1,5 @@
 package app.okcredit.ledger.ui.delete.composable
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -35,14 +34,15 @@ fun DeleteScreen(
     isLoading: Boolean,
     shouldSettle: Boolean,
     onBackClicked: () -> Unit,
-    loadDetails: () -> Unit
+    loadDetails: () -> Unit,
 ) {
     LaunchedEffect(true) {
         loadDetails()
     }
     Scaffold(topBar = {
         DeleteRelationshipToolbar(
-            isSupplier = isSupplier, onBackClicked = onBackClicked
+            isSupplier = isSupplier,
+            onBackClicked = onBackClicked,
         )
     }) { contentPadding ->
         DeleteRelationshipContent(
@@ -54,7 +54,7 @@ fun DeleteScreen(
             shouldSettle = shouldSettle,
             onDeleteClicked = onDeleteClicked,
             onSettlementClicked = onSettlementClicked,
-            isSupplier = isSupplier
+            isSupplier = isSupplier,
         )
     }
 }
@@ -68,34 +68,38 @@ fun DeleteRelationshipToolbar(
     Card(
         shape = RoundedCornerShape(0.dp),
         elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 2.dp,
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
-        TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ), title = {
-            Row {
-                ArrowBack(onBackClicked)
-                Spacer(modifier = Modifier.padding(6.dp))
-                Text(
-                    text = if (isSupplier) {
-                        stringResource(Res.string.delete_supplier)
-                    } else {
-                        stringResource(Res.string.delete_customer)
-                    }
-                )
-            }
-        })
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+            title = {
+                Row {
+                    ArrowBack(onBackClicked)
+                    Spacer(modifier = Modifier.padding(6.dp))
+                    Text(
+                        text = if (isSupplier) {
+                            stringResource(Res.string.delete_supplier)
+                        } else {
+                            stringResource(Res.string.delete_customer)
+                        },
+                    )
+                }
+            },
+        )
     }
 }
 
 @Preview
 @Composable
 fun DeleteCustomerScreenPreview() {
-    DeleteScreen(name = "John Doe",
+    DeleteScreen(
+        name = "John Doe",
         balance = 1000,
         onDeleteClicked = {},
         onSettlementClicked = {},
@@ -104,5 +108,6 @@ fun DeleteCustomerScreenPreview() {
         mobile = "1234567890",
         isSupplier = false,
         onBackClicked = {},
-        loadDetails = {})
+        loadDetails = {},
+    )
 }

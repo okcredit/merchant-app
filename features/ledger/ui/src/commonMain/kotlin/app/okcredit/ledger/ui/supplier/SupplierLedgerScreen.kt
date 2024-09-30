@@ -43,15 +43,16 @@ data class SupplierLedgerScreen(
             state = state,
             onProfileClicked = {
                 val supplierId = state.supplierDetails?.id
-                if (supplierId != null)
+                if (supplierId != null) {
                     navigator.push(
                         ScreenRegistry.get(
                             LedgerScreenRegistry.AccountProfile(
                                 accountId = supplierId,
-                                accountType = AccountType.SUPPLIER
-                            )
-                        )
+                                accountType = AccountType.SUPPLIER,
+                            ),
+                        ),
                     )
+                }
             },
             onLoadTransaction = {
                 screenModel.pushIntent(

@@ -2,14 +2,13 @@ package app.okcredit.ledger.core.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Customer
-import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
@@ -96,7 +95,7 @@ class CustomerProjection(
                 lastReminderSendTime = customer.lastReminderSendTime,
                 transactionCount = customer.transactionCount,
             ),
-            address = customer.address
+            address = customer.address,
         )
     }
 
@@ -139,7 +138,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
-                address = customer.address
+                address = customer.address,
             )
         }
 
@@ -182,7 +181,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
-                address = customer.address
+                address = customer.address,
             )
         }
 
@@ -225,7 +224,7 @@ class CustomerProjection(
                     lastReminderSendTime = customer.lastReminderSendTime,
                     transactionCount = customer.transactionCount,
                 ),
-                address = customer.address
+                address = customer.address,
             )
         }
 
@@ -248,7 +247,7 @@ class CustomerProjection(
                             updatedAt = customer.updatedAt,
                             gstNumber = customer.gstNumber,
                             registered = customer.registered,
-                            address = customer.address
+                            address = customer.address,
                         ),
                     )
                     addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -275,7 +274,7 @@ class CustomerProjection(
                         updatedAt = customer.updatedAt,
                         gstNumber = customer.gstNumber,
                         registered = customer.registered,
-                        address = customer.address
+                        address = customer.address,
                     ),
                 )
                 addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -300,7 +299,7 @@ class CustomerProjection(
                     updatedAt = customer.updatedAt,
                     gstNumber = customer.gstNumber,
                     registered = customer.registered,
-                    address = customer.address
+                    address = customer.address,
                 ),
             )
             addOrUpdateCustomerSettings(customer.id, customer.settings)
@@ -387,7 +386,7 @@ class CustomerProjection(
                     } else {
                         Customer.CustomerSummary()
                     },
-                    address = account.address
+                    address = account.address,
                 )
             }
         }

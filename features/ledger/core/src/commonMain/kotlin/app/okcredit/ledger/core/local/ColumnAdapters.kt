@@ -1,8 +1,8 @@
 package app.okcredit.ledger.core.local
 
 import app.cash.sqldelight.ColumnAdapter
-import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.AccountStatus
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.contract.model.Transaction.Category
 import app.okcredit.ledger.contract.model.Transaction.State
 import app.okcredit.ledger.contract.model.Transaction.Type

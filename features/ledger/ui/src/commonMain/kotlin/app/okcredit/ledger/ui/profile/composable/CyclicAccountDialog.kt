@@ -48,21 +48,21 @@ fun CyclicAccountDialog(
     active: Boolean,
     isCustomer: Boolean,
     onDismiss: () -> Unit,
-    onViewClicked: (Boolean) -> Unit
+    onViewClicked: (Boolean) -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
         modifier = modifier
             .padding(34.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Box {
             Column(
                 modifier = Modifier.wrapContentSize().padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
                     painter = painterResource(Res.drawable.icon_account),
@@ -70,7 +70,7 @@ fun CyclicAccountDialog(
                     modifier = Modifier
                         .size(64.dp)
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(8.dp)
+                        .padding(8.dp),
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
@@ -78,47 +78,47 @@ fun CyclicAccountDialog(
                         stringResource(
                             app.okcredit.ledger.ui.Res.string.err_cyclic_conflict_customer,
                             mobile ?: "",
-                            name ?: ""
+                            name ?: "",
                         )
                     } else {
                         stringResource(
                             app.okcredit.ledger.ui.Res.string.err_cyclic_conflict_supplier,
                             mobile ?: "",
-                            name ?: ""
+                            name ?: "",
                         )
                     },
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Card(
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.primary,
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp)
-                        .clickable { onViewClicked(active) }
+                        .clickable { onViewClicked(active) },
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.Center,
                     ) {
                         Image(
                             painter = painterResource(Res.drawable.icon_remove),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            colorFilter = ColorFilter.tint(Color.White)
+                            colorFilter = ColorFilter.tint(Color.White),
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = stringResource(if (isCustomer) app.okcredit.ledger.ui.Res.string.view_customer else app.okcredit.ledger.ui.Res.string.view_supplier),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White
+                            color = Color.White,
                         )
                     }
                 }
@@ -127,7 +127,7 @@ fun CyclicAccountDialog(
                 modifier = Modifier
                     .padding(top = 8.dp, end = 8.dp)
                     .align(Alignment.TopEnd)
-                    .clickable { onDismiss() }
+                    .clickable { onDismiss() },
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.icon_close_fill),
@@ -152,6 +152,6 @@ fun CyclicAccountDialogPreview() {
         onDismiss = {},
         onViewClicked = {},
         modifier = Modifier.fillMaxSize(),
-        active = true
+        active = true,
     )
 }

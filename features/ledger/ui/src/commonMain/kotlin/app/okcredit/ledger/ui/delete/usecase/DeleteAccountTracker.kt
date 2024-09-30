@@ -3,7 +3,6 @@ package app.okcredit.ledger.ui.delete.usecase
 import me.tatarka.inject.annotations.Inject
 import tech.okcredit.analytics.AnalyticsProvider
 
-
 @Inject
 class DeleteAccountTracker(
     analyticsProvider: Lazy<AnalyticsProvider>,
@@ -35,15 +34,15 @@ class DeleteAccountTracker(
 
     fun trackDeletionError(
         isSupplier: Boolean,
-        error: Throwable
+        error: Throwable,
     ) {
         analyticsProvider.logProductEvent(
             ERROR,
             mapOf(
                 TYPE to if (isSupplier) "DeleteSupplier" else "DeleteCustomer",
                 SCREEN to if (isSupplier) "DeleteSupplierActivity" else "DeleteCustomerActivity",
-                REASON to error.stackTraceToString()
-            )
+                REASON to error.stackTraceToString(),
+            ),
         )
     }
 
@@ -70,22 +69,22 @@ class DeleteAccountTracker(
 
     fun trackDeleteRelationshipClicked(
         isSupplier: Boolean,
-        accountId: String
+        accountId: String,
     ) {
         analyticsProvider.logProductEvent(
             eventName = if (isSupplier) DELETE_SUPPLIER_SCREEN_CLICK_DELETE else DELETE_CUSTOMER_SCREEN_CLICK_DELETE,
             properties = mapOf(
-                ACCOUNT_ID to accountId
-            )
+                ACCOUNT_ID to accountId,
+            ),
         )
     }
 
     fun trackDeleteRelationship(
         isSupplier: Boolean,
-        accountId: String
+        accountId: String,
     ) {
         val properties = mutableMapOf<String, Any>()
-        properties[TYPE] =  if (isSupplier) SUPPLIER else CUSTOMER
+        properties[TYPE] = if (isSupplier) SUPPLIER else CUSTOMER
         if (accountId.isNotBlank()) properties[ACCOUNT_ID] = accountId
         analyticsProvider.logProductEvent(DELETE_RELATIONSHIP, properties)
     }

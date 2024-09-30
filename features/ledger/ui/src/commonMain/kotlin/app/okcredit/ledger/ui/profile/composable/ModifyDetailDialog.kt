@@ -43,7 +43,7 @@ fun ModifyDetailDialog(
     title: String,
     prefillText: String,
     onSubmitClicked: (String) -> Unit,
-    onCloseClicked: () -> Unit
+    onCloseClicked: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalFocusManager.current
@@ -56,20 +56,20 @@ fun ModifyDetailDialog(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surface),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
-                .align(Alignment.TopStart)
+                .align(Alignment.TopStart),
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = title,
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp),
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
             )
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
@@ -84,26 +84,26 @@ fun ModifyDetailDialog(
                 label = {
                     Text(
                         text = stringResource(Res.string.name),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.titleSmall,
                     )
                 },
                 keyboardActions = KeyboardActions(onDone = { keyboardController.clearFocus() }),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Done,
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                     errorBorderColor = MaterialTheme.colorScheme.error,
                     errorLabelColor = MaterialTheme.colorScheme.error,
-                    errorLeadingIconColor = MaterialTheme.colorScheme.error
-                )
+                    errorLeadingIconColor = MaterialTheme.colorScheme.error,
+                ),
             )
             Spacer(modifier = Modifier.height(16.dp))
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant
+                color = MaterialTheme.colorScheme.outlineVariant,
             )
             Box(
                 modifier = Modifier
@@ -113,25 +113,25 @@ fun ModifyDetailDialog(
                         onSubmitClicked(text.value.text)
                     }
                     .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(20.dp)),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = stringResource(Res.string.submit_text),
                     modifier = Modifier.padding(vertical = 10.dp),
                     color = MaterialTheme.colorScheme.surface,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleSmall,
                 )
             }
         }
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .clickable { onCloseClicked() }
+                .clickable { onCloseClicked() },
         ) {
             androidx.compose.material3.Icon(
                 painterResource(app.okcredit.ui.Res.drawable.icon_close),
                 contentDescription = "close",
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
             )
         }
     }

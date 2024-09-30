@@ -6,7 +6,6 @@ import app.okcredit.ledger.contract.usecase.GetAccounts
 import app.okcredit.ledger.contract.usecase.SortBy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import me.tatarka.inject.annotations.Inject
 
 @Inject

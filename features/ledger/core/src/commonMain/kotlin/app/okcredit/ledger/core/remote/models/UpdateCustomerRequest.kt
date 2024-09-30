@@ -47,7 +47,6 @@ data class UpdateCustomerRequest(
     val updatedAt: Long,
 )
 
-
 fun Customer.createUpdateCustomerRequest(): UpdateCustomerRequest {
     return UpdateCustomerRequest(
         mobile = this.mobile,
@@ -68,6 +67,6 @@ fun Customer.createUpdateCustomerRequest(): UpdateCustomerRequest {
         addTransactionRestricted = this.settings.addTransactionRestricted,
         state = if (this.settings.blockedByCustomer) 3 else 1,
         updateState = false,
-        updatedAt = Clock.System.now().toEpochMilliseconds()
+        updatedAt = Clock.System.now().toEpochMilliseconds(),
     )
 }

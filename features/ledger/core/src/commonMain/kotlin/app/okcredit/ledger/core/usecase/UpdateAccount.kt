@@ -19,7 +19,7 @@ import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 sealed class RequestUpdateAccount {
 
     data class UpdateAddress(
-        val address: String?
+        val address: String?,
     ) : RequestUpdateAccount()
 
     data class UpdateMobile(
@@ -68,7 +68,7 @@ sealed class RequestUpdateAccount {
 class UpdateAccount(
     customerRepository: Lazy<CustomerRepository>,
     supplierRepository: Lazy<SupplierRepository>,
-    getActiveBusinessId: Lazy<GetActiveBusinessId>
+    getActiveBusinessId: Lazy<GetActiveBusinessId>,
 ) {
 
     private val customerRepository by lazy { customerRepository.value }
@@ -78,11 +78,11 @@ class UpdateAccount(
     suspend fun execute(
         accountId: String,
         accountType: AccountType,
-        request: RequestUpdateAccount
+        request: RequestUpdateAccount,
     ): Response? {
         val businessId = getActiveBusinessId.execute()
         if (request is RequestUpdateAccount.UpdateProfileImage) {
-            //TODO file upload for profile image
+            // TODO file upload for profile image
         }
         return if (accountType.isCustomer()) {
             val updateRequest =
@@ -90,7 +90,7 @@ class UpdateAccount(
             val customer = customerRepository.updateCustomer(
                 businessId = businessId,
                 customerId = accountId,
-                request = updateRequest
+                request = updateRequest,
             )
             customer.toResponse()
         } else {
@@ -98,7 +98,7 @@ class UpdateAccount(
             val updateSupplier = supplierRepository.updateSupplier(
                 businessId = businessId,
                 accountId = accountId,
-                request = updateRequest
+                request = updateRequest,
             )
             updateSupplier.toResponse()
         }
@@ -145,7 +145,7 @@ class UpdateAccount(
 
     private suspend fun createUpdateRequestForSupplier(
         accountId: String,
-        request: RequestUpdateAccount
+        request: RequestUpdateAccount,
     ): UpdateSupplierRequest? {
         val supplier = supplierRepository.getSupplierDetails(accountId).first() ?: return null
         return when (request) {
@@ -158,7 +158,7 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 )
             }
 
@@ -171,9 +171,9 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (request.blocked) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 ).copy(
-                    updateState = true
+                    updateState = true,
                 )
             }
 
@@ -186,7 +186,7 @@ class UpdateAccount(
                     lang = request.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 )
             }
 
@@ -199,7 +199,7 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 )
             }
 
@@ -212,7 +212,7 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 )
             }
 
@@ -225,9 +225,9 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = request.isEnable,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 ).copy(
-                    updateTxnAlertEnabled = true
+                    updateTxnAlertEnabled = true,
                 )
             }
 
@@ -240,9 +240,9 @@ class UpdateAccount(
                     lang = request.lang,
                     txnAlertEnabled = request.isEnable,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = supplier.address
+                    address = supplier.address,
                 ).copy(
-                    updateTxnAlertEnabled = true
+                    updateTxnAlertEnabled = true,
                 )
             }
 
@@ -255,7 +255,7 @@ class UpdateAccount(
                     lang = supplier.settings.lang,
                     txnAlertEnabled = supplier.settings.txnAlertEnabled,
                     state = if (supplier.blockedBySelf) 3 else 1,
-                    address = request.address
+                    address = request.address,
                 )
             }
 
@@ -265,40 +265,40 @@ class UpdateAccount(
 
     private suspend fun createUpdateRequestForCustomer(
         accountId: String,
-        request: RequestUpdateAccount
+        request: RequestUpdateAccount,
     ): UpdateCustomerRequest? {
         val customer = customerRepository.getCustomerDetails(accountId).first() ?: return null
         return when (request) {
             is RequestUpdateAccount.DeleteDueCustomDate -> {
                 customer.createUpdateCustomerRequest().copy(
-                    deleteDueCustomDate = true
+                    deleteDueCustomDate = true,
                 )
             }
 
             is RequestUpdateAccount.UpdateAccountState -> {
                 customer.createUpdateCustomerRequest().copy(
                     state = if (request.blocked) 3 else 1,
-                    updateState = true
+                    updateState = true,
                 )
             }
 
             is RequestUpdateAccount.UpdateAddTransactionRestrictedStatus -> {
                 customer.createUpdateCustomerRequest().copy(
                     addTransactionRestricted = request.isAddTransactionRestricted,
-                    updateAddTransactionRestricted = true
+                    updateAddTransactionRestricted = true,
                 )
             }
 
             is RequestUpdateAccount.UpdateDueCustomDate -> {
                 customer.createUpdateCustomerRequest().copy(
                     updateDueCustomDate = true,
-                    dueCustomDate = request.dueCustomDate
+                    dueCustomDate = request.dueCustomDate,
                 )
             }
 
             is RequestUpdateAccount.UpdateLanguage -> {
                 customer.createUpdateCustomerRequest().copy(
-                    lang = request.lang
+                    lang = request.lang,
                 )
             }
 
@@ -323,7 +323,7 @@ class UpdateAccount(
             is RequestUpdateAccount.UpdateTransactionAlertStatus -> {
                 customer.createUpdateCustomerRequest().copy(
                     txnAlertEnabled = request.isEnable,
-                    updateTxnAlertEnabled = true
+                    updateTxnAlertEnabled = true,
                 )
             }
 
@@ -331,16 +331,15 @@ class UpdateAccount(
                 customer.createUpdateCustomerRequest().copy(
                     txnAlertEnabled = request.isEnable,
                     updateTxnAlertEnabled = true,
-                    lang = request.lang
+                    lang = request.lang,
                 )
             }
 
             is RequestUpdateAccount.UpdateAddress -> {
                 customer.createUpdateCustomerRequest().copy(
-                    address = request.address
+                    address = request.address,
                 )
             }
         }
-
     }
 }

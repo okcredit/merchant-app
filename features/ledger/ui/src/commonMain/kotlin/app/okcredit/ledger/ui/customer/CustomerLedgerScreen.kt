@@ -36,9 +36,12 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
 
     @Composable
     private fun render(
-        screenModel: CustomerLedgerModel, state: State, navigator: Navigator,
+        screenModel: CustomerLedgerModel,
+        state: State,
+        navigator: Navigator,
     ) {
-        CustomerLedgerUi(state = state,
+        CustomerLedgerUi(
+            state = state,
             loadTransactions = {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
@@ -49,13 +52,16 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             },
             onProfileClicked = {
                 val customerId = state.customerDetails?.id
-                if (customerId != null) navigator.push(
-                    ScreenRegistry.get(
-                        LedgerScreenRegistryProvider.LedgerScreenRegistry.AccountProfile(
-                            accountId = customerId, accountType = AccountType.CUSTOMER
-                        )
+                if (customerId != null) {
+                    navigator.push(
+                        ScreenRegistry.get(
+                            LedgerScreenRegistryProvider.LedgerScreenRegistry.AccountProfile(
+                                accountId = customerId,
+                                accountType = AccountType.CUSTOMER,
+                            ),
+                        ),
                     )
-                )
+                }
             },
             onBackClicked = { navigator.pop() },
             openMoreBottomSheet = { },
@@ -64,7 +70,8 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             onLoadMoreTransactionsClicked = {
                 screenModel.pushIntent(
                     Intent.LoadTransactions(
-                        showOldClicked = true, customerId = customerId,
+                        showOldClicked = true,
+                        customerId = customerId,
                     ),
                 )
             },

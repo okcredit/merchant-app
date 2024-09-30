@@ -51,14 +51,14 @@ const val FILE_CREATION_IN_PROGRESS = 0
 const val FILE_CREATION_COMPLETED = 1
 
 //
-//@kotlinx.serialization.Serializable
-//data class SupplierTransactionResponse(
+// @kotlinx.serialization.Serializable
+// data class SupplierTransactionResponse(
 //    @SerialName("transactions")
 //    val transactions: List<SupplierApiTransaction>
-//)
+// )
 //
-//@kotlinx.serialization.Serializable
-//data class SupplierApiTransaction(
+// @kotlinx.serialization.Serializable
+// data class SupplierApiTransaction(
 //    val id: String,
 //    val supplier_id: String,
 //    val collection_id: String?,
@@ -77,4 +77,4 @@ const val FILE_CREATION_COMPLETED = 1
 //    val tx_category: Int?,
 //    val reference_id: String?,
 //    val reference_source: Int?,
-//)
+// )

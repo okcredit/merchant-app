@@ -15,7 +15,7 @@ import okcredit.base.units.Paisa
 @Inject
 class GetAccountDetails(
     customerRepository: Lazy<CustomerRepository>,
-    supplierRepository: Lazy<SupplierRepository>
+    supplierRepository: Lazy<SupplierRepository>,
 ) {
 
     private val customerRepository by lazy { customerRepository.value }
@@ -23,7 +23,7 @@ class GetAccountDetails(
 
     fun execute(
         accountId: String,
-        accountType: AccountType
+        accountType: AccountType,
     ): Flow<Response?> {
         return flow {
             emit(accountType == AccountType.CUSTOMER)
@@ -41,7 +41,7 @@ class GetAccountDetails(
                         registered = customer.registered,
                         blocked = customer.blockedBySelf,
                         transactionRestricted = customer.settings.addTransactionRestricted,
-                        address = customer.address ?: ""
+                        address = customer.address ?: "",
                     )
                 }
             } else {

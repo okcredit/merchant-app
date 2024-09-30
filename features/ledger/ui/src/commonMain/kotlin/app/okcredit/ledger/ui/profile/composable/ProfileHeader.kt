@@ -30,17 +30,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ProfileHeader(
     profileImgUrl: String,
-    onProfileImageClicked: () -> Unit
+    onProfileImageClicked: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp)
             .background(Color.White),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Box(
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             if (profileImgUrl.isEmpty()) {
                 Image(
@@ -49,7 +49,7 @@ fun ProfileHeader(
                     modifier = Modifier
                         .size(82.dp)
                         .clickable { onProfileImageClicked() }
-                        .background(color = Color.White, shape = RoundedCornerShape(20.dp))
+                        .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
                 )
             } else {
                 AsyncImage(
@@ -62,7 +62,7 @@ fun ProfileHeader(
                         .size(82.dp)
                         .clickable { onProfileImageClicked() }
                         .clip(CircleShape)
-                        .background(color = Color.White, shape = CircleShape)
+                        .background(color = Color.White, shape = CircleShape),
                 )
             }
             Box(
@@ -79,7 +79,7 @@ fun ProfileHeader(
                     tint = Color.White,
                     modifier = Modifier
                         .padding(6.dp)
-                        .size(24.dp)
+                        .size(24.dp),
                 )
             }
         }

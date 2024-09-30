@@ -43,7 +43,6 @@ data class SupplierRequestForUpdate(
     val displayTxnAlertSetting: Boolean,
 )
 
-
 fun Supplier.createUpdateSupplierRequest(
     id: String,
     name: String,
@@ -52,7 +51,7 @@ fun Supplier.createUpdateSupplierRequest(
     lang: String?,
     txnAlertEnabled: Boolean,
     state: Int,
-    address: String?
+    address: String?,
 ): UpdateSupplierRequest {
     return UpdateSupplierRequest(
         supplier = SupplierRequestForUpdate(
@@ -64,12 +63,12 @@ fun Supplier.createUpdateSupplierRequest(
             txnAlertEnabled = txnAlertEnabled,
             state = state,
             displayTxnAlertSetting = false,
-            address = address
+            address = address,
         ),
         updateTxnAlertEnabled = this.settings.txnAlertEnabled,
         updateDisplayTxnAlertSetting = false,
         state = if (this.settings.blockedBySupplier) 3 else 1,
         updateState = true,
-        updateTime = Clock.System.now().toEpochMilliseconds()
+        updateTime = Clock.System.now().toEpochMilliseconds(),
     )
 }

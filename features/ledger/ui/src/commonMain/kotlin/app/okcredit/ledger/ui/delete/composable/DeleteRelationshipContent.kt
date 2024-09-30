@@ -41,7 +41,6 @@ import app.okcredit.ledger.ui.del_cst_supplier_msg_no_mobile
 import app.okcredit.ledger.ui.del_cst_supplier_msg_settlement
 import app.okcredit.ledger.ui.delete
 import app.okcredit.ui.Res
-import app.okcredit.ui.icon_account
 import app.okcredit.ui.icon_account_125dp
 import app.okcredit.ui.icon_credit_up
 import app.okcredit.ui.icon_delete
@@ -67,63 +66,63 @@ fun DeleteRelationshipContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(contentPadding)
-            .background(color = MaterialTheme.colorScheme.surface)
+            .background(color = MaterialTheme.colorScheme.surface),
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 2.dp
+                defaultElevation = 2.dp,
             ),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surface,
             ),
-            shape = RoundedCornerShape(0.dp)
+            shape = RoundedCornerShape(0.dp),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(
                         modifier = Modifier
                             .weight(1f)
                             .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
                             painter = painterResource(Res.drawable.icon_account_125dp),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = name,
                             style = MaterialTheme.typography.bodyLarge,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                     Column(
                         modifier = Modifier
                             .padding(16.dp)
                             .align(Alignment.CenterVertically),
-                        horizontalAlignment = Alignment.End
+                        horizontalAlignment = Alignment.End,
                     ) {
                         Text(
                             text = balance.toFormattedAmount(true),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = if (balance > 0L) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                            color = if (balance > 0L) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                         )
                         Text(
                             text = getBalanceText(balance),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                         )
                     }
                 }
@@ -137,14 +136,14 @@ fun DeleteRelationshipContent(
                             .padding(horizontal = 16.dp)
                             .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(20.dp)),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.Center,
                     ) {
                         if (isLoading) {
                             Column {
                                 Spacer(modifier = Modifier.size(8.dp))
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(24.dp),
-                                    color = MaterialTheme.colorScheme.surface
+                                    color = MaterialTheme.colorScheme.surface,
                                 )
                                 Spacer(modifier = Modifier.size(8.dp))
                             }
@@ -156,16 +155,16 @@ fun DeleteRelationshipContent(
                                         Res.drawable.icon_payments
                                     } else {
                                         Res.drawable.icon_credit_up
-                                    }
+                                    },
                                 ),
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.surface
+                                tint = MaterialTheme.colorScheme.surface,
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = getSettlementButtonText(balance = balance),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.surface
+                                color = MaterialTheme.colorScheme.surface,
                             )
                         }
                     }
@@ -176,16 +175,16 @@ fun DeleteRelationshipContent(
                             .fillMaxWidth()
                             .background(
                                 MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(20.dp)
+                                shape = RoundedCornerShape(20.dp),
                             )
                             .padding(horizontal = 16.dp)
                             .border(
                                 width = 1.dp,
                                 shape = RoundedCornerShape(20.dp),
-                                color = MaterialTheme.colorScheme.error
+                                color = MaterialTheme.colorScheme.error,
                             ),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                        horizontalArrangement = Arrangement.Center,
                     ) {
                         if (isLoading) {
                             Column {
@@ -193,7 +192,7 @@ fun DeleteRelationshipContent(
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(24.dp),
                                     color = MaterialTheme.colorScheme.error,
-                                    strokeWidth = 2.dp
+                                    strokeWidth = 2.dp,
                                 )
                                 Spacer(modifier = Modifier.size(8.dp))
                             }
@@ -202,13 +201,13 @@ fun DeleteRelationshipContent(
                                 modifier = Modifier.padding(vertical = 8.dp),
                                 painter = painterResource(Res.drawable.icon_delete),
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error
+                                tint = MaterialTheme.colorScheme.error,
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(app.okcredit.ledger.ui.Res.string.delete),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.error
+                                color = MaterialTheme.colorScheme.error,
                             )
                         }
                     }
@@ -220,7 +219,7 @@ fun DeleteRelationshipContent(
             text = getMessageText(
                 balance = balance,
                 mobile = mobile,
-                isSupplier = isSupplier
+                isSupplier = isSupplier,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -228,14 +227,14 @@ fun DeleteRelationshipContent(
                 .align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
 
 @Composable
 private fun getBalanceText(
-    balance: Long?
+    balance: Long?,
 ) = stringResource(if (balance != null && balance < 0L) app.okcredit.ledger.ui.Res.string.balance_due else app.okcredit.ledger.ui.Res.string.balance_advance)
 
 @Composable
@@ -245,12 +244,12 @@ private fun getSettlementButtonText(
     return if (balance < 0L) {
         stringResource(
             app.okcredit.ledger.ui.Res.string.del_cst_settlement_label_payment,
-            balance.toFormattedAmount(true)
+            balance.toFormattedAmount(true),
         )
     } else {
         stringResource(
             app.okcredit.ledger.ui.Res.string.del_cst_settlement_label_credit,
-            balance.toFormattedAmount(true)
+            balance.toFormattedAmount(true),
         )
     }
 }
@@ -259,7 +258,7 @@ private fun getSettlementButtonText(
 private fun getMessageText(
     balance: Long,
     mobile: String,
-    isSupplier: Boolean
+    isSupplier: Boolean,
 ): String {
     return if (balance == 0L) {
         if (mobile.isEmpty()) {
@@ -268,7 +267,7 @@ private fun getMessageText(
                     app.okcredit.ledger.ui.Res.string.del_cst_supplier_msg_no_mobile
                 } else {
                     app.okcredit.ledger.ui.Res.string.del_cst_msg_no_mobile
-                }
+                },
             )
         } else {
             stringResource(
@@ -276,7 +275,7 @@ private fun getMessageText(
                     app.okcredit.ledger.ui.Res.string.del_cst_supplier_msg
                 } else {
                     app.okcredit.ledger.ui.Res.string.del_cst_msg
-                }
+                },
             )
         }
     } else {
@@ -285,7 +284,7 @@ private fun getMessageText(
                 app.okcredit.ledger.ui.Res.string.del_cst_supplier_msg_settlement
             } else {
                 app.okcredit.ledger.ui.Res.string.del_cst_msg_settlement
-            }
+            },
         )
     }
 }
@@ -302,6 +301,6 @@ fun DeleteRelationshipContentPreview() {
         onDeleteClicked = {},
         onSettlementClicked = {},
         mobile = "13124241",
-        isSupplier = true
+        isSupplier = true,
     )
 }
