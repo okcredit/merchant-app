@@ -204,6 +204,10 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
         customerProjection.resetCustomerList(customers, businessId)
     }
 
+    suspend fun resetCustomer(customer: Customer) {
+        customerProjection.resetCustomer(customer)
+    }
+
     suspend fun getTransactionCommands(
         businessId: String,
         limit: Int,
@@ -229,6 +233,14 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
 
     fun resetSupplierList(suppliers: List<Supplier>, businessId: String) {
         supplierProjection.resetSupplierList(suppliers, businessId)
+    }
+
+    suspend fun resetSupplier(supplier: Supplier) {
+        supplierProjection.resetSupplier(supplier)
+    }
+
+    suspend fun markSupplierAsDeleted(supplierId: String) {
+        supplierProjection.markSupplierAsDeleted(supplierId)
     }
 }
 

@@ -2,6 +2,8 @@ package app.okcredit.merchant
 
 import app.okcredit.ledger.core.di.IosLedgerComponent
 import app.okcredit.ledger.core.di.LedgerComponent
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.di.LedgerUiComponent
 import app.okcredit.onboarding.OnboardingComponent
 import app.okcredit.onboarding.OnboardingScreenRegistryProvider
 import me.tatarka.inject.annotations.Component
@@ -18,6 +20,7 @@ import okcredit.base.di.Singleton
 import tech.okcredit.ab.IosAbComponent
 import tech.okcredit.analytics.di.AnalyticsComponent
 import tech.okcredit.auth.IosAuthComponent
+import tech.okcredit.collection.IosCollectionComponent
 import tech.okcredit.customization.di.IosCustomizationComponent
 import tech.okcredit.device.IosDeviceComponent
 import tech.okcredit.identity.IosIdentityComponent
@@ -41,8 +44,10 @@ abstract class ApplicationComponent(
     IosSharedComponent,
     OnboardingComponent,
     LedgerComponent,
+    LedgerUiComponent,
     IosLedgerComponent,
-    IosCustomizationComponent {
+    IosCustomizationComponent,
+    IosCollectionComponent {
 
     companion object;
 

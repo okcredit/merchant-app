@@ -1,8 +1,8 @@
 package app.okcredit.ledger.core.local
 
 import app.cash.sqldelight.ColumnAdapter
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.AccountType
-import app.okcredit.ledger.contract.model.CustomerStatus
 import app.okcredit.ledger.contract.model.Transaction.Category
 import app.okcredit.ledger.contract.model.Transaction.State
 import app.okcredit.ledger.contract.model.Transaction.Type
@@ -70,12 +70,12 @@ object CommandTypeAdapter : ColumnAdapter<CommandType, String> {
     }
 }
 
-object AccountStatusAdapter : ColumnAdapter<CustomerStatus, String> {
-    override fun decode(databaseValue: String): CustomerStatus {
-        return CustomerStatus.valueOf(databaseValue)
+object AccountStatusAdapter : ColumnAdapter<AccountStatus, String> {
+    override fun decode(databaseValue: String): AccountStatus {
+        return AccountStatus.valueOf(databaseValue)
     }
 
-    override fun encode(value: CustomerStatus): String {
+    override fun encode(value: AccountStatus): String {
         return value.name
     }
 }

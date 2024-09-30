@@ -10,6 +10,7 @@ sealed class Account(val accountType: AccountType) {
     abstract val balance: Paisa
     abstract val profileImage: String?
     abstract val registered: Boolean
+    abstract val address: String?
 }
 
 fun Account.isCustomer() = this.accountType == AccountType.CUSTOMER

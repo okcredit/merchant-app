@@ -74,7 +74,9 @@ class AbRepositoryImpl(
                 sourceType = sourceType,
                 businessId = businessId,
             )
-            localSource.setProfile(profile, businessId)
+            if (profile != null) {
+                localSource.setProfile(profile, businessId)
+            }
         } catch (apiError: ApiError) {
             apiError.printStackTrace()
         }

@@ -23,6 +23,20 @@ interface CoroutineResultWrapper {
         )
     }
 
+    fun <T, R> Flow<T>.flatMapWrapped(s: suspend (T) -> R): Flow<Result<R>> {
+        return this.flatMapLatest {
+            wrap {
+                s(it)
+            }
+        }
+    }
+
+    fun <T, R> Flow<T>.flatMapWrapped(f: Flow<R>): Flow<Result<R>> {
+        return this.flatMapLatest {
+            wrap(f)
+        }
+    }
+
     private fun logUseCaseErrors(it: Throwable) {
         Logger.w(throwable = it) { "Use case error: ${it.message}" }
     }

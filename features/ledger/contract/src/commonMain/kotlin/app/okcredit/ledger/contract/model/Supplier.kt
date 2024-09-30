@@ -11,14 +11,19 @@ data class Supplier(
     override val mobile: String?,
     override val profileImage: String?,
     override val registered: Boolean,
+    override val address: String?,
     val createdAt: Timestamp,
     val updatedAt: Timestamp,
     val settings: SupplierSettings,
     val summary: SupplierSummary,
+    val status: AccountStatus,
 ) : Account(AccountType.SUPPLIER) {
 
     override val balance: Paisa
         get() = summary.balance
+
+    val blockedBySelf: Boolean
+        get() = status == AccountStatus.BLOCKED
 
     data class SupplierSettings(
         val lang: String,

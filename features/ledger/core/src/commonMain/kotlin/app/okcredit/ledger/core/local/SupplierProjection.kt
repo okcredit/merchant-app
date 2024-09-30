@@ -2,8 +2,8 @@ package app.okcredit.ledger.core.local
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.AccountType
-import app.okcredit.ledger.contract.model.CustomerStatus
 import app.okcredit.ledger.contract.model.Supplier
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.local.LedgerDatabase
@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.withContext
 import okcredit.base.appDispatchers
 
 class SupplierProjection(
@@ -53,6 +54,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
+                status = supplier.status,
+                address = supplier.address,
             )
         }
     }
@@ -90,6 +93,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
+                status = supplier.status,
+                address = supplier.address,
             )
         }
     }
@@ -127,6 +132,8 @@ class SupplierProjection(
                     lastActivityMetaInfo = supplier.lastActivityMetaInfo.toInt(),
                     transactionCount = supplier.transactionCount,
                 ),
+                status = supplier.status,
+                address = supplier.address,
             )
         }
     }
@@ -170,6 +177,8 @@ class SupplierProjection(
                     } else {
                         Supplier.SupplierSummary()
                     },
+                    status = account.status,
+                    address = account.address,
                 )
             }
         }
@@ -207,7 +216,8 @@ class SupplierProjection(
                     registered = supplier.registered,
                     accountUrl = null,
                     gstNumber = null,
-                    status = CustomerStatus.ACTIVE,
+                    status = AccountStatus.ACTIVE,
+                    address = supplier.address,
                 ),
             )
             addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
@@ -267,6 +277,41 @@ class SupplierProjection(
             suppliers.forEach { supplier ->
                 addSupplier(supplier)
             }
+        }
+    }
+
+    suspend fun resetSupplier(supplier: Supplier) {
+        withContext(appDispatchers.io) {
+            database.transaction {
+                accountQueries.insertOrReplaceAccount(
+                    Account(
+                        id = supplier.id,
+                        businessId = supplier.businessId,
+                        type = AccountType.SUPPLIER,
+                        name = supplier.name,
+                        mobile = supplier.mobile,
+                        profileImage = supplier.profileImage,
+                        createdAt = supplier.createdAt,
+                        updatedAt = supplier.updatedAt,
+                        registered = supplier.registered,
+                        accountUrl = null,
+                        gstNumber = null,
+                        status = AccountStatus.ACTIVE,
+                        address = supplier.address,
+                    ),
+                )
+                addOrUpdateSupplierSettings(supplierId = supplier.id, settings = supplier.settings)
+                addOrUpdateSupplierSummary(supplierId = supplier.id, summary = supplier.summary)
+            }
+        }
+    }
+
+    suspend fun markSupplierAsDeleted(supplierId: String) {
+        withContext(appDispatchers.io) {
+            accountQueries.updateAccountStatus(
+                status = AccountStatus.DELETED,
+                accountId = supplierId,
+            )
         }
     }
 }

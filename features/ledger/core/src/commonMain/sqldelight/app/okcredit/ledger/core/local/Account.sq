@@ -1,4 +1,4 @@
-import app.okcredit.ledger.contract.model.CustomerStatus;
+import app.okcredit.ledger.contract.model.AccountStatus;
 import app.okcredit.ledger.contract.model.AccountType;
 import kotlin.Boolean;
 import okcredit.base.units.Paisa;
@@ -8,10 +8,11 @@ CREATE TABLE IF NOT EXISTS Account (
     id TEXT NOT NULL UNIQUE PRIMARY KEY ,
     businessId TEXT NOT NULL,
     type TEXT AS AccountType NOT NULL,
-    status TEXT AS CustomerStatus NOT NULL,
+    status TEXT AS AccountStatus NOT NULL,
     name TEXT NOT NULL,
     mobile TEXT,
     profileImage TEXT,
+    address TEXT,
     gstNumber TEXT,
     accountUrl TEXT,
     registered INTEGER AS Boolean NOT NULL DEFAULT 0,
@@ -66,6 +67,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -98,6 +100,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -130,6 +133,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -153,7 +157,8 @@ FROM Account AS a
 INNER JOIN CustomerSettings AS s ON a.id = s.customerId
 INNER JOIN CustomerSummary AS c ON a.id = c.customerId
 WHERE a.type = :accountType AND a.businessId = :businessId
-ORDER BY c.lastActivity DESC LIMIT :limit OFFSET :offset;
+AND a.status != 3 ORDER BY c.lastActivity
+DESC LIMIT :limit OFFSET :offset;
 
 allAccountsByLastPayment:
 SELECT
@@ -162,6 +167,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -194,6 +200,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -222,6 +229,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -250,6 +258,7 @@ SELECT
     a.name,
     a.status,
     a.mobile,
+    a.address,
     a.profileImage,
     a.accountUrl,
     a.registered,
@@ -273,7 +282,7 @@ ORDER BY c.lastActivity DESC LIMIT :limit OFFSET :offset;
 
 insertOrReplaceAccount:
 INSERT OR REPLACE
-INTO Account(id, businessId, type, status, name, mobile, profileImage, gstNumber, accountUrl, registered, createdAt, updatedAt)
+INTO Account(id, businessId, type, status, name, mobile, profileImage, address, gstNumber, accountUrl, registered, createdAt, updatedAt)
 VALUES ?;
 
 insertOrReplaceCustomerSettings:

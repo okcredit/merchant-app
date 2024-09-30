@@ -1,10 +1,14 @@
 package app.okcredit.ledger.core
 
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.Customer
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.core.local.LedgerLocalSource
 import app.okcredit.ledger.core.remote.LedgerRemoteSource
+import app.okcredit.ledger.core.remote.models.UpdateCustomerRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -27,12 +31,13 @@ class CustomerRepository(
         limit: Int,
         offset: Int,
     ): Flow<List<Customer>> {
+        // todo (ask: mohitesh) how we can add this in sql query
         return localSource.listAllCustomers(
             businessId = businessId,
             sortBy = sortBy,
             limit = limit,
             offset = offset,
-        )
+        ).map { it.filter { customer -> customer.status != AccountStatus.DELETED } }
     }
 
     suspend fun addCustomer(
@@ -63,5 +68,20 @@ class CustomerRepository(
     suspend fun deleteCustomer(customerId: String, businessId: String) {
         remoteSource.deleteCustomer(customerId, businessId)
         localSource.markCustomerAsDeleted(customerId)
+    }
+
+    suspend fun updateCustomer(
+        businessId: String,
+        customerId: String,
+        request: UpdateCustomerRequest,
+    ): Customer {
+        val customer = remoteSource.updateCustomer(
+            customerId = customerId,
+            request = request,
+            businessId = businessId,
+        ).also { updatedCustomer ->
+            localSource.resetCustomer(updatedCustomer)
+        }
+        return customer
     }
 }

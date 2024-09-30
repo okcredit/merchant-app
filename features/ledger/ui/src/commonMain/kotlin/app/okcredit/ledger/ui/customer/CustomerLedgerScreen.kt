@@ -3,9 +3,13 @@ package app.okcredit.ledger.ui.customer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import app.okcredit.ledger.ui.customer.CustomerLedgerContract.*
+import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract.Intent
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract.State
+import app.okcredit.ledger.ui.customer.CustomerLedgerContract.ViewEvent
 import app.okcredit.ledger.ui.customer.composable.CustomerLedgerUi
-import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -30,7 +34,6 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
         render(screenModel, state, navigator)
     }
 
-    @OptIn(InternalVoyagerApi::class)
     @Composable
     private fun render(
         screenModel: CustomerLedgerModel,
@@ -47,7 +50,19 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
                     ),
                 )
             },
-            onProfileClicked = { },
+            onProfileClicked = {
+                val customerId = state.customerDetails?.id
+                if (customerId != null) {
+                    navigator.push(
+                        ScreenRegistry.get(
+                            LedgerScreenRegistryProvider.LedgerScreenRegistry.AccountProfile(
+                                accountId = customerId,
+                                accountType = AccountType.CUSTOMER,
+                            ),
+                        ),
+                    )
+                }
+            },
             onBackClicked = { navigator.pop() },
             openMoreBottomSheet = { },
             onMenuOptionClicked = { },

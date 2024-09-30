@@ -1,8 +1,8 @@
 package app.okcredit.ledger.core.usecase
 
 import app.okcredit.ledger.contract.model.Account
+import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.AccountType
-import app.okcredit.ledger.contract.model.CustomerStatus
 import app.okcredit.ledger.contract.usecase.CyclicAccountError
 import app.okcredit.ledger.contract.usecase.DeletedCustomerError
 import app.okcredit.ledger.contract.usecase.InvalidNameError
@@ -63,7 +63,7 @@ class AddAccount(
         val customer =
             customerRepository.getCustomerByMobile(mobile, activeBusinessId).firstOrNull()
         if (customer != null) {
-            if (customer.status == CustomerStatus.DELETED) {
+            if (customer.status == AccountStatus.DELETED) {
                 throw DeletedCustomerError(customer.id)
             } else {
                 throw MobileConflictError(customer.id, customer.name)

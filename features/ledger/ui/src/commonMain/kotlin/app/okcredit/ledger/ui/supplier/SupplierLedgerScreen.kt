@@ -3,7 +3,10 @@ package app.okcredit.ledger.ui.supplier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.okcredit.ledger.contract.model.AccountType
+import app.okcredit.ledger.ui.LedgerScreenRegistry
 import app.okcredit.ledger.ui.supplier.composable.SupplierLedgerUi
+import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -38,7 +41,19 @@ data class SupplierLedgerScreen(
     ) {
         SupplierLedgerUi(
             state = state,
-            onProfileClicked = { },
+            onProfileClicked = {
+                val supplierId = state.supplierDetails?.id
+                if (supplierId != null) {
+                    navigator.push(
+                        ScreenRegistry.get(
+                            LedgerScreenRegistry.AccountProfile(
+                                accountId = supplierId,
+                                accountType = AccountType.SUPPLIER,
+                            ),
+                        ),
+                    )
+                }
+            },
             onLoadTransaction = {
                 screenModel.pushIntent(
                     SupplierLedgerContract.Intent.LoadTransaction(
