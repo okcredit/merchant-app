@@ -31,8 +31,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import app.okcredit.ledger.ui.Res
-import app.okcredit.ledger.ui.edit_name
-import app.okcredit.ledger.ui.enter_name
 import app.okcredit.ledger.ui.name
 import app.okcredit.ledger.ui.submit_text
 import app.okcredit.ui.icon_close

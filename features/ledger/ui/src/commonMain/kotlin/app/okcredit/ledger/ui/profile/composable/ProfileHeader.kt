@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_account
 import app.okcredit.ui.icon_account_125dp
-import app.okcredit.ui.icon_camera
 import app.okcredit.ui.icon_camera_alt
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource

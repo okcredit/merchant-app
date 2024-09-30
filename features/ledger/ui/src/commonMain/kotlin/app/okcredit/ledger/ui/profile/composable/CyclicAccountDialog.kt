@@ -34,7 +34,6 @@ import app.okcredit.ledger.ui.view_customer
 import app.okcredit.ledger.ui.view_supplier
 import app.okcredit.ui.Res
 import app.okcredit.ui.icon_account
-import app.okcredit.ui.icon_close
 import app.okcredit.ui.icon_close_fill
 import app.okcredit.ui.icon_remove
 import org.jetbrains.compose.resources.painterResource

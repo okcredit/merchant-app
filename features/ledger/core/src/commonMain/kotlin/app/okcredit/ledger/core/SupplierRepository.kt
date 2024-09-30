@@ -69,4 +69,9 @@ class SupplierRepository(
         }
         return supplier
     }
+
+    suspend fun deleteSupplier(supplierId: String, businessId: String) {
+        remoteSource.deleteSupplier(supplierId, businessId)
+        localSource.markSupplierAsDeleted(supplierId)
+    }
 }

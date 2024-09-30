@@ -9,12 +9,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import app.okcredit.ledger.ui.Res
 import app.okcredit.ledger.ui.edit_address
 import app.okcredit.ledger.ui.edit_mobile_number
 import app.okcredit.ledger.ui.edit_name
@@ -124,9 +124,9 @@ fun RelationshipProfileScreen(
                                 is AccountProfileContract.BottomSheetType.ModifyName -> {
                                     ModifyDetailDialog(
                                         title = if (state.name.isEmpty())
-                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_name)
+                                            stringResource(Res.string.enter_name)
                                         else
-                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_name),
+                                            stringResource(Res.string.edit_name),
                                         prefillText = state.name,
                                         onSubmitClicked = { onSubmitName(it) },
                                         onCloseClicked = { onDismissInfoDialog() }
@@ -136,9 +136,9 @@ fun RelationshipProfileScreen(
                                 is AccountProfileContract.BottomSheetType.ModifyPhoneNumber -> {
                                     ModifyDetailDialog(
                                         title = if (state.name.isEmpty())
-                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_mobile_number)
+                                            stringResource(Res.string.enter_mobile_number)
                                         else
-                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_mobile_number),
+                                            stringResource(Res.string.edit_mobile_number),
                                         prefillText = state.mobile,
                                         onSubmitClicked = onSubmitMobile,
                                         onCloseClicked = { onDismissInfoDialog() }
@@ -148,9 +148,9 @@ fun RelationshipProfileScreen(
                                 is AccountProfileContract.BottomSheetType.ModifyAddress -> {
                                     ModifyDetailDialog(
                                         title = if (state.address.isEmpty()) {
-                                            stringResource(app.okcredit.ledger.ui.Res.string.enter_address)
+                                            stringResource(Res.string.enter_address)
                                         } else {
-                                            stringResource(app.okcredit.ledger.ui.Res.string.edit_address)
+                                            stringResource(Res.string.edit_address)
                                         },
                                         prefillText = state.address,
                                         onCloseClicked = {},

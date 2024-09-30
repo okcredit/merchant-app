@@ -238,6 +238,10 @@ class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
     suspend fun resetSupplier(supplier: Supplier) {
         supplierProjection.resetSupplier(supplier)
     }
+
+    suspend fun markSupplierAsDeleted(supplierId: String) {
+        supplierProjection.markSupplierAsDeleted(supplierId)
+    }
 }
 
 fun DomainTransaction.toDbTransaction(accountType: AccountType): Transaction {
