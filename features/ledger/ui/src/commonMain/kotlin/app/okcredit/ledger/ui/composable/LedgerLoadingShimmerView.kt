@@ -29,7 +29,7 @@ fun LedgerLoadingShimmerView() {
     val gradient = listOf(
         Color.LightGray.copy(alpha = 0.9f),
         Color.LightGray.copy(alpha = 0.3f),
-        Color.LightGray.copy(alpha = 0.9f)
+        Color.LightGray.copy(alpha = 0.9f),
     )
 
     val transition = rememberInfiniteTransition(label = "")
@@ -40,8 +40,8 @@ fun LedgerLoadingShimmerView() {
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = 1000,
-                easing = FastOutLinearInEasing
-            )
+                easing = FastOutLinearInEasing,
+            ),
         ),
         label = "",
     )
@@ -50,19 +50,19 @@ fun LedgerLoadingShimmerView() {
         start = Offset(200f, 200f),
         end = Offset(
             x = translateAnimation.value,
-            y = translateAnimation.value
-        )
+            y = translateAnimation.value,
+        ),
     )
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         ShimmerDateView(
             brush,
             modifier = Modifier
                 .width(120.dp)
-                .height(23.dp)
+                .height(23.dp),
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerItem(
@@ -70,7 +70,7 @@ fun LedgerLoadingShimmerView() {
             modifier = Modifier
                 .width(220.dp)
                 .height(40.dp),
-            alignment = Alignment.TopEnd
+            alignment = Alignment.TopEnd,
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerItem(
@@ -78,7 +78,7 @@ fun LedgerLoadingShimmerView() {
             modifier = Modifier
                 .width(220.dp)
                 .height(40.dp),
-            alignment = Alignment.TopStart
+            alignment = Alignment.TopStart,
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerItem(
@@ -86,14 +86,14 @@ fun LedgerLoadingShimmerView() {
             modifier = Modifier
                 .width(220.dp)
                 .height(40.dp),
-            alignment = Alignment.TopStart
+            alignment = Alignment.TopStart,
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerDateView(
             brush,
             modifier = Modifier
                 .width(120.dp)
-                .height(23.dp)
+                .height(23.dp),
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerItem(
@@ -101,7 +101,7 @@ fun LedgerLoadingShimmerView() {
             modifier = Modifier
                 .width(220.dp)
                 .height(40.dp),
-            alignment = Alignment.TopEnd
+            alignment = Alignment.TopEnd,
         )
         Spacer(modifier = Modifier.height(24.dp))
         ShimmerItem(
@@ -109,7 +109,7 @@ fun LedgerLoadingShimmerView() {
             modifier = Modifier
                 .width(220.dp)
                 .height(40.dp),
-            alignment = Alignment.TopStart
+            alignment = Alignment.TopStart,
         )
     }
 }
@@ -120,7 +120,7 @@ fun ShimmerDateView(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Box(
             modifier = modifier
@@ -134,7 +134,7 @@ fun ShimmerDateView(
 fun ShimmerItem(brush: Brush, modifier: Modifier = Modifier, alignment: Alignment) {
     Box(
         modifier = Modifier.fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(4.dp)),
     ) {
         Box(
             modifier = modifier

@@ -42,7 +42,7 @@ private val okCreditLightColorScheme =
         onBackground = grey900,
         outline = grey400,
         outlineVariant = grey200,
-        tertiaryContainer = grey100
+        tertiaryContainer = grey100,
     )
 
 @Composable

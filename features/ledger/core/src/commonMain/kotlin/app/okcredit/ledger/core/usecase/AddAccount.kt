@@ -66,14 +66,14 @@ class AddAccount(
             if (customer.status == AccountStatus.DELETED) {
                 throw DeletedCustomerError(customer.id)
             } else {
-                throw MobileConflictError(customer.id)
+                throw MobileConflictError(customer.id, customer.name)
             }
         }
 
         val supplier =
             supplierRepository.getSupplierByMobile(mobile, activeBusinessId).firstOrNull()
         if (supplier != null) {
-            throw CyclicAccountError(supplier.id)
+            throw CyclicAccountError(supplier.id, supplier.name)
         }
     }
 
@@ -81,13 +81,12 @@ class AddAccount(
         val supplier =
             supplierRepository.getSupplierByMobile(mobile, activeBusinessId).firstOrNull()
         if (supplier != null) {
-            throw MobileConflictError(supplier.id)
+            throw MobileConflictError(supplier.id, supplier.name)
         }
 
-        val customer =
-            customerRepository.getCustomerByMobile(mobile, activeBusinessId).firstOrNull()
+        val customer = customerRepository.getCustomerByMobile(mobile, activeBusinessId).firstOrNull()
         if (customer != null) {
-            throw CyclicAccountError(customer.id)
+            throw CyclicAccountError(customer.id, customer.name)
         }
     }
 }

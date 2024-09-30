@@ -7,10 +7,9 @@ import app.okcredit.ledger.ui.supplier.SupplierLedgerContract.SupplierDetails
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 
-
 @Inject
 class GetSupplierData(
-    supplierRepository: Lazy<SupplierRepository>
+    supplierRepository: Lazy<SupplierRepository>,
 ) {
 
     private val repository by lazy { supplierRepository.value }
@@ -33,7 +32,7 @@ class GetSupplierData(
                     reminderMode = "whatsapp",
                     registered = it.registered,
                 ),
-                toolbarData = getToolbarOptions(it.mobile)
+                toolbarData = getToolbarOptions(it.mobile),
             )
         }
 
@@ -46,7 +45,7 @@ class GetSupplierData(
         }
         return ToolbarData(
             toolbarOptions = toolbarOptions,
-            moreMenuOptions = emptyList()
+            moreMenuOptions = emptyList(),
         )
     }
 
@@ -55,4 +54,3 @@ class GetSupplierData(
         val toolbarData: ToolbarData,
     )
 }
-

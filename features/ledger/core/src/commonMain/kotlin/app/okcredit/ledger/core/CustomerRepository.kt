@@ -2,7 +2,6 @@ package app.okcredit.ledger.core
 
 import app.okcredit.ledger.contract.model.AccountStatus
 import app.okcredit.ledger.contract.model.Customer
-import app.okcredit.ledger.contract.model.Transaction
 import app.okcredit.ledger.contract.usecase.SortBy
 import app.okcredit.ledger.core.local.LedgerLocalSource
 import app.okcredit.ledger.core.remote.LedgerRemoteSource

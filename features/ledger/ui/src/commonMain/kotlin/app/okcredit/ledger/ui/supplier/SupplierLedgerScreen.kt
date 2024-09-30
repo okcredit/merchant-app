@@ -15,7 +15,7 @@ import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
 data class SupplierLedgerScreen(
-    val supplierId: String
+    val supplierId: String,
 ) : Screen {
 
     @Composable
@@ -37,7 +37,7 @@ data class SupplierLedgerScreen(
     private fun render(
         screenModel: SupplierLedgerModel,
         state: SupplierLedgerContract.State,
-        navigator: Navigator
+        navigator: Navigator,
     ) {
         SupplierLedgerUi(
             state = state,
@@ -57,8 +57,8 @@ data class SupplierLedgerScreen(
                 screenModel.pushIntent(
                     SupplierLedgerContract.Intent.LoadTransaction(
                         showOldClicked = false,
-                        supplierId = supplierId
-                    )
+                        supplierId = supplierId,
+                    ),
                 )
             },
             onBackClicked = { navigator.pop() },
@@ -68,8 +68,8 @@ data class SupplierLedgerScreen(
                 screenModel.pushIntent(
                     SupplierLedgerContract.Intent.LoadTransaction(
                         showOldClicked = true,
-                        supplierId = supplierId
-                    )
+                        supplierId = supplierId,
+                    ),
                 )
             },
             onTransactionClicked = { _, _, _ -> },
@@ -82,9 +82,8 @@ data class SupplierLedgerScreen(
             onShareReportClicked = { },
             onPayOnlineClicked = { },
             onCallClicked = { },
-            onErrorToastDismissed = { screenModel.pushIntent(SupplierLedgerContract.Intent.OnErrorToastDismissed) }
+            onErrorToastDismissed = { screenModel.pushIntent(SupplierLedgerContract.Intent.OnErrorToastDismissed) },
         )
-
     }
 
     private fun handleViewEvent(event: SupplierLedgerContract.ViewEvent, navigator: Navigator) {

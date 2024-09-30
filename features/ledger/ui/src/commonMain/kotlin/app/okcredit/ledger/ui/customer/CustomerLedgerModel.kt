@@ -20,7 +20,7 @@ class CustomerLedgerModel(
     private val getCustomerDetails: GetCustomerDetails,
     private val getToolbarData: GetCustomerToolbarData,
     private val getLedgerItems: GetCustomerLedgerData,
-    private val trackWithIntent: TrackWithIntent
+    private val trackWithIntent: TrackWithIntent,
 ) : BaseCoroutineScreenModel<State, PartialState, ViewEvent, Intent>(State()) {
 
     override fun partialStates(): Flow<PartialState> {
@@ -60,8 +60,8 @@ class CustomerLedgerModel(
             wrap(
                 getLedgerItems.execute(
                     customerId = it.customerId,
-                    showOldClicked = it.showOldClicked
-                )
+                    showOldClicked = it.showOldClicked,
+                ),
             )
         }
         .map {
@@ -101,5 +101,4 @@ class CustomerLedgerModel(
             is PartialState.SetError -> currentState.copy(errorMessage = partialState.error)
         }
     }
-
 }

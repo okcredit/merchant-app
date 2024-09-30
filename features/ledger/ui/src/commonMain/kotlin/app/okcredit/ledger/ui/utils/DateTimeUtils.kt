@@ -2,15 +2,13 @@ package app.okcredit.ledger.ui.utils
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
-import okcredit.base.units.Timestamp
 
 object DateTimeUtils {
-    //todo check with @mohitesh, this might not work in iOS
+    // todo check with @mohitesh, this might not work in iOS
     fun getCurrentTime(): Instant {
         return Clock.System.now()
     }
@@ -37,7 +35,7 @@ object DateTimeUtils {
 
     fun isSevenDaysPassed(billDate: Instant): Boolean {
         return billDate.toLocalDateTime(TimeZone.currentSystemDefault()).date.daysUntil(
-            getCurrentTime().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            getCurrentTime().toLocalDateTime(TimeZone.currentSystemDefault()).date,
         ) > 7
     }
 

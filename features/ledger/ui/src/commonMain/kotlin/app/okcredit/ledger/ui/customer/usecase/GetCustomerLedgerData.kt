@@ -13,7 +13,6 @@ import app.okcredit.ledger.ui.model.LedgerItem
 import app.okcredit.ledger.ui.model.TransactionData
 import app.okcredit.ledger.ui.model.TransactionDueInfo
 import app.okcredit.ledger.ui.utils.DateTimeUtils.isSameDay
-import app.okcredit.ledger.ui.utils.DateTimeUtils.isSevenDaysPassed
 import app.okcredit.ledger.ui.utils.StringUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +23,7 @@ import kotlinx.coroutines.flow.flow
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Paisa
 import okcredit.base.units.Timestamp
-import okcredit.base.units.instant
+import okcredit.base.units.differenceInDays
 import tech.okcredit.collection.model.CollectionMerchantProfile
 import tech.okcredit.collection.model.CollectionStatus
 import tech.okcredit.collection.model.KycStatus
@@ -32,7 +31,7 @@ import tech.okcredit.collection.model.OnlinePayment
 import tech.okcredit.collection.usecase.GetCollectionsForAccount
 import tech.okcredit.collection.usecase.GetMerchantCollectionProfile
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
-
+import kotlin.math.absoluteValue
 
 @Inject
 class GetCustomerLedgerData(
@@ -40,7 +39,7 @@ class GetCustomerLedgerData(
     customerRepository: Lazy<CustomerRepository>,
     getAccountStatement: Lazy<GetAccountStatementImpl>,
     getCollectionForAccount: Lazy<GetCollectionsForAccount>,
-    getMerchantCollectionProfile: Lazy<GetMerchantCollectionProfile>
+    getMerchantCollectionProfile: Lazy<GetMerchantCollectionProfile>,
 ) {
 
     private val getActiveBusinessId by lazy { getActiveBusinessId.value }
@@ -58,13 +57,13 @@ class GetCustomerLedgerData(
             combine(
                 getCustomerDetails(customerId),
                 getCustomerStatement(customerId),
-                getCustomerCollectionProfile(businessId = it, accountId = customerId)
+                getCustomerCollectionProfile(businessId = it, accountId = customerId),
             ) { customer, transactions, onlinePayments ->
                 processTransactionsData(
                     customer = customer,
                     onlinePayments = onlinePayments,
                     transactions = transactions,
-                    showOldClicked = showOldClicked
+                    showOldClicked = showOldClicked,
                 )
             }
         }
@@ -72,7 +71,7 @@ class GetCustomerLedgerData(
 
     private fun getCustomerCollectionProfile(
         businessId: String,
-        accountId: String
+        accountId: String,
     ): Flow<List<OnlinePayment>> {
         return customerCollections.execute(businessId, accountId)
     }
@@ -81,7 +80,7 @@ class GetCustomerLedgerData(
         customer: Customer?,
         transactions: List<Transaction>,
         showOldClicked: Boolean,
-        onlinePayments: List<OnlinePayment>
+        onlinePayments: List<OnlinePayment>,
     ): Response {
         val list = mutableListOf<LedgerItem>()
         if (transactions.isEmpty() && customer == null) {
@@ -91,8 +90,8 @@ class GetCustomerLedgerData(
 
         val transactionInfo = processTransactionAndCurrentDue(transactions, collectionMap)
 
-        val startIndex = if (!showOldClicked
-            && transactionInfo.lastIndexOfZeroBalanceDue > 0
+        val startIndex = if (!showOldClicked &&
+            transactionInfo.lastIndexOfZeroBalanceDue > 0
         ) {
             list.add(LedgerItem.LoadMoreItem)
             transactionInfo.lastIndexOfZeroBalanceDue + 1
@@ -110,7 +109,7 @@ class GetCustomerLedgerData(
             lastTransactionDate = checkForDateItem(
                 list = list,
                 lastDate = lastTransactionDate,
-                currentDate = currentTransactionDate
+                currentDate = currentTransactionDate,
             )
             addTransactionItemInList(
                 list = list,
@@ -119,7 +118,7 @@ class GetCustomerLedgerData(
                 customerId = customer?.id!!,
                 customerName = customer.name,
                 closingBalance = txns[index].currentDue,
-                collectionMerchantProfile = collectionMerchantProfile
+                collectionMerchantProfile = collectionMerchantProfile,
             )
         }
         return Response(list)
@@ -127,19 +126,27 @@ class GetCustomerLedgerData(
 
     private fun processTransactionAndCurrentDue(
         transactions: List<Transaction>,
-        collectionMap: Map<String, OnlinePayment>
+        collectionMap: Map<String, OnlinePayment>,
     ): TransactionData {
         var currentDue: Paisa = Paisa.ZERO
         var lastIndexOfZeroBalanceDue = 0
         val transactionWithCurrentDue = transactions.mapIndexed { index, transaction ->
             currentDue = when (transaction.type) {
-                Transaction.Type.CREDIT -> if (transaction.deleted) currentDue else currentDue.minus(
-                    transaction.amount
-                )
+                Transaction.Type.CREDIT -> if (transaction.deleted) {
+                    currentDue
+                } else {
+                    currentDue.minus(
+                        transaction.amount,
+                    )
+                }
 
-                Transaction.Type.PAYMENT -> if (transaction.deleted) currentDue else currentDue.plus(
-                    transaction.amount
-                )
+                Transaction.Type.PAYMENT -> if (transaction.deleted) {
+                    currentDue
+                } else {
+                    currentDue.plus(
+                        transaction.amount,
+                    )
+                }
 
                 else -> currentDue
             }
@@ -154,13 +161,13 @@ class GetCustomerLedgerData(
             TransactionDueInfo(
                 transaction = transaction,
                 currentDue = currentDue,
-                onlinePayment = collectionMap[transaction.collectionId]
+                onlinePayment = collectionMap[transaction.collectionId],
             )
         }
 
         return TransactionData(
             transactions = transactionWithCurrentDue,
-            lastIndexOfZeroBalanceDue = lastIndexOfZeroBalanceDue
+            lastIndexOfZeroBalanceDue = lastIndexOfZeroBalanceDue,
         )
     }
 
@@ -171,17 +178,16 @@ class GetCustomerLedgerData(
         customerName: String,
         closingBalance: Paisa,
         collectionMap: Map<String, OnlinePayment>,
-        collectionMerchantProfile: CollectionMerchantProfile
+        collectionMerchantProfile: CollectionMerchantProfile,
     ) {
         when {
             isDeletedTransaction(transaction) -> list.add(
                 createDeletedTransaction(
-                    collectionMap = collectionMap,
                     transaction = transaction,
                     customerId = customerId,
                     customerName = customerName,
-                    closingBalance = closingBalance
-                )
+                    closingBalance = closingBalance,
+                ),
             )
 
             isProcessTransaction(transaction) -> list.add(
@@ -190,8 +196,8 @@ class GetCustomerLedgerData(
                     transaction = transaction,
                     customerId = customerId,
                     closingBalance = closingBalance,
-                    collectionMerchantProfile = collectionMerchantProfile
-                )
+                    collectionMerchantProfile = collectionMerchantProfile,
+                ),
             )
 
             else -> list.add(
@@ -200,8 +206,8 @@ class GetCustomerLedgerData(
                     transaction = transaction,
                     customerId = customerId,
                     customerName = customerName,
-                    closingBalance = closingBalance
-                )
+                    closingBalance = closingBalance,
+                ),
             )
         }
     }
@@ -211,7 +217,7 @@ class GetCustomerLedgerData(
         customerId: String,
         customerName: String,
         closingBalance: Paisa,
-        collectionMap: Map<String, OnlinePayment>
+        collectionMap: Map<String, OnlinePayment>,
     ): LedgerItem {
         val collectionId = transaction.collectionId
         val collection = collectionMap[collectionId]
@@ -219,9 +225,11 @@ class GetCustomerLedgerData(
 
         val pendingOnlineTransaction = if (!collectionId.isNullOrEmpty()) {
             collectionStatus == null ||
-                    collectionStatus == CollectionStatus.PAID ||
-                    collectionStatus == CollectionStatus.PAYOUT_INITIATED
-        } else false
+                collectionStatus == CollectionStatus.PAID ||
+                collectionStatus == CollectionStatus.PAYOUT_INITIATED
+        } else {
+            false
+        }
 
         val platformFee = collection?.platformFee ?: 0L
 
@@ -238,7 +246,7 @@ class GetCustomerLedgerData(
             isDiscountTransaction = transaction.category == Transaction.Category.DISCOUNT,
             note = getTransactionNote(
                 note = transaction.note,
-                platformFee = platformFee
+                platformFee = platformFee,
             ),
             txnTag = findTransactionTag(transaction, customerName = customerName),
             closingBalance = closingBalance,
@@ -280,11 +288,11 @@ class GetCustomerLedgerData(
         customerId: String,
         closingBalance: Paisa,
         collectionMap: Map<String, OnlinePayment>,
-        collectionMerchantProfile: CollectionMerchantProfile
+        collectionMerchantProfile: CollectionMerchantProfile,
     ): LedgerItem {
         val collectionId = transaction.collectionId
 
-        var action = if (isSevenDaysPassed(transaction.billDate.instant)) {
+        var action = if (transaction.billDate.differenceInDays().absoluteValue > 7) {
             UiTxnStatus.ProcessingTransactionAction.NONE
         } else {
             UiTxnStatus.ProcessingTransactionAction.HELP
@@ -318,7 +326,7 @@ class GetCustomerLedgerData(
             txnTag = "Online Transaction",
             txnType = UiTxnStatus.ProcessingTransaction(
                 action = action,
-                paymentId = paymentId
+                paymentId = paymentId,
             ),
             note = transaction.note,
             relationshipId = customerId,
@@ -350,7 +358,6 @@ class GetCustomerLedgerData(
         customerId: String,
         customerName: String,
         closingBalance: Paisa,
-        collectionMap: Map<String, OnlinePayment>,
     ): LedgerItem.TransactionItem {
         return LedgerItem.TransactionItem(
             txnId = transaction.id,
@@ -371,13 +378,13 @@ class GetCustomerLedgerData(
                 customerName,
                 transaction.deletedByCustomer,
             ),
-            collectionId = ""
+            collectionId = "",
         )
     }
 
     private fun getDeletedTransactionTag(
         customerName: String,
-        deletedByCustomer: Boolean
+        deletedByCustomer: Boolean,
     ): String {
         return if (deletedByCustomer) {
             "Deleted by $customerName"
@@ -397,7 +404,7 @@ class GetCustomerLedgerData(
     private fun checkForDateItem(
         list: MutableList<LedgerItem>,
         lastDate: Long,
-        currentDate: Timestamp
+        currentDate: Timestamp,
     ): Long {
         return if (!isSameDay(lastDate, currentDate.epochMillis)) {
             list.add(LedgerItem.DateItem(currentDate.relativeDate()))

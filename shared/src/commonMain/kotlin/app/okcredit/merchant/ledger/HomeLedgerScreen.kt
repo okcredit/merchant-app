@@ -3,10 +3,8 @@ package app.okcredit.merchant.ledger
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import app.okcredit.ledger.contract.model.AccountType
 import app.okcredit.ledger.ui.LedgerScreenRegistry
-import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
-import app.okcredit.ledger.ui.customer.CustomerLedgerScreen
-import app.okcredit.ledger.ui.supplier.SupplierLedgerScreen
 import app.okcredit.merchant.ledger.HomeContract.State
 import app.okcredit.merchant.ledger.HomeContract.ToolbarAction.*
 import app.okcredit.merchant.ledger.HomeContract.ViewEvent
@@ -41,7 +39,7 @@ object HomeLedgerTab : Tab {
 
     @Composable
     private fun Render(screenModel: HomeLedgerScreenModel, state: State) {
-        val navigator = LocalNavigator.currentOrThrow.parent
+        val parentNavigator = LocalNavigator.currentOrThrow.parent
         HomeScreenUi(
             state = state,
             onTabChanged = { selected ->
@@ -58,7 +56,9 @@ object HomeLedgerTab : Tab {
             },
             onPrimaryVpaClicked = {},
             onSearchClicked = {
-                navigator?.moveTo(SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name))
+                parentNavigator?.moveTo(
+                    SharedScreenRegistry.Search(currentTab = HomeTab.CUSTOMER_TAB.name),
+                )
             },
             onSortAndFilterClicked = {
                 screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterClicked)
@@ -71,12 +71,27 @@ object HomeLedgerTab : Tab {
             },
             onCustomerProfileClicked = {},
             onSupplierProfileClicked = {},
-            onAddRelationshipClicked = {},
+            onAddRelationshipClicked = {
+                parentNavigator?.moveTo(
+                    LedgerScreenRegistry.AddRelation(
+                        if (state.selectedTab.isCustomerTab()) {
+                            AccountType.CUSTOMER
+                        } else {
+                            AccountType.SUPPLIER
+                        },
+                    ),
+                )
+            },
             onDynamicItemClicked = { _, _ -> },
             onSummaryCardClicked = {},
             onPullToRefresh = {},
             onClearFilterClicked = {
-                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(SortOption.LAST_ACTIVITY, emptySet()))
+                screenModel.pushIntent(
+                    HomeContract.Intent.OnSortAndFilterApplied(
+                        SortOption.LAST_ACTIVITY,
+                        emptySet(),
+                    ),
+                )
             },
             onUserAlertClicked = {
                 screenModel.pushIntent(HomeContract.Intent.OnRetrySyncTransactionsClicked)
@@ -85,7 +100,12 @@ object HomeLedgerTab : Tab {
                 screenModel.pushIntent(HomeContract.Intent.OnDismissDialog)
             },
             onSortAndFilterApplied = { sortOption, reminderFilters ->
-                screenModel.pushIntent(HomeContract.Intent.OnSortAndFilterApplied(sortOption, reminderFilters))
+                screenModel.pushIntent(
+                    HomeContract.Intent.OnSortAndFilterApplied(
+                        sortOption,
+                        reminderFilters,
+                    ),
+                )
             },
         )
     }
@@ -98,23 +118,21 @@ object HomeLedgerTab : Tab {
             is ViewEvent.ShowError -> {}
             is ViewEvent.GoToCustomerLedgerScreen -> goToCustomerLedgerScreen(
                 customerId = viewEvent.customerId,
-                navigator = navigator
+                navigator = navigator,
             )
 
             is ViewEvent.GoToSupplierLedgerScreen -> goToSupplierLedgerScreen(
                 supplierId = viewEvent.supplierId,
-                navigator = navigator
+                navigator = navigator,
             )
         }
     }
 
     private fun goToSupplierLedgerScreen(supplierId: String, navigator: Navigator) {
-        println("Navigating to Supplier Ledger Screen")
         navigator.parent?.push(ScreenRegistry.get(LedgerScreenRegistry.SupplierLedger(supplierId)))
     }
 
     private fun goToCustomerLedgerScreen(customerId: String, navigator: Navigator) {
-        println("Navigating to Customer Ledger Screen")
         navigator.parent?.push(ScreenRegistry.get(LedgerScreenRegistry.CustomerLedger(customerId)))
     }
 
