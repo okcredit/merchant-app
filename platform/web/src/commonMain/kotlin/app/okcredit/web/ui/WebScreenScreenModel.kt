@@ -43,15 +43,15 @@ class WebScreenScreenModel(
 
     override fun reduce(
         currentState: State,
-        partialState: PartialState
+        partialState: PartialState,
     ): State {
         return when (partialState) {
             PartialState.NoChange -> currentState
             is PartialState.SetActiveBusinessId -> currentState.copy(
-                activeBusinessId = partialState.activeBusinessId
+                activeBusinessId = partialState.activeBusinessId,
             )
             is PartialState.SetCookie -> currentState.copy(
-                cookie = partialState.cookie
+                cookie = partialState.cookie,
             )
         }
     }

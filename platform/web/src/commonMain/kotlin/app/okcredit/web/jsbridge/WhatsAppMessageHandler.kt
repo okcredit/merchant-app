@@ -8,12 +8,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 class WhatsAppMessageHandler(
-    private val onWhatsAppRequest: (WhatsAppRequest) -> Unit
+    private val onWhatsAppRequest: (WhatsAppRequest) -> Unit,
 ) : IJsMessageHandler {
     override fun handle(
         message: JsMessage,
         navigator: WebViewNavigator?,
-        callback: (String) -> Unit
+        callback: (String) -> Unit,
     ) {
         val param = processParams<WhatsAppRequest>(message)
         onWhatsAppRequest(param)
@@ -32,5 +32,5 @@ data class WhatsAppRequest(
     @SerialName("message")
     val message: String,
     @SerialName("image_url")
-    val imageUrl: String? = null
+    val imageUrl: String? = null,
 )

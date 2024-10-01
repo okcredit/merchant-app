@@ -8,7 +8,7 @@ class AuthV3MessageHandler : IJsMessageHandler {
     override fun handle(
         message: JsMessage,
         navigator: WebViewNavigator?,
-        callback: (String) -> Unit
+        callback: (String) -> Unit,
     ) {
         callback("true")
     }

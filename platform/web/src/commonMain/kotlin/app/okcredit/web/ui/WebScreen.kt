@@ -29,25 +29,26 @@ data class WebScreen(val url: String) : Screen {
             }
         }
 
-
         val jsBridge = rememberWebViewJsBridge()
         LaunchedEffect(jsBridge) {
             jsBridge.register(AuthV3MessageHandler())
             jsBridge.register(ActiveBusinessIdHandler { state.activeBusinessId })
-            jsBridge.register(WhatsAppMessageHandler { request ->
-                // handle whatsapp request
-                screenModel.pushIntent(
-                    WebContract.Intent.OnWhatsAppRequest(
-                        mobile = request.mobile,
-                        message = request.message,
-                        imageUrl = request.imageUrl
+            jsBridge.register(
+                WhatsAppMessageHandler { request ->
+                    // handle whatsapp request
+                    screenModel.pushIntent(
+                        WebContract.Intent.OnWhatsAppRequest(
+                            mobile = request.mobile,
+                            message = request.message,
+                            imageUrl = request.imageUrl,
+                        ),
                     )
-                )
-            })
+                },
+            )
         }
         WebView(
             state = webState,
-            webViewJsBridge = jsBridge
+            webViewJsBridge = jsBridge,
         )
     }
 }
