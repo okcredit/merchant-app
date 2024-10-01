@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okcredit.base.appDispatchers
@@ -75,5 +76,9 @@ abstract class BaseCoroutineScreenModel<
             .onEach { withContext(Dispatchers.Main) { stateRelay.emit(it) } }
             .catch { it.printStackTrace() }
             .launchIn(screenModelScope)
+    }
+
+    override fun onDispose() {
+        stateRelay.update { initialState }
     }
 }
