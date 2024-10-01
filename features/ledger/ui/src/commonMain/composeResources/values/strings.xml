@@ -56,4 +56,26 @@
     <string name="del_cst_msg">Customer will still be able to see all old SMS</string>
     <string name="del_cst_supplier_msg_settlement">Please make supplier balance 0 to delete</string>
     <string name="del_cst_msg_settlement">Please make customer balance 0 to delete</string>
+    <string name="account_statement">Account Statement</string>
+    <string name="all_transactions">All Transactions</string>
+    <string name="online_transactions">Online Transactions</string>
+    <string name="online_payment">Online Payment</string>
+    <string name="net_balance">Net Balance</string>
+    <plurals name="payment_plural">
+        <item quantity="one">%1$s payment</item>
+        <item quantity="other">%1$s payments</item>
+    </plurals>
+
+    <plurals name="credit_plural">
+        <item quantity="one">%1$s credit</item>
+        <item quantity="other">%1$s credits</item>
+    </plurals>
+    <string name="discounts_offered">Discounts offered</string>
+    <string name="no_transactions">You don\'t have any transactions</string>
+    <string name="download">download</string>
+    <string name="downloading_please_wait">Downloading, please wait..</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="subscription">Subscription</string>
+    <string name="discount_offered">Discount offered</string>
+    <string name="edited">Edited</string>
 </resources>

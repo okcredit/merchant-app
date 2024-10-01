@@ -32,6 +32,9 @@ data class Transaction(
     val collectionId: String?
         get() = if (referenceSource == 1 || referenceSource == 3 || referenceSource == 4) referenceId else null
 
+    val isSubscriptionTransaction: Boolean
+        get() = category == Category.AUTO_CREDIT && collectionId != null && collectionId!!.isNotEmpty()
+
     enum class State(val code: Int) {
         PROCESSING(0),
         CREATED(1),

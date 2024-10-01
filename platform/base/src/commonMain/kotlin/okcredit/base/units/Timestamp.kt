@@ -11,6 +11,7 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.until
+import kotlinx.datetime.yearsUntil
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 import kotlin.math.absoluteValue
@@ -21,7 +22,8 @@ value class Timestamp(val epochMillis: Long) {
     operator fun compareTo(other: Timestamp) = epochMillis.compareTo(other.epochMillis)
 
     fun format(format: String = "dd MMM yyyy"): String {
-        val localDate = Instant.fromEpochMilliseconds(epochMillis).toLocalDateTime(TimeZone.currentSystemDefault())
+        val localDate = Instant.fromEpochMilliseconds(epochMillis)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
         when (format) {
             "dd MMM yyyy" -> {
                 val date = localDate.dayOfMonth
@@ -29,63 +31,85 @@ value class Timestamp(val epochMillis: Long) {
                 val year = localDate.year
                 return "$date $month $year"
             }
+
+            "dd MMM yyyy, hh:mm aa" -> {
+                val date = localDate.dayOfMonth
+                val month = localDate.month.abbreviation
+                val year = localDate.year
+                val hours = localDate.hour
+                val minutes = localDate.minute
+                val amPm = if (hours < 12) "AM" else "PM"
+                val adjustedHour = if (hours == 0 || hours == 12) 12 else hours % 12
+                return "$date $month $year, $adjustedHour:$minutes $amPm"
+            }
+
             "dd MMM" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.abbreviation
                 return "$date $month"
             }
+
             "dd/MM/yyyy" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 val year = localDate.year
                 return "$date/$month/$year"
             }
+
             "dd/MM" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 return "$date/$month"
             }
+
             "dd-MM-yyyy" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 val year = localDate.year
                 return "$date-$month-$year"
             }
+
             "dd-MM" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 return "$date-$month"
             }
+
             "dd-MM-yy" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 val year = localDate.year.toString().takeLast(2)
                 return "$date-$month-$year"
             }
+
             "mmm dd, yyyy" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.abbreviation
                 val year = localDate.year
                 return "$month $date, $year"
             }
+
             "MMM dd, yyyy" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.abbreviation
                 val year = localDate.year
                 return "$month $date, $year"
             }
+
             "yyyy-mm-dd" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 val year = localDate.year
                 return "$year-$month-$date"
             }
+
             "yyyy-MM-dd" -> {
                 val date = localDate.dayOfMonth
                 val month = localDate.month.number
                 val year = localDate.year
                 return "$year-$month-$date"
             }
+
             else -> return localDate.toString()
         }
     }
@@ -113,16 +137,27 @@ value class Timestamp(val epochMillis: Long) {
         return "$adjustedHour:$minutes $amPm"
     }
 
-    fun relativeDateWithTime(): String {
+    fun relativeDateAndTime(): String {
         val now = Clock.System.now()
         val localDate = Instant.fromEpochMilliseconds(epochMillis)
-        return when (val minuteDifference = localDate.until(now, DateTimeUnit.MINUTE).absoluteValue) {
+        if (localDate.daysUntil(now, TimeZone.currentSystemDefault()).absoluteValue == 0) {
+            return "Today ${relativeTime()}"
+        }
+        return format("dd MMM yyyy, hh:mm aa")
+    }
+
+    fun relativeDateIncludingTime(): String {
+        val now = Clock.System.now()
+        val localDate = Instant.fromEpochMilliseconds(epochMillis)
+        return when (val minuteDifference =
+            localDate.until(now, DateTimeUnit.MINUTE).absoluteValue) {
             0L -> "Just Now"
             in 1..59 -> "$minuteDifference min ago"
             in 60..(60 * 24) -> {
                 val hours = minuteDifference / 60
                 "$hours hrs ago"
             }
+
             else -> relativeDate()
         }
     }

@@ -41,7 +41,7 @@ private val okCreditLightColorScheme =
         background = grey50,
         onBackground = grey900,
         outline = grey400,
-        outlineVariant = grey200,
+        outlineVariant = grey300,
         tertiaryContainer = grey100
     )
 
