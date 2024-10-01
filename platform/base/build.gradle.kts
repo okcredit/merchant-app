@@ -1,3 +1,5 @@
+import okcredit.gradle.addKspDependencyForAllTargets
+
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
@@ -20,10 +22,17 @@ kotlin {
             implementation(compose.runtime)
 
             api(libs.log.kermit)
+
             api(libs.bundles.multiplatform.settings)
+
             api(libs.bundles.ktor.common)
+
             api(libs.kotlininject.runtime)
+            api(libs.kotlininject.anvil)
+            api(libs.kotlininject.anvil.optional)
+
             api(libs.bundles.voyager.common)
+
             implementation(libs.bundles.sqldelight.common)
         }
         commonTest.dependencies {
@@ -45,13 +54,8 @@ kotlin {
     }
 }
 
-dependencies {
-    add("kspCommonMainMetadata", libs.kotlininject.compiler)
-    add("kspAndroid", libs.kotlininject.compiler)
-    add("kspIosArm64", libs.kotlininject.compiler)
-    add("kspIosSimulatorArm64", libs.kotlininject.compiler)
-    add("kspJvm", libs.kotlininject.compiler)
-}
+addKspDependencyForAllTargets(libs.kotlininject.compiler)
+addKspDependencyForAllTargets(libs.kotlininject.anvil.compiler)
 
 android {
     namespace = "okcredit.base"

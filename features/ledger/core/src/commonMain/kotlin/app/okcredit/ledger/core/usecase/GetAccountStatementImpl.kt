@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Timestamp
 import okcredit.base.units.ZERO_TIMESTAMP
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
+@ContributesBinding(AppScope::class)
 class GetAccountStatementImpl(
     private val localSource: LedgerLocalSource,
 ) : GetAccountStatement {

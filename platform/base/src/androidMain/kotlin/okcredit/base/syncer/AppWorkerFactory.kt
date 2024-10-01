@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 @Inject
 class AppWorkerFactory(
-    private val workerFactories: Map<KClass<out ListenableWorker>, ChildWorkerFactory>,
+    private val workerFactories: Map<KClass<out ListenableWorker>, ChildWorkerFactory> = emptyMap(),
 ) : WorkerFactory() {
     override fun createWorker(
         context: Context,

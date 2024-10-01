@@ -10,11 +10,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.analytics.AnalyticsProvider.EventChannel.*
 
-@Singleton
 @Inject
+@SingleIn(AppScope::class)
 class AnalyticsProvider(consumers: Set<AnalyticEventsConsumer>) {
 
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())

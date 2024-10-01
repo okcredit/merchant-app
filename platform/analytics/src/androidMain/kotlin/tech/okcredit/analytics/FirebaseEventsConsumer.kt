@@ -1,16 +1,17 @@
 package tech.okcredit.analytics
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@SuppressLint("MissingPermission")
-@Singleton
 @Inject
-class FirebaseEventsConsumer constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class, multibinding = true)
+class FirebaseEventsConsumer(
     private val context: Context,
 ) : AnalyticEventsConsumer {
 

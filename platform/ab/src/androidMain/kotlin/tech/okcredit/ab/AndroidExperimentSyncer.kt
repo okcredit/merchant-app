@@ -10,7 +10,6 @@ import kotlinx.serialization.json.JsonObject
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.local.Scope
 import okcredit.base.syncer.OkcWorkManager
-import okcredit.base.syncer.OneTimeDataSyncer
 import okcredit.base.syncer.toAnyOrNull
 import okcredit.base.syncer.toStringOrNull
 import java.util.concurrent.TimeUnit
@@ -18,7 +17,7 @@ import java.util.concurrent.TimeUnit
 @Inject
 class AndroidExperimentSyncer(
     private val workManager: OkcWorkManager,
-) : OneTimeDataSyncer {
+) : ExperimentSyncer {
 
     companion object {
         const val WORKER_ACKNOWLEDGEMENT = "ab/acknowledgement"

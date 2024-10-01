@@ -1,16 +1,22 @@
 package tech.okcredit.ab
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import okcredit.base.network.ApiError
 import okcredit.base.network.DeviceIdProvider
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.ab.local.AbLocalSource
 import tech.okcredit.ab.remote.AbRemoteSource
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
 class AbRepositoryImpl(
     private val localSourceLazy: Lazy<AbLocalSource>,
     private val remoteSourceLazy: Lazy<AbRemoteSource>,

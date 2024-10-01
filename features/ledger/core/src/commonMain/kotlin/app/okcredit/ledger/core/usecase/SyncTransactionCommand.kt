@@ -16,14 +16,15 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.io.IOException
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import okcredit.base.network.ApiError
 import okcredit.base.randomUUID
 import okcredit.base.utils.withRetry
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.identity.contract.usecase.GetActiveBusinessId
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
 class SyncTransactionCommand(
     private val getActiveBusinessId: GetActiveBusinessId,
     private val localSource: LedgerLocalSource,

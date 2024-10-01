@@ -6,9 +6,12 @@ import io.ktor.client.request.*
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.network.ClientConfig
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import tech.okcredit.device.usecase.GetOrCreateDeviceId
 
 @Inject
+@ContributesBinding(AppScope::class, multibinding = true)
 class DeviceClientConfig(private val getOrCreateDeviceId: GetOrCreateDeviceId) : ClientConfig {
     override val config: HttpClientConfig<*>.() -> Unit
         get() = {

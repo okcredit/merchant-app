@@ -19,16 +19,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.appDispatchers
-import okcredit.base.di.Singleton
 import okcredit.base.units.Paisa
 import okcredit.base.units.Timestamp
 import okcredit.base.units.timestamp
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import app.okcredit.ledger.contract.model.Transaction as DomainTransaction
 
 typealias LedgerSqlDriver = SqlDriver
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
 class LedgerLocalSource(driver: Lazy<LedgerSqlDriver>) {
 
     private val database by lazy {

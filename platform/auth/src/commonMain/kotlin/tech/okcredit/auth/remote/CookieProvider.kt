@@ -2,10 +2,11 @@ package tech.okcredit.auth.remote
 
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.BaseUrl
-import okcredit.base.di.Singleton
 import okcredit.base.network.DefaultHttpClient
 import okcredit.base.network.post
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.auth.*
 import tech.okcredit.auth.local.AuthLocalSource
 import tech.okcredit.auth.remote.AuthApiClient.Companion.GRANT_TYPE_REFRESH_TOKEN
@@ -13,8 +14,8 @@ import tech.okcredit.auth.remote.model.request.AuthenticateRequest
 import tech.okcredit.auth.remote.model.response.AuthenticateResponse
 import tech.okcredit.auth.usecases.CookieHelper
 
-@Singleton
 @Inject
+@SingleIn(AppScope::class)
 class CookieProvider(
     private val authLocalSource: AuthLocalSource,
     private val cookieHelperLazy: Lazy<CookieHelper>,

@@ -144,4 +144,5 @@ dependencies {
     implementation(libs.voyager.bottomsheet)
 
     ksp(libs.kotlininject.compiler)
+    ksp(libs.kotlininject.anvil.compiler)
 }

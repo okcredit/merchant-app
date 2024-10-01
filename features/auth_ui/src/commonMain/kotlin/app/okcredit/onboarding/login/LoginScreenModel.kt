@@ -3,7 +3,6 @@ package app.okcredit.onboarding.login
 import app.okcredit.onboarding.login.LoginContract.*
 import app.okcredit.onboarding.usecase.FetchFallbackOptionsOtp
 import app.okcredit.onboarding.usecase.LoginUser
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -17,7 +16,6 @@ import tech.okcredit.auth.Credential
 import tech.okcredit.auth.InvalidOtp
 import tech.okcredit.auth.remote.AuthApiClient
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Inject
 class LoginScreenModel(
     private val authService: AuthService,

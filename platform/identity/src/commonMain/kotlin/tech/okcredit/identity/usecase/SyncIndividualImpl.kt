@@ -4,11 +4,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import tech.okcredit.identity.IdentityRepository
 import tech.okcredit.identity.contract.usecase.SyncIndividual
 
 @Inject
-class SyncIndividualImpl constructor(
+@ContributesBinding(AppScope::class)
+class SyncIndividualImpl(
     private val repository: IdentityRepository,
 ) : SyncIndividual {
 

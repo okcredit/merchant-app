@@ -9,7 +9,10 @@ import app.okcredit.merchant.sync.SyncScreenModel
 import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.di.ScreenModelPair
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
+@ContributesTo(AppScope::class)
 interface SharedComponent {
 
     @Provides

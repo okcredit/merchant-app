@@ -4,6 +4,8 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.AndroidSqlDriverFactory
 import okcredit.base.syncer.WorkerFactoryPair
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import tech.okcredit.collection.di.CollectionComponent
 import tech.okcredit.collection.di.CollectionDriverFactory
 import tech.okcredit.collection.local.CollectionDatabase
@@ -18,6 +20,7 @@ import tech.okcredit.collection.syncer.SyncCollectionEverythingWorker
 import tech.okcredit.collection.syncer.SyncMerchantPaymentWorker
 import tech.okcredit.collection.syncer.SyncMerchantProfileWorker
 
+@ContributesTo(AppScope::class)
 interface AndroidCollectionComponent : CollectionComponent {
 
     @Provides

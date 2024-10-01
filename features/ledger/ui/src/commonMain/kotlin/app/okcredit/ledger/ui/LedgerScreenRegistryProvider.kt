@@ -8,10 +8,8 @@ import app.okcredit.ledger.ui.profile.AccountProfileScreen
 import app.okcredit.ledger.ui.supplier.SupplierLedgerScreen
 import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.core.registry.screenModule
-import me.tatarka.inject.annotations.Inject
 
-@Inject
-class LedgerScreenRegistryProvider {
+object LedgerScreenRegistryProvider {
 
     fun screenRegistry() = screenModule {
         register<LedgerScreenRegistry.CustomerLedger> {

@@ -3,10 +3,13 @@ package tech.okcredit.analytics
 import co.touchlab.kermit.Logger
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.Debug
-import okcredit.base.di.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Singleton
 @Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class, multibinding = true)
 class DebugEventsConsumer(val debug: Debug) : AnalyticEventsConsumer {
 
     override fun setIdentity(id: String) {

@@ -9,7 +9,10 @@ import app.okcredit.ledger.core.syncer.TransactionSyncer
 import app.okcredit.ledger.local.LedgerDatabase
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.IosSqlDriverFactory
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
+@ContributesTo(AppScope::class)
 interface IosLedgerComponent : LedgerComponent {
 
     @Provides

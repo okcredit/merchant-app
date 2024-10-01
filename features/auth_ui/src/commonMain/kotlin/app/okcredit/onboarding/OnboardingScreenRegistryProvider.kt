@@ -4,21 +4,16 @@ import app.okcredit.onboarding.businessName.EnterBusinessNameScreen
 import app.okcredit.onboarding.login.LoginScreen
 import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.core.registry.screenModule
-import me.tatarka.inject.annotations.Inject
 
-@Inject
-class OnboardingScreenRegistryProvider(
-    private val loginScreen: () -> LoginScreen,
-    private val enterBusinessNameScreen: () -> EnterBusinessNameScreen,
-) {
+object OnboardingScreenRegistryProvider {
 
     fun screenRegistry() = screenModule {
         register<OnboardingScreenRegistry.Login> {
-            loginScreen.invoke()
+            LoginScreen()
         }
 
         register<OnboardingScreenRegistry.EnterBusinessName> {
-            enterBusinessNameScreen.invoke()
+            EnterBusinessNameScreen()
         }
     }
 }

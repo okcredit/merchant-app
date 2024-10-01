@@ -2,13 +2,16 @@ package tech.okcredit.analytics
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import org.json.JSONException
 import org.json.JSONObject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@Singleton
 @Inject
-class MixpanelEventsConsumer constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class, multibinding = true)
+class MixpanelEventsConsumer(
     private val mixpanel: MixpanelAPI,
 ) : AnalyticEventsConsumer {
 

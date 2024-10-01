@@ -24,7 +24,6 @@ import app.okcredit.ledger.core.remote.models.UpdateSupplierRequest
 import app.okcredit.ledger.core.remote.models.UpdateSupplierResponse
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.BaseUrl
-import okcredit.base.di.Singleton
 import okcredit.base.network.AuthorizedHttpClient
 import okcredit.base.network.HEADER_BUSINESS_ID
 import okcredit.base.network.delete
@@ -35,9 +34,11 @@ import okcredit.base.network.post
 import okcredit.base.network.put
 import okcredit.base.units.paisa
 import okcredit.base.units.timestamp
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
 class LedgerRemoteSource(
     private val baseUrl: BaseUrl,
     private val authorizedHttpClient: AuthorizedHttpClient,

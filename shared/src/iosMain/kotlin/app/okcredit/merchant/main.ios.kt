@@ -1,6 +1,9 @@
 package app.okcredit.merchant
 
 import androidx.compose.ui.window.ComposeUIViewController
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.onboarding.OnboardingScreenRegistryProvider
+import app.okcredit.web.WebScreenRegistryProvider
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import platform.UIKit.UIViewController
 
@@ -12,15 +15,16 @@ fun mainViewController(): UIViewController {
         debug = false,
         flavor = "prod",
     )
-    initScreenRegistry(applicationComponent)
+    initScreenRegistry()
+    applicationComponent.appInitializers.forEach { it.init() }
     return ComposeUIViewController { MerchantApplication(applicationComponent.appScreenModelFactory) }
 }
 
-private fun initScreenRegistry(component: ApplicationComponent) {
+private fun initScreenRegistry() {
     ScreenRegistry {
-        component.onboardingScreenRegistryProvider.screenRegistry().invoke(this)
-        component.sharedScreenRegistryProvider.screenRegistry().invoke(this)
-        component.ledgerScreenRegistryProvider.screenRegistry().invoke(this)
-        component.webScreenRegistryProvider.screenRegistry().invoke(this)
+        SharedScreenRegistryProvider.screenRegistry().invoke(this)
+        OnboardingScreenRegistryProvider.screenRegistry().invoke(this)
+        LedgerScreenRegistryProvider.screenRegistry().invoke(this)
+        WebScreenRegistryProvider.screenRegistry().invoke(this)
     }
 }

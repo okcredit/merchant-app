@@ -1,3 +1,5 @@
+import okcredit.gradle.addKspDependencyForAllTargets
+
 plugins {
     id("okcredit.android.library")
     id("okcredit.kotlin.multiplatform")
@@ -50,10 +52,5 @@ android {
     namespace = "app.okcredit.ledger.core"
 }
 
-dependencies {
-    add("kspCommonMainMetadata", libs.kotlininject.compiler)
-    add("kspAndroid", libs.kotlininject.compiler)
-    add("kspIosArm64", libs.kotlininject.compiler)
-    add("kspIosSimulatorArm64", libs.kotlininject.compiler)
-    add("kspJvm", libs.kotlininject.compiler)
-}
+addKspDependencyForAllTargets(libs.kotlininject.compiler)
+addKspDependencyForAllTargets(libs.kotlininject.anvil.compiler)

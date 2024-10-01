@@ -3,9 +3,12 @@ package tech.okcredit.device.usecase
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.network.DeviceIdProvider
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import tech.okcredit.device.local.DeviceLocalSource
 
 @Inject
+@ContributesBinding(AppScope::class)
 class GetOrCreateDeviceId(private val deviceLocalSource: DeviceLocalSource) : DeviceIdProvider {
 
     override suspend fun current(): String {

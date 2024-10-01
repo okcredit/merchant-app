@@ -6,13 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import tech.okcredit.auth.local.AuthLocalSource
 import tech.okcredit.auth.remote.AuthApiClient
 import tech.okcredit.auth.remote.AuthRemoteSource
 import tech.okcredit.auth.remote.model.request.WhatsAppCodeRequest
 
-@Singleton
 @Inject
 class AuthServiceImpl(
     private val authLocalSourceLazy: Lazy<AuthLocalSource>,

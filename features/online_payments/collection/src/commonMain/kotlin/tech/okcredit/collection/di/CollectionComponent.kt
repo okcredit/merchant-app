@@ -2,13 +2,10 @@ package tech.okcredit.collection.di
 
 import app.cash.sqldelight.ColumnAdapter
 import me.tatarka.inject.annotations.IntoMap
-import me.tatarka.inject.annotations.IntoSet
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.SqlDriverFactory
-import okcredit.base.syncer.SignOutListener
 import okcredit.base.syncer.SyncNotificationListener
 import okcredit.base.syncer.SyncNotificationType
-import tech.okcredit.collection.CollectionSignOutListener
 import tech.okcredit.collection.local.CollectionDatabase
 import tech.okcredit.collection.local.database.OnlinePaymentEntity
 import tech.okcredit.collection.local.database.OnlinePaymentQueries
@@ -36,12 +33,6 @@ interface CollectionComponent {
             ),
         )
         return database.onlinePaymentQueries
-    }
-
-    @Provides
-    @IntoSet
-    fun collectionSignOutListener(listener: CollectionSignOutListener): SignOutListener {
-        return listener
     }
 
     @Provides

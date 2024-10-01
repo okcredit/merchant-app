@@ -3,6 +3,8 @@ package tech.okcredit.identity.usecase
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 import tech.okcredit.identity.IdentityRepository
 import tech.okcredit.identity.contract.PreferenceKey
 import tech.okcredit.identity.contract.model.Individual
@@ -12,7 +14,8 @@ import tech.okcredit.identity.remote.response.IndividualUser
 import tech.okcredit.identity.remote.response.User
 
 @Inject
-class SetIndividualPreferenceImpl constructor(
+@ContributesBinding(AppScope::class)
+class SetIndividualPreferenceImpl(
     private val repository: IdentityRepository,
 ) : SetIndividualPreference {
 

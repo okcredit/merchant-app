@@ -5,11 +5,14 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.AndroidSqlDriverFactory
 import okcredit.base.syncer.WorkerFactoryPair
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 import tech.okcredit.customization.local.CustomizationDatabase
 import tech.okcredit.customization.syncer.AndroidCustomizationSyncer
 import tech.okcredit.customization.syncer.CustomizationSyncer
 import tech.okcredit.customization.syncer.SyncCustomizationsWorker
 
+@ContributesTo(AppScope::class)
 interface AndroidCustomizationComponent : CustomizationComponent {
 
     @Provides

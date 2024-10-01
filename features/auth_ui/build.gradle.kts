@@ -1,3 +1,4 @@
+import okcredit.gradle.addKspDependencyForAllTargets
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
@@ -48,10 +49,5 @@ android {
     namespace = "app.okcredit.onboarding"
 }
 
-dependencies {
-    add("kspCommonMainMetadata", libs.kotlininject.compiler)
-    add("kspAndroid", libs.kotlininject.compiler)
-    add("kspIosArm64", libs.kotlininject.compiler)
-    add("kspIosSimulatorArm64", libs.kotlininject.compiler)
-    add("kspJvm", libs.kotlininject.compiler)
-}
+addKspDependencyForAllTargets(libs.kotlininject.compiler)
+addKspDependencyForAllTargets(libs.kotlininject.anvil.compiler)

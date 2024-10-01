@@ -12,8 +12,13 @@ import app.okcredit.ledger.core.usecase.RecordTransaction
 import me.tatarka.inject.annotations.Inject
 import okcredit.base.units.Paisa
 import okcredit.base.units.Timestamp
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 @Inject
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
 class LedgerImpl(
     recordTransactionLazy: Lazy<RecordTransaction>,
     addAccountLazy: Lazy<AddAccount>,

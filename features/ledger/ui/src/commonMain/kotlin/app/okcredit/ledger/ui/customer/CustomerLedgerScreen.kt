@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import app.okcredit.ledger.contract.model.AccountType
-import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.ledger.ui.LedgerScreenRegistry
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.Intent
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.State
 import app.okcredit.ledger.ui.customer.CustomerLedgerContract.ViewEvent
 import app.okcredit.ledger.ui.customer.composable.CustomerLedgerUi
-import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import okcredit.base.di.moveTo
 import okcredit.base.di.observeViewEvents
 import okcredit.base.di.rememberScreenModel
 
@@ -53,12 +53,10 @@ data class CustomerLedgerScreen(val customerId: String) : Screen {
             onProfileClicked = {
                 val customerId = state.customerDetails?.id
                 if (customerId != null) {
-                    navigator.push(
-                        ScreenRegistry.get(
-                            LedgerScreenRegistryProvider.LedgerScreenRegistry.AccountProfile(
-                                accountId = customerId,
-                                accountType = AccountType.CUSTOMER,
-                            ),
+                    navigator.moveTo(
+                        LedgerScreenRegistry.AccountProfile(
+                            accountId = customerId,
+                            accountType = AccountType.CUSTOMER,
                         ),
                     )
                 }

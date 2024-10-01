@@ -5,6 +5,10 @@ import android.os.Build
 import android.os.StrictMode
 import android.webkit.WebView
 import androidx.work.Configuration
+import app.okcredit.ledger.ui.LedgerScreenRegistryProvider
+import app.okcredit.merchant.SharedScreenRegistryProvider
+import app.okcredit.onboarding.OnboardingScreenRegistryProvider
+import app.okcredit.web.WebScreenRegistryProvider
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 
 class MerchantApplication : Application(), Configuration.Provider {
@@ -41,10 +45,10 @@ class MerchantApplication : Application(), Configuration.Provider {
         }
         super.onCreate()
         ScreenRegistry {
-            component.sharedScreenRegistryProvider.screenRegistry().invoke(this)
-            component.onboardingScreenRegistryProvider.screenRegistry().invoke(this)
-            component.ledgerScreenRegistryProvider.screenRegistry().invoke(this)
-            component.webScreenRegistryProvider.screenRegistry().invoke(this)
+            SharedScreenRegistryProvider.screenRegistry().invoke(this)
+            OnboardingScreenRegistryProvider.screenRegistry().invoke(this)
+            LedgerScreenRegistryProvider.screenRegistry().invoke(this)
+            WebScreenRegistryProvider.screenRegistry().invoke(this)
         }
 
         component.appInitializers.forEach { it.init() }
@@ -52,6 +56,6 @@ class MerchantApplication : Application(), Configuration.Provider {
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
-            .setWorkerFactory(component.appWorkerFactory())
+            .setWorkerFactory(component.appWorkerFactory)
             .build()
 }

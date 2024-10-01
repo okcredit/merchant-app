@@ -8,8 +8,11 @@ import app.okcredit.ledger.core.CustomerRepository
 import app.okcredit.ledger.core.SupplierRepository
 import kotlinx.coroutines.flow.Flow
 import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
+@ContributesBinding(AppScope::class)
 class GetAccountImpl(
     private val customerRepository: CustomerRepository,
     private val supplierRepository: SupplierRepository,

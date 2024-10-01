@@ -23,14 +23,15 @@ import me.tatarka.inject.annotations.Inject
 import okcredit.base.di.AppVersion
 import okcredit.base.di.BaseUrl
 import okcredit.base.di.Debug
-import okcredit.base.di.Singleton
 import okcredit.base.randomUUID
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
 typealias AuthorizedHttpClient = HttpClient
 typealias DefaultHttpClient = HttpClient
 
-@Singleton
 @Inject
+@SingleIn(AppScope::class)
 class HttpClientFactory(
     private val serializerModules: Set<SerializersModule> = emptySet(),
     private val debug: Debug,

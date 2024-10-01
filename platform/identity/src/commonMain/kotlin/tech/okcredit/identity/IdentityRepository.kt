@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.identity.contract.PreferenceKey
 import tech.okcredit.identity.contract.model.*
 import tech.okcredit.identity.contract.model.BusinessType
@@ -21,7 +22,7 @@ import tech.okcredit.identity.local.Business as DbBusiness
 import tech.okcredit.identity.local.Individual as DbIndividual
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
 class IdentityRepository(
     private val localSource: IdentityLocalSource,
     private val remoteSource: IdentityRemoteSource,

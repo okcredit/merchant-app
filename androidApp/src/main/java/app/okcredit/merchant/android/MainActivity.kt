@@ -9,7 +9,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MerchantApplication(appScreenModelFactory = applicationComponent.appScreenModelFactory)
+            MerchantApplication(appScreenModelFactory = applicationComponent.appScreenModelFactory())
         }
     }
 }

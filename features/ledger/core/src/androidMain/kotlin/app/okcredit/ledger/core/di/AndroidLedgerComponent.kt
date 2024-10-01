@@ -15,7 +15,10 @@ import me.tatarka.inject.annotations.IntoMap
 import me.tatarka.inject.annotations.Provides
 import okcredit.base.local.AndroidSqlDriverFactory
 import okcredit.base.syncer.WorkerFactoryPair
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
+@ContributesTo(AppScope::class)
 interface AndroidLedgerComponent : LedgerComponent {
 
     @Provides

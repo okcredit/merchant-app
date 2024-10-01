@@ -7,8 +7,11 @@ import app.okcredit.ledger.contract.usecase.SortBy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
+@ContributesBinding(AppScope::class)
 class GetAccountsImpl(
     private val getCustomers: GetCustomers,
     private val getSuppliers: GetSuppliers,

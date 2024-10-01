@@ -7,8 +7,11 @@ import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import me.tatarka.inject.annotations.Inject
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesBinding
 
 @Inject
+@ContributesBinding(AppScope::class)
 class AndroidPlatformExtensions(private val context: Context) : PlatformExtensions {
 
     override fun shareOnWhatsApp(text: String) {

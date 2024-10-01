@@ -12,15 +12,16 @@ import io.ktor.utils.io.KtorDsl
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CompletableDeferred
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import okcredit.base.network.ClientConfig
 import okcredit.base.network.HttpClientFactory
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import tech.okcredit.auth.isValid
 import tech.okcredit.auth.local.AuthLocalSource
 import tech.okcredit.auth.remote.CookieProvider
 
 @Inject
-@Singleton
+@SingleIn(AppScope::class)
 class AuthClientConfig(
     cookieProviderLazy: Lazy<CookieProvider>,
     localSourceLazy: Lazy<AuthLocalSource>,
@@ -165,7 +166,7 @@ class CookieHolder<T>(private val loadTokens: suspend () -> T) {
 
 private const val HEADER_COOKIE_NAME = "Cookie"
 
-@Singleton
+@SingleIn(AppScope::class)
 @Inject
 class AuthorizedHttpClientFactory(
     private val authClientConfig: AuthClientConfig,

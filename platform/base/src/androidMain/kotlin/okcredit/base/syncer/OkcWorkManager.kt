@@ -11,8 +11,9 @@ import androidx.work.WorkQuery
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.flow.first
 import me.tatarka.inject.annotations.Inject
-import okcredit.base.di.Singleton
 import okcredit.base.local.Scope
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -22,9 +23,9 @@ import java.util.concurrent.TimeUnit
  *
  * PS: Do not use WorkManager anywhere in the app.
  */
-@Singleton
 @Inject
-class OkcWorkManager constructor(
+@SingleIn(AppScope::class)
+class OkcWorkManager(
     context: Context,
     private val preferences: Lazy<WorkManagerPrefs>,
 ) {

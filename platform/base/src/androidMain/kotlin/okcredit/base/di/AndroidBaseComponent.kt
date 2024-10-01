@@ -1,13 +1,7 @@
 package okcredit.base.di
 
-import me.tatarka.inject.annotations.Provides
-import okcredit.base.AndroidPlatformExtensions
-import okcredit.base.PlatformExtensions
+import software.amazon.lastmile.kotlin.inject.anvil.AppScope
+import software.amazon.lastmile.kotlin.inject.anvil.ContributesTo
 
-interface AndroidBaseComponent : BaseComponent {
-
-    @Provides
-    fun AndroidPlatformExtensions.binds(): PlatformExtensions {
-        return this
-    }
-}
+@ContributesTo(AppScope::class)
+interface AndroidBaseComponent : BaseComponent
